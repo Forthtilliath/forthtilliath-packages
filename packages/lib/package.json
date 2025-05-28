@@ -1,0 +1,15 @@
+{
+  "name": "@repo/lib",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "exports": {
+    "./*": "./src/*.tsx"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "5.8.3"
+  }
+}
