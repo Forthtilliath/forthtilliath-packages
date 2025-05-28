@@ -1,7 +1,6 @@
 {
 	"name": "@repo/react-ui",
 	"version": "0.0.0",
-	"private": true,
 	"exports": {
 		".": "./src/index.ts",
 		"./*": "./src/*.tsx"
