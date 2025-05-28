@@ -9,6 +9,7 @@
     "./*": "./src/*.tsx"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "typescript": "5.8.3"
   }

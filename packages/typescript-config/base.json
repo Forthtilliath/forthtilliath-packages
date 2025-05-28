@@ -14,11 +14,9 @@
 		"module": "NodeNext",
 		"skipLibCheck": true,
 
-		/* Bundler mode */
 		"moduleResolution": "NodeNext",
 		"moduleDetection": "force",
 
-		/* Linting */
 		"strict": true
 	}
 }
