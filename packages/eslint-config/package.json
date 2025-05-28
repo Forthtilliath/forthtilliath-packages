@@ -7,6 +7,7 @@
 		".": "./eslint.config.ts",
 		"./next": "./eslint-next.config.ts",
 		"./react": "./eslint-react.config.ts",
+		"./storybook": "./eslint-storybook.config.ts",
 		"./vue": "./eslint-vue.config.ts"
 	},
 	"devDependencies": {
