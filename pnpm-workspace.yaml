@@ -4,4 +4,5 @@ packages:
   - "packages/react/*"
 
 catalog:
-  eslint: 9.27.0
+  eslint: ^9.27.0
+  typescript: 5.8.3

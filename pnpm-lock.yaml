@@ -4,6 +4,15 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    eslint:
+      specifier: ^9.27.0
+      version: 9.27.0
+    typescript:
+      specifier: 5.8.3
+      version: 5.8.3
+
 importers:
 
   .:
@@ -196,6 +205,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      eslint:
+        specifier: 'catalog:'
+        version: 9.27.0(jiti@2.4.2)
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -242,11 +254,8 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      eslint:
-        specifier: ^9.27.0
-        version: 9.27.0(jiti@2.4.2)
       typescript:
-        specifier: 5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
 
   packages/typescript-config:

@@ -1,4 +1,9 @@
+import tseslint from "typescript-eslint";
 import baseConfig from "./src/index.js";
 import reactConfig from "./src/react.js";
 
-export default [...baseConfig, ...reactConfig];
+export const eslintConfig: tseslint.ConfigArray = tseslint.config([
+	...baseConfig,
+	...reactConfig,
+]);
+export default eslintConfig;

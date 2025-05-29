@@ -1,17 +1,19 @@
 {
-  "name": "@forthtilliath/types",
-  "version": "0.1.0",
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*.ts"
-  },
-  "scripts": {
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "eslint": "^9.27.0",
-    "typescript": "5.8.3"
-  }
+	"name": "@forthtilliath/types",
+	"version": "0.1.0",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./object": "./src/object/index.ts",
+		"./helpers": "./src/helpers/index.ts"
+	},
+	"scripts": {
+		"build": "tsc",
+		"check-types": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"typescript": "catalog:"
+	}
 }
