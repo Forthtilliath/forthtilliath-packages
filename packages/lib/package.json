@@ -13,6 +13,6 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
 		"eslint": "catalog:",
-    "typescript": "5.8.3"
+    "typescript": "catalog:"
   }
 }
