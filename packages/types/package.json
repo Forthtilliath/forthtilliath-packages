@@ -4,6 +4,7 @@
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
+		"./array": "./src/array/index.ts",
 		"./object": "./src/object/index.ts",
 		"./helpers": "./src/helpers/index.ts"
 	},
