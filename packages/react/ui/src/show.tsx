@@ -1,4 +1,4 @@
-interface Props<T> {
+export interface ShowProps<T = unknown> {
 	when: T;
 	fallback?: React.ReactNode;
 	children: React.ReactNode | ((whenValue: NonNullable<T>) => React.ReactNode);
@@ -23,14 +23,14 @@ interface Props<T> {
  *   {(name) => <p>Welcome, {name}!</p>}
  * </Show>
  *
- * @param {Props<T>} props
+ * @param {ShowProps<T>} props
  * @returns {React.ReactNode}
  */
 export function Show<T>({
 	children,
 	when,
 	fallback = null,
-}: Props<T>): React.ReactNode {
+}: ShowProps<T>): React.ReactNode {
 	if (when) {
 		const wrappedChildren = () => {
 			if (typeof children === "function") {
