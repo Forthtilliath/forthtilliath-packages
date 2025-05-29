@@ -11,11 +11,14 @@ jobs:
   changesets:
     runs-on: ubuntu-latest
     steps:
+      - name: Install PNPM
+        run: npm i -g pnpm
+
       - uses: actions/checkout@v4
       - uses: ./.github/actions/ci-setup
 
       - name: Build
-        run: pnpm build
+        run: pnpm i && pnpm build
 
       - name: Create Release Pull Request or Publish
         id: changesets
