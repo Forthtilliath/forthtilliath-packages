@@ -10,7 +10,8 @@
 	},
 	"scripts": {
 		"build": "tsc",
-		"check-types": "tsc --noEmit"
+		"check-types": "tsc --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "workspace:*",

@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "exports": {
     "./*": "./src/*.tsx"
