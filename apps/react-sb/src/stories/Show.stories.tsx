@@ -1,4 +1,4 @@
-import { Show } from "@repo/react-ui/show";
+import { Show } from "@forthtilliath/react-ui/show";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {

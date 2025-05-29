@@ -1,4 +1,4 @@
-import { Show } from "@repo/react-ui/show";
+import { Show } from "@forthtilliath/react-ui/show";
 import Image, { type ImageProps } from "next/image";
 import styles from "./page.module.css";
 

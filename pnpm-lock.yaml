@@ -33,12 +33,12 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@forthtilliath/react-ui':
+        specifier: workspace:*
+        version: link:../../packages/react/ui
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/react-ui':
-        specifier: workspace:*
-        version: link:../../packages/react/ui
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -87,7 +87,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@repo/react-ui':
+      '@forthtilliath/react-ui':
         specifier: workspace:*
         version: link:../../packages/react/ui
       next:
@@ -100,12 +100,12 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@forthtilliath/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
