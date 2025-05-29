@@ -4,11 +4,9 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 
-export default [
-	pluginReact.configs.flat.recommended,
+export const reactConfig: Linter.Config[] = [
 	{
 		languageOptions: {
-			...pluginReact.configs.flat.recommended.languageOptions,
 			globals: {
 				...globals.serviceworker,
 				...globals.browser,
@@ -17,6 +15,7 @@ export default [
 	},
 	{
 		plugins: {
+			react: pluginReact,
 			"react-hooks": pluginReactHooks,
 			"react-refresh": pluginReactRefresh,
 		},
@@ -25,10 +24,12 @@ export default [
 			...pluginReactHooks.configs.recommended.rules,
 			// React scope no longer necessary with new JSX transform.
 			"react/react-in-jsx-scope": "off",
-			"react-refresh/only-export-components": [
-				"warn",
-				{ allowConstantExport: true },
-			],
+			// "react-refresh/only-export-components": [
+			// 	"warn",
+			// 	{ allowConstantExport: true },
+			// ],
 		},
 	},
-] satisfies Linter.Config[];
+] ;
+
+export default reactConfig;

@@ -1,8 +1,8 @@
-type Props<T> = {
+interface Props<T> {
 	when: T;
 	fallback?: React.ReactNode;
 	children: React.ReactNode | ((whenValue: NonNullable<T>) => React.ReactNode);
-};
+}
 
 /**
  * A conditional component that renders its `children` when the `when` property

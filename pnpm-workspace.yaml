@@ -2,3 +2,6 @@ packages:
   - "apps/*"
   - "packages/*"
   - "packages/react/*"
+
+catalog:
+  eslint: 9.27.0

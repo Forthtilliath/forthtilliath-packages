@@ -1,5 +1,10 @@
+import tseslint, { type ConfigArray } from "typescript-eslint";
 import baseConfig from "./src/index.js";
-import nextConfig from "./src/next.js";
 import reactConfig from "./src/react.js";
 
-export default [...baseConfig, ...reactConfig, ...nextConfig];
+export const nextReactConfig: ConfigArray = tseslint.config([
+	...baseConfig,
+	...reactConfig
+]);
+
+export default nextReactConfig;

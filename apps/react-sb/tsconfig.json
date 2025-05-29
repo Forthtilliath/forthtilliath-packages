@@ -1,11 +1,14 @@
 {
-  "extends": "@repo/typescript-config/react-storybook.json",
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    
-  },
-  "include": ["vite.config.ts"],
-  "exclude": [
-    "node_modules"
-  ]
+	"extends": "@repo/typescript-config/react-storybook.json",
+	"compilerOptions": {
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
+	},
+	"include": [
+		"vite.config.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".storybook/**/*.ts",
+		".storybook/**/*.tsx"
+	],
+	"exclude": ["node_modules"]
 }

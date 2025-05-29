@@ -3,7 +3,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 import vueparser from "vue-eslint-parser";
 
-export default [
+export const vueConfig: Linter.Config[] = [
 	{
 		name: "vue",
 		files: ["**/*.vue"],
@@ -21,4 +21,6 @@ export default [
 			},
 		},
 	},
-] satisfies Linter.Config[];
+];
+
+export default vueConfig;

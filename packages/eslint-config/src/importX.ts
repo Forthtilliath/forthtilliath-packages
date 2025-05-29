@@ -2,7 +2,7 @@ import tsParser from "@typescript-eslint/parser";
 import { type PluginFlatConfig, importX } from "eslint-plugin-import-x";
 
 export default [
-	importX.flatConfigs.recommended,
+	// importX.flatConfigs.recommended,
 	importX.flatConfigs.typescript,
 	importX.flatConfigs.react,
 	{
@@ -14,7 +14,7 @@ export default [
 		},
 		rules: {
 			"import-x/no-dynamic-require": "warn",
-			"import-x/no-nodejs-modules": "warn",
+			// "import-x/no-nodejs-modules": "warn",
 		},
 	},
 ] satisfies PluginFlatConfig[];

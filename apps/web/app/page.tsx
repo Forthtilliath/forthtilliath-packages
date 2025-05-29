@@ -1,5 +1,4 @@
 import { Show } from "@repo/react-ui/show";
-import type { KeysMatching, Prettify } from "@repo/types";
 import Image, { type ImageProps } from "next/image";
 import styles from "./page.module.css";
 
@@ -18,16 +17,6 @@ const ThemeImage = (props: Props) => {
 		</>
 	);
 };
-
-type A = Prettify<
-	{
-		foo: string;
-	} & {
-		bar: number;
-	}
->;
-
-type B = KeysMatching<A, string>;
 
 export default function Home() {
 	return (

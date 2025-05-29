@@ -1,4 +1,3 @@
-// https://typescript-eslint.io/rules/
 import type { Linter } from "eslint";
 
 export const typescriptRules = {
