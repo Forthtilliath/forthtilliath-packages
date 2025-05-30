@@ -9,13 +9,14 @@
 		"./helpers": "./src/helpers/index.ts"
 	},
 	"scripts": {
+		"dev": "tsc --watch",
 		"build": "tsc",
 		"check-types": "tsc --noEmit",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
+		"@forthtilliath/eslint-config": "workspace:*",
+		"@forthtilliath/typescript-config": "workspace:*",
 		"typescript": "catalog:"
 	}
 }

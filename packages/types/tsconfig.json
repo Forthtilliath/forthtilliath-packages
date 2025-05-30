@@ -1,7 +1,6 @@
 {
-	"extends": "@repo/typescript-config/base.json",
+	"extends": "@forthtilliath/typescript-config/base.json",
 	"compilerOptions": {
-		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "outDir": "dist",
     "rootDir": "src"
 	},

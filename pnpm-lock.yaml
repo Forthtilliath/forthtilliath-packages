@@ -42,13 +42,13 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@forthtilliath/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@forthtilliath/react-ui':
         specifier: workspace:*
         version: link:../../packages/react/ui
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@repo/typescript-config':
+      '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@storybook/addon-essentials':
@@ -109,13 +109,13 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@forthtilliath/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@forthtilliath/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@repo/typescript-config':
+      '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/node':
@@ -139,7 +139,7 @@ importers:
       '@eslint/js':
         specifier: ^9.27.0
         version: 9.27.0
-      '@repo/typescript-config':
+      '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@stylistic/eslint-plugin-js':
@@ -199,10 +199,10 @@ importers:
 
   packages/lib:
     devDependencies:
-      '@repo/eslint-config':
+      '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@repo/typescript-config':
+      '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       eslint:
@@ -221,10 +221,10 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../../eslint-config
-      '@repo/typescript-config':
+      '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../typescript-config
       '@turbo/gen':
@@ -248,10 +248,10 @@ importers:
 
   packages/types:
     devDependencies:
-      '@repo/eslint-config':
+      '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@repo/typescript-config':
+      '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       typescript:

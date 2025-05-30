@@ -17,9 +17,9 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
+    "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/types": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
     "@types/node": "^22.15.23",
     "@types/react": "19.1.6",
     "@types/react-dom": "19.1.5",

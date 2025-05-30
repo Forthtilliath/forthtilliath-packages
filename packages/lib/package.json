@@ -11,8 +11,8 @@
     "./*": "./src/*.tsx"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
 		"eslint": "catalog:",
     "typescript": "catalog:"
   }
