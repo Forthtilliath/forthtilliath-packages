@@ -1,3 +1,5 @@
+import { SlotOrCallback } from "./slot-or-callback";
+
 export interface ShowProps<T = unknown> {
 	when: T;
 	fallback?: React.ReactNode;
@@ -32,14 +34,7 @@ export function Show<T>({
 	fallback = null,
 }: ShowProps<T>): React.ReactNode {
 	if (when) {
-		const wrappedChildren = () => {
-			if (typeof children === "function") {
-				return children(when);
-			}
-			return children;
-		};
-
-		return wrappedChildren();
+		return <SlotOrCallback>{children}</SlotOrCallback>
 	}
 
 	return fallback;
