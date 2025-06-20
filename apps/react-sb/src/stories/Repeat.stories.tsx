@@ -25,7 +25,7 @@ export const Default: Story = {
   args: {
     count: 3,
     children: (
-      <p>Message répété plusieurs fois</p>
+      <p>Message statique répété plusieurs fois</p>
     ),
   },
 };
@@ -34,6 +34,6 @@ export const Default: Story = {
 export const WithCallback: Story = {
   args: {
     count: 3,
-    children: (i: number) => <p>Message répété plusieurs fois, index {i}</p>,
+    children: (i: number) => <p>Message dynamique répété plusieurs fois, index {i}</p>,
   },
 };
