@@ -1,4 +1,3 @@
-// Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react";
 // import { expect, userEvent, waitFor, within } from "@storybook/test";
 
@@ -9,14 +8,9 @@ import {
   AccordionTrigger,
 } from "@forthtilliath/shadcn-ui/components/accordion";
 
-/**
- * A vertically stacked set of interactive headings that each reveal a section
- * of content.
- */
 const meta = {
   title: "shadcn-ui/Accordion",
   component: Accordion,
-  tags: ["autodocs"],
   argTypes: {
     type: {
       options: ["single", "multiple"],
@@ -31,7 +25,7 @@ const meta = {
     <Accordion {...args}>
       <AccordionItem value="item-1">
         <AccordionTrigger>Is it accessible?</AccordionTrigger>
-        <AccordionContent className="color-red-500">
+        <AccordionContent>
           Yes. It adheres to the WAI-ARIA design pattern.
         </AccordionContent>
       </AccordionItem>
@@ -56,9 +50,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-/**
- * The default behavior of the accordion allows only one item to be open.
- */
 export const Default: Story = {};
 
 // export const ShouldOnlyOpenOne: Story = {
