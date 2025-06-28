@@ -21,7 +21,6 @@ const config: StorybookConfig = {
         "docs": false
       }
     },
-    getAbsolutePath('@storybook/addon-onboarding'),
     getAbsolutePath('@storybook/addon-interactions'),
     getAbsolutePath('@storybook/addon-docs'),
   ],
