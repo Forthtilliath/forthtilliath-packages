@@ -1,4 +1,4 @@
-// import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -49,31 +49,31 @@ export const Instant: Story = {
   },
 };
 
-// export const ShouldShowOnHover: Story = {
-//   name: "when hovering over trigger, should show hover card content",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement, step }) => {
-//     const canvasBody = within(canvasElement.ownerDocument.body);
+export const ShouldShowOnHover: Story = {
+  name: "when hovering over trigger, should show hover card content",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement, step, userEvent }) => {
+    const canvasBody = within(canvasElement.ownerDocument.body);
 
-//     await step("Hover over the trigger element", async () => {
-//       await userEvent.hover(await canvasBody.findByText(/hover/i));
-//       await waitFor(() =>
-//         expect(
-//           canvasElement.ownerDocument.body.querySelector(
-//             '[data-slot="hover-card-content"]',
-//           ),
-//         ).toBeVisible(),
-//       );
-//     });
-//     await step("Unhover the trigger element", async () => {
-//       await userEvent.unhover(await canvasBody.findByText(/hover/i));
-//       await waitFor(() =>
-//         expect(
-//           canvasElement.ownerDocument.body.querySelector(
-//             '[data-slot="hover-card-content"]',
-//           ),
-//         ).toBeNull(),
-//       );
-//     });
-//   },
-// };
+    await step("Hover over the trigger element", async () => {
+      await userEvent.hover(await canvasBody.findByText(/hover/i));
+      await waitFor(() =>
+        expect(
+          canvasElement.ownerDocument.body.querySelector(
+            '[data-slot="hover-card-content"]'
+          )
+        ).toBeVisible()
+      );
+    });
+    await step("Unhover the trigger element", async () => {
+      await userEvent.unhover(await canvasBody.findByText(/hover/i));
+      await waitFor(() =>
+        expect(
+          canvasElement.ownerDocument.body.querySelector(
+            '[data-slot="hover-card-content"]'
+          )
+        ).toBeNull()
+      );
+    });
+  },
+};

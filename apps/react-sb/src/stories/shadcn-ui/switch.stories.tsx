@@ -1,4 +1,4 @@
-// import { expect, userEvent } from "storybook/test";
+import { expect } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
@@ -46,20 +46,20 @@ export const Disabled: Story = {
   },
 };
 
-// export const ShouldToggle: Story = {
-//   name: "when clicking the switch, should toggle it on and off",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     const switchBtn = await canvas.findByRole("switch");
+export const ShouldToggle: Story = {
+  name: "when clicking the switch, should toggle it on and off",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    const switchBtn = await canvas.findByRole("switch");
 
-//     await step("toggle the switch on", async () => {
-//       await userEvent.click(switchBtn);
-//       await expect(switchBtn).toBeChecked();
-//     });
+    await step("toggle the switch on", async () => {
+      await userEvent.click(switchBtn);
+      await expect(switchBtn).toBeChecked();
+    });
 
-//     await step("toggle the switch off", async () => {
-//       await userEvent.click(switchBtn);
-//       await expect(switchBtn).not.toBeChecked();
-//     });
-//   },
-// };
+    await step("toggle the switch off", async () => {
+      await userEvent.click(switchBtn);
+      await expect(switchBtn).not.toBeChecked();
+    });
+  },
+};

@@ -1,4 +1,4 @@
-// import { expect, fn, userEvent } from "storybook/test";
+import { expect, fn } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   REGEXP_ONLY_DIGITS,
@@ -21,8 +21,8 @@ const meta = {
   argTypes: {},
   args: {
     maxLength: 6,
-    // onChange: fn(),
-    // onComplete: fn(),
+    onChange: fn(),
+    onComplete: fn(),
     pattern: REGEXP_ONLY_DIGITS_AND_CHARS,
     children: null,
     "aria-label": "One-time password",
@@ -84,46 +84,46 @@ export const SeparatedGroup: Story = {
   ),
 };
 
-// export const ShouldEnterText: Story = {
-//   name: "when typing text, should call onChange and onComplete",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ args, canvas, step }) => {
-//     const inputTextbox = await canvas.findByRole("textbox");
+export const ShouldEnterText: Story = {
+  name: "when typing text, should call onChange and onComplete",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ args, canvas, step, userEvent }) => {
+    const inputTextbox = await canvas.findByRole("textbox");
 
-//     await step("type into input textbox", async () => {
-//       await userEvent.click(inputTextbox);
-//       await userEvent.type(inputTextbox, "mocked");
-//       expect(args.onChange).toHaveBeenCalledTimes(6);
-//     });
+    await step("type into input textbox", async () => {
+      await userEvent.click(inputTextbox);
+      await userEvent.type(inputTextbox, "mocked");
+      await expect(args.onChange).toHaveBeenCalledTimes(6);
+    });
 
-//     await step("finish typing by pressing Enter", async () => {
-//       await userEvent.keyboard("{enter}");
-//       expect(args.onComplete).toHaveBeenCalledTimes(1);
-//     });
-//   },
-// };
+    await step("finish typing by pressing Enter", async () => {
+      await userEvent.keyboard("{enter}");
+      await expect(args.onComplete).toHaveBeenCalledTimes(1);
+    });
+  },
+};
 
-// export const ShouldEnterOnlyNumbers: Story = {
-//   ...OnlyNumbers,
-//   name: "when only numbers are allowed, should call onChange for numbers and onComplete",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ args, canvas, step }) => {
-//     const inputTextbox = await canvas.findByRole("textbox");
+export const ShouldEnterOnlyNumbers: Story = {
+  ...OnlyNumbers,
+  name: "when only numbers are allowed, should call onChange for numbers and onComplete",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ args, canvas, step, userEvent }) => {
+    const inputTextbox = await canvas.findByRole("textbox");
 
-//     await step("type text into input textbox", async () => {
-//       await userEvent.click(inputTextbox);
-//       await userEvent.type(inputTextbox, "mocked");
-//       expect(args.onChange).toHaveBeenCalledTimes(0);
-//     });
+    await step("type text into input textbox", async () => {
+      await userEvent.click(inputTextbox);
+      await userEvent.type(inputTextbox, "mocked");
+      await expect(args.onChange).toHaveBeenCalledTimes(0);
+    });
 
-//     await step("type numbers into input textbox", async () => {
-//       await userEvent.type(inputTextbox, "123456");
-//       expect(args.onChange).toHaveBeenCalledTimes(6);
-//     });
+    await step("type numbers into input textbox", async () => {
+      await userEvent.type(inputTextbox, "123456");
+      await expect(args.onChange).toHaveBeenCalledTimes(6);
+    });
 
-//     await step("finish typing by pressing Enter", async () => {
-//       await userEvent.keyboard("{enter}");
-//       expect(args.onComplete).toHaveBeenCalledTimes(1);
-//     });
-//   },
-// };
+    await step("finish typing by pressing Enter", async () => {
+      await userEvent.keyboard("{enter}");
+      await expect(args.onComplete).toHaveBeenCalledTimes(1);
+    });
+  },
+};

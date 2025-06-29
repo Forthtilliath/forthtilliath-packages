@@ -1,4 +1,4 @@
-// import { expect, userEvent, waitFor } from "storybook/test";
+import { expect, waitFor } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
@@ -41,23 +41,23 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
-// export const ShouldToggleRadio: Story = {
-//   name: "when clicking on a radio button, it should toggle its state",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     const radios = await canvas.findAllByRole("radio");
-//     expect(radios).toHaveLength(3);
+export const ShouldToggleRadio: Story = {
+  name: "when clicking on a radio button, it should toggle its state",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    const radios = await canvas.findAllByRole("radio");
+    await expect(radios).toHaveLength(3);
 
-//     await step("click the default radio button", async () => {
-//       await userEvent.click(radios[0]);
-//       await waitFor(() => expect(radios[0]).toBeChecked());
-//       await waitFor(() => expect(radios[1]).not.toBeChecked());
-//     });
+    await step("click the default radio button", async () => {
+      await userEvent.click(radios[0] as HTMLInputElement);
+      await waitFor(() => expect(radios[0]).toBeChecked());
+      await waitFor(() => expect(radios[1]).not.toBeChecked());
+    });
 
-//     await step("click the comfortable radio button", async () => {
-//       await userEvent.click(radios[1]);
-//       await waitFor(() => expect(radios[1]).toBeChecked());
-//       await waitFor(() => expect(radios[0]).not.toBeChecked());
-//     });
-//   },
-// };
+    await step("click the comfortable radio button", async () => {
+      await userEvent.click(radios[1] as HTMLInputElement);
+      await waitFor(() => expect(radios[1]).toBeChecked());
+      await waitFor(() => expect(radios[0]).not.toBeChecked());
+    });
+  },
+};

@@ -1,4 +1,4 @@
-// import { expect, userEvent, within } from "storybook/test";
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Mail, Plus, PlusCircle, Search, UserPlus } from "lucide-react";
 
@@ -159,21 +159,22 @@ export const WithCheckboxes: Story = {
   ),
 };
 
-// export const ShouldOpenClose: Story = {
-//   name: "when clicking an item, should close the dropdown menu",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement, step }) => {
-//     const body = within(canvasElement.ownerDocument.body);
+export const ShouldOpenClose: Story = {
+  name: "when clicking an item, should close the dropdown menu",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement, step, userEvent }) => {
+    const body = within(canvasElement.ownerDocument.body);
 
-//     await step("Open the dropdown menu", async () => {
-//       await userEvent.click(await body.findByRole("button", { name: /open/i }));
-//       expect(await body.findByRole("menu")).toBeInTheDocument();
-//     });
-//     const items = await body.findAllByRole("menuitem");
-//     expect(items).toHaveLength(4);
+    await step("Open the dropdown menu", async () => {
+      await userEvent.click(await body.findByRole("button", { name: /open/i }));
+      await expect(await body.findByRole("menu")).toBeInTheDocument();
+    });
+    const items = await body.findAllByRole("menuitem");
+    await expect(items).toHaveLength(4);
 
-//     await step("Click the first menu item", async () => {
-//       await userEvent.click(items[0], { delay: 100 });
-//     });
-//   },
-// };
+    await step("Click the first menu item", async () => {
+      const item = items[0];
+      if (item) await userEvent.click(item);
+    });
+  },
+};

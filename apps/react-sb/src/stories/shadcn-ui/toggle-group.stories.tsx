@@ -1,8 +1,10 @@
-// Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Bold, Italic, Underline } from "lucide-react";
 
-import { ToggleGroup, ToggleGroupItem } from "@forthtilliath/shadcn-ui/components/toggle-group";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@forthtilliath/shadcn-ui/components/toggle-group";
 
 /**
  * A set of two-state buttons that can be toggled on or off.

@@ -1,4 +1,3 @@
-// import { userEvent } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -176,20 +175,20 @@ export const Footer: Story = {
   ),
 };
 
-// export const ShouldCloseOpen: Story = {
-//   ...Simple,
-//   name: "when clicking the trigger, should close and open the sidebar",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     const sidebarBtn = await canvas.findByRole("button", {
-//       name: /toggle/i,
-//     });
-//     await step("close the sidebar", async () => {
-//       await userEvent.click(sidebarBtn);
-//     });
+export const ShouldCloseOpen: Story = {
+  ...Simple,
+  name: "when clicking the trigger, should close and open the sidebar",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    const sidebarBtn = await canvas.findByRole("button", {
+      name: /toggle/i,
+    });
+    await step("close the sidebar", async () => {
+      await userEvent.click(sidebarBtn);
+    });
 
-//     await step("reopen the sidebar", async () => {
-//       await userEvent.click(sidebarBtn);
-//     });
-//   },
-// };
+    await step("reopen the sidebar", async () => {
+      await userEvent.click(sidebarBtn);
+    });
+  },
+};

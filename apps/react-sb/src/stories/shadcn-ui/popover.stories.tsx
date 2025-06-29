@@ -1,4 +1,3 @@
-// Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -6,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@forthtilliath/shadcn-ui/components/popover";
-// import { expect, userEvent, within } from "storybook/test";
+import { expect, within } from "storybook/test";
 
 /**
  * Displays rich content in a portal, triggered by a button.
@@ -37,27 +36,27 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
-// export const ShouldOpenClose: Story = {
-//   name: "when clicking the trigger, should open and close the popover",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement, step }) => {
-//     const canvasBody = within(canvasElement.ownerDocument.body);
+export const ShouldOpenClose: Story = {
+  name: "when clicking the trigger, should open and close the popover",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement, step, userEvent }) => {
+    const canvasBody = within(canvasElement.ownerDocument.body);
 
-//     await step("click the trigger to open the popover", async () => {
-//       await userEvent.click(
-//         await canvasBody.findByRole("button", { name: /open/i }),
-//       );
-//       expect(await canvasBody.findByRole("dialog")).toBeInTheDocument();
-//     });
+    await step("click the trigger to open the popover", async () => {
+      await userEvent.click(
+        await canvasBody.findByRole("button", { name: /open/i })
+      );
+      await expect(await canvasBody.findByRole("dialog")).toBeInTheDocument();
+    });
 
-//     await step("click the trigger to close the popover", async () => {
-//       await userEvent.click(
-//         await canvasBody.findByRole("button", { name: /open/i }),
-//       );
-//       expect(await canvasBody.findByRole("dialog")).toHaveAttribute(
-//         "data-state",
-//         "closed",
-//       );
-//     });
-//   },
-// };
+    await step("click the trigger to close the popover", async () => {
+      await userEvent.click(
+        await canvasBody.findByRole("button", { name: /open/i })
+      );
+      await expect(await canvasBody.findByRole("dialog")).toHaveAttribute(
+        "data-state",
+        "closed"
+      );
+    });
+  },
+};

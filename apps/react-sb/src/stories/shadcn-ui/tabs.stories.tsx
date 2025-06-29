@@ -1,4 +1,4 @@
-// import { expect, userEvent, waitFor } from "storybook/test";
+import { expect, waitFor } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -47,33 +47,36 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
-// export const ShouldChangeTabs: Story = {
-//   name: "when clicking a tab, should change the content",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     const tabs = await canvas.findAllByRole("tab");
+export const ShouldChangeTabs: Story = {
+  name: "when clicking a tab, should change the content",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    const tabs = await canvas.findAllByRole("tab");
 
-//     for (let i = 0; i < tabs.length; i++) {
-//       await step(`click the '${tabs[i].innerText}' tab`, async () => {
-//         await userEvent.click(tabs[i]);
-//         await waitFor(() =>
-//           expect(tabs[i]).toHaveAttribute("aria-selected", "true"),
-//         );
-//         await expect(
-//           await canvas.queryByRole("tabpanel", { name: tabs[i].innerText }),
-//         ).toBeVisible();
-//       });
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
+      if (!tab) continue;
+      await step(`click the '${tab.innerText}' tab`, async () => {
+        await userEvent.click(tab);
+        await waitFor(() =>
+          expect(tab).toHaveAttribute("aria-selected", "true")
+        );
+        await expect(
+          canvas.queryByRole("tabpanel", { name: tab.innerText })
+        ).toBeVisible();
+      });
 
-//       await step("check other tabs are not selected", async () => {
-//         for (let j = 0; j < tabs.length; j++) {
-//           if (j !== i) {
-//             expect(tabs[j]).toHaveAttribute("aria-selected", "false");
-//             expect(
-//               await canvas.queryByRole("tabpanel", { name: tabs[j].innerText }),
-//             ).toBeNull();
-//           }
-//         }
-//       });
-//     }
-//   },
-// };
+      await step("check other tabs are not selected", async () => {
+        for (let j = 0; j < tabs.length; j++) {
+          const tab = tabs[j];
+          if (j !== i && tab) {
+            await expect(tab).toHaveAttribute("aria-selected", "false");
+            await expect(
+              canvas.queryByRole("tabpanel", { name: tab.innerText })
+            ).toBeNull();
+          }
+        }
+      });
+    }
+  },
+};

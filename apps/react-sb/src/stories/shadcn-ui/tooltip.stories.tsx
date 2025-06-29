@@ -1,4 +1,3 @@
-// Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Plus } from "lucide-react";
 
@@ -8,7 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@forthtilliath/shadcn-ui/components/tooltip";
-// import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 
 /**
  * A popup that displays information related to an element when the element
@@ -85,33 +84,33 @@ export const Right: Story = {
   },
 };
 
-// export const ShouldShowOnHover: Story = {
-//   name: "when hovering over trigger, should show hover tooltip content",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement, step }) => {
-//     const canvasBody = within(canvasElement.ownerDocument.body);
-//     const triggerBtn = await canvasBody.findByRole("button", { name: /add/i });
+export const ShouldShowOnHover: Story = {
+  name: "when hovering over trigger, should show hover tooltip content",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement, step, userEvent }) => {
+    const canvasBody = within(canvasElement.ownerDocument.body);
+    const triggerBtn = await canvasBody.findByRole("button", { name: /add/i });
 
-//     await step("hover over trigger", async () => {
-//       await userEvent.hover(triggerBtn);
-//       await waitFor(() =>
-//         expect(
-//           canvasElement.ownerDocument.body.querySelector(
-//             '[data-slot="tooltip-content"]',
-//           ),
-//         ).toBeVisible(),
-//       );
-//     });
+    await step("hover over trigger", async () => {
+      await userEvent.hover(triggerBtn);
+      await waitFor(() =>
+        expect(
+          canvasElement.ownerDocument.body.querySelector(
+            '[data-slot="tooltip-content"]'
+          )
+        ).toBeVisible()
+      );
+    });
 
-//     await step("unhover trigger", async () => {
-//       await userEvent.unhover(triggerBtn);
-//       await waitFor(() =>
-//         expect(
-//           canvasElement.ownerDocument.body.querySelector(
-//             '[data-slot="tooltip-content"]',
-//           ),
-//         ).not.toBeVisible(),
-//       );
-//     });
-//   },
-// };
+    await step("unhover trigger", async () => {
+      await userEvent.unhover(triggerBtn);
+      await waitFor(() =>
+        expect(
+          canvasElement.ownerDocument.body.querySelector(
+            '[data-slot="tooltip-content"]'
+          )
+        ).not.toBeVisible()
+      );
+    });
+  },
+};

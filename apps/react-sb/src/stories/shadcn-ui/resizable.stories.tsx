@@ -1,4 +1,3 @@
-// Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -6,7 +5,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@forthtilliath/shadcn-ui/components/resizable";
-// import { fn } from "storybook/test";
+import { fn } from "storybook/test";
+
 /**
  * Accessible resizable panel groups and layouts with keyboard support.
  */
@@ -20,7 +20,7 @@ const meta: Meta<typeof ResizablePanelGroup> = {
     },
   },
   args: {
-    // onLayout: fn(),
+    onLayout: fn(),
     className: "max-w-96 rounded-lg border",
     direction: "horizontal",
   },

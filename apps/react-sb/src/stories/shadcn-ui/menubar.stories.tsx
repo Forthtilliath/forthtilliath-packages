@@ -1,4 +1,3 @@
-// Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -18,7 +17,7 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@forthtilliath/shadcn-ui/components/menubar";
-// import { expect, userEvent, within } from "storybook/test";
+import { expect, within } from "storybook/test";
 
 /**
  * A visually persistent menu common in desktop applications that provides
@@ -127,24 +126,25 @@ export const WithCheckboxItems: Story = {
   ),
 };
 
-// export const ShouldOpenClose: Story = {
-//   name: "when clicking an item, should close the menubar",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement, step }) => {
-//     const canvasBody = within(canvasElement.ownerDocument.body);
+export const ShouldOpenClose: Story = {
+  name: "when clicking an item, should close the menubar",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement, step, userEvent }) => {
+    const canvasBody = within(canvasElement.ownerDocument.body);
 
-//     await step("open the menubar", async () => {
-//       await userEvent.click(
-//         await canvasBody.findByRole("menuitem", { name: /file/i }),
-//       );
-//       expect(await canvasBody.findByRole("menu")).toBeInTheDocument();
-//     });
+    await step("open the menubar", async () => {
+      await userEvent.click(
+        await canvasBody.findByRole("menuitem", { name: /file/i })
+      );
+      await expect(await canvasBody.findByRole("menu")).toBeInTheDocument();
+    });
 
-//     const items = await canvasBody.findAllByRole("menuitem");
-//     expect(items).toHaveLength(5);
+    const items = await canvasBody.findAllByRole("menuitem");
+    await expect(items).toHaveLength(5);
 
-//     await step("click the first item to close the menubar", async () => {
-//       await userEvent.click(items[0], { delay: 100 });
-//     });
-//   },
-// };
+    await step("click the first item to close the menubar", async () => {
+      const item = items[0];
+      if (item) await userEvent.click(item);
+    });
+  },
+};
