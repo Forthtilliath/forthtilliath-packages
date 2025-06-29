@@ -4,7 +4,7 @@ import { addDays } from "date-fns";
 import { fn } from "storybook/test";
 
 import { Calendar } from "@forthtilliath/shadcn-ui/components/calendar";
-// import { expect, userEvent } from "storybook/test";
+import { expect } from "storybook/test";
 
 /**
  * A date field component that allows users to enter and edit date.
@@ -87,33 +87,29 @@ export const MonthAndYearSelector: Story = {
   },
 };
 
-// export const ShouldChangeMonths: Story = {
-//   name: "when using the calendar navigation, should change months",
-//   tags: ["!dev", "!autodocs"],
-//   args: {
-//     defaultMonth: new Date(2000, 8),
-//   },
-//   play: async ({ canvas }) => {
-//     const title = await canvas.findByText(/2000/i);
-//     const startTitle = title.textContent || "";
-//     const backBtn = await canvas.findByRole("button", {
-//       name: /previous/i,
-//     });
-//     const nextBtn = await canvas.findByRole("button", {
-//       name: /next/i,
-//     });
-//     const steps = 6;
-//     for (let i = 0; i < steps / 2; i++) {
-//       await userEvent.click(backBtn);
-//       expect(title).not.toHaveTextContent(startTitle);
-//     }
-//     for (let i = 0; i < steps; i++) {
-//       await userEvent.click(nextBtn);
-//       if (i == steps / 2 - 1) {
-//         expect(title).toHaveTextContent(startTitle);
-//         continue;
-//       }
-//       expect(title).not.toHaveTextContent(startTitle);
-//     }
-//   },
-// };
+export const ShouldChangeMonths: Story = {
+  name: "when using the calendar navigation, should change months",
+  tags: ["dev", "!autodocs"],
+  args: {
+    defaultMonth: new Date(2025, 8),
+  },
+  play: async ({ canvas, userEvent }) => {
+    const title = await canvas.findByText(/2025/i);
+    const startTitle = title.textContent ?? "";
+    const backBtn = await canvas.findByRole("button", { name: /previous/i });
+    const nextBtn = await canvas.findByRole("button", { name: /next/i });
+    const steps = 6;
+    for (let i = 0; i < steps / 2; i++) {
+      await userEvent.click(backBtn);
+      await expect(title).not.toHaveTextContent(startTitle);
+    }
+    for (let i = 0; i < steps; i++) {
+      await userEvent.click(nextBtn);
+      if (i == steps / 2 - 1) {
+        await expect(title).toHaveTextContent(startTitle);
+        continue;
+      }
+      await expect(title).not.toHaveTextContent(startTitle);
+    }
+  },
+};

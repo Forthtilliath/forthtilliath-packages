@@ -7,7 +7,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@forthtilliath/shadcn-ui/components/collapsible";
-// import { expect, userEvent } from "storybook/test";
+import { expect } from "storybook/test";
 
 /**
  * An interactive component which expands/collapses a panel.
@@ -56,20 +56,20 @@ export const Disabled: Story = {
   },
 };
 
-// export const ShouldOpenClose: Story = {
-//   name: "when collapsable trigger is clicked, should show content",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     const trigger = await canvas.findByRole("button");
+export const ShouldOpenClose: Story = {
+  name: "when collapsable trigger is clicked, should show content",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    const trigger = await canvas.findByRole("button");
 
-//     await step("Open the collapsible", async () => {
-//       await userEvent.click(trigger, { delay: 100 });
-//       expect(await canvas.queryByText(/yes/i, { exact: true })).toBeVisible();
-//     });
+    await step("Open the collapsible", async () => {
+      await userEvent.click(trigger);
+      await expect(canvas.queryByText(/yes/i, { exact: true })).toBeVisible();
+    });
 
-//     await step("Close the collapsible", async () => {
-//       await userEvent.click(trigger, { delay: 100 });
-//       expect(await canvas.queryByText(/yes/i, { exact: true })).toBeNull();
-//     });
-//   },
-// };
+    await step("Close the collapsible", async () => {
+      await userEvent.click(trigger);
+      await expect(canvas.queryByText(/yes/i, { exact: true })).toBeNull();
+    });
+  },
+};

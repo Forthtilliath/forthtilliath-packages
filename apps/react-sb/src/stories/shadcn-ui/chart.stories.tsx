@@ -105,7 +105,7 @@ export const StackedAreaChart: Story = {
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) => (value as string).slice(0, 3)}
         />
         <ChartTooltip
           cursor={false}
@@ -148,7 +148,7 @@ export const StackedBarChart: Story = {
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) => (value as string).slice(0, 3)}
         />
         <ChartTooltip
           cursor={false}
@@ -184,7 +184,7 @@ export const MultiLineChart: Story = {
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) => (value as string).slice(0, 3)}
         />
         <ChartTooltip
           cursor={false}
@@ -253,7 +253,7 @@ export const DoughnutChart: Story = {
                       </tspan>
                       <tspan
                         x={viewBox.cx}
-                        y={(viewBox.cy || 0) + 24}
+                        y={(viewBox.cy ?? 0) + 24}
                         className="fill-muted-foreground"
                       >
                         Visitors

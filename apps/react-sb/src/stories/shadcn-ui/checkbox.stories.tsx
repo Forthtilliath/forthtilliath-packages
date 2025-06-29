@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Checkbox } from "@forthtilliath/shadcn-ui/components/checkbox";
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
-// import { expect, userEvent, within } from "storybook/test";
+import { expect } from "storybook/test";
 
 /**
  * A control that allows the user to toggle between checked and not checked.
@@ -47,17 +47,16 @@ export const Disabled: Story = {
   },
 };
 
-// export const ShouldToggleCheck: Story = {
-//   name: "when the checkbox is clicked, should toggle between checked and not checked",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement }) => {
-//     const canvas = within(canvasElement);
-//     const checkbox = await canvas.getByRole("checkbox");
-//     await userEvent.click(checkbox);
-//     expect(checkbox).toBeChecked();
-//     await userEvent.click(checkbox, { delay: 100 });
-//     expect(checkbox).not.toBeChecked();
-//     await userEvent.click(checkbox, { delay: 100 });
-//     expect(checkbox).toBeChecked();
-//   },
-// };
+export const ShouldToggleCheck: Story = {
+  name: "when the checkbox is clicked, should toggle between checked and not checked",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, userEvent }) => {
+    const checkbox = canvas.getByRole("checkbox");
+    await userEvent.click(checkbox);
+    await expect(checkbox).toBeChecked();
+    await userEvent.click(checkbox);
+    await expect(checkbox).not.toBeChecked();
+    await userEvent.click(checkbox);
+    await expect(checkbox).toBeChecked();
+  },
+};

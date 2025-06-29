@@ -1,4 +1,3 @@
-// import { expect, userEvent } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import {
@@ -8,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@forthtilliath/shadcn-ui/components/carousel";
+import { expect } from "storybook/test";
 
 /**
  * A carousel with motion and swipe built using Embla.
@@ -73,28 +73,70 @@ export const Size: Story = {
   },
 };
 
-// export const ShouldNavigate: Story = {
-//   name: "when clicking next/previous buttons, should navigate through slides",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     const slides = await canvas.findAllByRole("group");
-//     expect(slides).toHaveLength(5);
-//     const nextBtn = await canvas.findByRole("button", { name: /next/i });
-//     const prevBtn = await canvas.findByRole("button", {
-//       name: /previous/i,
-//     });
+export const ResponsiveSize: Story = {
+  render: (args) => (
+    <Carousel {...args} className="mx-12 w-full max-w-xs">
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <div className="bg-card flex aspect-square items-center justify-center rounded border p-6">
+              <span className="text-4xl font-semibold">{index + 1}</span>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  ),
+  args: {
+    className: "mx-12 w-full max-w-xs",
+  },
+};
 
-//     await step("navigate to the last slide", async () => {
-//       for (let i = 0; i < slides.length - 1; i++) {
-//         await userEvent.click(nextBtn);
-//       }
-//     });
+export const Orientation: Story = {
+  render: (args) => (
+    <Carousel {...args}>
+      <CarouselContent className="-mt-1 h-[200px]">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index} className="pt-1 md:basis-1/2">
+            <div className="bg-card flex aspect-square items-center justify-center rounded border p-12">
+              <span className="text-4xl font-semibold">{index + 1}</span>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  ),
+  args: {
+    className: "w-full max-w-xs",
+    orientation: "vertical",
+  },
+};
 
-//     await step("navigate back to the first slide", async () => {
-//       for (let i = slides.length - 1; i > 0; i--) {
-//         await userEvent.click(prevBtn);
-//       }
-//     });
-//   },
-// };
-// //
+export const ShouldNavigate: Story = {
+  name: "when clicking next/previous buttons, should navigate through slides",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    const slides = await canvas.findAllByRole("group");
+    await expect(slides).toHaveLength(5);
+    const nextBtn = await canvas.findByRole("button", { name: /next/i });
+    const prevBtn = await canvas.findByRole("button", {
+      name: /previous/i,
+    });
+
+    await step("navigate to the last slide", async () => {
+      for (let i = 0; i < slides.length - 1; i++) {
+        await userEvent.click(nextBtn);
+      }
+    });
+
+    await step("navigate back to the first slide", async () => {
+      for (let i = slides.length - 1; i > 0; i--) {
+        await userEvent.click(prevBtn);
+      }
+    });
+  },
+};
