@@ -7,6 +7,6 @@
     "access": "restricted"
   },
   "devDependencies": {
-    "eslint": "^9.27.0"
+    "eslint": "catalog:"
   }
 }
