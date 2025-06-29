@@ -1,5 +1,5 @@
 import { action } from "storybook/actions";
-// import { expect, userEvent } from "storybook/test";
+import { expect } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
@@ -82,50 +82,50 @@ const ProfileForm = (args: Story["args"]) => {
  */
 export const Default: Story = {};
 
-// export const ShouldSucceedOnSubmit: Story = {
-//   name: "when typing a valid username, should not show an error message",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     await step("Type a valid username", async () => {
-//       await userEvent.type(
-//         await canvas.findByRole("textbox", { name: /username/i }),
-//         "mockuser",
-//       );
-//     });
+export const ShouldSucceedOnSubmit: Story = {
+  name: "when typing a valid username, should not show an error message",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    await step("Type a valid username", async () => {
+      await userEvent.type(
+        await canvas.findByRole("textbox", { name: /username/i }),
+        "mockuser"
+      );
+    });
 
-//     await step("Click the submit button", async () => {
-//       await userEvent.click(
-//         await canvas.findByRole("button", { name: /submit/i }),
-//       );
-//       expect(
-//         await canvas.queryByText(/username must be at least 6 characters/i, {
-//           exact: true,
-//         }),
-//       ).toBeNull();
-//     });
-//   },
-// };
+    await step("Click the submit button", async () => {
+      await userEvent.click(
+        await canvas.findByRole("button", { name: /submit/i })
+      );
+      await expect(
+        canvas.queryByText(/username must be at least 6 characters/i, {
+          exact: true,
+        })
+      ).toBeNull();
+    });
+  },
+};
 
-// export const ShouldWarnOnSubmit: Story = {
-//   name: "when typing a short username, should show an error message",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvas, step }) => {
-//     await step("Type a short username", async () => {
-//       await userEvent.type(
-//         await canvas.findByRole("textbox", { name: /username/i }),
-//         "fail",
-//       );
-//     });
+export const ShouldWarnOnSubmit: Story = {
+  name: "when typing a short username, should show an error message",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvas, step, userEvent }) => {
+    await step("Type a short username", async () => {
+      await userEvent.type(
+        await canvas.findByRole("textbox", { name: /username/i }),
+        "fail"
+      );
+    });
 
-//     await step("Click the submit button", async () => {
-//       await userEvent.click(
-//         await canvas.findByRole("button", { name: /submit/i }),
-//       );
-//       expect(
-//         await canvas.queryByText(/username must be at least 6 characters/i, {
-//           exact: true,
-//         }),
-//       ).toBeVisible();
-//     });
-//   },
-// };
+    await step("Click the submit button", async () => {
+      await userEvent.click(
+        await canvas.findByRole("button", { name: /submit/i })
+      );
+      await expect(
+        canvas.queryByText(/username must be at least 6 characters/i, {
+          exact: true,
+        })
+      ).toBeVisible();
+    });
+  },
+};
