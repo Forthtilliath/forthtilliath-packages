@@ -13,7 +13,7 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-		"eslint": "catalog:",
+    "eslint": "catalog:",
     "typescript": "catalog:"
   }
 }

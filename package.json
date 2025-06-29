@@ -7,11 +7,13 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "publish-packages": "turbo run build lint && changeset version && changeset publish",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "update": "taze -r"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.5",
     "prettier": "^3.6.2",
+    "taze": "^19.1.0",
     "tsup": "^8.5.0",
     "turbo": "^2.5.4",
     "typescript": "catalog:"

@@ -12,7 +12,7 @@
 		"dev": "tsc --watch",
 		"build": "tsc",
 		"check-types": "tsc --noEmit",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
 		"@forthtilliath/eslint-config": "workspace:*",
