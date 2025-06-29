@@ -1,3 +1,3 @@
 import storybookConfig from "./src/storybook.js";
 
-export default [...storybookConfig];
+export default storybookConfig;
