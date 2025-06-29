@@ -1,8 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { action } from "@storybook/addon-actions";
 // import { expect, userEvent } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react";
-import { useForm } from "react-hook-form";
+import {
+  useForm,
+  zodResolver,
+} from "@forthtilliath/shadcn-ui/lib/react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
@@ -49,6 +51,7 @@ const ProfileForm = (args: Story["args"]) => {
   }
   return (
     <Form {...args} {...form}>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
