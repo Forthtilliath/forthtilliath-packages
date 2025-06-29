@@ -15,6 +15,21 @@ const meta = {
     children: {
       control: "text",
     },
+    variant: {
+      control: { type: "select" },
+      options: [
+        "default",
+        "outline",
+        "ghost",
+        "secondary",
+        "destructive",
+        "link",
+      ],
+    },
+    size: {
+      control: { type: "select" },
+      options: ["default", "sm", "lg", "icon"],
+    },
   },
   parameters: {
     layout: "centered",

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { AspectRatio } from "@forthtilliath/shadcn-ui/components/aspect-ratio";
 
 const meta: Meta<typeof AspectRatio> = {
@@ -7,11 +6,11 @@ const meta: Meta<typeof AspectRatio> = {
   component: AspectRatio,
   argTypes: {},
   render: (args) => (
-    <AspectRatio {...args} className="bg-slate-50 dark:bg-slate-800">
+    <AspectRatio {...args} className="bg-slate-50 dark:bg-slate-800 border">
       <img
         src="https://images.unsplash.com/photo-1576075796033-848c2a5f3696?w=800&dpr=2&q=80"
         alt="Photo by Alvaro Pinot"
-        className="rounded-md object-cover"
+        className="rounded-md object-cover size-full"
       />
     </AspectRatio>
   ),

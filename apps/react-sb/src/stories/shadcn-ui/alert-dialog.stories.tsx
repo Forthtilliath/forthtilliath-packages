@@ -11,7 +11,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@forthtilliath/shadcn-ui/components/alert-dialog";
-// import { userEvent, within } from "storybook/test";
+import { within } from "storybook/internal/test";
+import { Button } from "@forthtilliath/shadcn-ui/components/button";
 
 const meta = {
   title: "shadcn-ui/AlertDialog",
@@ -19,7 +20,9 @@ const meta = {
   argTypes: {},
   render: (args) => (
     <AlertDialog {...args}>
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
+      <AlertDialogTrigger>
+        <Button variant="outline">Show Dialog</Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
@@ -46,27 +49,20 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-// export const ShouldOpenClose: Story = {
-//   name: "when alert dialog trigger is pressed, should open the dialog and be able to close it",
-//   tags: ["!dev", "!autodocs"],
-//   play: async ({ canvasElement, canvas, step }) => {
-//     const canvasBody = within(canvasElement.ownerDocument.body);
+export const ShouldOpenClose: Story = {
+  name: "when alert dialog trigger is pressed, should open the dialog and be able to close it",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ userEvent, canvas, step, canvasElement }) => {
+    const canvasBody = within(canvasElement.ownerDocument.body);
 
-//     await step("open the alert dialog", async () => {
-//       await userEvent.click(
-//         await canvas.getByRole("button", {
-//           name: /open/i,
-//         }),
-//       );
-//     });
+    await step("open the alert dialog", async () => {
+      await userEvent.click(canvas.getByRole("button", { name: /open/i }));
+    });
 
-//     await step("close the alert dialog", async () => {
-//       await userEvent.click(
-//         await canvasBody.getByRole("button", {
-//           name: /cancel/i,
-//         }),
-//         { delay: 100 },
-//       );
-//     });
-//   },
-// };
+    await step("close the alert dialog", async () => {
+      await userEvent.click(
+        canvasBody.getByRole("button", { name: /cancel/i })
+      );
+    });
+  },
+};

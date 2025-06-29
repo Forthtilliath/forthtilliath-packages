@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { AlertCircle } from "lucide-react";
+import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 
-import { Alert, AlertDescription, AlertTitle } from "@forthtilliath/shadcn-ui/components/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@forthtilliath/shadcn-ui/components/alert";
 
 const meta = {
   title: "shadcn-ui/Alert",
@@ -17,9 +21,10 @@ const meta = {
   },
   render: (args) => (
     <Alert {...args}>
-      <AlertTitle>Heads up!</AlertTitle>
+      <CheckCircle2Icon />
+      <AlertTitle>Success! Your changes have been saved</AlertTitle>
       <AlertDescription>
-        You can add components to your app using the cli.
+        This is an alert with icon, title and description.
       </AlertDescription>
     </Alert>
   ),
@@ -31,13 +36,29 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const NoDescription: Story = {
+  render: (args) => (
+    <Alert {...args}>
+      <PopcornIcon />
+      <AlertTitle>
+        This Alert has a title and an icon. No description.
+      </AlertTitle>
+    </Alert>
+  ),
+};
+
 export const Destructive: Story = {
   render: (args) => (
     <Alert {...args}>
-      <AlertCircle className="h-4 w-4" />
-      <AlertTitle>Error</AlertTitle>
+      <AlertCircleIcon />
+      <AlertTitle>Unable to process your payment.</AlertTitle>
       <AlertDescription>
-        Your session has expired. Please log in again.
+        <p>Please verify your billing information and try again.</p>
+        <ul className="list-inside list-disc text-sm">
+          <li>Check your card details</li>
+          <li>Ensure sufficient funds</li>
+          <li>Verify billing address</li>
+        </ul>
       </AlertDescription>
     </Alert>
   ),

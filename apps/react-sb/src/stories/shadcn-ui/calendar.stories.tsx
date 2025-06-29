@@ -1,6 +1,7 @@
 // import { withActions } from "@storybook/addon-actions/decorator";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { addDays } from "date-fns";
+import { fn } from "storybook/test";
 
 import { Calendar } from "@forthtilliath/shadcn-ui/components/calendar";
 // import { expect, userEvent } from "storybook/test";
@@ -12,13 +13,11 @@ const meta = {
   title: "shadcn-ui/Calendar",
   component: Calendar,
   tags: ["autodocs"],
-  argTypes: {
-    onSelect: { action: "onDayClick" },
-  },
   args: {
     mode: "single",
     selected: new Date(),
     className: "rounded-md border w-fit",
+    onSelect: fn(),
   },
   parameters: {
     layout: "centered",
@@ -79,6 +78,12 @@ export const MultipleMonths: Story = {
   args: {
     numberOfMonths: 2,
     showOutsideDays: false,
+  },
+};
+
+export const MonthAndYearSelector: Story = {
+  args: {
+    captionLayout: "dropdown",
   },
 };
 

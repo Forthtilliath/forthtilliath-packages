@@ -2,6 +2,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Badge } from "@forthtilliath/shadcn-ui/components/badge";
+import { BadgeCheckIcon } from "lucide-react";
 
 /**
  * Displays a badge or a component that looks like a badge.
@@ -59,5 +60,17 @@ export const Destructive: Story = {
 export const Outline: Story = {
   args: {
     variant: "outline",
+  },
+};
+export const WithIcon: Story = {
+  args: {
+    variant: "secondary",
+    className: "bg-blue-500 text-white dark:bg-blue-600",
+    children: (
+      <>
+        <BadgeCheckIcon />
+        Verified
+      </>
+    ),
   },
 };
