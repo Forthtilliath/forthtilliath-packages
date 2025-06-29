@@ -1,5 +1,5 @@
 // import { expect, userEvent, waitFor } from "storybook/test";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
 import {

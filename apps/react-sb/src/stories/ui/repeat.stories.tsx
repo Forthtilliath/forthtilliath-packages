@@ -1,5 +1,5 @@
 import { Repeat, type RepeatProps } from "@forthtilliath/react-ui/repeat";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof Repeat> = {
   title: "Ui/Repeat",

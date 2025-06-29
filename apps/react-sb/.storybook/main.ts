@@ -15,13 +15,6 @@ const config: StorybookConfig = {
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
   "addons": [
-    {
-      "name": getAbsolutePath('@storybook/addon-essentials'),
-      "options": {
-        "docs": false
-      }
-    },
-    getAbsolutePath('@storybook/addon-interactions'),
     getAbsolutePath('@storybook/addon-docs'),
   ],
   "framework": {

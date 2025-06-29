@@ -1,5 +1,5 @@
 // Replace nextjs-vite with the name of your framework
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Checkbox } from "@forthtilliath/shadcn-ui/components/checkbox";
 import { Label } from "@forthtilliath/shadcn-ui/components/label";

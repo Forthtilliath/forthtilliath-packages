@@ -1,5 +1,5 @@
 // Replace nextjs-vite with the name of your framework
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Loader2, Mail } from "lucide-react";
 
 import { Button } from "@forthtilliath/shadcn-ui/components/button";

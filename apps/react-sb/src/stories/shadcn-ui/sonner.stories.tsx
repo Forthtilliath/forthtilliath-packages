@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions";
 // import { expect, userEvent, waitFor, within } from "storybook/test";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import { Toaster } from "@forthtilliath/shadcn-ui/components/sonner";

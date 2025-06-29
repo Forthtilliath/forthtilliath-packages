@@ -1,5 +1,5 @@
 // Replace nextjs-vite with the name of your framework
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Bold, Italic } from "lucide-react";
 
 import { Toggle } from "@forthtilliath/shadcn-ui/components/toggle";

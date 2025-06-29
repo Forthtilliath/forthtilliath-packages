@@ -1,5 +1,5 @@
 // import { expect, fn, userEvent } from "storybook/test";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   REGEXP_ONLY_DIGITS,
   REGEXP_ONLY_DIGITS_AND_CHARS,

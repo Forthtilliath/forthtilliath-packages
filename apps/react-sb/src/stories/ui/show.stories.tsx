@@ -1,5 +1,5 @@
 import { Show, type ShowProps } from "@forthtilliath/react-ui/show";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof Show> = {
   title: "Ui/Show",
