@@ -5,21 +5,7 @@ import z from "zod/v4";
 
 import { Field } from "@forthtilliath/shadcn-ui/components/blocks/field";
 import { Form } from "@forthtilliath/shadcn-ui/components/blocks/form";
-
-/**
- * Building forms with React Hook Form and Zod.
- */
-const meta: Meta<typeof Form> = {
-  title: "shadcn-ui-derived/Field",
-  component: Form,
-  tags: ["autodocs"],
-  argTypes: {},
-  render: (args) => <ProfileForm {...args} />,
-} satisfies Meta<typeof Form>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
+import { Button } from "@forthtilliath/shadcn-ui/components/button";
 
 const formSchema = z.object({
   username: z.string().min(6, {
@@ -27,30 +13,47 @@ const formSchema = z.object({
   }),
 });
 
-const ProfileForm = (args: Story["args"]) => {
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    action("onSubmit")(values);
-  }
-  return (
-    <Form
-      {...args}
-      defaultValues={{
-        username: "",
-      }}
-      schema={formSchema}
-      onSubmit={onSubmit}
-      className="space-y-8"
-    >
-      {({ register }) => (
-        <Field
-          label="Username"
-          description="This is your public display name."
-          {...register("username")}
-        />
-      )}
-    </Form>
-  );
+/**
+ * Building forms with React Hook Form and Zod.
+ */
+const meta: Meta<typeof Field> = {
+  title: "shadcn-ui-derived/Field",
+  tags: ["autodocs"],
+  component: Field,
+  argTypes: {},
+  args: {
+    label: "Username",
+    description: "This is your public display name.",
+    //! Even if decorators send it, i have to use it for testing
+    name: "username",
+  },
+  decorators: [
+    (Story) => {
+      function onSubmit(values: z.infer<typeof formSchema>) {
+        action("onSubmit")(values);
+      }
+      return (
+        <Form
+          defaultValues={{ username: "" }}
+          schema={formSchema}
+          onSubmit={onSubmit}
+          className="space-y-8"
+        >
+          {({ register }) => (
+            <>
+              <Story {...register("username")} />
+              <Button type="submit">Submit</Button>
+            </>
+          )}
+        </Form>
+      );
+    },
+  ],
 };
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 /**
  * The default form of the form.

@@ -8,6 +8,9 @@ import {
   AccordionTrigger,
 } from "@forthtilliath/shadcn-ui/components/accordion";
 
+/**
+ * A vertically stacked set of interactive headings that each reveal a section of content.
+ */
 const meta = {
   title: "shadcn-ui/Accordion",
   component: Accordion,

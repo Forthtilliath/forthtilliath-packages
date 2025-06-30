@@ -1,14 +1,15 @@
-import { Form as ShadForm } from "../form";
 import {
   type DefaultValues,
   type FieldValues,
   useForm,
   type UseFormRegister,
 } from "react-hook-form";
-import type { z } from "zod/v4";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import type { z } from "zod/v4";
 
-type Props<TFieldValues extends FieldValues> = {
+import { Form as ShadForm } from "@forthtilliath/shadcn-ui/components/form";
+
+interface Props<TFieldValues extends FieldValues> {
   schema: z.ZodType<TFieldValues>;
   defaultValues?: DefaultValues<TFieldValues>;
   onSubmit: (data: TFieldValues) => void;
@@ -18,7 +19,7 @@ type Props<TFieldValues extends FieldValues> = {
   }: {
     register: UseFormRegister<TFieldValues>;
   }) => React.ReactNode;
-};
+}
 
 export function Form<TFieldValues extends FieldValues>({
   children,
@@ -36,6 +37,7 @@ export function Form<TFieldValues extends FieldValues>({
 
   return (
     <ShadForm {...form}>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={handleSubmit(onSubmit)} className={className}>
         {children({ register })}
       </form>

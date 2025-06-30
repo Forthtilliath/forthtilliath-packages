@@ -1,4 +1,6 @@
 import { type ReactNode } from "react";
+import type { FieldValues, Path, UseFormRegisterReturn } from "react-hook-form";
+
 import {
   FormControl,
   FormDescription,
@@ -6,12 +8,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../form";
-import type {
-  FieldValues,
-  Path,
-  UseFormRegisterReturn,
-} from "react-hook-form";
+} from "@forthtilliath/shadcn-ui/components/form";
 
 type Props<TFieldValues extends FieldValues> = {
   label?: ReactNode | undefined;
