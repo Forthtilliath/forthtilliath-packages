@@ -1,5 +1,5 @@
-import { expect } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
 import { Switch } from "@forthtilliath/shadcn-ui/components/switch";

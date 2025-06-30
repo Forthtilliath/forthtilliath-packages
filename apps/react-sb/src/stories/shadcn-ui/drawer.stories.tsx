@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, within } from "storybook/test";
 
 import {
   Drawer,
@@ -10,7 +11,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@forthtilliath/shadcn-ui/components/drawer";
-import { expect, fn, within } from "storybook/test";
 
 /**
  * A drawer component for React.

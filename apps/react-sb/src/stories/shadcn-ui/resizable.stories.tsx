@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@forthtilliath/shadcn-ui/components/resizable";
-import { fn } from "storybook/test";
 
 /**
  * Accessible resizable panel groups and layouts with keyboard support.

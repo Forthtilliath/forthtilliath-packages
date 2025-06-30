@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { within } from "storybook/internal/test";
 
 import {
   AlertDialog,
@@ -11,7 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@forthtilliath/shadcn-ui/components/alert-dialog";
-import { within } from "storybook/internal/test";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 
 const meta = {

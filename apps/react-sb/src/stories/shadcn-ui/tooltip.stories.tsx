@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Plus } from "lucide-react";
+import { expect, waitFor, within } from "storybook/test";
 
 import {
   Tooltip,
@@ -7,7 +8,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@forthtilliath/shadcn-ui/components/tooltip";
-import { expect, waitFor, within } from "storybook/test";
 
 /**
  * A popup that displays information related to an element when the element

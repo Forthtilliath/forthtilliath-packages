@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 
 import {
   Sheet,
@@ -10,7 +11,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@forthtilliath/shadcn-ui/components/sheet";
-import { expect, within } from "storybook/test";
 
 /**
  * Extends the Dialog component to display content that complements the main

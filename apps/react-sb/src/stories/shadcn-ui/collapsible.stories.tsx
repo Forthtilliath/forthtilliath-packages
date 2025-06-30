@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Info } from "lucide-react";
+import { expect } from "storybook/test";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@forthtilliath/shadcn-ui/components/collapsible";
-import { expect } from "storybook/test";
 
 /**
  * An interactive component which expands/collapses a panel.

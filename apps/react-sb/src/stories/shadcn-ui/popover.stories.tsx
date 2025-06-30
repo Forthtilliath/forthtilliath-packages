@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@forthtilliath/shadcn-ui/components/popover";
-import { expect, within } from "storybook/test";
 
 /**
  * Displays rich content in a portal, triggered by a button.

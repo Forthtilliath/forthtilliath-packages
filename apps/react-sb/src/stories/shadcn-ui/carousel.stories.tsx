@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import {
   Carousel,
@@ -7,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@forthtilliath/shadcn-ui/components/carousel";
-import { expect } from "storybook/test";
 
 /**
  * A carousel with motion and swipe built using Embla.

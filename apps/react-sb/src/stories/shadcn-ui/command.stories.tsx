@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import {
   Command,
@@ -9,7 +10,6 @@ import {
   CommandList,
   CommandSeparator,
 } from "@forthtilliath/shadcn-ui/components/command";
-import { expect } from "storybook/test";
 
 /**
  * Fast, composable, unstyled command menu for React.

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { BadgeCheckIcon } from "lucide-react";
 
 import { Badge } from "@forthtilliath/shadcn-ui/components/badge";
-import { BadgeCheckIcon } from "lucide-react";
 
 /**
  * Displays a badge or a component that looks like a badge.

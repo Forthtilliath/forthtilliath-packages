@@ -1,5 +1,12 @@
 import { useMemo } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@forthtilliath/shadcn-ui/components/chart";
 import {
   Area,
   AreaChart,
@@ -13,13 +20,6 @@ import {
   PieChart,
   XAxis,
 } from "@forthtilliath/shadcn-ui/lib/recharts";
-
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@forthtilliath/shadcn-ui/components/chart";
 
 const multiSeriesData = [
   { month: "January", desktop: 186, mobile: 80 },

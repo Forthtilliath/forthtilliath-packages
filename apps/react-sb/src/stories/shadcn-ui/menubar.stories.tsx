@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 
 import {
   Menubar,
@@ -17,7 +18,6 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@forthtilliath/shadcn-ui/components/menubar";
-import { expect, within } from "storybook/test";
 
 /**
  * A visually persistent menu common in desktop applications that provides

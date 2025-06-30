@@ -1,10 +1,9 @@
-// import { withActions } from "@storybook/addon-actions/decorator";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { addDays } from "date-fns";
 import { fn } from "storybook/test";
+import { expect } from "storybook/test";
 
 import { Calendar } from "@forthtilliath/shadcn-ui/components/calendar";
-import { expect } from "storybook/test";
 
 /**
  * A date field component that allows users to enter and edit date.

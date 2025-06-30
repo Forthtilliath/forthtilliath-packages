@@ -1,15 +1,16 @@
-import { expect, fn } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  REGEXP_ONLY_DIGITS,
-  REGEXP_ONLY_DIGITS_AND_CHARS,
-} from "@forthtilliath/shadcn-ui/lib/input-otp";
+import { expect, fn } from "storybook/test";
+
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@forthtilliath/shadcn-ui/components/input-otp";
+import {
+  REGEXP_ONLY_DIGITS,
+  REGEXP_ONLY_DIGITS_AND_CHARS,
+} from "@forthtilliath/shadcn-ui/lib/input-otp";
 
 /**
  * Accessible one-time password component with copy paste functionality.

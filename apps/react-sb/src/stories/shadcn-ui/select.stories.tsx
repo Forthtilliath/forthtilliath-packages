@@ -1,5 +1,5 @@
-import { expect, fn, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, within } from "storybook/test";
 
 import {
   Select,

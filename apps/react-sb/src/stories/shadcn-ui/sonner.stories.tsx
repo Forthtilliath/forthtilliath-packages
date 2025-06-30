@@ -1,9 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { action } from "storybook/actions";
 import { expect, waitFor, within } from "storybook/test";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
+
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import { Toaster } from "@forthtilliath/shadcn-ui/components/sonner";
+import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
 
 /**
  * An opinionated toast component for React.

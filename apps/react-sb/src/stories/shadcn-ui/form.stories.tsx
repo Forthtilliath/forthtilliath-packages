@@ -1,10 +1,6 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { action } from "storybook/actions";
 import { expect } from "storybook/test";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  useForm,
-  zodResolver,
-} from "@forthtilliath/shadcn-ui/lib/react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
@@ -17,6 +13,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@forthtilliath/shadcn-ui/components/form";
+import {
+  useForm,
+  zodResolver,
+} from "@forthtilliath/shadcn-ui/lib/react-hook-form";
 
 /**
  * Building forms with React Hook Form and Zod.

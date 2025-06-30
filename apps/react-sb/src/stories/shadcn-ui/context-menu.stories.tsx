@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 
 import {
   ContextMenu,
@@ -15,7 +16,6 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@forthtilliath/shadcn-ui/components/context-menu";
-import { expect, within } from "storybook/test";
 
 /**
  * Displays a menu to the user — such as a set of actions or functions —

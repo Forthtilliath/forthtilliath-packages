@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import { Checkbox } from "@forthtilliath/shadcn-ui/components/checkbox";
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
-import { expect } from "storybook/test";
 
 /**
  * A control that allows the user to toggle between checked and not checked.
