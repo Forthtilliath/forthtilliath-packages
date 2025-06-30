@@ -3,8 +3,8 @@ import { action } from "storybook/actions";
 import { expect } from "storybook/test";
 import z from "zod/v4";
 
+import { Form } from "@forthtilliath/shadcn-ui/components/blocks/form";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
-import { Form } from "@forthtilliath/shadcn-ui/components/derived/form";
 import {
   FormControl,
   FormDescription,
