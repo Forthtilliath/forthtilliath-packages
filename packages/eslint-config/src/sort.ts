@@ -21,7 +21,7 @@ export const sortConfig = {
           ["^react", "^@?\\w"],
           // Internal packages.
           ["^(@forthtilliath)(/.*|$)"],
-          ["^(@|@company|@ui|components|utils|config|vendored-lib)(/.*|$)"],
+          ["^(@|@ui|components|utils|config)(/.*|$)"],
           // Side effect imports.
           ["^\\u0000"],
           // Parent imports. Put `..` last.
