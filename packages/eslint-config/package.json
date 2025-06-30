@@ -15,7 +15,7 @@
 		"@forthtilliath/typescript-config": "workspace:*",
 		"@stylistic/eslint-plugin-js": "^4.4.1",
 		"@stylistic/eslint-plugin-ts": "^4.4.1",
-		"@typescript-eslint/parser": "^8.35.0",
+		"@typescript-eslint/parser": "^8.35.1",
 		"eslint": "catalog:",
 		"eslint-config-prettier": "^10.1.5",
 		"eslint-plugin-import-x": "^4.16.1",
@@ -30,7 +30,7 @@
 		"globals": "^16.2.0",
 		"jiti": "^2.4.2",
 		"typescript": "catalog:",
-		"typescript-eslint": "^8.35.0",
+		"typescript-eslint": "^8.35.1",
 		"vue-eslint-parser": "^10.1.4"
 	}
 }

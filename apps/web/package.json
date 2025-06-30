@@ -12,9 +12,10 @@
   },
   "dependencies": {
     "@forthtilliath/react-ui": "workspace:*",
+    "@forthtilliath/shadcn-ui": "workspace:*",
     "next": "^15.3.4",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
