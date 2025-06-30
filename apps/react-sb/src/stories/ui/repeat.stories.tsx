@@ -1,5 +1,6 @@
-import { Repeat, type RepeatProps } from "@forthtilliath/react-ui/repeat";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { Repeat, type RepeatProps } from "@forthtilliath/react-ui/repeat";
 
 const meta: Meta<typeof Repeat> = {
   title: "Ui/Repeat",
@@ -12,9 +13,7 @@ const meta: Meta<typeof Repeat> = {
     count: { control: "range", options: [1, 2, 3, 5, 10] },
   },
   render: ({ count, children }: RepeatProps) => (
-    <Repeat count={count}>
-      {children}
-    </Repeat>
+    <Repeat count={count}>{children}</Repeat>
   ),
 };
 
@@ -24,16 +23,15 @@ type Story = StoryObj<typeof Repeat>;
 export const Default: Story = {
   args: {
     count: 3,
-    children: (
-      <p>Message statique répété plusieurs fois</p>
-    ),
+    children: <p>Message statique répété plusieurs fois</p>,
   },
 };
-
 
 export const WithCallback: Story = {
   args: {
     count: 3,
-    children: (i: number) => <p>Message dynamique répété plusieurs fois, index {i}</p>,
+    children: (i: number) => (
+      <p>Message dynamique répété plusieurs fois, index {i}</p>
+    ),
   },
 };
