@@ -1,23 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LampCeiling } from "lucide-react";
 
-import { Navbar01 } from "@forthtilliath/shadcn-ui/components/blocks/navbar-01";
+import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-01";
 
 /**
  * A simple navbar block
  */
-const meta: Meta<typeof Navbar01> = {
+const meta: Meta<typeof Navbar> = {
   title: "shadcn-ui-derived/Navbars/01",
-  component: Navbar01,
+  component: Navbar,
   tags: ["autodocs"],
   argTypes: {},
   args: {
     items: [
-      { id: 0, href: "#", label: "Home" },
-      { id: 1, href: "#", label: "About" },
-      { id: 2, href: "#", label: "Contact" },
+      { href: "#", label: "Home" },
+      { href: "#", label: "About" },
+      { href: "#", label: "Contact" },
     ],
-    render: ({ href, children }) => <a href={href}>{children}</a>,
+    render: ({ href, label }) => <a href={href}>{label}</a>,
   },
 };
 

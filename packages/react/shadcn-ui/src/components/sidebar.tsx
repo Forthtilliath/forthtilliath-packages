@@ -5,8 +5,6 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 
-import { useIsMobile } from "@forthtilliath/shadcn-ui/hooks/use-mobile";
-import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import { Input } from "@forthtilliath/shadcn-ui/components/input";
 import { Separator } from "@forthtilliath/shadcn-ui/components/separator";
@@ -24,6 +22,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@forthtilliath/shadcn-ui/components/tooltip";
+import { useIsMobile } from "@forthtilliath/shadcn-ui/hooks/use-mobile";
+import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -32,7 +32,7 @@ const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
-type SidebarContextProps = {
+interface SidebarContextProps {
   state: "expanded" | "collapsed";
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -40,7 +40,7 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
-};
+}
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
 
@@ -83,14 +83,18 @@ function SidebarProvider({
       }
 
       // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      document.cookie = `${SIDEBAR_COOKIE_NAME}=${String(openState)}; path=/; max-age=${String(SIDEBAR_COOKIE_MAX_AGE)}`;
     },
     [setOpenProp, open]
   );
 
   // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
-    return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
+    if (isMobile) {
+      setOpenMobile((open) => !open);
+      return;
+    }
+    setOpen((open) => !open);
   }, [isMobile, setOpen, setOpenMobile]);
 
   // Adds a keyboard shortcut to toggle the sidebar.
@@ -106,7 +110,9 @@ function SidebarProvider({
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [toggleSidebar]);
 
   // We add a state so that we can do data-state="expanded" or "collapsed".
@@ -608,7 +614,7 @@ function SidebarMenuSkeleton({
 }) {
   // Random width between 50 to 90%.
   const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
+    return `${String(Math.floor(Math.random() * 40) + 50)}%`;
   }, []);
 
   return (

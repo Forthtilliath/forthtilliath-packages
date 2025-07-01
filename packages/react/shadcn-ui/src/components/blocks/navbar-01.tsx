@@ -14,59 +14,53 @@ import {
   SheetTrigger,
 } from "@forthtilliath/shadcn-ui/components/sheet";
 
-interface RenderProps {
+interface Item {
   href: string;
-  children: React.ReactNode;
+  label: React.ReactNode;
 }
 interface Props {
   logo?: React.ReactNode;
-  render: ({ href, children }: RenderProps) => React.ReactNode;
-  items: {
-    id: string | number;
-    href: string;
-    label: string;
-  }[];
+  render: (item: Item) => React.ReactNode;
+  items: Item[];
 }
 
-export function Navbar01({ logo, render, items }: Props) {
+export function Navbar({ logo, render, items }: Props) {
   return (
-    <div className="min-h-screen bg-muted">
-      <nav className="h-16 bg-background border-b">
-        <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-          {logo}
+    <nav className="h-16 bg-background border-b">
+      <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        {logo}
 
-          {/* Desktop Menu */}
-          <NavMenu className="hidden md:block" render={render} items={items} />
+        {/* Desktop Menu */}
+        <NavMenu className="hidden md:block" render={render} items={items} />
 
-          <div className="flex items-center gap-3">
-            <Button variant="outline" className="hidden sm:inline-flex">
-              Sign In
-            </Button>
-            <Button>Get Started</Button>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="hidden sm:inline-flex">
+            Sign In
+          </Button>
+          <Button>Get Started</Button>
 
-            {/* Mobile Menu */}
-            <div className="md:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Menu />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  {logo}
-                  <NavMenu
-                    orientation="vertical"
-                    className="mt-12"
-                    render={render}
-                    items={items}
-                  />
-                </SheetContent>
-              </Sheet>
-            </div>
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                {logo}
+                <NavMenu
+                  orientation="vertical"
+                  className="mt-12"
+                  render={render}
+                  items={items}
+                />
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }
 
@@ -78,10 +72,10 @@ const NavMenu = ({ render, items, ...props }: NavMenuProps) => (
         <NavigationMenuLink asChild></NavigationMenuLink>
       </NavigationMenuItem>
 
-      {items.map((item) => (
-        <NavigationMenuItem key={item.id}>
+      {items.map((item, i) => (
+        <NavigationMenuItem key={i}>
           <NavigationMenuLink asChild>
-            {render({ href: item.href, children: item.label })}
+            {render({ href: item.href, label: item.label })}
           </NavigationMenuLink>
         </NavigationMenuItem>
       ))}
@@ -89,4 +83,4 @@ const NavMenu = ({ render, items, ...props }: NavMenuProps) => (
   </NavigationMenu>
 );
 
-export default Navbar01;
+export default Navbar;
