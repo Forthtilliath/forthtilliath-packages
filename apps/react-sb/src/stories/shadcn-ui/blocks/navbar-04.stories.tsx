@@ -7,7 +7,7 @@ import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-04";
  * A simple navbar block
  */
 const meta: Meta<typeof Navbar> = {
-  title: "shadcn-ui-derived/Navbars/Navbar 04",
+  title: "shadcn-ui-blocks/Navbars/Navbar 04",
   component: Navbar,
   tags: ["autodocs"],
   argTypes: {},

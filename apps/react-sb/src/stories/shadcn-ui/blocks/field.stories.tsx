@@ -17,7 +17,7 @@ const formSchema = z.object({
  * Building forms with React Hook Form and Zod.
  */
 const meta: Meta<typeof Field> = {
-  title: "shadcn-ui-derived/Field",
+  title: "shadcn-ui-blocks/Field",
   tags: ["autodocs"],
   component: Field,
   argTypes: {},
