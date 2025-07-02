@@ -14,6 +14,8 @@ import {
 } from "@forthtilliath/shadcn-ui/components/accordion";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+// https://www.shadcnui-blocks.com/components/accordion
+
 type AccordionVariantType =
   | "default"
   | "outline"
