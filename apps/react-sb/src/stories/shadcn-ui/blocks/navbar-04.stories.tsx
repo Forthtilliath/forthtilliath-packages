@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { LampCeiling } from "lucide-react";
+import { Layers3 } from "lucide-react";
 
 import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-04";
 
@@ -42,6 +42,6 @@ export const Default: Story = {};
  */
 export const Logo: Story = {
   args: {
-    logo: <LampCeiling size={32} />,
+    logo: <Layers3 size={32} />,
   },
 };
