@@ -38,7 +38,7 @@ export const Default: Story = {
   },
 };
 
-export const WithErrorImage: Story = {
+export const Fallback: Story = {
   args: {
     className: "size-24",
   },
