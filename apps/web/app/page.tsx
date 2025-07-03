@@ -54,8 +54,7 @@ export default function Home() {
           delay={0.2}
           duration={1.2}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias,
-          rem.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, rem.
         </TextAnimated>
 
         <TextAnimated
