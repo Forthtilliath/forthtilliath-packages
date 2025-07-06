@@ -21,6 +21,13 @@ https://shadcnstudio.com/theme-editor
 https://shuip.xyz/docs
 https://skiper-ui.com/docs/components/theme-toggle-animations
 https://github.com/jacksonkasi1/tnks-data-table
+https://www.kibo-ui.com/components/announcement
+
+// Animated Components
+https://berlix.vercel.app/
+
+// Drop drawer responsive 
+https://dropdrawer.jiawei.dev/
 
 Storybook
 https://github.com/itsjavi/glasscn-ui/blob/main/stories/alert.stories.tsx
