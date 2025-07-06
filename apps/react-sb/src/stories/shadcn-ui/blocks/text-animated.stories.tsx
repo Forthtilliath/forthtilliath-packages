@@ -2,9 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { TextAnimated } from "@forthtilliath/shadcn-ui/components/blocks/text-animated";
 
-/**
- * An image element with a fallback for representing the user.
- */
 const meta = {
   title: "shadcn-ui-blocks/TextAnimated",
   component: TextAnimated,
@@ -62,7 +59,7 @@ export const Scramble: Story = {
   args: {
     variant: "scramble",
     children: "Its over 9000!",
-    className: "font-mono text-2xl uppercase"
+    className: "font-mono text-7xl uppercase"
   },
 };
 
