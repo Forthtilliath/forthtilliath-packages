@@ -83,7 +83,7 @@ export const ShouldSelectOption: Story = {
     await step("open and select item", async () => {
       await userEvent.click(select);
       await userEvent.click(
-        await canvasBody.findByRole("option", { name: /banana/i })
+        await canvasBody.findByRole("option", { name: /banana/i }),
       );
       await expect(select).toHaveTextContent("Banana");
     });
@@ -91,10 +91,10 @@ export const ShouldSelectOption: Story = {
     await step("verify the selected option", async () => {
       await userEvent.click(select);
       await expect(
-        await canvasBody.findByRole("option", { name: /banana/i })
+        await canvasBody.findByRole("option", { name: /banana/i }),
       ).toHaveAttribute("data-state", "checked");
       await userEvent.click(
-        await canvasBody.findByRole("option", { name: /banana/i })
+        await canvasBody.findByRole("option", { name: /banana/i }),
       );
     });
   },

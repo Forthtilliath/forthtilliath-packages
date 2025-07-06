@@ -64,7 +64,7 @@ export const TypingInCombobox: Story = {
     // Search for "calendar" which should return a single result
     await userEvent.type(input, "calen");
     await expect(
-      canvas.getAllByRole("option", { name: /calendar/i })
+      canvas.getAllByRole("option", { name: /calendar/i }),
     ).toHaveLength(1);
 
     await userEvent.clear(input);
@@ -73,7 +73,7 @@ export const TypingInCombobox: Story = {
     await userEvent.type(input, "se");
     await expect(canvas.getAllByRole("option").length).toBeGreaterThan(1);
     await expect(
-      canvas.getAllByRole("option", { name: /search/i })
+      canvas.getAllByRole("option", { name: /search/i }),
     ).toHaveLength(1);
 
     await userEvent.clear(input);
@@ -81,7 +81,7 @@ export const TypingInCombobox: Story = {
     // Search for "story" which should return no results
     await userEvent.type(input, "story");
     await expect(
-      canvas.queryAllByRole("option", { hidden: false })
+      canvas.queryAllByRole("option", { hidden: false }),
     ).toHaveLength(0);
     await expect(canvas.getByText(/no results/i)).toBeVisible();
   },

@@ -82,7 +82,7 @@ const Tabs = ({
   const selectedRect = buttonRefs[selectedTabIndex]?.getBoundingClientRect();
 
   const [hoveredTabIndex, setHoveredTabIndex] = React.useState<number | null>(
-    null
+    null,
   );
   const hoveredRect =
     buttonRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
@@ -219,7 +219,7 @@ function useTabs({
     [number, number]
   >(() => {
     const indexOfInitialTab = tabs.findIndex(
-      (tab: Tab) => tab.value === initialTabId
+      (tab: Tab) => tab.value === initialTabId,
     );
     return [indexOfInitialTab === -1 ? 0 : indexOfInitialTab, 0];
   });

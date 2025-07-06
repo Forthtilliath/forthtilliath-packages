@@ -26,7 +26,7 @@ https://www.kibo-ui.com/components/announcement
 // Animated Components
 https://berlix.vercel.app/
 
-// Drop drawer responsive 
+// Drop drawer responsive
 https://dropdrawer.jiawei.dev/
 
 Storybook

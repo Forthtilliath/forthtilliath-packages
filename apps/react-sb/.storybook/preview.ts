@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
+
 import "@forthtilliath/shadcn-ui/globals.css";
 
 const preview: Preview = {

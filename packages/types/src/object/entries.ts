@@ -7,5 +7,5 @@
  * //=> [['a', 1], ['b', 2]]
  */
 export type Entries<T> = readonly {
-	[K in keyof T]: [K, T[K]];
+  [K in keyof T]: [K, T[K]];
 }[keyof T][];

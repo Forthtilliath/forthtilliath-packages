@@ -60,9 +60,9 @@ export const ShouldShowOnHover: Story = {
       await waitFor(() =>
         expect(
           canvasElement.ownerDocument.body.querySelector(
-            '[data-slot="hover-card-content"]'
-          )
-        ).toBeVisible()
+            '[data-slot="hover-card-content"]',
+          ),
+        ).toBeVisible(),
       );
     });
     await step("Unhover the trigger element", async () => {
@@ -70,9 +70,9 @@ export const ShouldShowOnHover: Story = {
       await waitFor(() =>
         expect(
           canvasElement.ownerDocument.body.querySelector(
-            '[data-slot="hover-card-content"]'
-          )
-        ).toBeNull()
+            '[data-slot="hover-card-content"]',
+          ),
+        ).toBeNull(),
       );
     });
   },

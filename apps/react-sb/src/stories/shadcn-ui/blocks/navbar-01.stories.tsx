@@ -24,8 +24,8 @@ const meta: Meta<typeof Navbar> = {
       <div className="min-h-screen bg-muted">
         <Story />
       </div>
-    )
-  ]
+    ),
+  ],
 };
 
 export default meta;

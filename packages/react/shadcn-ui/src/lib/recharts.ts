@@ -1,1 +1,1 @@
-export * from "recharts"
+export * from "recharts";

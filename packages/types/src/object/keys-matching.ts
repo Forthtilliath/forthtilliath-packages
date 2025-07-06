@@ -12,6 +12,5 @@
  * // UserStringKeys is "name" | "genre" | "mail"
  */
 export type KeysMatching<T, V> = {
-	[K in keyof T]-?: T[K] extends V ? K : never;
+  [K in keyof T]-?: T[K] extends V ? K : never;
 }[keyof T];
-

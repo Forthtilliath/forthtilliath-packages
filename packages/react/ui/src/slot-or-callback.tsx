@@ -20,7 +20,9 @@ export interface SlotOrCallbackProps {
  * @param {SlotOrCallbackProps} props
  * @returns {React.ReactNode}
  */
-export function SlotOrCallback({ children }: SlotOrCallbackProps): React.ReactNode {
+export function SlotOrCallback({
+  children,
+}: SlotOrCallbackProps): React.ReactNode {
   if (typeof children === "function") {
     return children();
   }

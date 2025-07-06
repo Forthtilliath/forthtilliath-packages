@@ -96,9 +96,9 @@ export const ShouldShowOnHover: Story = {
       await waitFor(() =>
         expect(
           canvasElement.ownerDocument.body.querySelector(
-            '[data-slot="tooltip-content"]'
-          )
-        ).toBeVisible()
+            '[data-slot="tooltip-content"]',
+          ),
+        ).toBeVisible(),
       );
     });
 
@@ -107,9 +107,9 @@ export const ShouldShowOnHover: Story = {
       await waitFor(() =>
         expect(
           canvasElement.ownerDocument.body.querySelector(
-            '[data-slot="tooltip-content"]'
-          )
-        ).not.toBeVisible()
+            '[data-slot="tooltip-content"]',
+          ),
+        ).not.toBeVisible(),
       );
     });
   },
