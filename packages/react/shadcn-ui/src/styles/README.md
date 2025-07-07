@@ -1,1 +1,0 @@
-More themes : https://tweakcn.com/editor/theme?tab=other
