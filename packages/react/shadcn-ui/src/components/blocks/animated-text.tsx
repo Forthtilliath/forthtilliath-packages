@@ -50,7 +50,7 @@ type Props =
   | PropsScramble
   | PropsSplit;
 
-export function TextAnimated({ variant, children: text, ...props }: Props) {
+export function AnimatedText({ variant, children: text, ...props }: Props) {
   if (typeof text !== "string") {
     throw new Error("TextAnimated must have a string child");
   }
@@ -90,7 +90,7 @@ export function TextCircle({
       }}
       className={cn(
         "relative rounded-full w-[200px] h-[200px] text-zinc-900 dark:text-zinc-50 font-semibold text-center text-2xl",
-        className,
+        className
       )}
     >
       {letters.map((letter, i) => {
@@ -141,7 +141,7 @@ export const TextReveal = ({
           className={cn(
             "inline-flex leading-none",
             split === "word" ? "mr-[0.2em]" : "",
-            className,
+            className
           )}
         >
           {c === " " ? "\u00A0" : c}

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { AnimatedTabs } from "@forthtilliath/shadcn-ui/components/blocks/tabs-animated";
+import { AnimatedTabs } from "@forthtilliath/shadcn-ui/components/blocks/animated-tabs";
 
 /**
  * An image element with a fallback for representing the user.
  */
 const meta: Meta<typeof AnimatedTabs> = {
-  title: "shadcn-ui-blocks/TabsAnimated",
+  title: "shadcn-ui-blocks/AnimatedTabs",
   component: AnimatedTabs,
   tags: ["autodocs"],
   argTypes: {},

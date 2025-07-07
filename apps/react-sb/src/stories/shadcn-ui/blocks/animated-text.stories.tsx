@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { TextAnimated } from "@forthtilliath/shadcn-ui/components/blocks/text-animated";
+import { AnimatedText } from "@forthtilliath/shadcn-ui/components/blocks/animated-text";
 
 const meta = {
-  title: "shadcn-ui-blocks/TextAnimated",
-  component: TextAnimated,
+  title: "shadcn-ui-blocks/AnimatedText",
+  component: AnimatedText,
   tags: ["autodocs"],
   argTypes: {
     children: {
@@ -19,7 +19,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof TextAnimated>;
+} satisfies Meta<typeof AnimatedText>;
 
 export default meta;
 
