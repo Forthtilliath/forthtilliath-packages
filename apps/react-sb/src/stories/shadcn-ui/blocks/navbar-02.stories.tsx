@@ -3,10 +3,15 @@ import { InboxIcon } from "lucide-react";
 
 import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-02";
 
+interface Item {
+  href: string;
+  label: React.ReactNode;
+}
+
 /**
  * A simple navbar block
  */
-const meta: Meta<typeof Navbar> = {
+const meta: Meta<typeof Navbar<Item>> = {
   title: "shadcn-ui-blocks/Navbars/Navbar 02",
   component: Navbar,
   tags: ["autodocs"],

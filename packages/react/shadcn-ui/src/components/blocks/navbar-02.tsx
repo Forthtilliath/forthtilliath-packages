@@ -14,11 +14,6 @@ import {
   SheetTrigger,
 } from "@forthtilliath/shadcn-ui/components/sheet";
 
-// export interface Item {
-//   href: string;
-//   label: React.ReactNode;
-// }
-
 interface Props<T> {
   logo?: React.ReactNode;
   render: (item: T) => React.ReactNode;
