@@ -26,6 +26,9 @@ const meta: Meta<typeof Navbar> = {
       </div>
     ),
   ],
+  parameters: {
+    layout: "fullscreen",
+  },
 };
 
 export default meta;
