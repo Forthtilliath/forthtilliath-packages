@@ -21,6 +21,7 @@ export const eslintConfig: ConfigArray = tseslint.config([
     languageOptions: {
       parserOptions: {
         projectService: true,
+        // @ts-ignore
         tsconfigRootDir: import.meta.dirname,
       },
     },
