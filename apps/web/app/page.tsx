@@ -1,7 +1,7 @@
 import Image, { type ImageProps } from "next/image";
 
 import { Show } from "@forthtilliath/react-ui/show";
-import { TextAnimated } from "@forthtilliath/shadcn-ui/components/blocks/text-animated";
+import { AnimatedText } from "@forthtilliath/shadcn-ui/components/blocks/animated-text";
 
 import styles from "./page.module.css";
 
@@ -41,11 +41,11 @@ export default function Home() {
           <li>Save and see your changes instantly.</li>
         </ol>
 
-        <TextAnimated variant="circle" className="font-black text-3xl">
+        <AnimatedText variant="circle" className="font-black text-3xl">
           <>BERLIX UI * BERLIX UI * </>
-        </TextAnimated>
+        </AnimatedText>
 
-        <TextAnimated
+        <AnimatedText
           variant="reveal"
           className="font-medium text-2xl bg-gradient-to-b from-amber-200 via-orange-400 to-red-600 bg-clip-text text-transparent"
           from="top"
@@ -56,30 +56,30 @@ export default function Home() {
         >
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias,
           rem.
-        </TextAnimated>
+        </AnimatedText>
 
-        <TextAnimated
+        <AnimatedText
           variant="ripple"
           className="uppercase text-8xl font-normal text-zinc-900 dark:text-zinc-50"
         >
           Labyrinth
-        </TextAnimated>
+        </AnimatedText>
 
-        <TextAnimated
+        <AnimatedText
           variant="scramble"
           className="font-mono text-2xl uppercase"
         >
           Its over 9000!
-        </TextAnimated>
+        </AnimatedText>
 
-        <TextAnimated
+        <AnimatedText
           variant="split"
           className="text-9xl font-semibold uppercase"
           topClassName="text-red-500"
           bottomClassName="text-zinc-950 dark:text-zinc-50"
         >
           Berlix UI
-        </TextAnimated>
+        </AnimatedText>
 
         <Show when={false}>
           <div className={styles.ctas}>
