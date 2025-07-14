@@ -14,17 +14,18 @@ import {
   SheetTrigger,
 } from "@forthtilliath/shadcn-ui/components/sheet";
 
-interface Item {
-  href: string;
-  label: React.ReactNode;
-}
-interface Props {
+// export interface Item {
+//   href: string;
+//   label: React.ReactNode;
+// }
+
+interface Props<T> {
   logo?: React.ReactNode;
-  render: (item: Item) => React.ReactNode;
-  items: Item[];
+  render: (item: T) => React.ReactNode;
+  items: T[];
 }
 
-export function Navbar({ logo, render, items }: Props) {
+export function Navbar<T>({ logo, render, items }: Props<T>) {
   return (
     <nav className="h-16 bg-background border-b">
       <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,23 +69,23 @@ export function Navbar({ logo, render, items }: Props) {
   );
 }
 
-type NavMenuProps = NavigationMenuProps & Pick<Props, "items" | "render">;
-const NavMenu = ({ render, items, ...props }: NavMenuProps) => (
-  <NavigationMenu {...props}>
-    <NavigationMenuList className="gap-6 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild></NavigationMenuLink>
-      </NavigationMenuItem>
-
-      {items.map((item, i) => (
-        <NavigationMenuItem key={i}>
-          <NavigationMenuLink asChild>
-            {render({ href: item.href, label: item.label })}
-          </NavigationMenuLink>
+type NavMenuProps<T> = NavigationMenuProps & Pick<Props<T>, "items" | "render">;
+export function NavMenu<T>({ render, items, ...props }: NavMenuProps<T>) {
+  return (
+    <NavigationMenu {...props}>
+      <NavigationMenuList className="gap-6 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild></NavigationMenuLink>
         </NavigationMenuItem>
-      ))}
-    </NavigationMenuList>
-  </NavigationMenu>
-);
+
+        {items.map((item, i) => (
+          <NavigationMenuItem key={i}>
+            <NavigationMenuLink asChild>{render(item)}</NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
 
 export default Navbar;
