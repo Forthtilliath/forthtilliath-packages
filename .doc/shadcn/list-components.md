@@ -14,6 +14,9 @@ Displays a callout for user attention.
 - **Alert**: https://ui.shadcn.com/docs/components/alert
 - **Alert**: https://originui.com/alert
 - **Alert**: https://www.hextaui.com/docs/ui/components/alert
+- **Alert**: https://ktui.io/docs/alert
+- **Notification**: https://originui.com/notification
+- **Dismiss**: https://ktui.io/docs/dismiss
 
 ## Avatar
 An image element with a fallback for representing the user.
@@ -22,12 +25,14 @@ An image element with a fallback for representing the user.
 - **Avatar**: https://originui.com/avatar
 - **Avatar**: https://www.shsfui.com/primitives/avatar
 - **Avatar**: https://www.hextaui.com/docs/ui/components/avatar
+- **Avatar**: https://ktui.io/docs/avatar
 
 ## Badge
 Displays a badge or a component that looks like a badge.
 - **Badge**: https://ui.shadcn.com/docs/components/badge
 - **Badge**: https://originui.com/badge
 - **Badge**: https://www.hextaui.com/docs/ui/components/badge
+- **Badge**: https://ktui.io/docs/badge
 - **Badge Group**: https://ui-x.junwen-k.dev/docs/components/badge-group
 
 ## Banner
@@ -44,6 +49,7 @@ Displays a button or a component that looks like a button.
 - **Button**: https://originui.com/button
 - **Button**: https://ui.aceternity.com/components/tailwindcss-buttons
 - **Button**: https://www.hextaui.com/docs/ui/components/button
+- **Button**: https://ktui.io/docs/button
 - **Icon Button**: https://www.shsfui.com/primitives/icon-buttons
 
 ### 2. Buttons with Effects
@@ -56,6 +62,9 @@ Displays a button or a component that looks like a button.
 - **Share Button**: https://skiper-ui.com/docs/components/share-button
 - **Badge Button**: https://skiper-ui.com/docs/components/badge-button
 - **Wrap Button**: https://skiper-ui.com/docs/components/wrap-button
+- **Copy Button**: https://shuip.xyz/components/copy-button
+- **Theme Button**: https://shuip.xyz/components/theme-button
+- **Theme Switch**: https://ktui.io/docs/theme-switch
 
 ### 4. Advanced / Stateful Buttons
 - **Stateful Button**: https://ui.aceternity.com/components/stateful-button
@@ -69,6 +78,7 @@ A compact, interactive element for displaying status, categories, or filters wit
 ## Collapsible
 An interactive component which expands/collapses a panel.
 - **Collapsible**: https://ui.shadcn.com/docs/components/collapsible
+- **Collapse**: https://ktui.io/docs/collapse
 
 ## Code Blocks
 - **Code Blocks**: https://blocks.mvp-subha.me/docs/cards/code-blocks
@@ -83,6 +93,9 @@ A File List component displays a list of files with details such as name, size, 
 - **File List**: https://ui-x.junwen-k.dev/docs/components/file-list
 
 ## Image
+
+### Loading Image
+- **Image Loader**: https://www.rigidui.com/docs/components/image-loader
 
 ### Cursor Effects & Interactions
 - **Cursor Trail**: https://skiper-ui.com/docs/components/image-cursortrail
@@ -111,6 +124,7 @@ A File List component displays a list of files with details such as name, size, 
 A keyboard key component for displaying keyboard shortcuts and key combinations.
 - **Kbd**: https://www.hextaui.com/docs/ui/components/kbd
 - **Kbd**: https://ui-x.junwen-k.dev/docs/components/kbd
+- **Kbd**: https://ktui.io/docs/kbd
 
 ## Loader
 - **Loader**: https://blocks.mvp-subha.me/docs/basic/loaders
@@ -121,12 +135,20 @@ A keyboard key component for displaying keyboard shortcuts and key combinations.
 Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
 - **Progress**: https://ui.shadcn.com/docs/components/progress
 - **Progress**: https://www.hextaui.com/docs/ui/components/progress
+- **Progress**: https://ktui.io/docs/progress
+
+## Query Boudary
+- **Query Boundary**: https://shuip.xyz/components/query-boundary
+
+## Reparent
+- **Reparent**: https://ktui.io/docs/reparent
 
 ## Skeletons
 Use to show a placeholder while content is loading.
 - **Skeleton**: https://ui.shadcn.com/docs/components/skeleton
 - **Skeleton**: https://www.hextaui.com/docs/ui/components/skeleton
 - **Skeletons**: https://blocks.mvp-subha.me/docs/skeletons
+- **Skeletons**: https://ktui.io/docs/skeleton
 
 ## Text Effects
 Styles for headings, paragraphs, lists...etc
@@ -176,10 +198,12 @@ A modern, customizable video player component with full controls and keyboard sh
 A two-state button that can be either on or off.
 - **Toggle**: https://ui.shadcn.com/docs/components/toggle
 - **Toggle**: https://www.hextaui.com/docs/ui/components/toggle
+- **Toggle**: https://ktui.io/docs/toggle
 
 ## Toggle Group
 A set of two-state buttons that can be toggled on or off.
 - **Toggle Group**: https://ui.shadcn.com/docs/components/toggle-group
+- **Toggle Group**: https://ktui.io/docs/toggle-group
 
 # Navigation
 *Elements for organizing site or app navigation.*
@@ -190,11 +214,13 @@ Displays the path to the current resource using a hierarchy of links.
 - **Breadcrumb**: https://originui.com/breadcrumb
 - **Breadcrumb**: https://shadcn-extension.vercel.app/docs/breadcrumb
 - **Breadcrumb**: https://www.hextaui.com/docs/ui/components/breadcrumb
+- **Breadcrumb**: https://ktui.io/docs/breadcrumb
 
 ## Links
 For sighted users to preview content available behind a link.
 - **Hover Card**: https://ui.shadcn.com/docs/components/hover-card
 - **Link Preview**: https://ui.aceternity.com/components/link-preview
+- **Link**: https://ktui.io/docs/link
 
 ## Navbars
 A collection of links for navigating websites.
@@ -212,11 +238,13 @@ A collection of links for navigating websites.
 - **Pagination**: https://blocks.mvp-subha.me/docs/basic/pagination
 - **Pagination**: https://originui.com/pagination
 - **Pagination**: https://www.hextaui.com/docs/ui/components/pagination
+- **Pagination**: https://ktui.io/docs/pagination
 
 ## Separator
 Visually or semantically separates content.
 - **Separator**: https://ui.shadcn.com/docs/components/separator
 - **Separator**: https://www.hextaui.com/docs/ui/components/separator
+- **Separator**: https://ktui.io/docs/separator
 
 # Forms and User Controls
 *Components for data entry, selection, and user interaction.*
@@ -225,6 +253,8 @@ Visually or semantically separates content.
 A control that allows the user to toggle between checked and not checked.
 - **Checkbox**: https://ui.shadcn.com/docs/components/checkbox
 - **Checkbox**: https://www.hextaui.com/docs/ui/components/checkbox
+- **Checkbox**: https://ktui.io/docs/checkbox
+- **Checkbox Field**: https://shuip.xyz/components/checkbox-field
 
 ## Color Picker
 A comprehensive color picker component for selecting colors with multiple input methods and presets.
@@ -268,6 +298,7 @@ A emoji picker is a component that allows users to select an emoji from a list o
 ## File Upload
 A versatile file upload component with drag and drop support, progress tracking, and customizable styling.
 - **File Upload**: https://www.hextaui.com/docs/ui/components/file-upload
+- **File Uploader**: https://www.rigidui.com/docs/components/file-uploader
 
 ## Input
 
@@ -276,6 +307,14 @@ Displays a form input field or a component that looks like an input field.
 - **Input**: https://ui.shadcn.com/docs/components/input
 - **Input**: https://www.hextaui.com/docs/ui/components/input
 - **Input Base**: https://ui-x.junwen-k.dev/docs/components/input-base
+- **Input Field**: https://shuip.xyz/components/input-field
+- **Input**: https://ktui.io/docs/input
+
+### Address
+- **Adress Field**: https://shuip.xyz/components/address-field
+
+### Image Input
+- **Image Input**: https://ktui.io/docs/image-input
 
 ### Input OTP
 Accessible one-time password component with copy paste functionality.
@@ -289,6 +328,8 @@ A flexible input component for adding and managing multiple tags with support fo
 ### Password Input
 Password Input provides a way for the user to securely enter a password, with the ability to toggle the visibility of the password.
 - **Password Input**: https://ui-x.junwen-k.dev/docs/components/password-input
+- **Password Strength Meter**: https://www.rigidui.com/docs/components/strength-meter
+- **Toggle Password**: https://ktui.io/docs/toggle-password
 
 ### Phone Input
 Phone Input allows user to enter phone number in E.164 format.
@@ -302,32 +343,48 @@ Renders an accessible label associated with controls.
 ## Radio
 A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.
 - **Radio Group**: https://ui.shadcn.com/docs/components/radio-group
+- **Radio Group**: https://ktui.io/docs/radio-group
 - **Radio**: https://www.hextaui.com/docs/ui/components/radio
+- **Radio Field**: https://shuip.xyz/components/radio-field
+
+## Search
+- **Smart Search**: https://www.rigidui.com/docs/components/smart-search
 
 ## Select
 Displays a list of options for the user to pick from—triggered by a button.
 - **Select**: https://ui.shadcn.com/docs/components/select
 - **Select**: https://www.hextaui.com/docs/ui/components/select
 - **Native Select**: https://ui-x.junwen-k.dev/docs/components/native-select
+- **Select Field**: https://shuip.xyz/components/select-field
+- **Select**: https://ktui.io/docs/select
 
 ## Slider
 An input where the user selects a value from within a given range.
 - **Slider**: https://ui.shadcn.com/docs/components/slider
 - **Slider**: https://www.hextaui.com/docs/ui/components/slider
 
+## Submit Button
+- **Submit Button**: https://shuip.xyz/components/submit-button
+
 ## Switch
 A control that allows the user to toggle between checked and not checked.
 - **Switch**: https://ui.shadcn.com/docs/components/switch
 - **Switch**: https://www.hextaui.com/docs/ui/components/switch
+- **Switch**: https://ktui.io/docs/switch
 
 ## Textarea
 Displays a form textarea or a component that looks like a textarea.
 - **Textarea**: https://ui.shadcn.com/docs/components/textarea
 - **Textarea**: https://www.hextaui.com/docs/ui/components/textarea
+- **Textarea**: https://ktui.io/docs/textarea
 
 ## Wheel Picker
 iOS-like wheel picker for React with smooth inertia scrolling and infinite loop support.
 - **Wheel Picker** : https://ui-x.junwen-k.dev/docs/components/wheel-picker
+
+## Templates
+- **Smart Form**: https://www.rigidui.com/docs/components/smart-form
+- **Form Utils**: https://shuip.xyz/lib/form-utils
 
 # Content and Layout
 *Components for structuring, content presentation, and complex layouts.*
@@ -377,6 +434,7 @@ iOS-like wheel picker for React with smooth inertia scrolling and infinite loop 
 
 ### 1. Carts
 - **Carts**: https://ui.stackzero.co/docs/blocks/carts
+- **Current Manager**: https://www.rigidui.com/docs/components/currency-manager
 
 ### 2. Chat
 - **Chatbot UI**: https://blocks.mvp-subha.me/docs/chatbot/chatbot-ui
@@ -384,6 +442,12 @@ iOS-like wheel picker for React with smooth inertia scrolling and infinite loop 
 
 ### 3. Cookies
 - **Cookies**: https://shadcn-cookies.vercel.app/
+
+### ?. File Explorer
+- **File Explorer**: https://www.rigidui.com/docs/components/file-explorer
+
+### ?. Guided Tour
+- **Guided Tour**: https://www.rigidui.com/docs/components/guided-tour
 
 ### 4. Product Variants
 - **Product Variants**: https://ui.stackzero.co/docs/blocks/product-variants
@@ -393,6 +457,8 @@ iOS-like wheel picker for React with smooth inertia scrolling and infinite loop 
 
 ### 6. Stepper
 - **Stepper**: https://originui.com/stepper
+- **Stepper**: https://ktui.io/docs/stepper
+- **Multi-Step Form Wrapper**: https://www.rigidui.com/docs/components/multi-step-form-wrapper
 
 ### 7. Timeline
 - **Timeline**: https://originui.com/timeline
@@ -411,6 +477,7 @@ Displays a card with header, content, and footer.
 ### 1. Basic Card
 - **Card**: https://ui.shadcn.com/docs/components/card
 - **Card**: https://www.hextaui.com/docs/ui/components/card
+- **Card**: https://ktui.io/docs/card
 - **Basic Cards**: https://blocks.mvp-subha.me/docs/cards/basic-cards
 - **X Cards**: https://blocks.mvp-subha.me/docs/cards/x-cards
 - **Cards**: https://ui.aceternity.com/components/cards
@@ -441,7 +508,6 @@ Displays a card with header, content, and footer.
 - **Glare Card**: https://ui.aceternity.com/components/glare-card
 - **Glowing Effect**: https://ui.aceternity.com/components/glowing-effect
 - **Glowing Stars Effect**: https://ui.aceternity.com/components/glowing-stars-effect
-- **Infinite Moving Cards**: https://ui.aceternity.com/components/infinite-moving-cards
 - **Moving Border**: https://ui.aceternity.com/components/moving-border
 - **SVG Mask Effect**: https://ui.aceternity.com/components/svg-mask-effect
 
@@ -475,6 +541,9 @@ Displays a card with header, content, and footer.
 ## Headers
 - **Headers**: https://blocks.mvp-subha.me/docs/required/headers
 
+## Infinite Scroll
+- **Infinite Scroll**: https://www.rigidui.com/docs/components/infinite-scroll
+
 ## Layouts
 - **Schema Visualizer**: https://originui.com/layouts
 - **Event Calendar Layout**: https://originui.com/layouts
@@ -496,6 +565,7 @@ Accessible resizable panel groups and layouts with keyboard support.
 Augments native scroll functionality for custom, cross-browser styling.
 - **Scroll-area**: https://ui.shadcn.com/docs/components/scroll-area
 - **Scroll Area**: https://www.hextaui.com/docs/ui/components/scroll-area
+- **Scrollable**: https://ktui.io/docs/scrollable
 
 ## Sections
 ### 1. About
@@ -509,6 +579,7 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 ### 4. Dashboard
 - **Dashboard**: https://github.com/Qualiora/shadboard
+- **Draggable Dashboard**: https://www.rigidui.com/docs/components/draggable-dashboard
 
 ### 5. FAQs
 - **FAQs Section**: https://blocks.mvp-subha.me/docs/mainsections/faq
@@ -585,6 +656,9 @@ A carousel with motion and swipe built using Embla.
 - **Easings**: https://originui.com/easings
 - **Theme Toggle Animations**: https://skiper-ui.com/docs/components/theme-toggle-animations
 
+## Hover
+- **Hover Reveal**: https://shuip.xyz/components/hover-reveal
+
 ## Interaction & Pointer Effects
 - **Cursor**: https://motion-primitives.com/docs/cursor
 - **Spotlight**: https://motion-primitives.com/docs/spotlight
@@ -603,6 +677,8 @@ A carousel with motion and swipe built using Embla.
 - **Parallax Scroll**: https://ui.aceternity.com/components/parallax-scroll
 - **Sticky Scroll Reveal**: https://ui.aceternity.com/components/sticky-scroll-reveal
 - **Tracing Beam**: https://ui.aceternity.com/components/tracing-beam
+- **Scrollspy**: https://ktui.io/docs/scrollspy
+- **Scrollto**: https://ktui.io/docs/scrollto
 
 ## Swipe
 - **Card Swipe**: https://skiper-ui.com/docs/components/card-swipe
@@ -613,6 +689,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
 - **Tabs**: https://originui.com/tabs
 - **Tabs**: https://ui.aceternity.com/components/tabs
 - **Tabs**: https://www.hextaui.com/docs/ui/components/tabs
+- **Tabs**: https://ktui.io/docs/tabs
 - **Expanded Tabs**: https://skiper-ui.com/docs/components/expanded-tabs
 - **Animated Background**: https://motion-primitives.com/docs/animated-background
 - **Transition Panel**: https://motion-primitives.com/docs/transition-panel
@@ -625,6 +702,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
 A modal dialog that interrupts the user with important content and expects a response.
 - **Alert Dialog**: https://ui.shadcn.com/docs/components/alert-dialog
 - **Confirmer**: https://ui-x.junwen-k.dev/docs/components/confirmer
+- **Confirmation Dialog**: https://shuip.xyz/components/confirmation-dialog
 
 ## Command
 Fast, composable, unstyled command menu for React.
@@ -648,11 +726,13 @@ A window overlaid on either the primary window or another dialog window, renderi
 A drawer component for React.
 - **Drawer**: https://ui.shadcn.com/docs/components/drawer
 - **Drawer**: https://www.hextaui.com/docs/ui/components/drawer
+- **Drawer**: https://ktui.io/docs/drawer
 
 ## Dropdown Menu
 Displays a menu to the user — such as a set of actions or functions — triggered by a button.
 - **Dropdown Menu**: https://ui.shadcn.com/docs/components/dropdown-menu
 - **Dropdown Menu**: https://www.hextaui.com/docs/ui/components/dropdown-menu
+- **Dropdown**: https://ktui.io/docs/dropdown
 
 ## Dropdrawer
 - **Dropdrawer**: https://dropdrawer.jiawei.dev/
@@ -665,9 +745,10 @@ A visually persistent menu common in desktop applications that provides quick ac
 ## Modal
 A simple and accessible modal dialog component with smooth animations.
 - **Modal**: https://www.hextaui.com/docs/ui/components/modal
+- **Modal**: https://ktui.io/docs/modal
 
 ## Notification
-- **Notification**: https://originui.com/notification
+- **Notification Center**: https://www.rigidui.com/docs/components/notification-center
 
 ## Popover
 Displays rich content in a portal, triggered by a button.
@@ -684,6 +765,7 @@ Extends the Dialog component to display content that complements the main conten
 An opinionated toast component for React.
 - **Sonner**: https://ui.shadcn.com/docs/components/sonner
 - **Toast**: https://www.hextaui.com/docs/ui/components/toast
+- **Toast**: https://ktui.io/docs/toast
 
 ## Toolbar
 - **Dynamic Toolbar**: https://motion-primitives.com/docs/toolbar-dynamic
@@ -694,6 +776,7 @@ A popup that displays information related to an element when the element receive
 - **Tooltip**: https://ui.shadcn.com/docs/components/tooltip
 - **Tooltip**: https://originui.com/tooltip
 - **Tooltip**: https://www.hextaui.com/docs/ui/components/tooltip
+- **Tooltip**: https://ktui.io/docs/tooltip
 - **Animated Tooltip**: https://ui.aceternity.com/components/animated-tooltip
 
 # Numbers
@@ -724,6 +807,7 @@ A responsive table component.
 Powerful table and datagrids built using TanStack Table.
 - **Data Table**: https://ui.shadcn.com/docs/components/data-table
 - **Data Table**: https://github.com/jacksonkasi1/tnks-data-table
+- **Data Table**: https://ktui.io/docs/datatable
 
 ## Virtualizer
 A virtualizer component that allows you to efficiently render large lists and tabular data.
