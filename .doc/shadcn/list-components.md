@@ -28,6 +28,7 @@ Displays a badge or a component that looks like a badge.
 - **Badge**: https://ui.shadcn.com/docs/components/badge
 - **Badge**: https://originui.com/badge
 - **Badge**: https://www.hextaui.com/docs/ui/components/badge
+- **Badge Group**: https://ui-x.junwen-k.dev/docs/components/badge-group
 
 ## Banner
 - **Banner**: https://originui.com/banner
@@ -42,6 +43,7 @@ Displays a button or a component that looks like a button.
 - **Button**: https://bundui.io/components/button
 - **Button**: https://originui.com/button
 - **Button**: https://ui.aceternity.com/components/tailwindcss-buttons
+- **Button**: https://www.hextaui.com/docs/ui/components/button
 - **Icon Button**: https://www.shsfui.com/primitives/icon-buttons
 
 ### 2. Buttons with Effects
@@ -60,14 +62,25 @@ Displays a button or a component that looks like a button.
 - **Buttons**: https://www.shsfui.com/primitives/buttons
 - **Basic Buttons**: https://blocks.mvp-subha.me/docs/basic/buttons
 
+## Chip
+A compact, interactive element for displaying status, categories, or filters with optional icons and dismissible functionality.
+- **Chip**: https://www.hextaui.com/docs/ui/components/chip
+
 ## Collapsible
 An interactive component which expands/collapses a panel.
-
 - **Collapsible**: https://ui.shadcn.com/docs/components/collapsible
 
 ## Code Blocks
 - **Code Blocks**: https://blocks.mvp-subha.me/docs/cards/code-blocks
 - **Code Block**: https://ui.aceternity.com/components/code-block
+
+## Description List
+A description list, with terms and descriptions.
+- **Description List**: https://ui-x.junwen-k.dev/docs/components/description-list
+
+## File List
+A File List component displays a list of files with details such as name, size, and progress.
+- **File List**: https://ui-x.junwen-k.dev/docs/components/file-list
 
 ## Image
 
@@ -94,6 +107,11 @@ An interactive component which expands/collapses a panel.
 - **Lens**: https://ui.aceternity.com/components/lens
 - **Image Viewer**: https://ui.stackzero.co/docs/components/image-viewer/basic
 
+## Keyboard
+A keyboard key component for displaying keyboard shortcuts and key combinations.
+- **Kbd**: https://www.hextaui.com/docs/ui/components/kbd
+- **Kbd**: https://ui-x.junwen-k.dev/docs/components/kbd
+
 ## Loader
 - **Loader**: https://blocks.mvp-subha.me/docs/basic/loaders
 - **Loader**: https://ui.aceternity.com/components/loader
@@ -102,10 +120,12 @@ An interactive component which expands/collapses a panel.
 ## Progress
 Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
 - **Progress**: https://ui.shadcn.com/docs/components/progress
+- **Progress**: https://www.hextaui.com/docs/ui/components/progress
 
 ## Skeletons
 Use to show a placeholder while content is loading.
-- **Skeletons**: https://ui.shadcn.com/docs/components/skeleton
+- **Skeleton**: https://ui.shadcn.com/docs/components/skeleton
+- **Skeleton**: https://www.hextaui.com/docs/ui/components/skeleton
 - **Skeletons**: https://blocks.mvp-subha.me/docs/skeletons
 
 ## Text Effects
@@ -145,12 +165,17 @@ Styles for headings, paragraphs, lists...etc
 - **Text Generate Effect**: https://ui.aceternity.com/components/text-generate-effect
 - **Text Hover Effect**: https://ui.aceternity.com/components/text-hover-effect
 
+## Video Player
+A modern, customizable video player component with full controls and keyboard shortcuts.
+- **Video Player**: https://www.hextaui.com/docs/ui/components/video-player
+
 ### Style and Display Effects
 - **Price Format**: https://ui.stackzero.co/docs/components/price-format/basic
 
 ## Toggle
 A two-state button that can be either on or off.
 - **Toggle**: https://ui.shadcn.com/docs/components/toggle
+- **Toggle**: https://www.hextaui.com/docs/ui/components/toggle
 
 ## Toggle Group
 A set of two-state buttons that can be toggled on or off.
@@ -164,6 +189,7 @@ Displays the path to the current resource using a hierarchy of links.
 - **Breadcrumb**: https://ui.shadcn.com/docs/components/breadcrumb
 - **Breadcrumb**: https://originui.com/breadcrumb
 - **Breadcrumb**: https://shadcn-extension.vercel.app/docs/breadcrumb
+- **Breadcrumb**: https://www.hextaui.com/docs/ui/components/breadcrumb
 
 ## Links
 For sighted users to preview content available behind a link.
@@ -173,6 +199,7 @@ For sighted users to preview content available behind a link.
 ## Navbars
 A collection of links for navigating websites.
 - **Navigation Menu**: https://ui.shadcn.com/docs/components/navigation-menu
+- **Navigation Menu**: https://www.hextaui.com/docs/ui/components/navigation-menu
 - **Navbar**: https://originui.com/navbar
 - **Floating Navbar**: https://ui.aceternity.com/components/floating-navbar
 - **Navbar Menu**: https://ui.aceternity.com/components/navbar-menu
@@ -184,10 +211,12 @@ A collection of links for navigating websites.
 - **Pagination**: https://ui.shadcn.com/docs/components/pagination
 - **Pagination**: https://blocks.mvp-subha.me/docs/basic/pagination
 - **Pagination**: https://originui.com/pagination
+- **Pagination**: https://www.hextaui.com/docs/ui/components/pagination
 
 ## Separator
 Visually or semantically separates content.
 - **Separator**: https://ui.shadcn.com/docs/components/separator
+- **Separator**: https://www.hextaui.com/docs/ui/components/separator
 
 # Forms and User Controls
 *Components for data entry, selection, and user interaction.*
@@ -195,51 +224,110 @@ Visually or semantically separates content.
 ## Checkbox
 A control that allows the user to toggle between checked and not checked.
 - **Checkbox**: https://ui.shadcn.com/docs/components/checkbox
+- **Checkbox**: https://www.hextaui.com/docs/ui/components/checkbox
+
+## Color Picker
+A comprehensive color picker component for selecting colors with multiple input methods and presets.
+- **Color Picker**: https://www.hextaui.com/docs/ui/components/color-picker
 
 ## Combobox
 Autocomplete input and command palette with a list of suggestions.
 - **Combobox**: https://ui.shadcn.com/docs/components/combobox
+- **Combobox**: https://ui-x.junwen-k.dev/docs/components/combobox
+
+## Control Group
+A component for grouping form controls like text inputs, buttons, selects and other elements into a single cohesive unit.
+- **Control Group**: https://ui-x.junwen-k.dev/docs/components/control-group
 
 ## Date & Time
 A date field component that allows users to enter and edit date.
 - **Calendar**: https://ui.shadcn.com/docs/components/calendar
+- **Calendar**: https://www.hextaui.com/docs/ui/components/calendar
+- **Calendar**: https://ui-x.junwen-k.dev/docs/components/calendar
+- **Date Field**: https://ui-x.junwen-k.dev/docs/components/date-field
 - **Date Picker**: https://ui.shadcn.com/docs/components/date-picker
 - **Date Picker**: https://originui.com/calendar-date-picker
+- **Date Picker**: https://www.hextaui.com/docs/ui/components/date-picker
+- **Date Picker**: https://ui-x.junwen-k.dev/docs/components/date-picker
 - **Date-Time Range Picker**: https://date-time-range-picker.vercel.app/
 - **Datetime Picker**: https://shadcn-extension.vercel.app/docs/datetime-picker
 - **Smart Datetime Input**: https://shadcn-extension.vercel.app/docs/smart-datetime-input
+- **Time Field**: https://ui-x.junwen-k.dev/docs/components/time-field
+- **Time**: https://ui-x.junwen-k.dev/docs/components/time
+- **Date Time Field**: https://ui-x.junwen-k.dev/docs/components/date-time-field
+- **Date Time Range Field**: https://ui-x.junwen-k.dev/docs/components/date-time-range-field
+
+## Dropzone
+A dropzone is an area into which one or multiple objects can be dragged and dropped.
+- **Dropzone**: https://ui-x.junwen-k.dev/docs/components/dropzone
+
+## Emoji Picker
+A emoji picker is a component that allows users to select an emoji from a list of emojis.
+- **Emoji Picker**: https://ui-x.junwen-k.dev/docs/components/emoji-picker
+
+## File Upload
+A versatile file upload component with drag and drop support, progress tracking, and customizable styling.
+- **File Upload**: https://www.hextaui.com/docs/ui/components/file-upload
 
 ## Input
+
+### Basic Input
 Displays a form input field or a component that looks like an input field.
 - **Input**: https://ui.shadcn.com/docs/components/input
+- **Input**: https://www.hextaui.com/docs/ui/components/input
+- **Input Base**: https://ui-x.junwen-k.dev/docs/components/input-base
 
-## Input OTP
+### Input OTP
 Accessible one-time password component with copy paste functionality.
 - **Input OTP**: https://ui.shadcn.com/docs/components/input-otp
+- **Input OTP**: https://www.hextaui.com/docs/ui/components/input-otp
+
+### Tag Input
+A flexible input component for adding and managing multiple tags with support for keyboard navigation and customization.
+- **Tag Input**: https://www.hextaui.com/docs/ui/components/tag-input
+
+### Password Input
+Password Input provides a way for the user to securely enter a password, with the ability to toggle the visibility of the password.
+- **Password Input**: https://ui-x.junwen-k.dev/docs/components/password-input
+
+### Phone Input
+Phone Input allows user to enter phone number in E.164 format.
+- **Phone Input**: https://ui-x.junwen-k.dev/docs/components/phone-input
 
 ## Label
 Renders an accessible label associated with controls.
 - **Label**: https://ui.shadcn.com/docs/components/label
+- **Label**: https://www.hextaui.com/docs/ui/components/label
 
 ## Radio
 A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.
 - **Radio Group**: https://ui.shadcn.com/docs/components/radio-group
+- **Radio**: https://www.hextaui.com/docs/ui/components/radio
 
 ## Select
 Displays a list of options for the user to pick from—triggered by a button.
 - **Select**: https://ui.shadcn.com/docs/components/select
+- **Select**: https://www.hextaui.com/docs/ui/components/select
+- **Native Select**: https://ui-x.junwen-k.dev/docs/components/native-select
 
 ## Slider
 An input where the user selects a value from within a given range.
 - **Slider**: https://ui.shadcn.com/docs/components/slider
+- **Slider**: https://www.hextaui.com/docs/ui/components/slider
 
 ## Switch
 A control that allows the user to toggle between checked and not checked.
 - **Switch**: https://ui.shadcn.com/docs/components/switch
+- **Switch**: https://www.hextaui.com/docs/ui/components/switch
 
 ## Textarea
 Displays a form textarea or a component that looks like a textarea.
 - **Textarea**: https://ui.shadcn.com/docs/components/textarea
+- **Textarea**: https://www.hextaui.com/docs/ui/components/textarea
+
+## Wheel Picker
+iOS-like wheel picker for React with smooth inertia scrolling and infinite loop support.
+- **Wheel Picker** : https://ui-x.junwen-k.dev/docs/components/wheel-picker
 
 # Content and Layout
 *Components for structuring, content presentation, and complex layouts.*
@@ -309,17 +397,20 @@ Displays a form textarea or a component that looks like a textarea.
 ### 7. Timeline
 - **Timeline**: https://originui.com/timeline
 - **Timeline**: https://ui.aceternity.com/components/timeline
+- **Timeline**: https://ui-x.junwen-k.dev/docs/components/timeline
 - **Timeline Extension**: https://shadcn-extension.vercel.app/docs/timeline
 
 ### 8. Tree
 - **Tree**: https://originui.com/tree
+- **Tree**: https://www.hextaui.com/docs/ui/components/tree
 - **Tree View**: https://shadcn-extension.vercel.app/docs/tree-view
 
 ## Card
 Displays a card with header, content, and footer.
 
 ### 1. Basic Card
-- **Basic Card**: https://ui.shadcn.com/docs/components/card
+- **Card**: https://ui.shadcn.com/docs/components/card
+- **Card**: https://www.hextaui.com/docs/ui/components/card
 - **Basic Cards**: https://blocks.mvp-subha.me/docs/cards/basic-cards
 - **X Cards**: https://blocks.mvp-subha.me/docs/cards/x-cards
 - **Cards**: https://ui.aceternity.com/components/cards
@@ -399,10 +490,12 @@ Displays a card with header, content, and footer.
 ## Resizable
 Accessible resizable panel groups and layouts with keyboard support.
 - **Resizable**: https://ui.shadcn.com/docs/components/resizable
+- **Resizable**: https://www.hextaui.com/docs/ui/components/resizable
 
 ## Scroll-area
 Augments native scroll functionality for custom, cross-browser styling.
 - **Scroll-area**: https://ui.shadcn.com/docs/components/scroll-area
+- **Scroll Area**: https://www.hextaui.com/docs/ui/components/scroll-area
 
 ## Sections
 ### 1. About
@@ -446,6 +539,7 @@ Augments native scroll functionality for custom, cross-browser styling.
 A composable, themeable and customizable sidebar component.
 - **Sidebar**: https://ui.shadcn.com/docs/components/sidebar
 - **Sidebar**: https://ui.aceternity.com/components/sidebar
+- **Sidebar**: https://www.hextaui.com/docs/ui/components/sidebar
 
 # Interaction and Visual Effects
 *Components to add dynamism and animation.*
@@ -468,6 +562,7 @@ A carousel with motion and swipe built using Embla.
 ### 2. Marquee
 - **Marquee Effect**: https://bundui.io/components/marquee-effect
 - **Skiper Marquee**: https://skiper-ui.com/docs/components/skiper-marquee
+- **Marquee**: https://www.hextaui.com/docs/ui/components/marquee
 
 ### 3. Slider
 - **Infinite Slider**: https://motion-primitives.com/docs/infinite-slider
@@ -515,11 +610,12 @@ A carousel with motion and swipe built using Embla.
 ## Tabs
 A set of layered sections of content—known as tab panels—that are displayed one at a time.
 - **Tabs**: https://ui.shadcn.com/docs/components/tabs
+- **Tabs**: https://originui.com/tabs
+- **Tabs**: https://ui.aceternity.com/components/tabs
+- **Tabs**: https://www.hextaui.com/docs/ui/components/tabs
 - **Expanded Tabs**: https://skiper-ui.com/docs/components/expanded-tabs
 - **Animated Background**: https://motion-primitives.com/docs/animated-background
 - **Transition Panel**: https://motion-primitives.com/docs/transition-panel
-- **Tabs**: https://originui.com/tabs
-- **Tabs**: https://ui.aceternity.com/components/tabs
 - **Primitive Tabs**: https://www.shsfui.com/primitives/tabs
 
 # Modals, Popups, and Overlays
@@ -528,10 +624,12 @@ A set of layered sections of content—known as tab panels—that are displayed 
 ## Alert Dialog
 A modal dialog that interrupts the user with important content and expects a response.
 - **Alert Dialog**: https://ui.shadcn.com/docs/components/alert-dialog
+- **Confirmer**: https://ui-x.junwen-k.dev/docs/components/confirmer
 
 ## Command
 Fast, composable, unstyled command menu for React.
 - **Command**: https://ui.shadcn.com/docs/components/command
+- **Command Menu**: https://www.hextaui.com/docs/ui/components/command-menu
 
 ## Context Menu
 Displays a menu to the user — such as a set of actions or functions — triggered by a button.
@@ -549,10 +647,12 @@ A window overlaid on either the primary window or another dialog window, renderi
 ## Drawer
 A drawer component for React.
 - **Drawer**: https://ui.shadcn.com/docs/components/drawer
+- **Drawer**: https://www.hextaui.com/docs/ui/components/drawer
 
 ## Dropdown Menu
 Displays a menu to the user — such as a set of actions or functions — triggered by a button.
 - **Dropdown Menu**: https://ui.shadcn.com/docs/components/dropdown-menu
+- **Dropdown Menu**: https://www.hextaui.com/docs/ui/components/dropdown-menu
 
 ## Dropdrawer
 - **Dropdrawer**: https://dropdrawer.jiawei.dev/
@@ -560,6 +660,11 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 ## Menubar
 A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
 - **Menubar**: https://ui.shadcn.com/docs/components/menubar
+- **Menubar**: https://www.hextaui.com/docs/ui/components/menubar
+
+## Modal
+A simple and accessible modal dialog component with smooth animations.
+- **Modal**: https://www.hextaui.com/docs/ui/components/modal
 
 ## Notification
 - **Notification**: https://originui.com/notification
@@ -575,9 +680,10 @@ Displays rich content in a portal, triggered by a button.
 Extends the Dialog component to display content that complements the main content of the screen.
 - **Sheet**: https://ui.shadcn.com/docs/components/sheet
 
-## Sonner
+## Sonner / Toast
 An opinionated toast component for React.
 - **Sonner**: https://ui.shadcn.com/docs/components/sonner
+- **Toast**: https://www.hextaui.com/docs/ui/components/toast
 
 ## Toolbar
 - **Dynamic Toolbar**: https://motion-primitives.com/docs/toolbar-dynamic
@@ -587,6 +693,7 @@ An opinionated toast component for React.
 A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 - **Tooltip**: https://ui.shadcn.com/docs/components/tooltip
 - **Tooltip**: https://originui.com/tooltip
+- **Tooltip**: https://www.hextaui.com/docs/ui/components/tooltip
 - **Animated Tooltip**: https://ui.aceternity.com/components/animated-tooltip
 
 # Numbers
@@ -603,16 +710,28 @@ A popup that displays information related to an element when the element receive
 Beautiful charts. Built using Recharts. Copy and paste into your apps.
 - **Chart**: https://ui.shadcn.com/docs/components/chart
 
+## Sortable
+Sortable provides a way to sort items in a list or grid.
+- **Sortable**: https://ui-x.junwen-k.dev/docs/utilities/sortable
+
 ## Tables
 A responsive table component.
 - **Table**: https://ui.shadcn.com/docs/components/table
 - **Table**: https://originui.com/table
+- **Table**: https://www.hextaui.com/docs/ui/components/table
 
 ### Data Table
 Powerful table and datagrids built using TanStack Table.
 - **Data Table**: https://ui.shadcn.com/docs/components/data-table
 - **Data Table**: https://github.com/jacksonkasi1/tnks-data-table
 
+## Virtualizer
+A virtualizer component that allows you to efficiently render large lists and tabular data.
+- **Virtualizer**: https://ui-x.junwen-k.dev/docs/utilities/virtualizer
+
 # Themes & Customization
 - **Theme Editor**: https://shadcnstudio.com/theme-editor
 - **Themes Vercel**: https://shadcnthemes.vercel.app/
+
+# Registry
+- https://ui.shadcn.com/docs/registry
