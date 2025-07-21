@@ -99,10 +99,18 @@ An interactive component which expands/collapses a panel.
 - **Loader**: https://ui.aceternity.com/components/loader
 - **Multi-step Loader**: https://ui.aceternity.com/components/multi-step-loader
 
+## Progress
+Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
+- **Progress**: https://ui.shadcn.com/docs/components/progress
+
 ## Skeletons
+Use to show a placeholder while content is loading.
+- **Skeletons**: https://ui.shadcn.com/docs/components/skeleton
 - **Skeletons**: https://blocks.mvp-subha.me/docs/skeletons
 
 ## Text Effects
+Styles for headings, paragraphs, lists...etc
+- **Typography**: https://ui.shadcn.com/docs/components/typography
 
 ### Text Animations
 - **Animated Gradient Text**: https://bundui.io/components/animated-gradient-text
@@ -140,6 +148,14 @@ An interactive component which expands/collapses a panel.
 ### Style and Display Effects
 - **Price Format**: https://ui.stackzero.co/docs/components/price-format/basic
 
+## Toggle
+A two-state button that can be either on or off.
+- **Toggle**: https://ui.shadcn.com/docs/components/toggle
+
+## Toggle Group
+A set of two-state buttons that can be toggled on or off.
+- **Toggle Group**: https://ui.shadcn.com/docs/components/toggle-group
+
 # Navigation
 *Elements for organizing site or app navigation.*
 
@@ -155,6 +171,8 @@ For sighted users to preview content available behind a link.
 - **Link Preview**: https://ui.aceternity.com/components/link-preview
 
 ## Navbars
+A collection of links for navigating websites.
+- **Navigation Menu**: https://ui.shadcn.com/docs/components/navigation-menu
 - **Navbar**: https://originui.com/navbar
 - **Floating Navbar**: https://ui.aceternity.com/components/floating-navbar
 - **Navbar Menu**: https://ui.aceternity.com/components/navbar-menu
@@ -163,8 +181,13 @@ For sighted users to preview content available behind a link.
 - **Vertical Menu**: https://ui.rechesoares.com/docs/menu-vertical
 
 ## Pagination
+- **Pagination**: https://ui.shadcn.com/docs/components/pagination
 - **Pagination**: https://blocks.mvp-subha.me/docs/basic/pagination
 - **Pagination**: https://originui.com/pagination
+
+## Separator
+Visually or semantically separates content.
+- **Separator**: https://ui.shadcn.com/docs/components/separator
 
 # Forms and User Controls
 *Components for data entry, selection, and user interaction.*
@@ -189,6 +212,34 @@ A date field component that allows users to enter and edit date.
 ## Input
 Displays a form input field or a component that looks like an input field.
 - **Input**: https://ui.shadcn.com/docs/components/input
+
+## Input OTP
+Accessible one-time password component with copy paste functionality.
+- **Input OTP**: https://ui.shadcn.com/docs/components/input-otp
+
+## Label
+Renders an accessible label associated with controls.
+- **Label**: https://ui.shadcn.com/docs/components/label
+
+## Radio
+A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.
+- **Radio Group**: https://ui.shadcn.com/docs/components/radio-group
+
+## Select
+Displays a list of options for the user to pick from—triggered by a button.
+- **Select**: https://ui.shadcn.com/docs/components/select
+
+## Slider
+An input where the user selects a value from within a given range.
+- **Slider**: https://ui.shadcn.com/docs/components/slider
+
+## Switch
+A control that allows the user to toggle between checked and not checked.
+- **Switch**: https://ui.shadcn.com/docs/components/switch
+
+## Textarea
+Displays a form textarea or a component that looks like a textarea.
+- **Textarea**: https://ui.shadcn.com/docs/components/textarea
 
 # Content and Layout
 *Components for structuring, content presentation, and complex layouts.*
@@ -345,6 +396,14 @@ Displays a card with header, content, and footer.
 ## Pages
 - **Waitlist Page**: https://blocks.mvp-subha.me/docs/pages/waitlist
 
+## Resizable
+Accessible resizable panel groups and layouts with keyboard support.
+- **Resizable**: https://ui.shadcn.com/docs/components/resizable
+
+## Scroll-area
+Augments native scroll functionality for custom, cross-browser styling.
+- **Scroll-area**: https://ui.shadcn.com/docs/components/scroll-area
+
 ## Sections
 ### 1. About
 - **About Section**: https://blocks.mvp-subha.me/docs/mainsections/about
@@ -384,6 +443,8 @@ Displays a card with header, content, and footer.
 - **Animated Testimonials**: https://ui.aceternity.com/components/animated-testimonials
 
 ## Sidebar
+A composable, themeable and customizable sidebar component.
+- **Sidebar**: https://ui.shadcn.com/docs/components/sidebar
 - **Sidebar**: https://ui.aceternity.com/components/sidebar
 
 # Interaction and Visual Effects
@@ -452,6 +513,8 @@ A carousel with motion and swipe built using Embla.
 - **Card Swipe**: https://skiper-ui.com/docs/components/card-swipe
 
 ## Tabs
+A set of layered sections of content—known as tab panels—that are displayed one at a time.
+- **Tabs**: https://ui.shadcn.com/docs/components/tabs
 - **Expanded Tabs**: https://skiper-ui.com/docs/components/expanded-tabs
 - **Animated Background**: https://motion-primitives.com/docs/animated-background
 - **Transition Panel**: https://motion-primitives.com/docs/transition-panel
@@ -494,28 +557,44 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 ## Dropdrawer
 - **Dropdrawer**: https://dropdrawer.jiawei.dev/
 
+## Menubar
+A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
+- **Menubar**: https://ui.shadcn.com/docs/components/menubar
+
 ## Notification
 - **Notification**: https://originui.com/notification
 
 ## Popover
+Displays rich content in a portal, triggered by a button.
+- **Popover**: https://ui.shadcn.com/docs/components/popover
 - **Popover Form**: https://skiper-ui.com/docs/components/popover-form
 - **Morphing Popover**: https://motion-primitives.com/docs/morphing-popover
 - **Popover**: https://originui.com/popover
+
+## Sheet
+Extends the Dialog component to display content that complements the main content of the screen.
+- **Sheet**: https://ui.shadcn.com/docs/components/sheet
+
+## Sonner
+An opinionated toast component for React.
+- **Sonner**: https://ui.shadcn.com/docs/components/sonner
 
 ## Toolbar
 - **Dynamic Toolbar**: https://motion-primitives.com/docs/toolbar-dynamic
 - **Expandable Toolbar**: https://motion-primitives.com/docs/toolbar-expandable
 
 ## Tooltip
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+- **Tooltip**: https://ui.shadcn.com/docs/components/tooltip
 - **Tooltip**: https://originui.com/tooltip
 - **Animated Tooltip**: https://ui.aceternity.com/components/animated-tooltip
 
-## Numbers
+# Numbers
 - **Animated Number**: https://skiper-ui.com/docs/components/animated-number
 - **Animated Number**: https://motion-primitives.com/docs/animated-number
 - **Sliding Number**: https://motion-primitives.com/docs/sliding-number
 
-### Count Animation
+## Count Animation
 - **Count Animation**: https://bundui.io/components/count-animation
 
 # Data and Visualization
@@ -525,10 +604,14 @@ Beautiful charts. Built using Recharts. Copy and paste into your apps.
 - **Chart**: https://ui.shadcn.com/docs/components/chart
 
 ## Tables
+A responsive table component.
+- **Table**: https://ui.shadcn.com/docs/components/table
+- **Table**: https://originui.com/table
+
+### Data Table
 Powerful table and datagrids built using TanStack Table.
 - **Data Table**: https://ui.shadcn.com/docs/components/data-table
 - **Data Table**: https://github.com/jacksonkasi1/tnks-data-table
-- **Table**: https://originui.com/table
 
 # Themes & Customization
 - **Theme Editor**: https://shadcnstudio.com/theme-editor
