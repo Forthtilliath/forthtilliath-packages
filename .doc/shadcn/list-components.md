@@ -27,6 +27,10 @@ An image element with a fallback for representing the user.
 - **Avatar**: https://www.hextaui.com/docs/ui/components/avatar
 - **Avatar**: https://ktui.io/docs/avatar
 
+### Avatar Group
+Avatar Stack is a component that allows you to stack and overlap avatars.
+- **Avatar Stack**: https://www.kibo-ui.com/components/avatar-stack
+
 ## Badge
 Displays a badge or a component that looks like a badge.
 - **Badge**: https://ui.shadcn.com/docs/components/badge
@@ -34,11 +38,15 @@ Displays a badge or a component that looks like a badge.
 - **Badge**: https://www.hextaui.com/docs/ui/components/badge
 - **Badge**: https://ktui.io/docs/badge
 - **Badge Group**: https://ui-x.junwen-k.dev/docs/components/badge-group
+- **Announcement**: https://www.kibo-ui.com/components/announcement
+- **Pill**: https://www.kibo-ui.com/components/pill
+- **Status**: https://www.kibo-ui.com/components/status
 
 ## Banner
 - **Banner**: https://originui.com/banner
 - **Banner**: https://ui.aceternity.com/components/sticky-banner
 - **Banner**: https://ui.stackzero.co/docs/blocks/banners
+- **Banner**: https://www.kibo-ui.com/components/banner
 
 ## Buttons
 Displays a button or a component that looks like a button.
@@ -83,10 +91,15 @@ An interactive component which expands/collapses a panel.
 ## Code Blocks
 - **Code Blocks**: https://blocks.mvp-subha.me/docs/cards/code-blocks
 - **Code Block**: https://ui.aceternity.com/components/code-block
+- **Code Block**: https://www.kibo-ui.com/components/code-block
 
 ## Description List
 A description list, with terms and descriptions.
 - **Description List**: https://ui-x.junwen-k.dev/docs/components/description-list
+
+## Editor
+The Editor component is a powerful and flexible text editor that allows you to create and edit rich text content.
+- **Editor**: https://www.kibo-ui.com/components/editor
 
 ## File List
 A File List component displays a list of files with details such as name, size, and progress.
@@ -106,14 +119,17 @@ A File List component displays a list of files with details such as name, size, 
 ### Visual Effects
 - **Blur & Vignette**: https://skiper-ui.com/docs/components/blur-vignette
 - **Image Ripple**: https://skiper-ui.com/docs/components/image-ripple
+- **Image Zoom**: https://www.kibo-ui.com/components/image-zoom
 
 ### Comparison & Before-After
 - **Image Comparison**: https://motion-primitives.com/docs/image-comparison
+- **Comparison**: https://www.kibo-ui.com/components/comparison
 - **Compare**: https://ui.aceternity.com/components/compare
 
 ### Photo Capture & Cropping
 - **Capture Photo**: https://github.com/UretzkyZvi/capture-photo
 - **Image Cropper**: https://originui.com/image-cropper
+- **Image Crop**: https://www.kibo-ui.com/components/image-crop
 
 ### Image Galleries & Viewers
 - **Images Slider**: https://ui.aceternity.com/components/images-slider
@@ -125,11 +141,13 @@ A keyboard key component for displaying keyboard shortcuts and key combinations.
 - **Kbd**: https://www.hextaui.com/docs/ui/components/kbd
 - **Kbd**: https://ui-x.junwen-k.dev/docs/components/kbd
 - **Kbd**: https://ktui.io/docs/kbd
+- **Kbd**: https://www.kibo-ui.com/components/kbd
 
 ## Loader
 - **Loader**: https://blocks.mvp-subha.me/docs/basic/loaders
 - **Loader**: https://ui.aceternity.com/components/loader
 - **Multi-step Loader**: https://ui.aceternity.com/components/multi-step-loader
+- **Spinner**: https://www.kibo-ui.com/components/spinner
 
 ## Progress
 Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
@@ -137,11 +155,25 @@ Displays an indicator showing the completion progress of a task, typically displ
 - **Progress**: https://www.hextaui.com/docs/ui/components/progress
 - **Progress**: https://ktui.io/docs/progress
 
+## QR Code
+QR Code is a component that generates a QR code from a string.
+- **QR Code**: https://www.kibo-ui.com/components/qr-code
+
 ## Query Boudary
+A component that provides centralized error and loading management for TanStack Query queries.
 - **Query Boundary**: https://shuip.xyz/components/query-boundary
 
+## Relative Time
+A component that displays time in various timezones.
+- **Relative Time**: https://www.kibo-ui.com/components/relative-time
+
 ## Reparent
+Tailwind Reparent component enables responsive parent switching, allowing you to move elements to different containers at specific screen sizes.
 - **Reparent**: https://ktui.io/docs/reparent
+
+## Sandbox
+The sandbox component allows you to preview and test components in a sandboxed environment.
+- **Sandbox**: https://www.kibo-ui.com/components/sandbox
 
 ## Skeletons
 Use to show a placeholder while content is loading.
@@ -149,6 +181,10 @@ Use to show a placeholder while content is loading.
 - **Skeleton**: https://www.hextaui.com/docs/ui/components/skeleton
 - **Skeletons**: https://blocks.mvp-subha.me/docs/skeletons
 - **Skeletons**: https://ktui.io/docs/skeleton
+
+## Snippet
+Snippet is a component that allows you to display and copy code in a tabbed interface.
+- **Snippet**: https://www.kibo-ui.com/components/snippet
 
 ## Text Effects
 Styles for headings, paragraphs, lists...etc
@@ -190,6 +226,7 @@ Styles for headings, paragraphs, lists...etc
 ## Video Player
 A modern, customizable video player component with full controls and keyboard shortcuts.
 - **Video Player**: https://www.hextaui.com/docs/ui/components/video-player
+- **Video Player**: https://www.kibo-ui.com/components/video-player
 
 ### Style and Display Effects
 - **Price Format**: https://ui.stackzero.co/docs/components/price-format/basic
@@ -220,6 +257,7 @@ Displays the path to the current resource using a hierarchy of links.
 For sighted users to preview content available behind a link.
 - **Hover Card**: https://ui.shadcn.com/docs/components/hover-card
 - **Link Preview**: https://ui.aceternity.com/components/link-preview
+- **Glimpse**: https://www.kibo-ui.com/components/glimpse
 - **Link**: https://ktui.io/docs/link
 
 ## Navbars
@@ -259,11 +297,13 @@ A control that allows the user to toggle between checked and not checked.
 ## Color Picker
 A comprehensive color picker component for selecting colors with multiple input methods and presets.
 - **Color Picker**: https://www.hextaui.com/docs/ui/components/color-picker
+- **Color Picker**: https://www.kibo-ui.com/components/color-picker
 
 ## Combobox
 Autocomplete input and command palette with a list of suggestions.
 - **Combobox**: https://ui.shadcn.com/docs/components/combobox
 - **Combobox**: https://ui-x.junwen-k.dev/docs/components/combobox
+- **Combobox**: https://www.kibo-ui.com/components/combobox
 
 ## Control Group
 A component for grouping form controls like text inputs, buttons, selects and other elements into a single cohesive unit.
@@ -287,10 +327,6 @@ A date field component that allows users to enter and edit date.
 - **Date Time Field**: https://ui-x.junwen-k.dev/docs/components/date-time-field
 - **Date Time Range Field**: https://ui-x.junwen-k.dev/docs/components/date-time-range-field
 
-## Dropzone
-A dropzone is an area into which one or multiple objects can be dragged and dropped.
-- **Dropzone**: https://ui-x.junwen-k.dev/docs/components/dropzone
-
 ## Emoji Picker
 A emoji picker is a component that allows users to select an emoji from a list of emojis.
 - **Emoji Picker**: https://ui-x.junwen-k.dev/docs/components/emoji-picker
@@ -299,6 +335,8 @@ A emoji picker is a component that allows users to select an emoji from a list o
 A versatile file upload component with drag and drop support, progress tracking, and customizable styling.
 - **File Upload**: https://www.hextaui.com/docs/ui/components/file-upload
 - **File Uploader**: https://www.rigidui.com/docs/components/file-uploader
+- **Dropzone**: https://ui-x.junwen-k.dev/docs/components/dropzone
+- **Dropzone**: https://www.kibo-ui.com/components/dropzone
 
 ## Input
 
@@ -324,6 +362,7 @@ Accessible one-time password component with copy paste functionality.
 ### Tag Input
 A flexible input component for adding and managing multiple tags with support for keyboard navigation and customization.
 - **Tag Input**: https://www.hextaui.com/docs/ui/components/tag-input
+- **Tags**: https://www.kibo-ui.com/components/tags
 
 ### Password Input
 Password Input provides a way for the user to securely enter a password, with the ability to toggle the visibility of the password.
@@ -334,6 +373,10 @@ Password Input provides a way for the user to securely enter a password, with th
 ### Phone Input
 Phone Input allows user to enter phone number in E.164 format.
 - **Phone Input**: https://ui-x.junwen-k.dev/docs/components/phone-input
+
+### Rating
+A star rating component with keyboard navigation and hover effects.
+- **Rating**: https://www.kibo-ui.com/components/rating
 
 ## Label
 Renders an accessible label associated with controls.
@@ -346,6 +389,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
 - **Radio Group**: https://ktui.io/docs/radio-group
 - **Radio**: https://www.hextaui.com/docs/ui/components/radio
 - **Radio Field**: https://shuip.xyz/components/radio-field
+- **Choicebox**: https://www.kibo-ui.com/components/choicebox
 
 ## Search
 - **Smart Search**: https://www.rigidui.com/docs/components/smart-search
@@ -371,6 +415,7 @@ A control that allows the user to toggle between checked and not checked.
 - **Switch**: https://ui.shadcn.com/docs/components/switch
 - **Switch**: https://www.hextaui.com/docs/ui/components/switch
 - **Switch**: https://ktui.io/docs/switch
+- **Theme Switcher**: https://www.kibo-ui.com/components/theme-switcher
 
 ## Textarea
 Displays a form textarea or a component that looks like a textarea.
@@ -483,6 +528,7 @@ Displays a card with header, content, and footer.
 - **Cards**: https://ui.aceternity.com/components/cards
 - **Primitives Cards**: https://www.shsfui.com/primitives/cards
 - **Product Card**: https://ui.stackzero.co/docs/blocks/product-card
+- **Credit Card**: https://www.kibo-ui.com/components/credit-card
 
 ### 2. Card with Effects
 #### Effects & Animation 3D
@@ -528,6 +574,10 @@ Displays a card with header, content, and footer.
 ## Calendar & Event Scheduling
 - **Big Calendar**: https://github.com/lramos33/big-calendar
 - **Event Calendar**: https://originui.com/event-calendar
+- **Calendar**: https://www.kibo-ui.com/components/calendar
+- **Gantt**: https://www.kibo-ui.com/components/gantt
+- **Kanban**: https://www.kibo-ui.com/components/kanban
+- **Mini Calendar**: https://www.kibo-ui.com/components/mini-calendar
 
 ## Grid
 - **Bento Grid**: https://blocks.mvp-subha.me/docs/grids/bento
@@ -634,6 +684,7 @@ A carousel with motion and swipe built using Embla.
 - **Marquee Effect**: https://bundui.io/components/marquee-effect
 - **Skiper Marquee**: https://skiper-ui.com/docs/components/skiper-marquee
 - **Marquee**: https://www.hextaui.com/docs/ui/components/marquee
+- **Marquee**: https://www.kibo-ui.com/components/marquee
 
 ### 3. Slider
 - **Infinite Slider**: https://motion-primitives.com/docs/infinite-slider
@@ -665,6 +716,7 @@ A carousel with motion and swipe built using Embla.
 - **Magnetic Effect**: https://motion-primitives.com/docs/magnetic
 - **Following Pointer**: https://ui.aceternity.com/components/following-pointer
 - **Hover Border Gradient**: https://ui.aceternity.com/components/hover-border-gradient
+- **Cursor**: https://www.kibo-ui.com/components/cursor
 
 ## Progress Bar
 - **Scroll Progress Bar**: https://bundui.io/components/scroll-progress-bar
@@ -717,6 +769,7 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
 - **Dialog**: https://ui.shadcn.com/docs/components/dialog
 - **Stacked Dialog**: https://skiper-ui.com/docs/components/stacked-dialog
+- **Dialog Stack**: https://www.kibo-ui.com/components/dialog-stack
 - **Morphing Dialog**: https://motion-primitives.com/docs/morphing-dialog
 - **Basic Modals**: https://blocks.mvp-subha.me/docs/basic/modals
 - **Dialog**: https://originui.com/dialog
@@ -783,6 +836,7 @@ A popup that displays information related to an element when the element receive
 - **Animated Number**: https://skiper-ui.com/docs/components/animated-number
 - **Animated Number**: https://motion-primitives.com/docs/animated-number
 - **Sliding Number**: https://motion-primitives.com/docs/sliding-number
+- **Ticker**: https://www.kibo-ui.com/components/ticker
 
 ## Count Animation
 - **Count Animation**: https://bundui.io/components/count-animation
@@ -793,6 +847,9 @@ A popup that displays information related to an element when the element receive
 Beautiful charts. Built using Recharts. Copy and paste into your apps.
 - **Chart**: https://ui.shadcn.com/docs/components/chart
 
+## List
+- **List**: https://www.kibo-ui.com/components/list
+
 ## Sortable
 Sortable provides a way to sort items in a list or grid.
 - **Sortable**: https://ui-x.junwen-k.dev/docs/utilities/sortable
@@ -802,6 +859,7 @@ A responsive table component.
 - **Table**: https://ui.shadcn.com/docs/components/table
 - **Table**: https://originui.com/table
 - **Table**: https://www.hextaui.com/docs/ui/components/table
+- **Table**: https://www.kibo-ui.com/components/table
 
 ### Data Table
 Powerful table and datagrids built using TanStack Table.
@@ -809,7 +867,7 @@ Powerful table and datagrids built using TanStack Table.
 - **Data Table**: https://github.com/jacksonkasi1/tnks-data-table
 - **Data Table**: https://ktui.io/docs/datatable
 
-## Virtualizer
+### Virtualizer
 A virtualizer component that allows you to efficiently render large lists and tabular data.
 - **Virtualizer**: https://ui-x.junwen-k.dev/docs/utilities/virtualizer
 
