@@ -1,7 +1,8 @@
 {
-	"extends": "@forthtilliath/typescript-config/react-library.json",
+	"extends": "@forthtilliath/typescript-config/react.json",
 	"compilerOptions": {
-		"outDir": "dist"
+		"outDir": "dist",
+		"rootDir": "."
 	},
 	"include": ["src", "eslint.config.ts"],
 	"exclude": ["node_modules", "dist"],
