@@ -1,3 +1,5 @@
-import reactConfig from "@forthtilliath/eslint-config/react";
+import { defineConfig } from "eslint/config";
 
-export default reactConfig;
+import { reactConfig } from "@forthtilliath/eslint-config/react";
+
+export default defineConfig(reactConfig);

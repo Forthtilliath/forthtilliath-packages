@@ -1,7 +1,0 @@
-{
-  "extends": "@forthtilliath/typescript-config/base.json",
-  "include": ["src/**/*", "eslint-env.d.ts", "eslint*.config.ts"],
-  "exclude": [
-    "node_modules"
-  ]
-}

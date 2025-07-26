@@ -199,7 +199,7 @@ function Items({
         disabled={disabled}
         className={cn(
           accordionTriggerVariants({ variant, disabled }),
-          classNameTrigger,
+          classNameTrigger
         )}
       >
         {Icon ? (

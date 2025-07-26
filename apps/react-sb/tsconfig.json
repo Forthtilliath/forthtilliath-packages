@@ -1,12 +1,8 @@
 {
-	"extends": "@forthtilliath/typescript-config/react-storybook.json",
-	"compilerOptions": {
-		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
-	},
+	"extends": "@forthtilliath/typescript-config/react-library.json",
 	"include": [
 		"vite.config.ts",
-		"**/*.ts",
-		"**/*.tsx",
+		"src",
 		".storybook/**/*.ts",
 		".storybook/**/*.tsx"
 	],

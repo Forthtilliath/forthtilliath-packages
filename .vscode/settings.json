@@ -1,5 +1,14 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -10,5 +19,6 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "tailwindCSS.classFunctions": ["cva", "cn"]
 }

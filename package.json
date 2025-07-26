@@ -15,7 +15,7 @@
     "prettier": "^3.6.2",
     "taze": "^19.1.0",
     "tsup": "^8.5.0",
-    "turbo": "^2.5.4",
+    "turbo": "^2.5.5",
     "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.13.1",

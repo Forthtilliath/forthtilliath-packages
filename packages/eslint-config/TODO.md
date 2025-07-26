@@ -1,1 +1,0 @@
-- convertir les fichiers en .config.ts

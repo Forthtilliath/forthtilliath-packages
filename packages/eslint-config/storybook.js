@@ -1,7 +1,12 @@
-import type { Linter } from "eslint";
+import { reactConfig } from "./react.js";
 import storybook from "eslint-plugin-storybook";
 
-export const storybookConfig: Linter.Config[] = [
+/**
+ * A custom ESLint configuration for libraries that use React.
+ *
+ * @type {import("eslint").Linter.Config[]} */
+export const storybookConfig = [
+  ...reactConfig,
   ...storybook.configs["flat/recommended"],
   {
     ignores: ["!.storybook"],
@@ -17,5 +22,3 @@ export const storybookConfig: Linter.Config[] = [
     },
   },
 ];
-
-export default storybookConfig;

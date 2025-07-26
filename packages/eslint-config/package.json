@@ -4,37 +4,34 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		
-    "lint": "eslint . --max-warnings 0"
+		"lint": "eslint . --max-warnings 0"
 	},
 	"exports": {
-		".": "./eslint.config.ts",
-		"./next": "./eslint-next.config.ts",
-		"./react": "./eslint-react.config.ts",
-		"./storybook": "./eslint-storybook.config.ts",
-		"./vue": "./eslint-vue.config.ts"
+		".": "./base.js",
+		"./*": "./*.js"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.30.0",
+		"@eslint/js": "^9.32.0",
 		"@forthtilliath/typescript-config": "workspace:*",
+		"@next/eslint-plugin-next": "^15.4.4",
 		"@stylistic/eslint-plugin-js": "^4.4.1",
 		"@stylistic/eslint-plugin-ts": "^4.4.1",
-		"@typescript-eslint/parser": "^8.35.1",
+		"@typescript-eslint/parser": "^8.38.0",
 		"eslint": "catalog:",
-		"eslint-config-prettier": "^10.1.5",
+		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-import-x": "^4.16.1",
-		"eslint-plugin-n": "^17.20.0",
+		"eslint-plugin-n": "^17.21.0",
 		"eslint-plugin-only-warn": "^1.1.0",
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-react-refresh": "^0.4.20",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
-		"eslint-plugin-storybook": "^0.12.0",
-		"eslint-plugin-turbo": "^2.5.4",
-		"globals": "^16.2.0",
-		"jiti": "^2.4.2",
+		"eslint-plugin-storybook": "^9.0.18",
+		"eslint-plugin-turbo": "^2.5.5",
+		"globals": "^16.3.0",
+		"jiti": "^2.5.1",
 		"typescript": "catalog:",
-		"typescript-eslint": "^8.35.1",
-		"vue-eslint-parser": "^10.1.4"
+		"typescript-eslint": "^8.38.0",
+		"vue-eslint-parser": "^10.2.0"
 	}
 }
