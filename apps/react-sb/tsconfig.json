@@ -1,5 +1,5 @@
 {
-	"extends": "@forthtilliath/typescript-config/react-library.json",
+	"extends": "@forthtilliath/typescript-config/react.json",
 	"include": [
 		"vite.config.ts",
 		"src",
