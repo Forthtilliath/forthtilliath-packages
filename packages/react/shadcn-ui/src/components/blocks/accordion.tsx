@@ -120,6 +120,7 @@ interface Item {
   /** Title visible  */
   title: React.ReactNode;
   content: React.ReactNode;
+  /** Custom Icon with the title */
   icon?: LucideIcon;
   disabled?: boolean;
 }
@@ -128,6 +129,7 @@ interface Item {
 interface BaseProps {
   items: Item[];
   multiple?: boolean;
+  hideChevron?: boolean;
   className?: string;
   classNameItem?: string;
   classNameTrigger?: string;
@@ -169,6 +171,7 @@ function AccordionSingle({
   className,
   variant,
   size,
+  hideChevron,
   items,
   classNameItem,
   classNameTrigger,
@@ -185,6 +188,7 @@ function AccordionSingle({
       <Items
         variant={variant}
         size={size}
+        hideChevron={hideChevron}
         items={items}
         classNameItem={classNameItem}
         classNameTrigger={classNameTrigger}
@@ -199,6 +203,7 @@ function AccordionMultiple({
   className,
   variant,
   size,
+  hideChevron,
   items,
   classNameItem,
   classNameTrigger,
@@ -215,6 +220,7 @@ function AccordionMultiple({
       <Items
         variant={variant}
         size={size}
+        hideChevron={hideChevron}
         items={items}
         classNameItem={classNameItem}
         classNameTrigger={classNameTrigger}
@@ -226,6 +232,7 @@ function AccordionMultiple({
 }
 
 function Items({
+  hideChevron,
   items,
   classNameItem,
   classNameTrigger,
@@ -240,8 +247,9 @@ function Items({
       value={generateId(index)}
       className={cn(accordionItemVariants({ variant }), classNameItem)}
     >
-      <AccordionTrigger
+      <AccordionTrigger 
         disabled={disabled}
+        hideChevron={hideChevron}
         className={cn(
           accordionTriggerVariants({ variant, size, disabled }),
           classNameTrigger
@@ -267,3 +275,4 @@ function Items({
     </AccordionItem>
   ));
 }
+

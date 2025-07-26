@@ -12,15 +12,22 @@ const meta = {
   component: Accordion,
   argTypes: {
     collapsible: {
-      control: { type: "boolean" },
       description: "Use the ``collapsible`` prop to allow all items to close.",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
+      },
     },
     multiple: {
-      control: { type: "boolean" },
       description:
         "Set the ``type`` prop to ``multiple`` to enable opening multiple items at once.",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
+      },
     },
     variant: {
+      description: "Use the ``variant`` prop to change the visual style.",
       options: [
         "default",
         "outline",
@@ -31,15 +38,25 @@ const meta = {
         "highlight-active",
       ],
       control: { type: "select" },
+      table: {
+        type: { summary: "select" },
+        defaultValue: { summary: "default" },
+      },
     },
     size: {
+      description: "Use the ``size`` prop to change the size of the accordion.",
       options: ["sm", "default", "lg"],
       control: {
         type: "select",
         labels: { sm: "Small", lg: "Large", default: "Default" },
       },
+      table: {
+        type: { summary: "sm, default, lg" },
+        defaultValue: { summary: "default" },
+      },
     },
     items: {
+      description: "Use the ``items`` prop to specify the accordion items.",
       control: { type: "object", disable: true },
     },
   },
@@ -187,7 +204,11 @@ export const Multiple: Story = {
   },
 };
 
-
+export const NoChevron: Story = {
+  args: {
+    hideChevron: true,
+  },
+};
 
 // export const ShouldOnlyOpenOne: Story = {
 //   name: "when accordions are clicked, should open only one item at a time",
