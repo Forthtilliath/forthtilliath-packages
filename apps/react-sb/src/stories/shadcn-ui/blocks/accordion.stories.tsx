@@ -13,9 +13,12 @@ const meta = {
   argTypes: {
     collapsible: {
       control: { type: "boolean" },
+      description: "Use the ``collapsible`` prop to allow all items to close.",
     },
     multiple: {
       control: { type: "boolean" },
+      description:
+        "Set the ``type`` prop to ``multiple`` to enable opening multiple items at once.",
     },
     variant: {
       options: [
@@ -29,9 +32,19 @@ const meta = {
       ],
       control: { type: "select" },
     },
+    size: {
+      options: ["sm", "default", "lg"],
+      control: {
+        type: "select",
+        labels: { sm: "Small", lg: "Large", default: "Default" },
+      },
+    },
+    items: {
+      control: { type: "object", disable: true },
+    },
   },
   args: {
-    collapsible: true,
+    collapsible: false,
     multiple: false,
     items: [
       {
@@ -128,7 +141,7 @@ export const Disabled: Story = {
     defaultValue: "item-0",
     items: [
       {
-        title: "eeeeIs it accessible?",
+        title: "Is it accessible?",
         content: "Yes. It adheres to the WAI-ARIA design pattern.",
         icon: Contrast,
       },
@@ -148,6 +161,33 @@ export const Disabled: Story = {
     ],
   },
 };
+
+export const Sizes: Story = {
+  args: {
+    variant: "outline",
+    size: "sm",
+  },
+};
+
+/**
+ * Use the ``collapsible`` prop to allow all items to close.
+ */
+export const Collapsible: Story = {
+  args: {
+    collapsible: true,
+  },
+};
+
+/**
+ * Set the ``type`` prop to ``multiple`` to enable opening multiple items at once.
+ */
+export const Multiple: Story = {
+  args: {
+    multiple: true,
+  },
+};
+
+
 
 // export const ShouldOnlyOpenOne: Story = {
 //   name: "when accordions are clicked, should open only one item at a time",
