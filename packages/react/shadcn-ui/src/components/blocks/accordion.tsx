@@ -3,8 +3,8 @@ import {
   type AccordionMultipleProps,
   type AccordionSingleProps,
 } from "@radix-ui/react-accordion";
-import { cva, VariantProps } from "class-variance-authority";
-import { LucideProps } from "lucide-react";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { LucideProps } from "lucide-react";
 
 import {
   Accordion as AccordionPrimitive,

@@ -1,0 +1,10 @@
+{
+	"extends": "@forthtilliath/typescript-config/react.json",
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "."
+	},
+	"include": ["src", "eslint.config.ts"],
+	"exclude": ["node_modules", "dist"],
+	"types": ["vite/client"]
+}
