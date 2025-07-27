@@ -26,6 +26,21 @@ const meta = {
         defaultValue: { summary: "false" },
       },
     },
+    chevronAlignment: {
+      description:
+        "Use the ``chevronAlignment`` prop to change the alignment of the chevron.",
+      options: ["left", "right"],
+      control: {
+        type: "inline-radio",
+        labels: { left: "Left", right: "Right" },
+      },
+      table: {
+        type: {
+          summary: "left | right",
+        },
+        defaultValue: { summary: "right" },
+      },
+    },
     variant: {
       description: "Use the ``variant`` prop to change the visual style.",
       options: [

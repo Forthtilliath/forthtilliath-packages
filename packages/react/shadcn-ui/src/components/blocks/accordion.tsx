@@ -3,7 +3,7 @@ import {
   type AccordionMultipleProps,
   type AccordionSingleProps,
 } from "@radix-ui/react-accordion";
-import { cva } from "class-variance-authority";
+import { cva, VariantProps } from "class-variance-authority";
 
 import {
   Accordion as AccordionPrimitive,
@@ -93,11 +93,16 @@ const accordionTriggerVariants = cva("hover:no-underline group items-center", {
       false: "",
       true: "opacity-50",
     },
+    chevronAlignment: {
+      right: "",
+      left: "flex-row-reverse",
+    },
   },
   defaultVariants: {
     variant: "default",
     size: "default",
     disabled: false,
+    chevronAlignment: "right",
   },
 });
 
@@ -137,6 +142,9 @@ interface BaseProps {
   icon?: React.ReactNode;
   multiple?: boolean;
   hideChevron?: boolean;
+  chevronAlignment?: VariantProps<
+    typeof accordionTriggerVariants
+  >["chevronAlignment"];
   className?: string;
   classNameItem?: string;
   classNameTrigger?: string;
@@ -183,6 +191,7 @@ function AccordionSingle({
   variant,
   size,
   hideChevron,
+  chevronAlignment,
   items,
   icon,
   classNameItem,
@@ -201,6 +210,7 @@ function AccordionSingle({
         variant={variant}
         size={size}
         hideChevron={hideChevron}
+        chevronAlignment={chevronAlignment}
         items={items}
         icon={icon}
         classNameItem={classNameItem}
@@ -217,6 +227,7 @@ function AccordionMultiple({
   variant,
   size,
   hideChevron,
+  chevronAlignment,
   items,
   icon,
   classNameItem,
@@ -235,6 +246,7 @@ function AccordionMultiple({
         variant={variant}
         size={size}
         hideChevron={hideChevron}
+        chevronAlignment={chevronAlignment}
         items={items}
         icon={icon}
         classNameItem={classNameItem}
@@ -248,6 +260,7 @@ function AccordionMultiple({
 
 function Items({
   hideChevron,
+  chevronAlignment,
   items,
   icon,
   classNameItem,
@@ -264,11 +277,17 @@ function Items({
 
       const triggerItem = (
         <div className="flex-1 flex flex-col text-start">
-          <span data-slot="title" className="group-hover:underline">
+          <span
+            data-slot="title"
+            className="group-hover:underline [&_svg]:-order-1"
+          >
             {title}
           </span>
           {subtitle && (
-            <span data-slot="subtitle" className="text-muted-foreground font-normal">
+            <span
+              data-slot="subtitle"
+              className="text-muted-foreground font-normal"
+            >
               {subtitle}
             </span>
           )}
@@ -279,19 +298,29 @@ function Items({
         <AccordionItem
           key={index}
           value={generateId(index)}
-          className={cn(accordionItemVariants({ variant, size }), classNameItem)}
+          className={cn(
+            accordionItemVariants({ variant, size }),
+            classNameItem
+          )}
         >
           <AccordionTrigger
             disabled={disabled}
             hideChevron={hideChevron}
             className={cn(
-              accordionTriggerVariants({ variant, size, disabled }),
+              accordionTriggerVariants({
+                variant,
+                size,
+                disabled,
+                chevronAlignment,
+              }),
               classNameTrigger
             )}
           >
             {iconItem ? (
               <div className="flex items-center gap-3">
-                <span data-slot="icon" className="shrink-0">{iconItem}</span>
+                <span data-slot="icon" className="shrink-0">
+                  {iconItem}
+                </span>
                 {triggerItem}
               </div>
             ) : (
