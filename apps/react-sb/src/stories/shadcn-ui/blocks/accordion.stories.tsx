@@ -131,11 +131,10 @@ export const HighlightActive: Story = {
 
 export const Icon: Story = {
   args: {
-    variant: "default",
     defaultValue: "item-0",
     items: [
       {
-        title: "eeeeIs it accessible?",
+        title: "Is it accessible?",
         content: "Yes. It adheres to the WAI-ARIA design pattern.",
         icon: <Contrast />,
       },
@@ -157,7 +156,6 @@ export const Icon: Story = {
 
 export const Disabled: Story = {
   args: {
-    variant: "default",
     defaultValue: "item-0",
     items: [
       {
@@ -216,6 +214,65 @@ export const NoChevron: Story = {
 export const FAQExample: Story = {
   args: {
     icon: <HelpCircle className="h-4 w-4" />,
+  },
+};
+
+export const Subtitle: Story = {
+  args: {
+    defaultValue: "item-0",
+    items: [
+      {
+        title: "Is it accessible?",
+        subtitle: "Find out more about our accessibility features.",
+        content: "Yes. It adheres to the WAI-ARIA design pattern.",
+        icon: <Contrast color="green" />,
+      },
+      {
+        title: "Is it styled?",
+        subtitle: "Explore the aesthetic uniformity",
+        content:
+          "Yes. It comes with default styles that matches the other components' aesthetic.",
+        icon: <Palette color="purple" />,
+      },
+      {
+        title: "Is it animated?",
+        subtitle: "Animation customization options",
+        content:
+          "Yes. It's animated by default, but you can disable it if you prefer.",
+        icon: <Zap color="blue" />,
+      },
+    ],
+  },
+};
+
+export const Stylizable: Story = {
+  args: {
+    collapsible: true,
+    variant: "box-contained",
+    defaultValue: "item-0",
+    classNameTrigger:
+      "[&_[data-slot=title]]:no-underline [&_[data-slot=icon]]:group-hover:rotate-45 [&_[data-slot=icon]]:transition [&_[data-slot=icon]]:duration-100",
+    classNameItem: "bg-purple-300/50",
+    classNameContent: "ps-7",
+    items: [
+      {
+        title: "Is it accessible?",
+        content: "Yes. It adheres to the WAI-ARIA design pattern.",
+        icon: <Contrast size={16} />,
+      },
+      {
+        title: "Is it styled?",
+        content:
+          "Yes. It comes with default styles that matches the other components' aesthetic.",
+        icon: <Palette size={16} />,
+      },
+      {
+        title: "Is it animated?",
+        content:
+          "Yes. It's animated by default, but you can disable it if you prefer.",
+        icon: <Zap size={16} />,
+      },
+    ],
   },
 };
 
@@ -285,7 +342,6 @@ export const FAQExample: Story = {
 //     });
 //   },
 // };
-
 
 // https://www.heroui.com/docs/components/accordion
 // https://github.com/heroui-inc/heroui/blob/canary/packages/components/accordion/src/accordion-item.tsx

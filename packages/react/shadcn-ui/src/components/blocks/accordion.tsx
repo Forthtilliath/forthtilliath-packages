@@ -51,22 +51,28 @@ const accordionItemVariants = cva("", {
   variants: {
     variant: {
       default: "",
-      outline: "border rounded-md last:border-b",
-      box: "border border-b-0 last:border-b first:rounded-t-md last:rounded-b-md",
-      contained: "border-none rounded-md bg-secondary",
+      outline: "px-4 border rounded-md last:border-b",
+      box: "px-4 border border-b-0 last:border-b first:rounded-t-md last:rounded-b-md",
+      contained: "px-4 border-none rounded-md bg-secondary",
       "box-contained":
-        "last:border-none first:rounded-t-md last:rounded-b-md bg-muted",
-      tabs: "border-none rounded-md data-[state=open]:bg-secondary",
+        "px-4 last:border-none first:rounded-t-md last:rounded-b-md bg-muted",
+      tabs: "px-4 border-none rounded-md data-[state=open]:bg-secondary",
       "highlight-active":
-        "data-[state=open]:border-b-2 data-[state=open]:border-indigo-600 dark:data-[state=open]:border-indigo-500",
+        "px-4 data-[state=open]:border-b-2 data-[state=open]:border-indigo-600 dark:data-[state=open]:border-indigo-500",
+    },
+    size: {
+      sm: "px-2",
+      default: "",
+      lg: "px-6",
     },
   },
   defaultVariants: {
     variant: "default",
+    size: "default",
   },
 });
 
-const accordionTriggerVariants = cva("", {
+const accordionTriggerVariants = cva("hover:no-underline group items-center", {
   variants: {
     variant: {
       default: "",
@@ -79,9 +85,9 @@ const accordionTriggerVariants = cva("", {
         "data-[state=open]:text-indigo-600 dark:data-[state=open]:text-indigo-500",
     },
     size: {
-      sm: "py-3 px-4 text-sm",
-      default: "py-4 px-6 text-[15px]",
-      lg: "py-5 px-6 text-lg",
+      sm: "py-3 text-sm [&_[data-slot=subtitle]]:text-xs",
+      default: "py-4 text-[15px] [&_[data-slot=subtitle]]:text-sm",
+      lg: "py-5 text-lg [&_[data-slot=subtitle]]:text-base",
     },
     disabled: {
       false: "",
@@ -107,9 +113,9 @@ const accordionContentVariants = cva("", {
       "highlight-active": "",
     },
     size: {
-      sm: "px-4 pb-3 text-sm",
-      default: "px-6 pb-4 text-[15px]",
-      lg: "px-6 pb-5 text-lg",
+      sm: "pb-3 text-sm",
+      default: "pb-4 text-[15px]",
+      lg: "pb-5 text-lg",
     },
   },
   defaultVariants: { variant: "default", size: "default" },
@@ -117,6 +123,7 @@ const accordionContentVariants = cva("", {
 
 interface Item {
   title: React.ReactNode;
+  subtitle?: React.ReactNode;
   content: React.ReactNode;
   disabled?: boolean;
 }
@@ -250,42 +257,57 @@ function Items({
   size,
   generateId = (index) => `item-${String(index)}`,
 }: Omit<Props, "multiple" | "className">) {
-  return items.map(({ title, content, disabled, ...props }, index) => {
-    let iconItem = icon;
-    if ("icon" in props) iconItem = props.icon;
+  return items.map(
+    ({ title, subtitle, content, disabled, ...props }, index) => {
+      let iconItem = icon;
+      if ("icon" in props) iconItem = props.icon;
 
-    return (
-      <AccordionItem
-        key={index}
-        value={generateId(index)}
-        className={cn(accordionItemVariants({ variant }), classNameItem)}
-      >
-        <AccordionTrigger
-          disabled={disabled}
-          hideChevron={hideChevron}
-          className={cn(
-            accordionTriggerVariants({ variant, size, disabled }),
-            classNameTrigger
+      const triggerItem = (
+        <div className="flex-1 flex flex-col text-start">
+          <span data-slot="title" className="group-hover:underline">
+            {title}
+          </span>
+          {subtitle && (
+            <span data-slot="subtitle" className="text-muted-foreground font-normal">
+              {subtitle}
+            </span>
           )}
+        </div>
+      );
+
+      return (
+        <AccordionItem
+          key={index}
+          value={generateId(index)}
+          className={cn(accordionItemVariants({ variant, size }), classNameItem)}
         >
-          {iconItem ? (
-            <div className="flex items-center gap-3">
-              <span className="shrink-0">{iconItem}</span>
-              {title}
-            </div>
-          ) : (
-            title
-          )}
-        </AccordionTrigger>
-        <AccordionContent
-          className={cn(
-            accordionContentVariants({ variant, size }),
-            classNameContent
-          )}
-        >
-          {content}
-        </AccordionContent>
-      </AccordionItem>
-    );
-  });
+          <AccordionTrigger
+            disabled={disabled}
+            hideChevron={hideChevron}
+            className={cn(
+              accordionTriggerVariants({ variant, size, disabled }),
+              classNameTrigger
+            )}
+          >
+            {iconItem ? (
+              <div className="flex items-center gap-3">
+                <span data-slot="icon" className="shrink-0">{iconItem}</span>
+                {triggerItem}
+              </div>
+            ) : (
+              triggerItem
+            )}
+          </AccordionTrigger>
+          <AccordionContent
+            className={cn(
+              accordionContentVariants({ variant, size }),
+              classNameContent
+            )}
+          >
+            {content}
+          </AccordionContent>
+        </AccordionItem>
+      );
+    }
+  );
 }
