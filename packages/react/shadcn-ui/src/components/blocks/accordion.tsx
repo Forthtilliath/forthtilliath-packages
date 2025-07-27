@@ -4,6 +4,7 @@ import {
   type AccordionSingleProps,
 } from "@radix-ui/react-accordion";
 import { cva, VariantProps } from "class-variance-authority";
+import { LucideProps } from "lucide-react";
 
 import {
   Accordion as AccordionPrimitive,
@@ -145,6 +146,7 @@ interface BaseProps {
   chevronAlignment?: VariantProps<
     typeof accordionTriggerVariants
   >["chevronAlignment"];
+  customChevron?: React.ReactElement<LucideProps>;
   className?: string;
   classNameItem?: string;
   classNameTrigger?: string;
@@ -192,6 +194,7 @@ function AccordionSingle({
   size,
   hideChevron,
   chevronAlignment,
+  customChevron,
   items,
   icon,
   classNameItem,
@@ -211,6 +214,7 @@ function AccordionSingle({
         size={size}
         hideChevron={hideChevron}
         chevronAlignment={chevronAlignment}
+        customChevron={customChevron}
         items={items}
         icon={icon}
         classNameItem={classNameItem}
@@ -228,6 +232,7 @@ function AccordionMultiple({
   size,
   hideChevron,
   chevronAlignment,
+  customChevron,
   items,
   icon,
   classNameItem,
@@ -247,6 +252,7 @@ function AccordionMultiple({
         size={size}
         hideChevron={hideChevron}
         chevronAlignment={chevronAlignment}
+        customChevron={customChevron}
         items={items}
         icon={icon}
         classNameItem={classNameItem}
@@ -261,6 +267,7 @@ function AccordionMultiple({
 function Items({
   hideChevron,
   chevronAlignment,
+  customChevron,
   items,
   icon,
   classNameItem,
@@ -306,6 +313,7 @@ function Items({
           <AccordionTrigger
             disabled={disabled}
             hideChevron={hideChevron}
+            customChevron={customChevron}
             className={cn(
               accordionTriggerVariants({
                 variant,

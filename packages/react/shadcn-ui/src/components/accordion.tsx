@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, LucideProps } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
@@ -28,11 +28,21 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   hideChevron = false,
+  customChevron,
   children,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
   hideChevron?: boolean;
+  customChevron?: React.ReactElement<LucideProps>;
 }) {
+  const chevronProps = {
+    ...customChevron?.props,
+    className: cn(
+      "text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200",
+      customChevron?.props.className
+    ),
+  };
+
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
@@ -44,8 +54,10 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        {!hideChevron && (
-          <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+        {!hideChevron && React.isValidElement(customChevron) ? (
+          React.cloneElement(customChevron, chevronProps)
+        ) : (
+          <ChevronDownIcon {...chevronProps} />
         )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

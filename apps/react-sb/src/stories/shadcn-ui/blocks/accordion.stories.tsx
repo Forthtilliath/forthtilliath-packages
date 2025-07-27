@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Contrast, HelpCircle, Palette, Zap } from "lucide-react";
+import { Contrast, HelpCircle, Palette, PlusIcon, Zap } from "lucide-react";
 
 // import { expect, waitFor } from "storybook/test";
 import { Accordion } from "@forthtilliath/shadcn-ui/components/blocks/accordion";
@@ -291,6 +291,35 @@ export const Stylizable: Story = {
   },
 };
 
+export const CustomChevron: Story = {
+  args: {
+    customChevron: (
+      <PlusIcon
+        size={16}
+        className="pointer-events-none shrink-0 opacity-60 transition-transform duration-200"
+        aria-hidden="true"
+      />
+    ),
+    classNameTrigger:
+      "[&>svg>path:last-child]:origin-center [&>svg>path:last-child]:transition-all [&>svg>path:last-child]:duration-200 [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg>path:last-child]:rotate-90 [&[data-state=open]>svg>path:last-child]:opacity-0",
+  },
+};
+
+export const LeftCustomChevron: Story = {
+  args: {
+    chevronAlignment: "left",
+    customChevron: (
+      <PlusIcon
+        size={16}
+        className="pointer-events-none shrink-0 opacity-60 transition-transform duration-200"
+        aria-hidden="true"
+      />
+    ),
+    classNameTrigger:
+      "[&>svg>path:last-child]:origin-center [&>svg>path:last-child]:transition-all [&>svg>path:last-child]:duration-200 [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg>path:last-child]:rotate-90 [&[data-state=open]>svg>path:last-child]:opacity-0",
+  },
+};
+
 // Nested Accordions ? https://www.hextaui.com/docs/ui/components/accordion#nested-accordions
 
 // export const ShouldOnlyOpenOne: Story = {
@@ -360,3 +389,4 @@ export const Stylizable: Story = {
 
 // https://www.heroui.com/docs/components/accordion
 // https://github.com/heroui-inc/heroui/blob/canary/packages/components/accordion/src/accordion-item.tsx
+// https://originui.com/accordion
