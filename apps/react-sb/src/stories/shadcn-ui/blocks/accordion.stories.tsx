@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Contrast, Palette, Zap } from "lucide-react";
+import { Contrast, HelpCircle, Palette, Zap } from "lucide-react";
 
 // import { expect, waitFor } from "storybook/test";
 import { Accordion } from "@forthtilliath/shadcn-ui/components/blocks/accordion";
@@ -39,7 +39,10 @@ const meta = {
       ],
       control: { type: "select" },
       table: {
-        type: { summary: "select" },
+        type: {
+          summary:
+            "default | outline | box | contained | box-contained | tabs | highlight-active",
+        },
         defaultValue: { summary: "default" },
       },
     },
@@ -51,7 +54,7 @@ const meta = {
         labels: { sm: "Small", lg: "Large", default: "Default" },
       },
       table: {
-        type: { summary: "sm, default, lg" },
+        type: { summary: "sm | default | lg" },
         defaultValue: { summary: "default" },
       },
     },
@@ -134,19 +137,19 @@ export const Icon: Story = {
       {
         title: "eeeeIs it accessible?",
         content: "Yes. It adheres to the WAI-ARIA design pattern.",
-        icon: Contrast,
+        icon: <Contrast />,
       },
       {
         title: "Is it styled?",
         content:
           "Yes. It comes with default styles that matches the other components' aesthetic.",
-        icon: Palette,
+        icon: <Palette />,
       },
       {
         title: "Is it animated?",
         content:
           "Yes. It's animated by default, but you can disable it if you prefer.",
-        icon: Zap,
+        icon: <Zap />,
       },
     ],
   },
@@ -160,20 +163,20 @@ export const Disabled: Story = {
       {
         title: "Is it accessible?",
         content: "Yes. It adheres to the WAI-ARIA design pattern.",
-        icon: Contrast,
+        icon: <Contrast color="green" />,
       },
       {
         title: "Is it styled?",
         content:
           "Yes. It comes with default styles that matches the other components' aesthetic.",
-        icon: Palette,
+        icon: <Palette color="red" />,
         disabled: true,
       },
       {
         title: "Is it animated?",
         content:
           "Yes. It's animated by default, but you can disable it if you prefer.",
-        icon: Zap,
+        icon: <Zap color="green" />,
       },
     ],
   },
@@ -209,6 +212,14 @@ export const NoChevron: Story = {
     hideChevron: true,
   },
 };
+
+export const FAQExample: Story = {
+  args: {
+    icon: <HelpCircle className="h-4 w-4" />,
+  },
+};
+
+// Nested Accordions ? https://www.hextaui.com/docs/ui/components/accordion#nested-accordions
 
 // export const ShouldOnlyOpenOne: Story = {
 //   name: "when accordions are clicked, should open only one item at a time",
@@ -274,3 +285,7 @@ export const NoChevron: Story = {
 //     });
 //   },
 // };
+
+
+// https://www.heroui.com/docs/components/accordion
+// https://github.com/heroui-inc/heroui/blob/canary/packages/components/accordion/src/accordion-item.tsx

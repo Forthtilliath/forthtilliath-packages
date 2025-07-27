@@ -1,10 +1,9 @@
-import type React from "react";
+import React from "react";
 import {
   type AccordionMultipleProps,
   type AccordionSingleProps,
 } from "@radix-ui/react-accordion";
 import { cva } from "class-variance-authority";
-import type { LucideIcon } from "lucide-react";
 
 import {
   Accordion as AccordionPrimitive,
@@ -117,17 +116,18 @@ const accordionContentVariants = cva("", {
 });
 
 interface Item {
-  /** Title visible  */
   title: React.ReactNode;
   content: React.ReactNode;
-  /** Custom Icon with the title */
-  icon?: LucideIcon;
   disabled?: boolean;
 }
-//? New type ItemWithIcon ?
+
+interface ItemWithIcon extends Item {
+  icon: React.ReactNode;
+}
 
 interface BaseProps {
-  items: Item[];
+  items: Item[] | ItemWithIcon[];
+  icon?: React.ReactNode;
   multiple?: boolean;
   hideChevron?: boolean;
   className?: string;
@@ -160,6 +160,10 @@ type Props = SingleProps | MultipleProps;
  * @see https://www.shadcnui-blocks.com/components/accordion
  */
 export function Accordion({ multiple, ...props }: Props) {
+  if (props.icon && props.items.some((item) => "icon" in item && item.icon)) {
+    throw new Error("You can't use both icon and items.icon");
+  }
+
   return multiple ? (
     <AccordionMultiple {...(props as MultipleProps)} />
   ) : (
@@ -173,6 +177,7 @@ function AccordionSingle({
   size,
   hideChevron,
   items,
+  icon,
   classNameItem,
   classNameTrigger,
   classNameContent,
@@ -190,6 +195,7 @@ function AccordionSingle({
         size={size}
         hideChevron={hideChevron}
         items={items}
+        icon={icon}
         classNameItem={classNameItem}
         classNameTrigger={classNameTrigger}
         classNameContent={classNameContent}
@@ -205,6 +211,7 @@ function AccordionMultiple({
   size,
   hideChevron,
   items,
+  icon,
   classNameItem,
   classNameTrigger,
   classNameContent,
@@ -222,6 +229,7 @@ function AccordionMultiple({
         size={size}
         hideChevron={hideChevron}
         items={items}
+        icon={icon}
         classNameItem={classNameItem}
         classNameTrigger={classNameTrigger}
         classNameContent={classNameContent}
@@ -234,6 +242,7 @@ function AccordionMultiple({
 function Items({
   hideChevron,
   items,
+  icon,
   classNameItem,
   classNameTrigger,
   classNameContent,
@@ -241,38 +250,42 @@ function Items({
   size,
   generateId = (index) => `item-${String(index)}`,
 }: Omit<Props, "multiple" | "className">) {
-  return items.map(({ title, content, icon: Icon, disabled }, index) => (
-    <AccordionItem
-      key={index}
-      value={generateId(index)}
-      className={cn(accordionItemVariants({ variant }), classNameItem)}
-    >
-      <AccordionTrigger 
-        disabled={disabled}
-        hideChevron={hideChevron}
-        className={cn(
-          accordionTriggerVariants({ variant, size, disabled }),
-          classNameTrigger
-        )}
-      >
-        {Icon ? (
-          <div className="flex items-start gap-3">
-            <Icon />
-            {title}
-          </div>
-        ) : (
-          title
-        )}
-      </AccordionTrigger>
-      <AccordionContent
-        className={cn(
-          accordionContentVariants({ variant, size }),
-          classNameContent
-        )}
-      >
-        {content}
-      </AccordionContent>
-    </AccordionItem>
-  ));
-}
+  return items.map(({ title, content, disabled, ...props }, index) => {
+    let iconItem = icon;
+    if ("icon" in props) iconItem = props.icon;
 
+    return (
+      <AccordionItem
+        key={index}
+        value={generateId(index)}
+        className={cn(accordionItemVariants({ variant }), classNameItem)}
+      >
+        <AccordionTrigger
+          disabled={disabled}
+          hideChevron={hideChevron}
+          className={cn(
+            accordionTriggerVariants({ variant, size, disabled }),
+            classNameTrigger
+          )}
+        >
+          {iconItem ? (
+            <div className="flex items-center gap-3">
+              <span className="shrink-0">{iconItem}</span>
+              {title}
+            </div>
+          ) : (
+            title
+          )}
+        </AccordionTrigger>
+        <AccordionContent
+          className={cn(
+            accordionContentVariants({ variant, size }),
+            classNameContent
+          )}
+        >
+          {content}
+        </AccordionContent>
+      </AccordionItem>
+    );
+  });
+}
