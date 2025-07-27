@@ -9,6 +9,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
 - **Accordion**: https://www.hextaui.com/docs/ui/components/accordion
 - **Accordion**: https://ktui.io/docs/accordion
 - **Accordion**: https://www.shadcnui-blocks.com/components/accordion
+- **Accordion**: https://www.heroui.com/docs/components/accordion
 
 ## Alert
 Displays a callout for user attention.
@@ -17,6 +18,7 @@ Displays a callout for user attention.
 - **Alert**: https://www.hextaui.com/docs/ui/components/alert
 - **Alert**: https://ktui.io/docs/alert
 - **Alert**: https://www.shadcnui-blocks.com/components/alert
+- **Alert**: https://www.heroui.com/docs/components/alert
 - **Notification**: https://originui.com/notification
 - **Dismiss**: https://ktui.io/docs/dismiss
 
@@ -29,10 +31,14 @@ An image element with a fallback for representing the user.
 - **Avatar**: https://www.hextaui.com/docs/ui/components/avatar
 - **Avatar**: https://ktui.io/docs/avatar
 - **Avatar**: https://www.shadcnui-blocks.com/components/avatar
+- **Avatar**: https://www.heroui.com/docs/components/avatar
 
 ### Avatar Group
 Avatar Stack is a component that allows you to stack and overlap avatars.
 - **Avatar Stack**: https://www.kibo-ui.com/components/avatar-stack
+
+### Use Case
+- **User**: https://www.heroui.com/docs/components/user
 
 ## Badge
 Displays a badge or a component that looks like a badge.
@@ -41,6 +47,7 @@ Displays a badge or a component that looks like a badge.
 - **Badge**: https://www.hextaui.com/docs/ui/components/badge
 - **Badge**: https://ktui.io/docs/badge
 - **Badge**: https://www.shadcnui-blocks.com/components/badge
+- **Badge**: https://www.heroui.com/docs/components/badge
 - **Badge Group**: https://ui-x.junwen-k.dev/docs/components/badge-group
 - **Announcement**: https://www.kibo-ui.com/components/announcement
 - **Pill**: https://www.kibo-ui.com/components/pill
@@ -63,6 +70,7 @@ Displays a button or a component that looks like a button.
 - **Button**: https://www.hextaui.com/docs/ui/components/button
 - **Button**: https://ktui.io/docs/button
 - **Button**: https://www.shadcnui-blocks.com/components/button
+- **Button**: https://www.heroui.com/docs/components/button
 - **Icon Button**: https://www.shsfui.com/primitives/icon-buttons
 
 ### 2. Buttons with Effects
@@ -87,6 +95,7 @@ Displays a button or a component that looks like a button.
 ## Chip
 A compact, interactive element for displaying status, categories, or filters with optional icons and dismissible functionality.
 - **Chip**: https://www.hextaui.com/docs/ui/components/chip
+- **Chip**: https://www.heroui.com/docs/components/chip
 
 ## Collapsible
 An interactive component which expands/collapses a panel.
@@ -98,6 +107,7 @@ An interactive component which expands/collapses a panel.
 - **Code Blocks**: https://blocks.mvp-subha.me/docs/cards/code-blocks
 - **Code Block**: https://ui.aceternity.com/components/code-block
 - **Code Block**: https://www.kibo-ui.com/components/code-block
+- **Code**: https://www.heroui.com/docs/components/code
 
 ## Description List
 A description list, with terms and descriptions.
@@ -112,6 +122,8 @@ A File List component displays a list of files with details such as name, size, 
 - **File List**: https://ui-x.junwen-k.dev/docs/components/file-list
 
 ## Image
+
+- **Image**: https://www.heroui.com/docs/components/image
 
 ### Loading Image
 - **Image Loader**: https://www.rigidui.com/docs/components/image-loader
@@ -148,6 +160,7 @@ A keyboard key component for displaying keyboard shortcuts and key combinations.
 - **Kbd**: https://ui-x.junwen-k.dev/docs/components/kbd
 - **Kbd**: https://ktui.io/docs/kbd
 - **Kbd**: https://www.kibo-ui.com/components/kbd
+- **Kbd**: https://www.heroui.com/docs/components/kbd
 
 ## Loader
 - **Loader**: https://blocks.mvp-subha.me/docs/basic/loaders
@@ -155,6 +168,8 @@ A keyboard key component for displaying keyboard shortcuts and key combinations.
 - **Multi-step Loader**: https://ui.aceternity.com/components/multi-step-loader
 - **Spinner**: https://www.kibo-ui.com/components/spinner
 - **Spinner**: https://www.shadcnui-blocks.com/components/spinner
+- **Spinner**: https://www.heroui.com/docs/components/spinner
+- **Circular Progress**: https://www.heroui.com/docs/components/circular-progress
 
 ## Progress
 Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
@@ -162,6 +177,7 @@ Displays an indicator showing the completion progress of a task, typically displ
 - **Progress**: https://www.hextaui.com/docs/ui/components/progress
 - **Progress**: https://ktui.io/docs/progress
 - **Progress**: https://www.shadcnui-blocks.com/components/progress
+- **Progress**: https://www.heroui.com/docs/components/progress
 
 ## QR Code
 QR Code is a component that generates a QR code from a string.
@@ -189,17 +205,24 @@ Visually or semantically separates content.
 - **Separator**: https://www.hextaui.com/docs/ui/components/separator
 - **Separator**: https://ktui.io/docs/separator
 - **Separator**: https://www.shadcnui-blocks.com/components/separator
+- **Divider**: https://www.heroui.com/docs/components/divider
 
 ## Skeleton
 Use to show a placeholder while content is loading.
 - **Skeleton**: https://ui.shadcn.com/docs/components/skeleton
 - **Skeleton**: https://www.hextaui.com/docs/ui/components/skeleton
 - **Skeleton**: https://ktui.io/docs/skeleton
+- **Skeleton**: https://www.heroui.com/docs/components/skeleton
 - **Skeletons**: https://blocks.mvp-subha.me/docs/skeletons
 
 ## Snippet
 Snippet is a component that allows you to display and copy code in a tabbed interface.
 - **Snippet**: https://www.kibo-ui.com/components/snippet
+- **Snippet**: https://www.heroui.com/docs/components/snippet
+
+## Spacer
+Spacer is a component used to add space between components.
+- **Spacer**: https://www.heroui.com/docs/components/spacer
 
 ## Text Effects
 Styles for headings, paragraphs, lists...etc
@@ -269,6 +292,7 @@ Displays the path to the current resource using a hierarchy of links.
 - **Breadcrumb**: https://www.hextaui.com/docs/ui/components/breadcrumb
 - **Breadcrumb**: https://ktui.io/docs/breadcrumb
 - **Breadcrumb**: https://www.shadcnui-blocks.com/components/breadcrumb
+- **Breadcrumb**: https://www.heroui.com/docs/components/breadcrumbs
 
 ## Links
 For sighted users to preview content available behind a link.
@@ -276,6 +300,7 @@ For sighted users to preview content available behind a link.
 - **Link Preview**: https://ui.aceternity.com/components/link-preview
 - **Glimpse**: https://www.kibo-ui.com/components/glimpse
 - **Link**: https://ktui.io/docs/link
+- **Link**: https://www.heroui.com/docs/components/link
 
 ## Navbars
 A collection of links for navigating websites.
@@ -283,6 +308,7 @@ A collection of links for navigating websites.
 - **Navigation Menu**: https://www.hextaui.com/docs/ui/components/navigation-menu
 - **Navigation Menu**: https://www.shadcnui-blocks.com/components/navigation-menu
 - **Navbar**: https://originui.com/navbar
+- **Navbar**: https://www.heroui.com/docs/components/navbar
 - **Floating Navbar**: https://ui.aceternity.com/components/floating-navbar
 - **Navbar Menu**: https://ui.aceternity.com/components/navbar-menu
 - **Resizable Navbar**: https://ui.aceternity.com/components/resizable-navbar
@@ -296,9 +322,12 @@ A collection of links for navigating websites.
 - **Pagination**: https://www.hextaui.com/docs/ui/components/pagination
 - **Pagination**: https://ktui.io/docs/pagination
 - **Pagination**: https://www.shadcnui-blocks.com/components/pagination
+- **Pagination**: https://www.heroui.com/docs/components/pagination
 
 # Forms and User Controls
 *Components for data entry, selection, and user interaction.*
+
+- **Form**: https://www.heroui.com/docs/components/form
 
 ## Checkbox
 A control that allows the user to toggle between checked and not checked.
@@ -310,6 +339,8 @@ A control that allows the user to toggle between checked and not checked.
 - **Checkbox Field**: https://shuip.xyz/components/checkbox-field
 - **Checkbox**: https://www.shadcnui-blocks.com/components/checkbox
 - **Checkbox**: https://originui.com/checkbox
+- **Checkbox**: https://www.heroui.com/docs/components/checkbox
+- **Checkbox Group**: https://www.heroui.com/docs/components/checkbox-group
 - **Variant Selector**: https://ui.stackzero.co/docs/components/variant-selector/mutliple
 
 ## Color Picker
@@ -332,16 +363,22 @@ A date field component that allows users to enter and edit date.
 - **Calendar**: https://ui.shadcn.com/docs/components/calendar
 - **Calendar**: https://www.hextaui.com/docs/ui/components/calendar
 - **Calendar**: https://ui-x.junwen-k.dev/docs/components/calendar
+- **Calendar**: https://www.heroui.com/docs/components/calendar
+- **Range Calendar**: https://www.heroui.com/docs/components/range-calendar
 - **Date Field**: https://ui-x.junwen-k.dev/docs/components/date-field
+- **Date Input**: https://www.heroui.com/docs/components/date-input
+- **Date Picker**: https://www.heroui.com/docs/components/date-picker
 - **Date Picker**: https://ui.shadcn.com/docs/components/date-picker
 - **Date Picker**: https://originui.com/calendar-date-picker
 - **Date Picker**: https://www.hextaui.com/docs/ui/components/date-picker
 - **Date Picker**: https://ui-x.junwen-k.dev/docs/components/date-picker
+- **Date Range Picker**: https://www.heroui.com/docs/components/date-range-picker
 - **Date-Time Range Picker**: https://date-time-range-picker.vercel.app/
 - **Datetime Picker**: https://shadcn-extension.vercel.app/docs/datetime-picker
 - **Smart Datetime Input**: https://shadcn-extension.vercel.app/docs/smart-datetime-input
 - **Time Field**: https://ui-x.junwen-k.dev/docs/components/time-field
 - **Time**: https://ui-x.junwen-k.dev/docs/components/time
+- **Time Input**: https://www.heroui.com/docs/components/time-input
 - **Date Time Field**: https://ui-x.junwen-k.dev/docs/components/date-time-field
 - **Date Time Range Field**: https://ui-x.junwen-k.dev/docs/components/date-time-range-field
 
@@ -371,6 +408,7 @@ Displays a form input field or a component that looks like an input field.
 - **Input**: https://ui.rechesoares.com/docs/input
 - **Input**: https://www.shadcnui-blocks.com/components/input
 - **Input**: https://originui.com/input
+- **Input**: https://www.heroui.com/docs/components/input
 - **Input - Icon**: https://ui.stackzero.co/docs/components/input/icon
 
 ### Address
@@ -387,7 +425,12 @@ Accessible one-time password component with copy paste functionality.
 - **Input OTP**: https://ui.shadcn.com/docs/components/input-otp
 - **Input OTP**: https://www.hextaui.com/docs/ui/components/input-otp
 - **Input OTP**: https://www.shadcnui-blocks.com/components/input-otp
+- **Input OTP**: https://www.heroui.com/docs/components/input-otp
 - **Otp Input**: https://shadcn-extension.vercel.app/docs/otp-input
+
+### Number Input
+The numeric input component is designed for users to enter a number, and increase or decrease the value using stepper buttons
+- **Number Input**: https://www.heroui.com/docs/components/number-input
 
 ### Quantity Input
 A quantity input component with min, max validation
@@ -429,6 +472,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
 - **Radio Group**: https://ui.shadcn.com/docs/components/radio-group
 - **Radio Group**: https://ktui.io/docs/radio-group
 - **Radio Group**: https://www.shadcnui-blocks.com/components/radio-group
+- **Radio Group**: https://www.heroui.com/docs/components/radio-group
 - **Radio**: https://www.hextaui.com/docs/ui/components/radio
 - **Radio**: https://originui.com/radio
 - **Radio Field**: https://shuip.xyz/components/radio-field
@@ -449,6 +493,8 @@ Displays a list of options for the user to pick from—triggered by a button.
 - **Select**: https://ktui.io/docs/select
 - **Select**: https://www.shadcnui-blocks.com/components/select
 - **Select**: https://originui.com/select
+- **Select**: https://www.heroui.com/docs/components/select
+- **Autocomplete**: https://www.heroui.com/docs/components/autocomplete
 
 ### Multi Select
 A mulit select that lets you select multiple items from a list.
@@ -462,6 +508,7 @@ An input where the user selects a value from within a given range.
 - **Slider**: https://www.shadcnui-blocks.com/components/slider
 - **Slider**: https://originui.com/slider
 - **Slider**: https://www.shsfui.com/primitives/sliders
+- **Slider**: https://www.heroui.com/docs/components/slider
 
 ## Submit Button
 - **Submit Button**: https://shuip.xyz/components/submit-button
@@ -474,6 +521,7 @@ A control that allows the user to toggle between checked and not checked.
 - **Switch**: https://www.shadcnui-blocks.com/components/switch
 - **Switch**: https://originui.com/switch
 - **Switch**: https://www.shsfui.com/primitives/switches
+- **Switch**: https://www.heroui.com/docs/components/switch
 - **Theme Switcher**: https://www.kibo-ui.com/components/theme-switcher
 
 ## Textarea
@@ -483,6 +531,7 @@ Displays a form textarea or a component that looks like a textarea.
 - **Textarea**: https://ktui.io/docs/textarea
 - **Textarea**: https://www.shadcnui-blocks.com/components/textarea
 - **Textarea**: https://originui.com/textarea
+- **Textarea**: https://www.heroui.com/docs/components/textarea
 
 ## Wheel Picker
 iOS-like wheel picker for React with smooth inertia scrolling and infinite loop support.
@@ -589,6 +638,7 @@ Displays a card with header, content, and footer.
 - **Card**: https://www.hextaui.com/docs/ui/components/card
 - **Card**: https://ktui.io/docs/card
 - **Card**: https://www.shadcnui-blocks.com/components/card
+- **Card**: https://www.heroui.com/docs/components/card
 - **Basic Cards**: https://blocks.mvp-subha.me/docs/cards/basic-cards
 - **X Cards**: https://blocks.mvp-subha.me/docs/cards/x-cards
 - **Cards**: https://ui.aceternity.com/components/cards
@@ -684,6 +734,7 @@ Augments native scroll functionality for custom, cross-browser styling.
 - **Scroll-area**: https://ui.shadcn.com/docs/components/scroll-area
 - **Scroll Area**: https://www.hextaui.com/docs/ui/components/scroll-area
 - **Scrollable**: https://ktui.io/docs/scrollable
+- **Scroll Shadow**: https://www.heroui.com/docs/components/scroll-shadow
 
 ## Sections
 ### 1. About
@@ -812,6 +863,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
 - **Tabs**: https://www.hextaui.com/docs/ui/components/tabs
 - **Tabs**: https://ktui.io/docs/tabs
 - **Tabs**: https://www.shadcnui-blocks.com/components/tabs
+- **Tabs**: https://www.heroui.com/docs/components/tabs
 - **Expanded Tabs**: https://skiper-ui.com/docs/components/expanded-tabs
 - **Animated Background**: https://motion-primitives.com/docs/animated-background
 - **Transition Panel**: https://motion-primitives.com/docs/transition-panel
@@ -851,6 +903,7 @@ A drawer component for React.
 - **Drawer**: https://ui.shadcn.com/docs/components/drawer
 - **Drawer**: https://www.hextaui.com/docs/ui/components/drawer
 - **Drawer**: https://ktui.io/docs/drawer
+- **Drawer**: https://www.heroui.com/docs/components/drawer
 
 ## Dropdown Menu
 Displays a menu to the user — such as a set of actions or functions — triggered by a button.
@@ -858,6 +911,8 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 - **Dropdown Menu**: https://www.hextaui.com/docs/ui/components/dropdown-menu
 - **Dropdown Menu**: https://www.shadcnui-blocks.com/components/dropdown-menu
 - **Dropdown**: https://ktui.io/docs/dropdown
+- **Dropdown**: https://www.heroui.com/docs/components/dropdown
+- **Listbox**: https://www.heroui.com/docs/components/listbox
 
 ## Dropdrawer
 - **Dropdrawer**: https://dropdrawer.jiawei.dev/
@@ -871,6 +926,7 @@ A visually persistent menu common in desktop applications that provides quick ac
 A simple and accessible modal dialog component with smooth animations.
 - **Modal**: https://www.hextaui.com/docs/ui/components/modal
 - **Modal**: https://ktui.io/docs/modal
+- **Modal**: https://www.heroui.com/docs/components/modal
 
 ## Notification
 - **Notification Center**: https://www.rigidui.com/docs/components/notification-center
@@ -881,6 +937,7 @@ Displays rich content in a portal, triggered by a button.
 - **Popover Form**: https://skiper-ui.com/docs/components/popover-form
 - **Morphing Popover**: https://motion-primitives.com/docs/morphing-popover
 - **Popover**: https://originui.com/popover
+- **Popover**: https://www.heroui.com/docs/components/popover
 
 ## Sheet
 Extends the Dialog component to display content that complements the main content of the screen.
@@ -891,6 +948,7 @@ An opinionated toast component for React.
 - **Sonner**: https://ui.shadcn.com/docs/components/sonner
 - **Toast**: https://www.hextaui.com/docs/ui/components/toast
 - **Toast**: https://ktui.io/docs/toast
+- **Toast**: https://www.heroui.com/docs/components/toast
 
 ## Toolbar
 - **Dynamic Toolbar**: https://motion-primitives.com/docs/toolbar-dynamic
@@ -903,6 +961,7 @@ A popup that displays information related to an element when the element receive
 - **Tooltip**: https://www.hextaui.com/docs/ui/components/tooltip
 - **Tooltip**: https://ktui.io/docs/tooltip
 - **Tooltip**: https://www.shadcnui-blocks.com/components/tooltip
+- **Tooltip**: https://www.heroui.com/docs/components/tooltip
 - **Animated Tooltip**: https://ui.aceternity.com/components/animated-tooltip
 - **Interactive Tooltip**: https://blocks.mvp-subha.me/docs/creative/interactive-tooltip
 
@@ -935,6 +994,7 @@ A responsive table component.
 - **Table**: https://www.hextaui.com/docs/ui/components/table
 - **Table**: https://www.kibo-ui.com/components/table
 - **Table**: https://www.shadcnui-blocks.com/components/table
+- **Table**: https://www.heroui.com/docs/components/table
 
 ### Data Table
 Powerful table and datagrids built using TanStack Table.
