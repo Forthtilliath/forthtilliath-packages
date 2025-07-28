@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/forth-ui": "workspace:*",
     "@forthtilliath/react-ui": "workspace:*",
     "@forthtilliath/shadcn-ui": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",

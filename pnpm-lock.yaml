@@ -84,6 +84,9 @@ importers:
       '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@forthtilliath/forth-ui':
+        specifier: workspace:*
+        version: link:../../packages/react/forth-ui
       '@forthtilliath/react-ui':
         specifier: workspace:*
         version: link:../../packages/react/ui
