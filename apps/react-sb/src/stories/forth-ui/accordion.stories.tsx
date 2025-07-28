@@ -38,7 +38,7 @@ const meta = {
         type: {
           summary: "left | right",
         },
-        defaultValue: { summary: "right" },
+        defaultValue: { summary: '"right"' },
       },
     },
     variant: {
@@ -58,7 +58,7 @@ const meta = {
           summary:
             "default | outline | box | contained | box-contained | tabs | highlight-active",
         },
-        defaultValue: { summary: "default" },
+        defaultValue: { summary: '"default"' },
       },
     },
     size: {
@@ -70,12 +70,16 @@ const meta = {
       },
       table: {
         type: { summary: "sm | default | lg" },
-        defaultValue: { summary: "default" },
+        defaultValue: { summary: '"default"' },
       },
     },
     items: {
       description: "Use the ``items`` prop to specify the accordion items.",
       control: { type: "object", disable: true },
+      table: {
+        type: { summary: "Item[]" },
+        defaultValue: { summary: "Required" },
+      },
     },
   },
   args: {
@@ -104,32 +108,57 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Default accordion story with default styles.
+ *
+ * Notes:
+ * - The accordion is not collapsible by default.
+ * - Only one item can be open at a time.
+ * - Each item must have a title and a content.
+ */
 export const Default: Story = {};
 
+/**
+ * Use the `outline` variant to create an outline styled accordion.
+ * This variant displays a minimal outline style for the accordion items.
+ */
 export const Outline: Story = {
   args: {
     variant: "outline",
   },
 };
 
+/**
+ * Use the `box` variant to create a box styled accordion.
+ * This style wraps items in a box-like appearance.
+ */
 export const Box: Story = {
   args: {
     variant: "box",
   },
 };
 
+/**
+ * Use the `contained` variant for a filled style accordion.
+ */
 export const Contained: Story = {
   args: {
     variant: "contained",
   },
 };
 
+/**
+ * Use the `box-contained` variant for a boxed and filled style.
+ */
 export const BoxContained: Story = {
   args: {
     variant: "box-contained",
   },
 };
 
+/**
+ * Use the `tabs` variant for a tabbed style accordion.
+ */
 export const Tabs: Story = {
   args: {
     variant: "tabs",
@@ -137,6 +166,9 @@ export const Tabs: Story = {
   },
 };
 
+/**
+ * Use the `highlight-active` variant to highlight the active item.
+ */
 export const HighlightActive: Story = {
   args: {
     variant: "highlight-active",
@@ -144,6 +176,9 @@ export const HighlightActive: Story = {
   },
 };
 
+/**
+ * Accordion with items that include distinct icons.
+ */
 export const Icon: Story = {
   args: {
     defaultValue: "item-0",
@@ -169,6 +204,9 @@ export const Icon: Story = {
   },
 };
 
+/**
+ * Accordion with disabled items to demonstrate disabled state.
+ */
 export const Disabled: Story = {
   args: {
     defaultValue: "item-0",
@@ -195,6 +233,9 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * Small size variant of the accordion.
+ */
 export const Sizes: Story = {
   args: {
     variant: "outline",
@@ -203,7 +244,7 @@ export const Sizes: Story = {
 };
 
 /**
- * Use the ``collapsible`` prop to allow all items to close.
+ * Use the `collapsible` prop to allow all items to close when clicked.
  */
 export const Collapsible: Story = {
   args: {
@@ -212,26 +253,37 @@ export const Collapsible: Story = {
 };
 
 /**
- * Set the ``type`` prop to ``multiple`` to enable opening multiple items at once.
+ * Enable opening multiple items simultaneously with `multiple` set to `true`.
+ * The `defaultValue` prop must be an array of strings that match the value of the items.
  */
 export const Multiple: Story = {
   args: {
     multiple: true,
+    defaultValue: ["item-0", "item-2"],
   },
 };
 
+/**
+ * Hide the chevron icons in the accordion items.
+ */
 export const NoChevron: Story = {
   args: {
     hideChevron: true,
   },
 };
 
+/**
+ * Example of an FAQ accordion with an icon indicating help used for all items.
+ */
 export const FAQExample: Story = {
   args: {
     icon: <HelpCircle className="h-4 w-4" />,
   },
 };
 
+/**
+ * Accordion items include subtitles to offer more detailed context.
+ */
 export const Subtitle: Story = {
   args: {
     defaultValue: "item-0",
@@ -260,6 +312,9 @@ export const Subtitle: Story = {
   },
 };
 
+/**
+ * This story demonstrates deep customization of styles for the accordion component.
+ */
 export const Stylizable: Story = {
   args: {
     collapsible: true,
@@ -291,6 +346,13 @@ export const Stylizable: Story = {
   },
 };
 
+/**
+ *
+ */
+/**
+ * The right chevron icon can be customized using the `customChevron` prop.
+ * Note that you can still style the chevron icon using the `classNameTrigger` prop if needed.
+ */
 export const CustomChevron: Story = {
   args: {
     customChevron: (
@@ -305,6 +367,9 @@ export const CustomChevron: Story = {
   },
 };
 
+/**
+ * You can also pass a custom chevron icon and position it to the left using `chevronAlignment="left"`.
+ */
 export const LeftCustomChevron: Story = {
   args: {
     chevronAlignment: "left",
