@@ -422,6 +422,9 @@ importers:
       '@forthtilliath/shadcn-ui':
         specifier: workspace:*
         version: link:../shadcn-ui
+      '@forthtilliath/types':
+        specifier: workspace:*
+        version: link:../../types
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../typescript-config

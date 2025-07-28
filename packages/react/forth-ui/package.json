@@ -59,6 +59,7 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/shadcn-ui": "workspace:*",
+		"@forthtilliath/types": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@turbo/gen": "catalog:",
