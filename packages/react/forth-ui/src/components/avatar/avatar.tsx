@@ -3,30 +3,71 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@forthtilliath/shadcn-ui/components/avatar";
+import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-export type AvatarProps = React.ComponentProps<typeof AvatarPrimitive> & {
+import { StatusVariants, statusVariants } from "./variants";
+
+export type AvatarProps = Omit<
+  React.ComponentProps<typeof AvatarPrimitive>,
+  "className"
+> & {
   /**
    * The source URL of the image.
    */
   src: string;
   /**
-   * The alt text for the image.
+   * The alt text for the image (2 letters if possible).
    */
   alt: string;
   /**
    * The status of the user.
    */
-  status?: boolean;
+  status?: StatusVariants["status"];
+  /**
+   * Position of the status indicator.
+   */
+  position?: StatusVariants["position"];
+
+  className?: {
+    root?: string;
+    image?: string;
+    fallback?: string;
+    status?: string;
+    tooltip?: string;
+  };
 };
-export function Avatar({ src, alt, status, ...props }: AvatarProps) {
+
+/**
+ * An image element with a fallback for representing the user.
+ *
+ * @description Inspired from multiple sources, to make a consistent and reusable component.
+ * @version 0.0.1
+ * @author Forth
+ *
+ * @see https://ui.shadcn.com/docs/components/avatar
+ * @see https://bundui.io/components/avatar
+ */
+export function Avatar({
+  src,
+  alt,
+  status,
+  position,
+  className,
+  ...props
+}: AvatarProps) {
   return (
     <div className="relative">
-      <AvatarPrimitive {...props}>
-        <AvatarImage src={src} />
-        <AvatarFallback>{alt}</AvatarFallback>
+      <AvatarPrimitive className={cn("block", className?.root)} {...props}>
+        <AvatarImage src={src} className={className?.image} />
+        <AvatarFallback className={className?.fallback}>{alt}</AvatarFallback>
       </AvatarPrimitive>
       {status !== undefined && (
-        <div className="border-background absolute -end-0.5 -top-0.5 size-3 rounded-full border-2 bg-green-500">
+        <div
+          className={cn(
+            statusVariants({ status, position }),
+            className?.status
+          )}
+        >
           <span className="sr-only">Online</span>
         </div>
       )}
