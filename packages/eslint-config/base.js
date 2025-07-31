@@ -15,6 +15,9 @@ export const baseConfig = [
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
+    ignores: ["dist/**", "postcss.config.cjs", "postcss.config.mjs"],
+  },
+  {
     languageOptions: {
       parserOptions: {
         projectService: true,
