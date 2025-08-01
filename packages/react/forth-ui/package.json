@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "watch-tw": "npx @tailwindcss/cli -i ./src/globals.css -o ./dist/globals.css --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.0",
@@ -59,7 +60,7 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/shadcn-ui": "workspace:*",
-		"@forthtilliath/types": "workspace:*",
+    "@forthtilliath/types": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@turbo/gen": "catalog:",
@@ -71,6 +72,7 @@
     "typescript": "catalog:"
   },
   "exports": {
-    "./components/*": "./src/components/*/index.ts"
+    "./components/*": "./src/components/*/index.ts",
+    "./styles.css": "./dist/globals.css"
   }
 }
