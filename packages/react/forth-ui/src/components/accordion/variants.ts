@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-export const accordionRootVariants = cva("max-w-lg my-4 w-full", {
+export const accordionRootVariants = cva("max-w-lg my-4 w-full text-foreground", {
   variants: {
     variant: {
       default: "space-y-2",
