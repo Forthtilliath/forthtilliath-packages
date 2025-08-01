@@ -83,8 +83,6 @@ const meta = {
     },
   },
   args: {
-    collapsible: false,
-    multiple: false,
     items: [
       {
         title: "Is it accessible?",
