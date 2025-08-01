@@ -66,7 +66,8 @@ const meta = {
   },
   args: {
     src: "https://github.com/shadcn.png",
-    alt: "CN",
+    alt: "@shadcn",
+    fallback: "CN",
   },
   parameters: {
     layout: "centered",
@@ -83,8 +84,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * Use the `outline` variant to create an outline styled accordion.
- * This variant displays a minimal outline style for the accordion items.
+ * Use the `status` prop to add a status indicator to the avatar.
  */
 export const Status: Story = {
   args: {

@@ -5,6 +5,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/avatar";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { statusLabels } from "./constants";
 import { StatusVariants, statusVariants } from "./variants";
 
 export type AvatarProps = Omit<
@@ -16,9 +17,13 @@ export type AvatarProps = Omit<
    */
   src: string;
   /**
-   * The alt text for the image (2 letters if possible).
+   * The alt text for the image.
    */
-  alt: string;
+  alt?: string;
+  /**
+   * The fallback text for the image (2 letters if possible).
+   */
+  fallback: string;
   /**
    * The status of the user.
    */
@@ -28,13 +33,18 @@ export type AvatarProps = Omit<
    */
   position?: StatusVariants["position"];
 
-  className?: {
-    root?: string;
-    image?: string;
-    fallback?: string;
-    status?: string;
-    tooltip?: string;
-  };
+  /**
+   * Custom classes for each part of the component.
+   *
+   * - `root` is the root element of the component.
+   * - `image` is the image element.
+   * - `fallback` is the fallback element.
+   * - `status` is the status element.
+   * - `tooltip` is the tooltip element.
+   */
+  className?: Partial<
+    Record<"root" | "image" | "fallback" | "status" | "tooltip", string>
+  >;
 };
 
 /**
@@ -50,6 +60,7 @@ export type AvatarProps = Omit<
 export function Avatar({
   src,
   alt,
+  fallback,
   status,
   position,
   className,
@@ -58,17 +69,19 @@ export function Avatar({
   return (
     <div className="relative">
       <AvatarPrimitive className={cn("block", className?.root)} {...props}>
-        <AvatarImage src={src} className={className?.image} />
-        <AvatarFallback className={className?.fallback}>{alt}</AvatarFallback>
+        <AvatarImage src={src} alt={alt} className={className?.image} />
+        <AvatarFallback className={className?.fallback}>
+          {fallback}
+        </AvatarFallback>
       </AvatarPrimitive>
-      {status !== undefined && (
+      {status && (
         <div
           className={cn(
             statusVariants({ status, position }),
             className?.status
           )}
         >
-          <span className="sr-only">Online</span>
+          <span className="sr-only">{statusLabels[status]}</span>
         </div>
       )}
     </div>
