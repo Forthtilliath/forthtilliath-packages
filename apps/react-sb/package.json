@@ -19,10 +19,12 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/forth-ui": "workspace:*",
+    "@forthtilliath/react-hooks": "workspace:*",
     "@forthtilliath/react-ui": "workspace:*",
     "@forthtilliath/shadcn-ui": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@storybook/addon-docs": "^9.1.0",
+    "@storybook/addon-themes": "^9.1.1",
     "@storybook/react-vite": "9.1.0",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
