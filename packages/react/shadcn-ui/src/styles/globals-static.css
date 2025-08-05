@@ -68,4 +68,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Storybook Preview Container */
+  .docs-story {
+    @apply bg-background;
+  }
 }

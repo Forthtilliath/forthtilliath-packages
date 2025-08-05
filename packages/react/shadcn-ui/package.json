@@ -73,6 +73,7 @@
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./globals.css": "./src/styles/globals.css",
+    "./globals-static.css": "./src/styles/globals-static.css",
     "./themes/*.css": "./src/styles/theme-*.css"
   }
 }
