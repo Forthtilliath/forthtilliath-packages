@@ -9,12 +9,3 @@ export const decoratorHtml = withThemeByClassName<ReactRenderer>({
   defaultTheme: "light",
   parentSelector: "html",
 });
-
-export const decoratorStory = withThemeByClassName<ReactRenderer>({
-  themes: {
-    light: "bg-background",
-    dark: "bg-background",
-  },
-  defaultTheme: "light",
-  parentSelector: ".docs-story",
-});
