@@ -4,3 +4,7 @@ export const statusLabels = {
   away: "Away",
   busy: "Busy",
 };
+
+export type Shape = "square" | "rounded" | "circle";
+
+export const DEFAULT_SHAPE: Shape = "circle";

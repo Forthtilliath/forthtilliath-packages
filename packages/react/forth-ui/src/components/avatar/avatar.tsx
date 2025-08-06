@@ -5,8 +5,14 @@ import {
 } from "@forthtilliath/shadcn-ui/components/avatar";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { statusLabels } from "./constants";
-import { StatusVariants, statusVariants } from "./variants";
+import { Shape, statusLabels } from "./constants";
+import {
+  avatarVariants,
+  FallbackVariants,
+  fallbackVariants,
+  StatusVariants,
+  statusVariants,
+} from "./variants";
 
 export type AvatarProps = Omit<
   React.ComponentProps<typeof AvatarPrimitive>,
@@ -24,6 +30,18 @@ export type AvatarProps = Omit<
    * The fallback text for the image (2 letters if possible).
    */
   fallback: string;
+  /**
+   * The variant of the fallback box.
+   */
+  fallbackVariant?: FallbackVariants["fallbackVariant"];
+  /**
+   * The shape of the avatar.
+   */
+  shape?: Shape;
+  /**
+   * Whether to show a ring around the avatar.
+   */
+  ring?: boolean;
   /**
    * The status of the user.
    */
@@ -56,11 +74,15 @@ export type AvatarProps = Omit<
  *
  * @see https://ui.shadcn.com/docs/components/avatar
  * @see https://bundui.io/components/avatar
+ * @see https://www.shadcnui-blocks.com/components/avatar
  */
 export function Avatar({
   src,
   alt,
   fallback,
+  fallbackVariant,
+  shape,
+  ring,
   status,
   position,
   className,
@@ -68,9 +90,21 @@ export function Avatar({
 }: AvatarProps) {
   return (
     <div className="relative">
-      <AvatarPrimitive className={cn("block", className?.root)} {...props}>
+      <AvatarPrimitive
+        className={cn(
+          "block",
+          avatarVariants({ shape, ring }),
+          className?.root
+        )}
+        {...props}
+      >
         <AvatarImage src={src} alt={alt} className={className?.image} />
-        <AvatarFallback className={className?.fallback}>
+        <AvatarFallback
+          className={cn(
+            fallbackVariants({ fallbackVariant, shape }),
+            className?.fallback
+          )}
+        >
           {fallback}
         </AvatarFallback>
       </AvatarPrimitive>

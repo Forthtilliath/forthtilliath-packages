@@ -43,7 +43,10 @@ const meta = {
     position: {
       description: "The position of the status indicator.",
       table: {
-        type: { summary: "top-right | bottom-right | bottom-left | top-left | undefined" },
+        type: {
+          summary:
+            "top-right | bottom-right | bottom-left | top-left | undefined",
+        },
       },
       options: [
         undefined,
@@ -78,10 +81,43 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+// const
+
 /**
  * Default avatar with default styles.
  */
 export const Default: Story = {};
+
+/**
+ * Display a fallback character instead of an image.
+ */
+export const Fallback: Story = {
+  args: {
+    src: undefined,
+  },
+};
+
+const decorator = (args: Story["args"]) => {
+  return function DecoratedStory(Story: (props: Story) => React.ReactNode) {
+    return (
+      <div className="flex gap-2">
+        <Story args={{ ...meta.args, ...args, shape: "square" }} />
+        <Story args={{ ...meta.args, ...args, shape: "rounded" }} />
+        <Story args={{ ...meta.args, ...args, shape: "circle" }} />
+      </div>
+    );
+  };
+};
+
+// Ajouter des tableaux d'args et lister chaque possibilité
+
+export const Shape: Story = {
+  decorators: [
+    decorator({
+      src: undefined,
+    }),
+  ],
+};
 
 /**
  * Use the `status` prop to add a status indicator to the avatar.
@@ -90,5 +126,17 @@ export const Status: Story = {
   args: {
     status: "away",
     position: "bottom-right",
+  },
+};
+
+/**
+ * Use the `status` prop to add a status indicator to the avatar.
+ */
+export const WithRing: Story = {
+  args: {
+    ring: true,
+    className: {
+      root: "ring-red-500",
+    },
   },
 };
