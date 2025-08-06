@@ -1,7 +1,7 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
 import { ReactRenderer } from "@storybook/react-vite";
 
-export const decoratorHtml = withThemeByClassName<ReactRenderer>({
+export const twDecoratorHtml = withThemeByClassName<ReactRenderer>({
   themes: {
     light: "",
     dark: "dark",

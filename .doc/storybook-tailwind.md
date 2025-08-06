@@ -27,7 +27,10 @@ import "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4";
 
 import { decoratorHtml, decoratorStory } from "./decorators";
 
+// Add a background for the preview's box
 import "@forthtilliath/shadcn-ui/globals-static.css";
+// Include global styles
+import "@forthtilliath/forth-ui/styles/globals.css";
 
 const preview: Preview = {
   parameters: {
