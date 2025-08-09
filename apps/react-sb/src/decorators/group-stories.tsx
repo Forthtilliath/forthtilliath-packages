@@ -12,7 +12,7 @@ export function decoratorGroupStories<P extends Record<string, unknown>>(
   variants: { [K in keyof P]?: P[K][] }
 ): (Story: StoryFn<P>) => React.JSX.Element {
   return function DecoratedStory(Story: StoryFn<P>) {
-    const stories = produitCartesienObjets(variants);
+    const stories = cartesianProductOfObjects(variants);
 
     return (
       <div className="flex flex-wrap gap-4">
@@ -30,15 +30,13 @@ export function decoratorGroupStories<P extends Record<string, unknown>>(
   };
 }
 
-function produitCartesienObjets<T extends { [K in keyof T]?: T[K] }>(
+function cartesianProductOfObjects<T extends { [K in keyof T]?: T[K] }>(
   options: T
 ): { [K in keyof T]: NonNullable<T[K]> }[] {
-  const proprietes = Object.entries<T[keyof T][]>(
-    options as Record<string, T[keyof T][]>
-  );
-  if (proprietes.length === 0) return [];
+  const props = Object.entries(options as Record<string, T[keyof T][]>);
+  if (props.length === 0) return [];
 
-  return proprietes.reduce<{ [K in keyof T]: NonNullable<T[K]> }[]>(
+  return props.reduce<{ [K in keyof T]: NonNullable<T[K]> }[]>(
     (acc, [key, values]) => {
       return acc.flatMap<{ [K in keyof T]: NonNullable<T[K]> }>((obj) => {
         return values.map((value) => ({
