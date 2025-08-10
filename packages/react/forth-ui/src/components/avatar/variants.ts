@@ -29,6 +29,7 @@ export const statusVariants = cva("", {
       busy: "bg-red-500",
     } satisfies Record<keyof typeof statusLabels, string>,
     position: {
+      // TODO: Fix position en fonction de la taille de l'avatar (pour size-10 la position est bonne, mais pas pour plus)
       "top-right": "absolute right-0 top-0",
       "bottom-right": "absolute right-0 bottom-0",
       "top-left": "absolute left-0 top-0",

@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Avatar } from "@forthtilliath/forth-ui/components/avatar";
+import {
+  Avatar,
+  type AvatarProps,
+} from "@forthtilliath/forth-ui/components/avatar";
+
+import { decoratorGroupStories } from "../../decorators/group-stories";
 
 /**
  * A vertically stacked set of interactive headings that each reveal a section of content.
@@ -9,20 +14,6 @@ const meta = {
   title: "forth-ui/Avatar",
   component: Avatar,
   argTypes: {
-    src: {
-      description: "The source URL of the image.",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Required" },
-      },
-    },
-    alt: {
-      description: "The alt text for the image (2 letters if possible).",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Required" },
-      },
-    },
     status: {
       description: "The status of the user.",
       table: {
@@ -42,11 +33,13 @@ const meta = {
     },
     position: {
       description: "The position of the status indicator.",
+      if: { arg: "status", truthy: true },
       table: {
         type: {
           summary:
             "top-right | bottom-right | bottom-left | top-left | undefined",
         },
+        defaultValue: { summary: "bottom-right" },
       },
       options: [
         undefined,
@@ -66,8 +59,26 @@ const meta = {
         },
       },
     },
+    shape: {
+      options: ["square", "rounded", "circle"],
+      control: {
+        type: "radio",
+        labels: {
+          square: "Square",
+          rounded: "Rounded",
+          circle: "Circle",
+        },
+      },
+      table: {
+        type: {
+          summary: "square | rounded | circle",
+        },
+        defaultValue: { summary: "circle" },
+      },
+    },
   },
   args: {
+    className: { root: "size-16" },
     src: "https://github.com/shadcn.png",
     alt: "@shadcn",
     fallback: "CN",
@@ -97,25 +108,18 @@ export const Fallback: Story = {
   },
 };
 
-const decorator = (args: Story["args"]) => {
-  return function DecoratedStory(Story: (props: Story) => React.ReactNode) {
-    return (
-      <div className="flex gap-2">
-        <Story args={{ ...meta.args, ...args, shape: "square" }} />
-        <Story args={{ ...meta.args, ...args, shape: "rounded" }} />
-        <Story args={{ ...meta.args, ...args, shape: "circle" }} />
-      </div>
-    );
-  };
-};
-
-// Ajouter des tableaux d'args et lister chaque possibilité
-
 export const Shape: Story = {
   decorators: [
-    decorator({
-      src: undefined,
-    }),
+    decoratorGroupStories<AvatarProps>(
+      {
+        ...meta.args,
+        className: { root: "size-16" },
+      },
+      {
+        src: ["https://github.com/shadcn.png", undefined],
+        shape: ["square", "rounded", "circle"],
+      }
+    ),
   ],
 };
 
@@ -139,4 +143,25 @@ export const WithRing: Story = {
       root: "ring-red-500",
     },
   },
+};
+
+export const WithRing2: Story = {
+  decorators: [
+    decoratorGroupStories<AvatarProps>(
+      {
+        ...meta.args,
+        ring: true,
+      },
+      {
+        src: ["https://github.com/shadcn.png", undefined],
+        shape: ["square", "rounded", "circle"],
+        className: [
+          undefined,
+          {
+            root: "ring-red-500",
+          },
+        ],
+      }
+    ),
+  ],
 };

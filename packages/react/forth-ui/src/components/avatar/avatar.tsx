@@ -21,17 +21,18 @@ export type AvatarProps = Omit<
   /**
    * The source URL of the image.
    */
-  src: string;
+  src?: string;
   /**
    * The alt text for the image.
    */
   alt?: string;
   /**
-   * The fallback text for the image (2 letters if possible).
+   * The fallback text for the image (3 letters max if possible).
    */
   fallback: string;
   /**
    * The variant of the fallback box.
+   * @type {string}
    */
   fallbackVariant?: FallbackVariants["fallbackVariant"];
   /**
@@ -39,7 +40,8 @@ export type AvatarProps = Omit<
    */
   shape?: Shape;
   /**
-   * Whether to show a ring around the avatar.
+   * Use the `ring` prop to add a ring to the avatar.
+   * @default false
    */
   ring?: boolean;
   /**

@@ -22,6 +22,7 @@
     "@forthtilliath/react-hooks": "workspace:*",
     "@forthtilliath/react-ui": "workspace:*",
     "@forthtilliath/shadcn-ui": "workspace:*",
+    "@forthtilliath/types": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@storybook/addon-docs": "^9.1.1",
     "@storybook/addon-themes": "^9.1.1",

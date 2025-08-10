@@ -15,6 +15,7 @@
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
+		"@types/react": "catalog:",
 		"@forthtilliath/eslint-config": "workspace:*",
 		"@forthtilliath/typescript-config": "workspace:*",
 		"typescript": "catalog:"

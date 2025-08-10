@@ -96,6 +96,9 @@ importers:
       '@forthtilliath/shadcn-ui':
         specifier: workspace:*
         version: link:../../packages/react/shadcn-ui
+      '@forthtilliath/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -710,6 +713,9 @@ importers:
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.1.9
       typescript:
         specifier: 'catalog:'
         version: 5.9.2
