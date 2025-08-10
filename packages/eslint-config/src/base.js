@@ -1,16 +1,16 @@
 import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
+import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
-// import onlyWarn from "eslint-plugin-only-warn";
-import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 
 /**
  * A shared ESLint configuration for the repository.
  *
  * @type {import("eslint").Linter.Config[]}
  * */
-export const baseConfig = [
+export const baseConfig = defineConfig([
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -81,4 +81,4 @@ export const baseConfig = [
     ignores: ["dist/**"],
   },
   eslintConfigPrettier,
-];
+]);

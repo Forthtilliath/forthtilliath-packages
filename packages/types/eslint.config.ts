@@ -1,3 +1,3 @@
-import config from "@forthtilliath/eslint-config";
+import { baseConfig } from "@forthtilliath/eslint-config";
 
-export default config;
+export default baseConfig;

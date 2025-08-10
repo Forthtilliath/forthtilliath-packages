@@ -4,11 +4,14 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
+		"dev": "tsc --watch",
+		"build": "tsc",
+		"check-types": "tsc --noEmit",
 		"lint": "eslint . --max-warnings 0"
 	},
 	"exports": {
-		".": "./base.js",
-		"./*": "./*.js"
+		".": "./dist/src/base.js",
+		"./*": "./dist/src/*.js"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.33.0",

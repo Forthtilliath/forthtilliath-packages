@@ -1,10 +1,12 @@
 import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginReact from "eslint-plugin-react";
-import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
+import { defineConfig } from "eslint/config";
+import eslintConfigPrettier from "eslint-config-prettier";
+import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+
 import { baseConfig } from "./base.js";
 
 /**
@@ -12,7 +14,7 @@ import { baseConfig } from "./base.js";
  *
  * @type {import("eslint").Linter.Config[]}
  * */
-export const nextJsConfig = [
+export const nextJsConfig = defineConfig([
   ...baseConfig,
   js.configs.recommended,
   eslintConfigPrettier,
@@ -46,4 +48,4 @@ export const nextJsConfig = [
       "react/react-in-jsx-scope": "off",
     },
   },
-];
+]);

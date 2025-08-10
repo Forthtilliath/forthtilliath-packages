@@ -1,23 +1,23 @@
 {
-	"name": "@forthtilliath/types",
-	"version": "0.1.0",
-	"type": "module",
-	"exports": {
-		".": "./src/index.ts",
-		"./array": "./src/array/index.ts",
-		"./object": "./src/object/index.ts",
-		"./helpers": "./src/helpers/index.ts"
-	},
-	"scripts": {
-		"dev": "tsc --watch",
-		"build": "tsc",
-		"check-types": "tsc --noEmit",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
-	},
-	"devDependencies": {
-		"@types/react": "catalog:",
-		"@forthtilliath/eslint-config": "workspace:*",
-		"@forthtilliath/typescript-config": "workspace:*",
-		"typescript": "catalog:"
-	}
+  "name": "@forthtilliath/types",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.ts",
+    "./array": "./dist/array/index.ts",
+    "./object": "./dist/object/index.ts",
+    "./helpers": "./dist/helpers/index.ts"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
 }

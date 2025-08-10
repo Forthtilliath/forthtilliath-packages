@@ -1,11 +1,13 @@
-import { reactConfig } from "./react.js";
+import { defineConfig } from "eslint/config";
 import storybook from "eslint-plugin-storybook";
+
+import { reactConfig } from "./react.js";
 
 /**
  * A custom ESLint configuration for libraries that use React.
  *
  * @type {import("eslint").Linter.Config[]} */
-export const storybookConfig = [
+export const storybookConfig = defineConfig([
   ...reactConfig,
   ...storybook.configs["flat/recommended"],
   {
@@ -21,4 +23,4 @@ export const storybookConfig = [
       "storybook/default-exports": "off",
     },
   },
-];
+]);
