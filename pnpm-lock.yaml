@@ -22,7 +22,7 @@ catalogs:
       specifier: ^19.1.7
       version: 19.1.7
     eslint:
-      specifier: ^9.33.0
+      specifier: 9.33.0
       version: 9.33.0
     react:
       specifier: ^19.1.1
@@ -713,6 +713,9 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 19.1.9
+      eslint:
+        specifier: 'catalog:'
+        version: 9.33.0(jiti@2.5.1)
       typescript:
         specifier: 'catalog:'
         version: 5.9.2
@@ -7215,7 +7218,7 @@ snapshots:
 
   '@types/minimatch@6.0.0':
     dependencies:
-      minimatch: 9.0.5
+      minimatch: 10.0.3
 
   '@types/node@12.20.55': {}
 

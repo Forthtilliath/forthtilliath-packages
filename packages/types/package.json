@@ -12,12 +12,14 @@
     "dev": "tsc --watch",
     "build": "tsc",
     "check-types": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "@types/react": "catalog:",
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
     "typescript": "catalog:"
   }
 }

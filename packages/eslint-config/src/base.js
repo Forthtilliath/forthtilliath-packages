@@ -72,13 +72,5 @@ export const baseConfig = defineConfig([
       "turbo/no-undeclared-env-vars": "error",
     },
   },
-  // {
-  //   plugins: {
-  //     onlyWarn,
-  //   },
-  // },
-  {
-    ignores: ["dist/**"],
-  },
   eslintConfigPrettier,
 ]);

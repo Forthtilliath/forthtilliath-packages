@@ -1,3 +1,4 @@
+export * from "./array/index.js";
 export * from "./helpers/index.js";
 export * from "./object/index.js";
 

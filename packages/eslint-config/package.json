@@ -10,8 +10,8 @@
 		"lint": "eslint . --max-warnings 0"
 	},
 	"exports": {
-		".": "./dist/src/base.js",
-		"./*": "./dist/src/*.js"
+		".": "./dist/base.js",
+		"./*": "./dist/*.js"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.33.0",
