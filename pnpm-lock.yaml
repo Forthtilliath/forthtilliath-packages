@@ -455,6 +455,9 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.1.7(@types/react@19.1.9)
+      eslint:
+        specifier: 'catalog:'
+        version: 9.33.0(jiti@2.5.1)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.11

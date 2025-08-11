@@ -68,6 +68,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
   /* Storybook Preview Container */
   .docs-story {
     @apply bg-background;
