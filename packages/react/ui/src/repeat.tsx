@@ -29,20 +29,12 @@ export interface RepeatProps {
  * @returns {JSX.Element} A React fragment containing the repeated elements
  */
 export function Repeat({ count = 1, children }: RepeatProps) {
-  if (typeof children === "function") {
-    return (
-      <>
-        {Array.from({ length: count }, (_, index) => (
-          <SlotOrCallback key={index}>{children(index)}</SlotOrCallback>
-        ))}
-      </>
-    );
-  }
-
   return (
     <>
-      {Array.from({ length: count }).map((_, index) => (
-        <SlotOrCallback key={index}>{children}</SlotOrCallback>
+      {Array.from({ length: count }, (_, index) => (
+        <SlotOrCallback key={index}>
+          {typeof children === "function" ? children(index) : children}
+        </SlotOrCallback>
       ))}
     </>
   );
