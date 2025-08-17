@@ -20,7 +20,7 @@ export function Grid({
   children,
   className,
   debug,
-  debugKey,
+  debugKey = "g",
   cols,
   spacing,
   ...props
@@ -29,6 +29,7 @@ export function Grid({
 
   useKeyListener({ key: debugKey }, () => {
     setIsDebugActive((v) => !v);
+    console.log({debugKey})
   });
 
   return (

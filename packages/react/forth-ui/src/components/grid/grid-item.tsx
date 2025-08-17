@@ -19,7 +19,6 @@ export function GridItem({
   isDebugActive,
   ...props
 }: Props) {
-  console.log({ debug, isDebugActive });
   return (
     <div
       className={cn(gridItemVariants({ debug }), className)}
