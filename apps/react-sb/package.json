@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.11",
+    "@tailwindcss/vite": "^4.1.12",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.539.0",
     "react": "catalog:",
@@ -24,17 +24,17 @@
     "@forthtilliath/shadcn-ui": "workspace:*",
     "@forthtilliath/types": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@storybook/addon-docs": "^9.1.1",
-    "@storybook/addon-themes": "^9.1.1",
-    "@storybook/react-vite": "9.1.1",
+    "@storybook/addon-docs": "^9.1.2",
+    "@storybook/addon-themes": "^9.1.2",
+    "@storybook/react-vite": "9.1.2",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "^5.0.0",
     "eslint": "catalog:",
-    "eslint-plugin-storybook": "9.1.1",
-    "storybook": "9.1.1",
+    "eslint-plugin-storybook": "9.1.2",
+    "storybook": "9.1.2",
     "typescript": "catalog:",
-    "vite": "^7.1.1"
+    "vite": "^7.1.2"
   },
   "eslintConfig": {
     "extends": [
