@@ -83,12 +83,6 @@ export const baseConfig = defineConfig([
       "@typescript-eslint/naming-convention": [
         "error",
         // https://typescript-eslint.io/rules/naming-convention
-        // {
-        //   selector: "variable",
-        //   types: ["boolean"],
-        //   format: ["PascalCase"],
-        //   prefix: ["is", "should", "has", "can", "did", "will"],
-        // },
         {
           selector: "variable",
           modifiers: ["let"],
