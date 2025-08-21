@@ -1,11 +1,13 @@
-import React, { ComponentProps, useState } from "react";
+import React, { useState } from "react";
 
 import { useKeyListener } from "@forthtilliath/react-hooks/useKeyListener";
 import { type ClassValue, cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import { type Merge } from "@forthtilliath/types/object";
 
+import { GridDebugContext } from "./context";
 import { GridItem } from "./grid-item";
-import { GridVariants, gridVariants } from "./variants";
+import type { GridVariants } from "./variants";
+import { gridVariants } from "./variants";
 
 type Props = Merge<
   {
@@ -14,7 +16,7 @@ type Props = Merge<
     debugKey?: string;
     className?: ClassValue;
   } & GridVariants
->;
+  >;
 
 export function Grid({
   children,
@@ -28,8 +30,7 @@ export function Grid({
   const [isDebugActive, setIsDebugActive] = useState(true);
 
   useKeyListener({ key: debugKey }, () => {
-    setIsDebugActive((v) => !v);
-    console.log({debugKey})
+    if (debug) setIsDebugActive((v) => !v);
   });
 
   return (
@@ -39,16 +40,9 @@ export function Grid({
       })}
       {...props}
     >
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === GridItem) {
-          return React.cloneElement(child, {
-            debug,
-            isDebugActive,
-          } as ComponentProps<typeof GridItem>);
-        }
-        if(debug) console.warn("Grid.Item must be used as first children of Grid to enable debug mode");
-        return child;
-      })}
+      <GridDebugContext.Provider value={{ debug, isDebugActive }}>
+        {children}
+      </GridDebugContext.Provider>
     </div>
   );
 }

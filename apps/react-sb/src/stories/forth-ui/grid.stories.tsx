@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Grid } from "@forthtilliath/forth-ui/components/grid";
-// import { Repeat } from "@forthtilliath/forth-ui/components/repeat";
+import { Repeat } from "@forthtilliath/forth-ui/components/repeat";
 
 /**
  * A grid layout component with optional debug mode.
@@ -55,12 +55,7 @@ const meta: Meta<typeof Grid> = {
   },
   render: (args) => (
     <Grid {...args}>
-      {/* <Repeat count={24}>
-        {(i) => <Grid.Item>{i + 1}</Grid.Item>}
-      </Repeat> */}
-      {Array.from({ length: 24 }).map((_, i) => (
-        <Grid.Item key={i}>{i + 1}</Grid.Item>
-      ))}
+      <Repeat count={24}>{(i) => <Grid.Item>{i + 1}</Grid.Item>}</Repeat>
     </Grid>
   ),
 };
@@ -93,7 +88,7 @@ export const Debug: Story = {
 };
 
 /**
- * Use ``debugKey`` prop to display grid with custom debug key.
+ * Use ``debugKey`` prop to display grid with custom debug key. Press `p` to toggle.
  */
 export const CustomDebugKey: Story = {
   args: {
