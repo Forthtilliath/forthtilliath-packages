@@ -72,5 +72,43 @@ export const baseConfig = defineConfig([
       "turbo/no-undeclared-env-vars": "error",
     },
   },
+  {
+    plugins: {},
+    rules: {
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/ban-tslint-comment": "error",
+      "@typescript-eslint/consistent-type-exports": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/method-signature-style": "error",
+      "@typescript-eslint/naming-convention": [
+        "error",
+        // https://typescript-eslint.io/rules/naming-convention
+        // {
+        //   selector: "variable",
+        //   types: ["boolean"],
+        //   format: ["PascalCase"],
+        //   prefix: ["is", "should", "has", "can", "did", "will"],
+        // },
+        {
+          selector: "variable",
+          modifiers: ["let"],
+          format: ["camelCase"],
+        },
+        {
+          selector: "variable",
+          modifiers: ["const"],
+          format: ["UPPER_CASE"],
+        },
+        {
+          selector: "function",
+          format: ["camelCase", "PascalCase"],
+        },
+        {
+          selector: "typeLike",
+          format: ["PascalCase"],
+        },
+      ],
+    },
+  },
   eslintConfigPrettier,
 ]);
