@@ -91,7 +91,7 @@ export const baseConfig = defineConfig([
         {
           selector: "variable",
           modifiers: ["const", "exported"],
-          format: ["camelCase", "UPPER_CASE"],
+          format: ["camelCase", "UPPER_CASE", "PascalCase"],
         },
         {
           selector: "function",
