@@ -1,3 +1,3 @@
-import nextConfig from "@forthtilliath/eslint-config/next";
+import nextConfig from "@forthtilliath/eslint-config/nextjs";
 
 export default nextConfig;

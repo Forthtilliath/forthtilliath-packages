@@ -1,6 +1,7 @@
 import { defineConfig } from "eslint/config";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginReactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 
 import { baseConfig } from "./base.js";
@@ -11,7 +12,7 @@ import { baseConfig } from "./base.js";
  * @type {import("eslint").Linter.Config[]} */
 export const reactConfig = defineConfig([
   ...baseConfig,
-  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat["jsx-runtime"],
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -30,6 +31,15 @@ export const reactConfig = defineConfig([
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+    },
+  },
+  {
+    // in main config for TSX/JSX source files
+    plugins: {
+      "react-refresh": pluginReactRefresh,
+    },
+    rules: {
+      "react-refresh/only-export-components": "error",
     },
   },
 ]);

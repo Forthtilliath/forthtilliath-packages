@@ -75,6 +75,7 @@ export const baseConfig = defineConfig([
   {
     plugins: {},
     rules: {
+      // "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/ban-tslint-comment": "error",
       "@typescript-eslint/consistent-type-exports": "error",
@@ -85,13 +86,12 @@ export const baseConfig = defineConfig([
         // https://typescript-eslint.io/rules/naming-convention
         {
           selector: "variable",
-          modifiers: ["let"],
           format: ["camelCase"],
         },
         {
           selector: "variable",
-          modifiers: ["const"],
-          format: ["UPPER_CASE"],
+          modifiers: ["const", "exported"],
+          format: ["camelCase", "UPPER_CASE"],
         },
         {
           selector: "function",
