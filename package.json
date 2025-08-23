@@ -13,12 +13,12 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.6",
     "prettier": "^3.6.2",
-    "taze": "^19.1.0",
+    "taze": "^19.3.0",
     "tsup": "^8.5.0",
     "turbo": "^2.5.6",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.15.0",
   "engines": {
     "node": ">=18"
   }
