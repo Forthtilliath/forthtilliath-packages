@@ -1,3 +1,4 @@
+import pluginEslintReact from "@eslint-react/eslint-plugin";
 import { defineConfig } from "eslint/config";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
@@ -13,6 +14,7 @@ import { baseConfig } from "./base.js";
 export const reactConfig = defineConfig([
   ...baseConfig,
   pluginReact.configs.flat["jsx-runtime"],
+  pluginEslintReact.configs["recommended-type-checked"],
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -40,6 +42,32 @@ export const reactConfig = defineConfig([
     },
     rules: {
       "react-refresh/only-export-components": "error",
+    },
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-unsafe-call": "warn",
+      "@typescript-eslint/restrict-template-expressions": "warn",
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "variable",
+          format: ["camelCase"],
+        },
+        {
+          selector: "variable",
+          modifiers: ["const", "exported"],
+          format: ["camelCase", "UPPER_CASE", "PascalCase"],
+        },
+        {
+          selector: "function",
+          format: ["camelCase", "PascalCase"],
+        },
+        {
+          selector: "typeLike",
+          format: ["PascalCase"],
+        },
+      ],
     },
   },
 ]);

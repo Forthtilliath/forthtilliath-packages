@@ -91,11 +91,11 @@ export const baseConfig = defineConfig([
         {
           selector: "variable",
           modifiers: ["const", "exported"],
-          format: ["camelCase", "UPPER_CASE", "PascalCase"],
+          format: ["camelCase", "UPPER_CASE"],
         },
         {
           selector: "function",
-          format: ["camelCase", "PascalCase"],
+          format: ["camelCase"],
         },
         {
           selector: "typeLike",
