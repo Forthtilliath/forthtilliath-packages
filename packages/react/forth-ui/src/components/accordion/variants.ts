@@ -1,27 +1,31 @@
+import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
-export const accordionRootVariants = cva("max-w-lg my-4 w-full text-foreground", {
-  variants: {
-    variant: {
-      default: "space-y-2",
-      outline: "space-y-2",
-      box: "",
-      contained: "space-y-2",
-      "box-contained": "",
-      tabs: "space-y-2",
-      "highlight-active": "space-y-2",
+export const accordionRootVariants = cva(
+  "max-w-lg my-4 w-full text-foreground",
+  {
+    variants: {
+      variant: {
+        default: "space-y-2",
+        outline: "space-y-2",
+        box: "",
+        contained: "space-y-2",
+        "box-contained": "",
+        tabs: "space-y-2",
+        "highlight-active": "space-y-2",
+      },
+      size: {
+        sm: "text-sm",
+        default: "text-[15px]",
+        lg: "text-lg",
+      },
     },
-    size: {
-      sm: "text-sm",
-      default: "text-[15px]",
-      lg: "text-lg",
+    defaultVariants: {
+      variant: "default",
+      size: "default",
     },
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "default",
-  },
-});
+  }
+);
 
 export const accordionItemVariants = cva("", {
   variants: {
@@ -104,3 +108,15 @@ export const accordionContentVariants = cva("", {
   },
   defaultVariants: { variant: "default", size: "default" },
 });
+
+type AccordionVariants = VariantProps<typeof accordionRootVariants>;
+type AccordionItemVariants = VariantProps<typeof accordionItemVariants>;
+type AccordionTriggerVariants = VariantProps<typeof accordionTriggerVariants>;
+type AccordionContentVariants = VariantProps<typeof accordionContentVariants>;
+
+export type {
+  AccordionContentVariants,
+  AccordionItemVariants,
+  AccordionTriggerVariants,
+  AccordionVariants,
+};

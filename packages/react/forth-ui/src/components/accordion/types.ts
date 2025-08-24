@@ -3,10 +3,9 @@ import {
   type AccordionMultipleProps,
   type AccordionSingleProps,
 } from "@radix-ui/react-accordion";
-import type { VariantProps } from "class-variance-authority";
 import type { LucideProps } from "lucide-react";
 
-import { accordionTriggerVariants } from "./variants";
+import type { AccordionTriggerVariants } from "./variants";
 
 type AccordionVariantType =
   | "default"
@@ -37,7 +36,7 @@ interface BaseProps {
   items: Item[] | ItemWithIcon[];
   /**
    * The icon displayed next to the title is the same for all items.
-   * 
+   *
    * Additionally, using both ItemWithIcon and icon will throw an error.
    */
   icon?: React.ReactNode;
@@ -50,9 +49,7 @@ interface BaseProps {
    * The alignment of the chevron icon.
    * @default "right"
    */
-  chevronAlignment?: VariantProps<
-    typeof accordionTriggerVariants
-  >["chevronAlignment"];
+  chevronAlignment?: AccordionTriggerVariants["chevronAlignment"];
   /**
    * Custom chevron icon.
    */

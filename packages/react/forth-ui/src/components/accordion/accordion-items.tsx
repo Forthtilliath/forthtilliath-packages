@@ -38,7 +38,7 @@ export function Items({
           >
             {title}
           </span>
-          {subtitle && (
+          {!!subtitle && (
             <span
               data-slot="subtitle"
               className="text-muted-foreground font-normal"
@@ -51,7 +51,7 @@ export function Items({
 
       return (
         <AccordionItem
-          key={index}
+          key={generateId(index)}
           value={generateId(index)}
           className={cn(
             accordionItemVariants({ variant, size }),
