@@ -55,7 +55,7 @@ const meta: Meta<typeof Grid> = {
   },
   render: (args) => (
     <Grid {...args}>
-      <Repeat count={24}>{(i) => <Grid.Item>{i + 1}</Grid.Item>}</Repeat>
+      <Repeat count={24} renderItem={(i) => <Grid.Item>{i + 1}</Grid.Item>} />
     </Grid>
   ),
 };

@@ -1,27 +1,36 @@
 import React from "react";
 
-interface Props {
-  keyItem?: (i: number) => React.Key;
+export interface RepeatProps {
+  /**
+   * Number of times to repeat the content
+   */
   count: number;
-  children: React.ReactNode | ((index: number) => React.ReactNode);
+  /**
+   * Function to generate a unique key for each item
+   */
+  keyItem?: (index: number) => React.Key;
+  /**
+   * Function to render each item
+   */
+  renderItem: (index: number) => React.ReactNode;
 }
 
-export function Repeat({ keyItem = (i) => i, count, children }: Props) {
-  function child(index = 0): React.ReactNode {
-    if (typeof children === "function") {
-      return children(index);
-    }
-    return children;
-  }
-
-  if (React.Children.count(child()) !== 1) {
-    throw new Error("Repeat must have only one child");
-  }
-  if (!React.isValidElement(child())) {
-    throw new Error("Repeat must have a valid child");
-  }
-
-  return Array.from({ length: count }).map((_, i) =>
-    React.cloneElement(child(i) as React.ReactElement, { key: keyItem(i) })
-  );
+/**
+ * Repeat a component a specified number of times.
+ *
+ * @param {RepeatProps} props - The props for the Repeat component.
+ * @param {number} props.count - The number of times to repeat the component.
+ * @param {(index: number) => React.Key} [props.keyItem] - A function to generate a unique key for each item.
+ * @param {(index: number) => React.ReactNode} props.renderItem - A function to render each item.
+ *
+ * @returns {React.ReactNode[]} An array of React components, each rendered with the renderItem function.
+ */
+export function Repeat({
+  count,
+  keyItem = (i) => i,
+  renderItem,
+}: RepeatProps): React.ReactNode[] {
+  return Array.from<React.ReactNode>({ length: count }).map((_, i) => (
+    <React.Fragment key={keyItem(i)}>{renderItem(i)}</React.Fragment>
+  ));
 }
