@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useMemo, useState } from "react";
 
 import { useKeyListener } from "@forthtilliath/react-hooks/useKeyListener";
 import { type ClassValue, cn } from "@forthtilliath/shadcn-ui/lib/utils";
@@ -16,7 +17,7 @@ type Props = Merge<
     debugKey?: string;
     className?: ClassValue;
   } & GridVariants
-  >;
+>;
 
 export function Grid({
   children,
@@ -28,6 +29,10 @@ export function Grid({
   ...props
 }: Props) {
   const [isDebugActive, setIsDebugActive] = useState(true);
+  const contextValue = useMemo(
+    () => ({ debug, isDebugActive }),
+    [debug, isDebugActive]
+  );
 
   useKeyListener({ key: debugKey }, () => {
     if (debug) setIsDebugActive((v) => !v);
@@ -40,9 +45,7 @@ export function Grid({
       })}
       {...props}
     >
-      <GridDebugContext.Provider value={{ debug, isDebugActive }}>
-        {children}
-      </GridDebugContext.Provider>
+      <GridDebugContext value={contextValue}>{children}</GridDebugContext>
     </div>
   );
 }

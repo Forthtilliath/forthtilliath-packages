@@ -8,4 +8,4 @@ export const GridDebugContext = React.createContext<{
   isDebugActive: false,
 });
 
-export const useGridDebugContext = () => React.useContext(GridDebugContext);
+export const useGridDebugContext = () => React.use(GridDebugContext);

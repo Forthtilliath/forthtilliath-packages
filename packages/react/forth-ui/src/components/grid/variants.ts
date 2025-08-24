@@ -1,4 +1,5 @@
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
 export const gridVariants = cva("grid", {
   variants: {
