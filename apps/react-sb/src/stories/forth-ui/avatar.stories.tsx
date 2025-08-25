@@ -106,6 +106,9 @@ export const Fallback: Story = {
   },
 };
 
+/**
+ * Use the `shape` prop to change the shape of the avatar.
+ */
 export const Shape: Story = {
   decorators: [
     decoratorGroupStories<AvatarProps>(
@@ -116,7 +119,8 @@ export const Shape: Story = {
       {
         src: ["https://github.com/shadcn.png", undefined],
         shape: ["square", "rounded", "circle"],
-      }
+      },
+      { cols: 3 }
     ),
   ],
 };
@@ -125,25 +129,24 @@ export const Shape: Story = {
  * Use the `status` prop to add a status indicator to the avatar.
  */
 export const Status: Story = {
-  args: {
-    status: "away",
-    position: "bottom-right",
-  },
+  decorators: [
+    decoratorGroupStories<AvatarProps>(
+      {
+        ...meta.args,
+        className: { root: "size-16" },
+      },
+      {
+        status: ["offline", "busy", "away", "online"],
+      },
+      { cols: 4 }
+    ),
+  ],
 };
 
 /**
- * Use the `status` prop to add a status indicator to the avatar.
+ * Use the `ring` prop to add a ring to the avatar. You can also use the `className.root` prop to change the color of the ring.
  */
 export const WithRing: Story = {
-  args: {
-    ring: true,
-    className: {
-      root: "ring-red-500",
-    },
-  },
-};
-
-export const WithRing2: Story = {
   decorators: [
     decoratorGroupStories<AvatarProps>(
       {
@@ -159,7 +162,8 @@ export const WithRing2: Story = {
             root: "ring-red-500",
           },
         ],
-      }
+      },
+      { cols: 6 }
     ),
   ],
 };

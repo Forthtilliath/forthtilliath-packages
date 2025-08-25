@@ -10,7 +10,7 @@ import { GridItem } from "./grid-item";
 import type { GridVariants } from "./variants";
 import { gridVariants } from "./variants";
 
-type Props = Merge<
+export type GridProps = Merge<
   {
     children?: React.ReactNode;
     debug?: boolean;
@@ -27,7 +27,7 @@ export function Grid({
   cols,
   spacing,
   ...props
-}: Props) {
+}: GridProps) {
   const [isDebugActive, setIsDebugActive] = useState(true);
   const contextValue = useMemo(
     () => ({ debug, isDebugActive }),

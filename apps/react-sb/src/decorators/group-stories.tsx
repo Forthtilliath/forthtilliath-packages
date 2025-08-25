@@ -1,3 +1,5 @@
+import type { GridProps } from "@forthtilliath/forth-ui/components/grid";
+import { Grid } from "@forthtilliath/forth-ui/components/grid";
 import type {
   StoryComponent,
   StoryDecorator,
@@ -6,23 +8,26 @@ import type {
 
 export function decoratorGroupStories<T extends UnknownRecord>(
   commonProps: Partial<T>,
-  variants: { [K in keyof T]?: T[K][] }
+  variants: { [K in keyof T]?: T[K][] },
+  gridProps: Omit<GridProps, "children"> = {}
 ): StoryDecorator<T> {
+  gridProps.cols ??= 1;
+
   return function DecoratedStory(Story: StoryComponent<T>) {
     const stories = cartesianProductOfObjects(variants);
 
     return (
-      <div className="flex flex-wrap gap-4">
+      <Grid {...gridProps}>
         {stories.map((props, index) => (
           <Story
-            key={index}
+            key={`story-${index.toString()}`}
             args={{
               ...commonProps,
               ...props,
             }}
           />
         ))}
-      </div>
+      </Grid>
     );
   };
 }

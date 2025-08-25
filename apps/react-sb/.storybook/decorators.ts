@@ -1,5 +1,5 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
-import { ReactRenderer } from "@storybook/react-vite";
+import type { ReactRenderer } from "@storybook/react-vite";
 
 export const twDecoratorHtml = withThemeByClassName<ReactRenderer>({
   themes: {
