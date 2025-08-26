@@ -1,17 +1,25 @@
+import type React from "react";
+
 import {
   Avatar as AvatarPrimitive,
   AvatarFallback,
   AvatarImage,
 } from "@forthtilliath/shadcn-ui/components/avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@forthtilliath/shadcn-ui/components/tooltip";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Shape, statusLabels } from "./constants";
+import type { Shape, Size } from "./constants";
+import { STATUS_LABEL } from "./constants";
+import type { FallbackVariants, StatusVariants } from "./variants";
 import {
   avatarVariants,
-  FallbackVariants,
   fallbackVariants,
-  StatusVariants,
   statusVariants,
+  tooltipTriggerVariants,
 } from "./variants";
 
 export type AvatarProps = Omit<
@@ -32,9 +40,20 @@ export type AvatarProps = Omit<
   fallback: string;
   /**
    * The variant of the fallback box.
-   * @type {string}
+   *
+   * You can also use ``className.fallback`` to change the color of the fallback box.
+   *
+   * @example
+   * ```tsx
+   * <Avatar fallback="CN" fallbackVariant="emerald" />
+   * <Avatar fallback="CN" className={{ fallback: "bg-emerald-500" }} />
+   * ```
    */
   fallbackVariant?: FallbackVariants["fallbackVariant"];
+  /**
+   * The size of the avatar.
+   */
+  size?: Size;
   /**
    * The shape of the avatar.
    */
@@ -52,6 +71,10 @@ export type AvatarProps = Omit<
    * Position of the status indicator.
    */
   position?: StatusVariants["position"];
+  /**
+   * Render a tooltip for the avatar.
+   */
+  renderTooltip?: () => React.ReactNode;
 
   /**
    * Custom classes for each part of the component.
@@ -60,23 +83,33 @@ export type AvatarProps = Omit<
    * - `image` is the image element.
    * - `fallback` is the fallback element.
    * - `status` is the status element.
-   * - `tooltip` is the tooltip element.
+   * - `tooltipTrigger` is the tooltip trigger element.
+   * - `tooltipContent` is the tooltip content element.
    */
   className?: Partial<
-    Record<"root" | "image" | "fallback" | "status" | "tooltip", string>
+    Record<
+      | "root"
+      | "image"
+      | "fallback"
+      | "status"
+      | "tooltipTrigger"
+      | "tooltipContent",
+      string
+    >
   >;
 };
 
 /**
  * An image element with a fallback for representing the user.
  *
- * @description Inspired from multiple sources, to make a consistent and reusable component.
- * @version 0.0.1
- * @author Forth
- *
+ * _Inspired from multiple sources, to make a consistent and reusable component._
  * @see https://ui.shadcn.com/docs/components/avatar
  * @see https://bundui.io/components/avatar
  * @see https://www.shadcnui-blocks.com/components/avatar
+ *
+ * @version 0.1.0
+ * @author Forth
+ * @copyright 2025 Forth
  */
 export function Avatar({
   src,
@@ -84,13 +117,14 @@ export function Avatar({
   fallback,
   fallbackVariant,
   shape,
-  ring,
+  ring = false,
   status,
   position,
   className,
+  renderTooltip,
   ...props
 }: AvatarProps) {
-  return (
+  const avatar = (
     <div className="relative">
       <AvatarPrimitive
         className={cn(
@@ -117,9 +151,30 @@ export function Avatar({
             className?.status
           )}
         >
-          <span className="sr-only">{statusLabels[status]}</span>
+          <span className="sr-only">{STATUS_LABEL[status]}</span>
         </div>
       )}
     </div>
   );
+
+  if (typeof renderTooltip === "function") {
+    return (
+      <Tooltip>
+        <TooltipTrigger
+          className={cn(
+            tooltipTriggerVariants({ shape }),
+            className?.tooltipTrigger
+          )}
+          asChild
+        >
+          {avatar}
+        </TooltipTrigger>
+        <TooltipContent className={cn(className?.tooltipContent)}>
+          {renderTooltip()}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return avatar;
 }

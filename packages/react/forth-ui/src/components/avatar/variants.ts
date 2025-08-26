@@ -1,6 +1,8 @@
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
-import { DEFAULT_SHAPE, Shape, statusLabels } from "./constants";
+import type { Shape, Size, StatusLabel } from "./constants";
+import { DEFAULT_SHAPE } from "./constants";
 
 export const avatarVariants = cva("size-10", {
   variants: {
@@ -13,10 +15,21 @@ export const avatarVariants = cva("size-10", {
       rounded: "rounded-md",
       circle: "",
     } satisfies Record<Shape, string>,
+    size: {
+      xs: "size-6",
+      sm: "size-8",
+      md: "size-10",
+      lg: "size-14",
+      xl: "size-20",
+      "2xl": "size-40",
+      "3xl": "size-60",
+      // @container ? for ring and border
+    } satisfies Record<Size, string>,
   },
   defaultVariants: {
     ring: false,
     shape: DEFAULT_SHAPE,
+    size: "md",
   },
 });
 
@@ -27,13 +40,12 @@ export const statusVariants = cva("", {
       offline: "bg-gray-500",
       away: "bg-yellow-500",
       busy: "bg-red-500",
-    } satisfies Record<keyof typeof statusLabels, string>,
+    } satisfies Record<StatusLabel, string>,
     position: {
-      // TODO: Fix position en fonction de la taille de l'avatar (pour size-10 la position est bonne, mais pas pour plus)
-      "top-right": "absolute right-0 top-0",
-      "bottom-right": "absolute right-0 bottom-0",
-      "top-left": "absolute left-0 top-0",
-      "bottom-left": "absolute left-0 bottom-0",
+      "top-right": "absolute right-0.25 top-0.25",
+      "bottom-right": "absolute right-0.25 bottom-0.25",
+      "top-left": "absolute left-0.25 top-0.25",
+      "bottom-left": "absolute left-0.25 bottom-0.25",
     },
   },
   defaultVariants: {
@@ -42,10 +54,7 @@ export const statusVariants = cva("", {
   compoundVariants: [
     {
       status: ["online", "offline", "away", "busy"],
-      className: [
-        // "h-2.5 w-2.5 ring-2 ring-blue-50 rounded-full",
-        "border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2",
-      ],
+      className: "border-background size-3/12 rounded-full border-2",
     },
   ],
 });
@@ -109,3 +118,17 @@ export const fallbackVariants = cva("", {
 });
 
 export type FallbackVariants = VariantProps<typeof fallbackVariants>;
+
+
+export const tooltipTriggerVariants = cva("ring-background ring-2 hover:z-10", {
+  variants: {
+    shape: {
+      square: "rounded-none",
+      rounded: "rounded-md",
+      circle: "rounded-full",
+    } satisfies Record<Shape, string>,
+  },
+  defaultVariants: {
+    shape: DEFAULT_SHAPE,
+  },
+});

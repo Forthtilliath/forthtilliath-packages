@@ -107,6 +107,37 @@ export const Fallback: Story = {
 };
 
 /**
+ * Use the `fallbackVariant` prop to change the fallback color.
+ */
+export const FallbackColor: Story = {
+  decorators: [
+    decoratorGroupStories<AvatarProps>(
+      {
+        ...meta.args,
+        src: undefined,
+      },
+      {
+        fallbackVariant: [
+          "emerald",
+          "yellow",
+          "indigo",
+          "rose",
+          "slate",
+          "sky",
+          "emerald-full",
+          "yellow-full",
+          "indigo-full",
+          "rose-full",
+          "slate-full",
+          "sky-full",
+        ],
+      },
+      { cols: 6 }
+    ),
+  ],
+};
+
+/**
  * Use the `shape` prop to change the shape of the avatar.
  */
 export const Shape: Story = {
@@ -146,7 +177,7 @@ export const Status: Story = {
 /**
  * Use the `ring` prop to add a ring to the avatar. You can also use the `className.root` prop to change the color of the ring.
  */
-export const WithRing: Story = {
+export const Ring: Story = {
   decorators: [
     decoratorGroupStories<AvatarProps>(
       {
@@ -166,4 +197,10 @@ export const WithRing: Story = {
       { cols: 6 }
     ),
   ],
+};
+
+export const Tooltip: Story = {
+  args: {
+    renderTooltip: () => <p>@shadcn</p>,
+  },
 };
