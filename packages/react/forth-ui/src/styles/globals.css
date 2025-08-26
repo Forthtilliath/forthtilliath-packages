@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+@import "@forthtilliath/shadcn-ui/globals.css";
+@import "./safelist.css";

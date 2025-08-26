@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@import "@forthtilliath/forth-ui/styles/globals.css";
+
+@layer storybook {
+  /* Storybook Preview Container */
+  .docs-story {
+    @apply bg-background;
+  }
+}
