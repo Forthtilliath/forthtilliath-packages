@@ -1,10 +1,11 @@
 {
   "name": "@forthtilliath/forth-ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "private": true,
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+    "build": "rm -rf dist && tsc",
     "watch-tw": "npx @tailwindcss/cli -i ./src/globals.css -o ./dist/globals.css --watch"
   },
   "dependencies": {
