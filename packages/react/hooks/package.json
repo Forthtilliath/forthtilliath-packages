@@ -1,24 +1,22 @@
 {
-  "name": "@forthtilliath/react-hooks",
-  "version": "0.0.0",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "lint": "eslint . --max-warnings 0"
-  },
-  "dependencies": {
-    "react": "catalog:",
-    "usehooks-ts": "^3.1.1"
-  },
-  "devDependencies": {
-    "@forthtilliath/eslint-config": "workspace:*",
-    "@forthtilliath/typescript-config": "workspace:*",
-    "@turbo/gen": "catalog:",
-    "@types/react": "catalog:",
-    "eslint": "catalog:",
-    "typescript": "catalog:"
-  },
-  "exports": {
-    "./*": "./src/*.ts"
-  }
+	"name": "@forthtilliath/react-hooks",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"lint": "eslint . --max-warnings 0"
+	},
+	"exports": {
+		"./*": "./src/*.ts"
+	},
+	"dependencies": {
+		"react": "catalog:"
+	},
+	"devDependencies": {
+		"@forthtilliath/eslint-config": "workspace:*",
+		"@forthtilliath/typescript-config": "workspace:*",
+		"@types/react": "catalog:",
+		"eslint": "catalog:",
+		"typescript": "catalog:"
+	}
 }
