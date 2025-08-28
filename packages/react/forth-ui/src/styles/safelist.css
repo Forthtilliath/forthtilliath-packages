@@ -26,20 +26,39 @@
 .bg-pink-50 .bg-pink-100 .bg-pink-200 .bg-pink-300 .bg-pink-400 .bg-pink-500 .bg-pink-600 .bg-pink-700 .bg-pink-800 .bg-pink-900
 
 /* Colors - Border */
-.border-slate-50 .border-slate-100 .border-slate-200 .border-slate-300 .border-slate-400 .border-slate-500 .border-slate-600 .border-slate-700 .border-slate-800 .border-slate-900
-.border-red-50 .border-red-100 .border-red-200 .border-red-300 .border-red-400 .border-red-500 .border-red-600 .border-red-700 .border-red-800 .border-red-900
-.border-blue-50 .border-blue-100 .border-blue-200 .border-blue-300 .border-blue-400 .border-blue-500 .border-blue-600 .border-blue-700 .border-blue-800 .border-blue-900
-.border-green-50 .border-green-100 .border-green-200 .border-green-300 .border-green-400 .border-green-500 .border-green-600 .border-green-700 .border-green-800 .border-green-900
+.border-slate-50 .border-slate-100 .border-slate-200 .border-slate-300 .border-slate-400
+.border-slate-500 .border-slate-600 .border-slate-700 .border-slate-800 .border-slate-900
+.border-red-50 .border-red-100 .border-red-200 .border-red-300 .border-red-400
+.border-red-500 .border-red-600 .border-red-700 .border-red-800 .border-red-900
+.border-blue-50 .border-blue-100 .border-blue-200 .border-blue-300 .border-blue-400
+.border-blue-500 .border-blue-600 .border-blue-700 .border-blue-800 .border-blue-900
+.border-green-50 .border-green-100 .border-green-200 .border-green-300 .border-green-400
+.border-green-500 .border-green-600 .border-green-700 .border-green-800 .border-green-900
+.border-background
+
+/* Colors - Ring */
+.ring-slate-50 .ring-slate-100 .ring-slate-200 .ring-slate-300 .ring-slate-400
+.ring-slate-500 .ring-slate-600 .ring-slate-700 .ring-slate-800 .ring-slate-900
+.ring-red-50 .ring-red-100 .ring-red-200 .ring-red-300 .ring-red-400 .ring-red-500
+.ring-red-600 .ring-red-700 .ring-red-800 .ring-red-900
+.ring-blue-50 .ring-blue-100 .ring-blue-200 .ring-blue-300 .ring-blue-400
+.ring-blue-500 .ring-blue-600 .ring-blue-700 .ring-blue-800 .ring-blue-900
+.ring-green-50 .ring-green-100 .ring-green-200 .ring-green-300 .ring-green-400
+.ring-green-500 .ring-green-600 .ring-green-700 .ring-green-800 .ring-green-900
+.ring-background
 
 /* Spacing communes */
-.p-1 .p-2 .p-3 .p-4 .p-5 .p-6 .p-8 .p-10 .p-12 .p-16 .p-20
-.m-1 .m-2 .m-3 .m-4 .m-5 .m-6 .m-8 .m-10 .m-12 .m-16 .m-20
-.px-1 .px-2 .px-3 .px-4 .px-5 .px-6 .px-8 .px-10 .px-12
-.py-1 .py-2 .py-3 .py-4 .py-5 .py-6 .py-8 .py-10 .py-12
+.p-0 .p-1 .p-2 .p-3 .p-4 .p-5 .p-6 .p-8 .p-10 .p-12 .p-16 .p-20
+.m-0 .m-1 .m-2 .m-3 .m-4 .m-5 .m-6 .m-8 .m-10 .m-12 .m-16 .m-20
+.px-0 .px-1 .px-2 .px-3 .px-4 .px-5 .px-6 .px-8 .px-10 .px-12 .px-16 .px-20
+.py-0 .py-1 .py-2 .py-3 .py-4 .py-5 .py-6 .py-8 .py-10 .py-12 .py-16 .py-20
+.mx-0 .mx-1 .mx-2 .mx-3 .mx-4 .mx-5 .mx-6 .mx-8 .mx-10 .mx-12 .mx-16 .mx-20
+.my-0 .my-1 .my-2 .my-3 .my-4 .my-5 .my-6 .my-8 .my-10 .my-12 .my-16 .my-20
 
 /* Sizes */
 .w-1 .w-2 .w-3 .w-4 .w-5 .w-6 .w-8 .w-10 .w-12 .w-16 .w-20 .w-24 .w-32 .w-48 .w-64
 .h-1 .h-2 .h-3 .h-4 .h-5 .h-6 .h-8 .h-10 .h-12 .h-16 .h-20 .h-24 .h-32 .h-48 .h-64
+.size-1 .size-2 .size-3 .size-4 .size-5 .size-6 .size-8 .size-10 .size-12 .size-16 .size-20 .size-24 .size-32 .size-48 .size-64
 
 /* Grid */
 .grid-cols-1 .grid-cols-2 .grid-cols-3 .grid-cols-4 .grid-cols-5 .grid-cols-6 .grid-cols-7 .grid-cols-8 .grid-cols-9 .grid-cols-10 .grid-cols-11 .grid-cols-12
@@ -54,5 +73,11 @@
 /* Rounded */
 .rounded .rounded-sm .rounded-md .rounded-lg .rounded-xl .rounded-2xl .rounded-full
 
+/* Ring width */
+.ring-0 .ring-1 .ring-2 .ring-4
+
 /* Opacity */
-.opacity-0 .opacity-10 .opacity-20 .opacity-25 .opacity-30 .opacity-40 .opacity-50 .opacity-60 .opacity-70 .opacity-75 .opacity-80 .opacity-90 .opacity-100 {}
+.opacity-0 .opacity-10 .opacity-20 .opacity-25 .opacity-30 .opacity-40 .opacity-50 .opacity-60 .opacity-70 .opacity-75 .opacity-80 .opacity-90 .opacity-100 {
+  --:  
+;
+}

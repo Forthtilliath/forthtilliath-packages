@@ -1,4 +1,6 @@
 @import "tailwindcss";
 
-@import "@forthtilliath/shadcn-ui/globals.css";
+@import "@forthtilliath/shadcn-ui/styles/globals-static.css";
+@import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
 @import "./safelist.css";
+@import "./storybook.css";

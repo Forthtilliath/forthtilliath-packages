@@ -1,0 +1,6 @@
+@layer storybook {
+  /* Storybook Preview Container */
+  .docs-story {
+    @apply bg-background;
+  }
+}
