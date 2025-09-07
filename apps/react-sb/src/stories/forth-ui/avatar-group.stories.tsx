@@ -1,48 +1,48 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Avatar } from "@forthtilliath/forth-ui/components/avatar";
+import { AvatarGroup } from "@forthtilliath/forth-ui/components/avatar";
 
 /**
  * A vertically stacked set of interactive headings that each reveal a section of content.
  */
 const meta = {
   title: "forth-ui/AvatarGroup",
-  component: Avatar,
+  component: AvatarGroup,
   argTypes: {
-    src: {
-      description: "The source URL of the image.",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Required" },
-      },
-    },
-    alt: {
-      description: "The alt text for the image.",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Required" },
-      },
-    },
-    status: {
-      description: "The status of the user.",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Required" },
-      },
+    avatars: {
+      control: false,
     },
   },
   args: {
-    src: "https://github.com/shadcn.png",
-    alt: "@shadcn",
+    avatars: [
+      {
+        src: "https://bundui-images.netlify.app/avatars/06.png",
+        alt: "Avatar 06",
+        fallback: "@shadcn06",
+        // renderTooltip: () => <p>@shadcn</p>,
+      },
+      {
+        src: "https://bundui-images.netlify.app/avatars/07.png",
+        alt: "Avatar 07",
+        fallback: "@shadcn07",
+        // renderTooltip: () => <p>@shadcn</p>,
+      },
+      {
+        src: "https://bundui-images.netlify.app/avatars/10.png",
+        alt: "Avatar 10",
+        fallback: "@shadcn10",
+        // renderTooltip: () => <p>@shadcn</p>,
+      },
+    ],
   },
-} satisfies Meta<typeof Avatar>;
+} satisfies Meta<typeof AvatarGroup>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 /**
- * Default avatar with default styles.
+ * Default form of the avatar group.
  */
 export const Default: Story = {};
 
@@ -51,6 +51,5 @@ export const Default: Story = {};
  * This variant displays a minimal outline style for the accordion items.
  */
 export const Outline: Story = {
-  args: {
-  },
+  args: {},
 };
