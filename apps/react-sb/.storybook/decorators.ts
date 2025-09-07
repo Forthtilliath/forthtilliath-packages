@@ -7,5 +7,4 @@ export const twDecoratorHtml = withThemeByClassName<ReactRenderer>({
     dark: "dark",
   },
   defaultTheme: "light",
-  parentSelector: "html",
 });
