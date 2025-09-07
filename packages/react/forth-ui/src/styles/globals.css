@@ -4,3 +4,6 @@
 @import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
 @import "./safelist.css";
 @import "./storybook.css";
+
+@source "../../../apps/**/*.{ts,tsx}";
+@source "../**/*.{ts,tsx}";

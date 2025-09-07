@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@import "@forthtilliath/forth-ui/styles/globals.css";
+
+@source "../**/*.{ts,tsx,stories.ts,stories.tsx}";
+@source "../../.storybook/**/*.{ts,tsx}";
