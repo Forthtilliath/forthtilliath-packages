@@ -1,4 +1,4 @@
 /**
- * Default type for objects
+ * Base type constraint for record-like objects
  */
-export type UnknownRecord<K extends PropertyKey = string> = Record<K, unknown>;
+export type UnknownRecord = Record<PropertyKey, unknown>;

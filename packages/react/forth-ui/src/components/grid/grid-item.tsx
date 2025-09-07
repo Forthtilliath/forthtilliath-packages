@@ -1,7 +1,7 @@
 import type React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
-import type { Merge } from "@forthtilliath/types/object";
+import type { Prettify } from "@forthtilliath/types/object";
 
 import { useGridDebugContext } from "./context";
 import {
@@ -10,7 +10,7 @@ import {
   gridItemVariants,
 } from "./variants";
 
-type Props = Merge<
+type Props = Prettify<
   GridItemVariants &
     React.ComponentProps<"div"> & {
       children: React.ReactNode;

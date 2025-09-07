@@ -3,20 +3,21 @@ import { useMemo, useState } from "react";
 
 import { useKeyListener } from "@forthtilliath/react-hooks/useKeyListener";
 import { type ClassValue, cn } from "@forthtilliath/shadcn-ui/lib/utils";
-import { type Merge } from "@forthtilliath/types/object";
+import { type Prettify } from "@forthtilliath/types/object";
 
 import { GridDebugContext } from "./context";
 import { GridItem } from "./grid-item";
 import type { GridVariants } from "./variants";
 import { gridVariants } from "./variants";
 
-export type GridProps = Merge<
+export type GridProps = Prettify<
   {
     children?: React.ReactNode;
     debug?: boolean;
     debugKey?: string;
     className?: ClassValue;
-  } & GridVariants
+  } & GridVariants &
+    Omit<React.HTMLAttributes<HTMLDivElement>, "className">
 >;
 
 export function Grid({
