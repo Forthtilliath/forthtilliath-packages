@@ -199,6 +199,9 @@ export const Ring: Story = {
   ],
 };
 
+/**
+ * Use the `renderTooltip` prop to add a tooltip to the avatar.
+ */
 export const Tooltip: Story = {
   args: {
     renderTooltip: () => <p>@shadcn</p>,
