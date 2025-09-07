@@ -1,8 +1,9 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Avatar, AvatarProps } from "./avatar";
+import type { AvatarProps } from "./avatar";
+import { Avatar } from "./avatar";
 
 type Props = React.ComponentProps<"div"> & {
   avatars: AvatarProps[];
@@ -24,13 +25,17 @@ export function AvatarGroup({
   return (
     <div
       className={cn(
-        "*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale",
+        "flex -space-x-2",
         className
       )}
       {...props}
     >
       {avatars.map((avatar, index) => (
-        <Avatar key={index} {...avatar} />
+        <Avatar
+          key={`avatar-${index.toString()}`}
+          className={{ root: cn("ring-2 ring-background hover:z-10") }}
+          {...avatar}
+        />
       ))}
     </div>
   );
