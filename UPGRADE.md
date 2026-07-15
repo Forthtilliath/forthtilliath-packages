@@ -18,14 +18,17 @@ Après les deux fixes ci-dessus, `pnpm lint` échoue encore sur de vraies erreur
 
 `pnpm check-types` et `pnpm build` sont **100% verts** sur les packages qui ont ces scripts (voir section suivante pour la couverture).
 
-## CI / qualité
+## CI / qualité — traité dans une session ultérieure (2026-07-15, même jour)
 
-- **Aucune CI** (`.github/workflows` absent) : `lint`, `check-types` et `build` ne tournent qu'en local, jamais automatiquement sur push/PR.
-- **Aucun test** dans tout le monorepo (pas de vitest/jest/testing-library dans un seul `package.json`). `forth-ui`, `shadcn-ui`, `lib`, `hooks` n'ont aucune couverture.
-- **Storybook sans tests d'interaction** : `react-sb` (Storybook 9.1.5) est bien configuré, mais les liens sur les play-functions/interaction testing notés dans [.doc/linter.md](.doc/linter.md) n'ont jamais été mis en pratique.
-- **Pas de Husky/lint-staged** : rien n'empêche un commit avec du code non lint/formaté.
-- **Pas de `.prettierrc`** : `prettier --write` tourne avec la config par défaut, pas de `.prettierignore` non plus. Risque d'incohérence dès que plusieurs contributeurs/outils s'en mêlent.
-- **Pas de Renovate/Dependabot** : les mises à jour de dépendances sont 100% manuelles (le script racine `update` avec `taze`/`pnpm update -r --latest` existe mais doit être lancé à la main).
+Tous les points listés dans la section originale ci-dessous ont été traités :
+
+- **CI ajoutée** : [.github/workflows/ci.yml](.github/workflows/ci.yml) tourne sur chaque push `main`/PR — install, `format:check`, `lint`, `check-types`, `build`, `test` (avec install du binaire Playwright chromium).
+- **Tests ajoutés** : `@forthtilliath/lib` (32 tests, vitest), `@forthtilliath/react-hooks` (13 tests, vitest + `@testing-library/react`), et `apps/react-sb` (297 tests sur 65 fichiers de stories, via `@storybook/addon-vitest` en mode navigateur réel/Playwright/chromium headless — chaque story est maintenant smoke-testée, et les `play` functions déjà écrites avec `tags: ["!dev", "!autodocs"]` (accordion, calendar, sonner, alert-dialog) s'exécutent enfin comme de vrais tests plutôt que d'être juste regardées manuellement). Nouvelle tâche `turbo run test` (`dependsOn: ["^build"]`, nécessaire car `forth-ui` s'importe depuis son `dist/`).
+- **Husky/lint-staged → lefthook** : un hook `pre-commit` pointait déjà vers `lefthook` dans `.git/hooks/` mais la dépendance/config n'existaient pas, donc il ne faisait rien (`Can't find lefthook in PATH` silencieux). Complété : `lefthook.yml` (formatte les fichiers stagés via `prettier --write`), dépendance ajoutée, `"prepare": "lefthook install"` pour que ça s'auto-active pour tout contributeur. **Ne lance pas `eslint`** en pre-commit — `shadcn-ui` a 215 erreurs pré-existantes, ça bloquerait tout commit touchant ce package tant que cette dette n'est pas traitée séparément.
+- **`.prettierrc`/`.prettierignore` ajoutés**, et tout le repo reformaté (57 fichiers, essentiellement tabs→2-espaces).
+- **Renovate ajouté** ([renovate.json](renovate.json)) : `config:recommended` + groupement des devDependencies mineures/patch + approbation manuelle pour les majeures des frameworks clés (next/react/typescript/tailwindcss).
+
+Bugs réels trouvés en cours de route : `packages/lib`'s `tsc` build compilait les fichiers `*.test.ts` directement dans `dist/` (tsconfig ne les excluait pas) ; l'`alert-dialog.stories.tsx`'s `play` function cherchait un bouton "Open" copié-collé d'un autre composant alors que celui-ci dit "Show Dialog" — jamais détecté avant puisque personne n'exécutait ces `play` functions comme de vrais tests ; lint plantait à nouveau (même bug de fond que le fix eslint-config du dessus) dès que `storybook-static/` existait sur disque, car ESLint n'a aucun `tsconfig` pour du JS bundlé/minifié.
 
 ## Couverture `check-types` / `lint` incomplète
 
@@ -52,7 +55,6 @@ Après les deux fixes ci-dessus, `pnpm lint` échoue encore sur de vraies erreur
 
 ## Housekeeping
 
-- Changements non commités actuellement sur `apps/react-sb/.storybook/*` et `src/styles/globals.css` (suite du dernier commit `refactor: update Storybook configuration and styles`) — à committer ou stash avant d'attaquer autre chose.
 - Trois packages de composants React aux noms proches (`@forthtilliath/react-ui`, `@forthtilliath/forth-ui`, `@forthtilliath/shadcn-ui`) : le périmètre de chacun n'est pas documenté (cf. point doc ci-dessus), source de confusion pour choisir où ajouter un composant.
 - `engines.node` racine toujours `">=18"` alors que le repo tourne sur Next 15 / React 19 / Tailwind 4 — à vérifier/relever si la version minimale réellement testée est plus récente.
 
