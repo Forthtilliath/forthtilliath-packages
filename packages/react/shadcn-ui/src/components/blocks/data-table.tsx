@@ -81,8 +81,7 @@ export function DataTable<T>({ columns, data, config }: Props<T>) {
           placeholder="Filter emails..."
           value={
             (table.getColumn("email")?.getFilterValue() as
-              | string
-              | undefined) ?? ""
+              string | undefined) ?? ""
           }
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)

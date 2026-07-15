@@ -33,7 +33,8 @@ const avatarVariants = cva("", {
 });
 
 interface Props
-  extends React.ComponentProps<typeof AvatarPrimitive>,
+  extends
+    React.ComponentProps<typeof AvatarPrimitive>,
     VariantProps<typeof avatarVariants> {
   src: string;
   alt: string;

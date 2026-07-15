@@ -71,7 +71,8 @@ const multiSelectVariants = cva(
 );
 
 interface CalendarDatePickerProps
-  extends React.HTMLAttributes<HTMLButtonElement>,
+  extends
+    React.HTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof multiSelectVariants> {
   id?: string;
   className?: string;

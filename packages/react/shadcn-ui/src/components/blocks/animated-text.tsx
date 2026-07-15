@@ -44,11 +44,7 @@ type TextAnimatedProps<T> = Omit<T, "variant" | "children"> & {
   text: string;
 };
 type Props =
-  | PropsCircle
-  | PropsReveal
-  | PropsRipple
-  | PropsScramble
-  | PropsSplit;
+  PropsCircle | PropsReveal | PropsRipple | PropsScramble | PropsSplit;
 
 export function AnimatedText({ variant, children: text, ...props }: Props) {
   if (typeof text !== "string") {
