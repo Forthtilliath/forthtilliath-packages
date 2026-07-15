@@ -7,7 +7,7 @@
 	"scripts": {
 		"lint": "eslint . --max-warnings 0",
 		"clean": "rm -rf dist",
-		"dev": "pnpm run dev:ts && pnpm run dev:tw",
+		"dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
 		"dev:ts": "tsc --watch",
 		"dev:tw": "pnpm run build:tw --watch",
 		"build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw",
@@ -36,6 +36,7 @@
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
+		"concurrently": "^9.2.1",
 		"eslint": "catalog:",
 		"tailwindcss": "catalog:",
 		"typescript": "catalog:"
