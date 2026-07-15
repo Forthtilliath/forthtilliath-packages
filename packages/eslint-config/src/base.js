@@ -15,7 +15,13 @@ export const baseConfig = defineConfig([
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
-    ignores: ["dist/**", "postcss.config.cjs", "postcss.config.mjs"],
+    ignores: [
+      "dist/**",
+      "postcss.config.cjs",
+      "postcss.config.mjs",
+      "eslint.config.js",
+      "eslint.config.ts",
+    ],
   },
   {
     languageOptions: {
@@ -73,6 +79,7 @@ export const baseConfig = defineConfig([
     },
   },
   {
+    files: ["**/*.{ts,tsx,mts,cts}"],
     plugins: {},
     rules: {
       // "@typescript-eslint/no-unused-vars": "error",
