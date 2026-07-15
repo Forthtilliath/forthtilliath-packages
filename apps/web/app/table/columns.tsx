@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@forthtilliath/shadcn-ui/components/dropdown-menu";
 
-import { Payment } from "./page";
+import type { Payment } from "./page";
 
 export const columns: ColumnDef<Payment>[] = [
   {

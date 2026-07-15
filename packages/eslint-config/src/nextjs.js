@@ -15,6 +15,9 @@ import { baseConfig } from "./base.js";
  * @type {import("eslint").Linter.Config[]}
  * */
 export const nextJsConfig = defineConfig([
+  {
+    ignores: [".next/**", "next-env.d.ts"],
+  },
   ...baseConfig,
   js.configs.recommended,
   eslintConfigPrettier,
@@ -41,11 +44,35 @@ export const nextJsConfig = defineConfig([
     plugins: {
       "react-hooks": pluginReactHooks,
     },
-    settings: { react: { version: "detect" } },
+    settings: { react: { version: "19" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+    },
+  },
+  {
+    rules: {
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "variable",
+          format: ["camelCase"],
+        },
+        {
+          selector: "variable",
+          modifiers: ["const", "exported"],
+          format: ["camelCase", "UPPER_CASE", "PascalCase"],
+        },
+        {
+          selector: "function",
+          format: ["camelCase", "PascalCase"],
+        },
+        {
+          selector: "typeLike",
+          format: ["PascalCase"],
+        },
+      ],
     },
   },
 ]);
