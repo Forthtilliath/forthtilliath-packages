@@ -36,7 +36,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "concurrently": "^9.2.4",
+    "concurrently": "^10.0.3",
     "eslint": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
