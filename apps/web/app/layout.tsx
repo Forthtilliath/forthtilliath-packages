@@ -4,8 +4,8 @@ import Link from "next/link";
 
 import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-02";
 
-import "@forthtilliath/shadcn-ui/globals.css";
-import "@forthtilliath/shadcn-ui/themes/twitter.css";
+import "@forthtilliath/shadcn-ui/styles/globals.css";
+import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
 
 // import "./globals.css";
 
