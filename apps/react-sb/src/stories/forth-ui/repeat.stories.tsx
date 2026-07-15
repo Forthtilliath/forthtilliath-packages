@@ -65,7 +65,7 @@ export const Default: Story = {
         transform: (source: string) => {
           return source.replace(
             "renderItem={() => {}}",
-            "renderItem={() => <p>Message statique répété plusieurs fois</p>}"
+            "renderItem={() => <p>Message statique répété plusieurs fois</p>}",
           );
         },
       },
@@ -92,7 +92,7 @@ export const WithCallback: Story = {
               "renderItem={(i: number) => (",
               "    <p>Message dynamique répété plusieurs fois, index {i}</p>",
               "  )}",
-            ].join("\n")
+            ].join("\n"),
           );
         },
       },
@@ -114,7 +114,7 @@ export const WithCustomKey: Story = {
           return source
             .replace(
               "keyItem={() => {}}",
-              "keyItem={(i: number) => `key-${i.toString()}`}"
+              "keyItem={(i: number) => `key-${i.toString()}`}",
             )
             .replace(
               "renderItem={() => {}}",
@@ -122,7 +122,7 @@ export const WithCustomKey: Story = {
                 "renderItem={() => (",
                 "    <p>Message statique répété plusieurs fois</p>",
                 "  )}",
-              ].join("\n")
+              ].join("\n"),
             );
         },
       },
@@ -136,7 +136,7 @@ function CustomComponent() {
 
 /**
  * Use ``renderItem`` prop to render a custom component.
- * 
+ *
  * ```tsx
  * function CustomComponent() {
  *   return <p>Message statique dans un component</p>;
@@ -153,7 +153,7 @@ export const WithComponent: Story = {
         transform: (source: string) => {
           return source.replace(
             "renderItem={() => {}}",
-            "renderItem={() => <CustomComponent />}"
+            "renderItem={() => <CustomComponent />}",
           );
         },
       },

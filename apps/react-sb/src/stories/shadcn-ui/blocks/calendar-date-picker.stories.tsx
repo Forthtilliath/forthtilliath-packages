@@ -39,7 +39,8 @@ const meta = {
       control: "boolean",
     },
     yearsRange: {
-      description: "Number of years listed in the year select, before and after the current year.",
+      description:
+        "Number of years listed in the year select, before and after the current year.",
       control: { type: "number" },
     },
   },

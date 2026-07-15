@@ -69,7 +69,13 @@ export const Dialog: Story = {
 
       return (
         <>
-          <Button onClick={() => { setOpen(true); }}>Open Command Palette</Button>
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            Open Command Palette
+          </Button>
           <CommandDialog
             open={open}
             onOpenChange={setOpen}
@@ -112,7 +118,13 @@ export const DialogWithoutCloseButton: Story = {
 
       return (
         <>
-          <Button onClick={() => { setOpen(true); }}>Open Command Palette</Button>
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            Open Command Palette
+          </Button>
           <CommandDialog
             open={open}
             onOpenChange={setOpen}

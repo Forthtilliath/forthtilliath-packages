@@ -9,7 +9,7 @@ import type { UnknownRecord } from "../object/unknown-record.js";
  * @param {StoryComponent<T>} Story - The story component to be decorated.
  */
 export type StoryDecorator<T extends UnknownRecord> = (
-  Story: StoryComponent<T>
+  Story: StoryComponent<T>,
 ) => React.JSX.Element;
 
 /**
@@ -18,7 +18,7 @@ export type StoryDecorator<T extends UnknownRecord> = (
  * @template T - The type of the arguments passed to the story component.
  */
 export type StoryComponent<T = UnknownRecord> = (
-  args: StoryArgumentsWithKey<T>
+  args: StoryArgumentsWithKey<T>,
 ) => React.JSX.Element;
 
 /**

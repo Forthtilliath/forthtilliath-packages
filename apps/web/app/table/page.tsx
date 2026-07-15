@@ -102,9 +102,13 @@ export default async function TablePage() {
   const payments = await getData();
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={payments} config={{
-        enablePagination: false
-      }} />
+      <DataTable
+        columns={columns}
+        data={payments}
+        config={{
+          enablePagination: false,
+        }}
+      />
     </div>
   );
 }

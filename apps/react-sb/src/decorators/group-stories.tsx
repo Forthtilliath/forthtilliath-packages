@@ -9,7 +9,7 @@ import type {
 export function decoratorGroupStories<T extends UnknownRecord>(
   commonProps: Partial<T>,
   variants: { [K in keyof T]?: T[K][] },
-  gridProps: Omit<GridProps, "children"> = {}
+  gridProps: Omit<GridProps, "children"> = {},
 ): StoryDecorator<T> {
   gridProps.cols ??= 1;
 
@@ -33,7 +33,7 @@ export function decoratorGroupStories<T extends UnknownRecord>(
 }
 
 function cartesianProductOfObjects<T extends { [K in keyof T]?: T[K] }>(
-  options: T
+  options: T,
 ): T[] {
   const props = Object.entries(options as Record<string, T[keyof T][]>);
   if (props.length === 0) return [];
@@ -47,6 +47,6 @@ function cartesianProductOfObjects<T extends { [K in keyof T]?: T[K] }>(
         }));
       });
     },
-    [{} as T]
+    [{} as T],
   );
 }

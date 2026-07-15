@@ -76,7 +76,7 @@ const defaultConfig: TableConfig = {
  * Allows overriding default configuration
  */
 export function useTableConfig(
-  overrideConfig?: Partial<TableConfig>
+  overrideConfig?: Partial<TableConfig>,
 ): TableConfig {
   // Merge default config with any overrides
   const config = { ...defaultConfig, ...overrideConfig };

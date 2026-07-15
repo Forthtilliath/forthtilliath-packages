@@ -72,7 +72,7 @@ export const ShouldOpenClose: Story = {
 
     await step("close the alert dialog", async () => {
       await userEvent.click(
-        canvasBody.getByRole("button", { name: /cancel/i })
+        canvasBody.getByRole("button", { name: /cancel/i }),
       );
     });
   },

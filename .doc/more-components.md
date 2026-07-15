@@ -29,6 +29,7 @@ Installer facilement tous les composants Shadcn. Un clic pour installer tous les
 - https://github.com/UretzkyZvi/capture-photo
 
 ### Dates
+
 - https://date-time-range-picker.vercel.app/
 
 ### Dropdrawer
@@ -67,8 +68,6 @@ Installer facilement tous les composants Shadcn. Un clic pour installer tous les
 - https://originui.com/
 - https://www.shadcnui-blocks.com/
 
-
-
 Storybook
 https://registry.lloydrichards.dev/
 https://github.com/itsjavi/glasscn-ui/blob/main/stories/alert.stories.tsx
@@ -81,8 +80,7 @@ https://storybook.js.org/docs/writing-tests/interaction-testing#writing-interact
 https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/
 https://eds.equinor.com/0b0c666ab/p/99b362-components
 
-
-Table en cours : 
+Table en cours :
 https://github.com/jacksonkasi1/tnks-data-table/blob/main/src/components/data-table/data-table.tsx#L733
 https://github.com/jacksonkasi1/tnks-data-table/blob/main/src/app/(home)/data-table/schema/expense-schema.ts
 https://github.com/jacksonkasi1/tnks-data-table/blob/main/src/components/data-table/hooks/use-table-column-resize.ts

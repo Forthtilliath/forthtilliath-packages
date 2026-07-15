@@ -1,33 +1,33 @@
 {
-	"name": "@forthtilliath/eslint-config",
-	"version": "0.0.0",
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"dev": "tsc --watch",
-		"build": "tsc",
-		"check-types": "tsc --noEmit",
-		"lint": "eslint . --max-warnings 0"
-	},
-	"exports": {
-		".": "./dist/base.js",
-		"./*": "./dist/*.js"
-	},
-	"devDependencies": {
-		"@eslint-react/eslint-plugin": "^1.52.6",
-		"@eslint/js": "^9.34.0",
-		"@forthtilliath/typescript-config": "workspace:*",
-		"@next/eslint-plugin-next": "^15.5.0",
-		"eslint": "catalog:",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^5.2.0",
-		"eslint-plugin-react-refresh": "^0.4.20",
-		"eslint-plugin-simple-import-sort": "^12.1.1",
-		"eslint-plugin-storybook": "^9.1.3",
-		"eslint-plugin-turbo": "^2.5.6",
-		"globals": "^16.3.0",
-		"typescript": "catalog:",
-		"typescript-eslint": "^8.40.0"
-	}
+  "name": "@forthtilliath/eslint-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "exports": {
+    ".": "./dist/base.js",
+    "./*": "./dist/*.js"
+  },
+  "devDependencies": {
+    "@eslint-react/eslint-plugin": "^1.52.6",
+    "@eslint/js": "^9.34.0",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@next/eslint-plugin-next": "^15.5.0",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-storybook": "^9.1.3",
+    "eslint-plugin-turbo": "^2.5.6",
+    "globals": "^16.3.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.40.0"
+  }
 }

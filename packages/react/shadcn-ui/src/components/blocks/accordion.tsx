@@ -307,7 +307,7 @@ function Items({
           value={generateId(index)}
           className={cn(
             accordionItemVariants({ variant, size }),
-            classNameItem
+            classNameItem,
           )}
         >
           <AccordionTrigger
@@ -321,7 +321,7 @@ function Items({
                 disabled,
                 chevronAlignment,
               }),
-              classNameTrigger
+              classNameTrigger,
             )}
           >
             {iconItem ? (
@@ -338,13 +338,13 @@ function Items({
           <AccordionContent
             className={cn(
               accordionContentVariants({ variant, size }),
-              classNameContent
+              classNameContent,
             )}
           >
             {content}
           </AccordionContent>
         </AccordionItem>
       );
-    }
+    },
   );
 }

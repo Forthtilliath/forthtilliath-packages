@@ -1,48 +1,48 @@
 {
-	"name": "@forthtilliath/forth-ui",
-	"version": "0.1.0",
-	"type": "module",
-	"private": true,
-	"license": "MIT",
-	"scripts": {
-		"lint": "eslint . --max-warnings 0",
-		"clean": "rm -rf dist",
-		"dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
-		"dev:ts": "tsc --watch",
-		"dev:tw": "pnpm run build:tw --watch",
-		"build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw",
-		"build:ts": "tsc",
-		"build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./dist/globals.css"
-	},
-	"dependencies": {
-		"@radix-ui/react-accordion": "^1.2.12",
-		"@radix-ui/react-avatar": "^1.1.10",
-		"@radix-ui/react-slot": "^1.2.3",
-		"@radix-ui/react-tooltip": "^1.2.8",
-		"class-variance-authority": "^0.7.1",
-		"clsx": "^2.1.1",
-		"lucide-react": "^0.541.0",
-		"react": "catalog:",
-		"react-dom": "catalog:"
-	},
-	"devDependencies": {
-		"@forthtilliath/eslint-config": "workspace:*",
-		"@forthtilliath/react-hooks": "workspace:*",
-		"@forthtilliath/shadcn-ui": "workspace:*",
-		"@forthtilliath/types": "workspace:*",
-		"@forthtilliath/typescript-config": "workspace:*",
-		"@tailwindcss/postcss": "catalog:",
-		"@turbo/gen": "catalog:",
-		"@types/node": "catalog:",
-		"@types/react": "catalog:",
-		"@types/react-dom": "catalog:",
-		"concurrently": "^9.2.1",
-		"eslint": "catalog:",
-		"tailwindcss": "catalog:",
-		"typescript": "catalog:"
-	},
-	"exports": {
-		"./components/*": "./dist/components/*/index.js",
-		"./styles/globals.css": "./dist/globals.css"
-	}
+  "name": "@forthtilliath/forth-ui",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "clean": "rm -rf dist",
+    "dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
+    "dev:ts": "tsc --watch",
+    "dev:tw": "pnpm run build:tw --watch",
+    "build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw",
+    "build:ts": "tsc",
+    "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./dist/globals.css"
+  },
+  "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.8",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.541.0",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/react-hooks": "workspace:*",
+    "@forthtilliath/shadcn-ui": "workspace:*",
+    "@forthtilliath/types": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@tailwindcss/postcss": "catalog:",
+    "@turbo/gen": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "concurrently": "^9.2.1",
+    "eslint": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  },
+  "exports": {
+    "./components/*": "./dist/components/*/index.js",
+    "./styles/globals.css": "./dist/globals.css"
+  }
 }

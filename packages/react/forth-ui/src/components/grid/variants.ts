@@ -81,6 +81,6 @@ export const gridItemDebugVariants = cva(
     defaultVariants: {
       active: true,
     },
-  }
+  },
 );
 export type GridItemDebugVariants = VariantProps<typeof gridItemDebugVariants>;

@@ -7,7 +7,7 @@ export function downloadText(filename: string, text: string): void {
   const element = document.createElement("a");
   element.setAttribute(
     "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text),
   );
   element.setAttribute("download", filename);
 

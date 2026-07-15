@@ -22,8 +22,18 @@ interface Payment {
 }
 
 const payments: Payment[] = [
-  { id: "m5gr84i9", amount: 316, status: "success", email: "ken99@example.com" },
-  { id: "3u1reuv4", amount: 242, status: "success", email: "Abe45@example.com" },
+  {
+    id: "m5gr84i9",
+    amount: 316,
+    status: "success",
+    email: "ken99@example.com",
+  },
+  {
+    id: "3u1reuv4",
+    amount: 242,
+    status: "success",
+    email: "Abe45@example.com",
+  },
   {
     id: "derv1ws0",
     amount: 837,
@@ -42,7 +52,12 @@ const payments: Payment[] = [
     status: "failed",
     email: "carmella@example.com",
   },
-  { id: "9q2q2q2p", amount: 111, status: "pending", email: "sarah@example.com" },
+  {
+    id: "9q2q2q2p",
+    amount: 111,
+    status: "pending",
+    email: "sarah@example.com",
+  },
   {
     id: "q2q2q2q2",
     amount: 222,
@@ -101,9 +116,7 @@ const columns: ColumnDef<Payment>[] = [
         <ArrowUpDown />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("email")}</div>
-    ),
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "amount",

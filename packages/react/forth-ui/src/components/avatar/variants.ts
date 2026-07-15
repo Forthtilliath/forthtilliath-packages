@@ -119,7 +119,6 @@ export const fallbackVariants = cva("", {
 
 export type FallbackVariants = VariantProps<typeof fallbackVariants>;
 
-
 export const tooltipTriggerVariants = cva("ring-background ring-2 hover:z-10", {
   variants: {
     shape: {

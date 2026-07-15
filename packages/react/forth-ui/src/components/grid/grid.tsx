@@ -32,7 +32,7 @@ export function Grid({
   const [isDebugActive, setIsDebugActive] = useState(true);
   const contextValue = useMemo(
     () => ({ debug, isDebugActive }),
-    [debug, isDebugActive]
+    [debug, isDebugActive],
   );
 
   useKeyListener({ key: debugKey }, () => {

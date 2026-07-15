@@ -1,9 +1,9 @@
 {
-	"name": "@forthtilliath/typescript-config",
-	"version": "0.0.0",
-	"private": true,
-	"license": "MIT",
-	"publishConfig": {
-		"access": "restricted"
-	}
+  "name": "@forthtilliath/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "restricted"
+  }
 }

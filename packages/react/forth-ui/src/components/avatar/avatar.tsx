@@ -131,7 +131,7 @@ export function Avatar({
         className={cn(
           "block",
           avatarVariants({ shape, ring, size }),
-          className?.root
+          className?.root,
         )}
         {...props}
       >
@@ -139,7 +139,7 @@ export function Avatar({
         <AvatarFallback
           className={cn(
             fallbackVariants({ fallbackVariant, shape }),
-            className?.fallback
+            className?.fallback,
           )}
         >
           {fallback}
@@ -149,7 +149,7 @@ export function Avatar({
         <div
           className={cn(
             statusVariants({ status, position }),
-            className?.status
+            className?.status,
           )}
         >
           <span className="sr-only">{STATUS_LABEL[status]}</span>
@@ -164,7 +164,7 @@ export function Avatar({
         <TooltipTrigger
           className={cn(
             tooltipTriggerVariants({ shape }),
-            className?.tooltipTrigger
+            className?.tooltipTrigger,
           )}
           asChild
         >

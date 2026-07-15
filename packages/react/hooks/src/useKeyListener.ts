@@ -35,7 +35,7 @@ export function useKeyListener(config: KeyConfig, onKeyDown: () => void) {
         onKeyDown();
       }
     },
-    [config.alt, config.ctrl, config.key, config.meta, config.shift, onKeyDown]
+    [config.alt, config.ctrl, config.key, config.meta, config.shift, onKeyDown],
   );
 
   useEffect(() => {

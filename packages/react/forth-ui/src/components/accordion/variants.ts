@@ -24,7 +24,7 @@ export const accordionRootVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export const accordionItemVariants = cva("", {
@@ -33,7 +33,8 @@ export const accordionItemVariants = cva("", {
       default: "",
       outline: "px-4 border rounded-md last:border-b",
       box: "px-4 border border-b-0 last:border-b first:rounded-t-md last:rounded-b-md",
-      contained: "px-4 border-none rounded-md bg-secondary text-secondary-foreground",
+      contained:
+        "px-4 border-none rounded-md bg-secondary text-secondary-foreground",
       "box-contained":
         "px-4 last:border-none first:rounded-t-md last:rounded-b-md bg-muted",
       tabs: "px-4 border-none rounded-md data-[state=open]:bg-secondary",
@@ -86,7 +87,7 @@ export const accordionTriggerVariants = cva(
       disabled: false,
       chevronAlignment: "right",
     },
-  }
+  },
 );
 
 export const accordionContentVariants = cva("", {

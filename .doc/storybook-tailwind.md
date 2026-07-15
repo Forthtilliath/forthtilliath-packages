@@ -2,7 +2,7 @@
 
 ## Configuration
 
-This decorator adds a ``dark`` class to the HTML tag when the theme is set to ``dark``, allowing Tailwind CSS to detect and apply dark mode styling.
+This decorator adds a `dark` class to the HTML tag when the theme is set to `dark`, allowing Tailwind CSS to detect and apply dark mode styling.
 
 ```ts
 // .storybook/decorators.ts
@@ -18,6 +18,7 @@ export const decoratorHtml = withThemeByClassName<ReactRenderer>({
   parentSelector: "html",
 });
 ```
+
 ```ts
 // preview.ts
 import type { Preview } from "@storybook/react-vite";
@@ -43,6 +44,7 @@ const preview: Preview = {
 
 export default preview;
 ```
+
 ```css
 /* @forthtilliath/shadcn-ui/globals-static.css */
 @import "tailwindcss";

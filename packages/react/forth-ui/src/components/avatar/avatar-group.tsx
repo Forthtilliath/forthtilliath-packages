@@ -23,13 +23,7 @@ export function AvatarGroup({
   ...props
 }: Props): JSX.Element {
   return (
-    <div
-      className={cn(
-        "flex -space-x-2",
-        className
-      )}
-      {...props}
-    >
+    <div className={cn("flex -space-x-2", className)} {...props}>
       {avatars.map((avatar, index) => (
         <Avatar
           key={`avatar-${index.toString()}`}

@@ -145,7 +145,7 @@ export const FallbackColor: Story = {
           "sky-full",
         ],
       },
-      { cols: 6 }
+      { cols: 6 },
     ),
   ],
 };
@@ -164,7 +164,7 @@ export const Shape: Story = {
         src: ["https://github.com/shadcn.png", undefined],
         shape: ["square", "rounded", "circle"],
       },
-      { cols: 3 }
+      { cols: 3 },
     ),
   ],
 };
@@ -182,7 +182,7 @@ export const Status: Story = {
       {
         status: ["offline", "busy", "away", "online"],
       },
-      { cols: 4 }
+      { cols: 4 },
     ),
   ],
 };
@@ -207,7 +207,7 @@ export const Ring: Story = {
           },
         ],
       },
-      { cols: 6 }
+      { cols: 6 },
     ),
   ],
 };
@@ -226,7 +226,7 @@ export const Size: Story = {
       {
         size: ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"],
       },
-      { cols: 7 }
+      { cols: 7 },
     ),
   ],
 };
