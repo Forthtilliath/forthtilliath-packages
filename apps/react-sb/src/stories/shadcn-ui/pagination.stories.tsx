@@ -55,3 +55,35 @@ type Story = StoryObj<typeof meta>;
  * The default form of the pagination.
  */
 export const Default: Story = {};
+
+/**
+ * Set `isActive` on a `PaginationLink` to mark it as the current page.
+ */
+export const ActivePage: Story = {
+  render: (args) => (
+    <Pagination {...args}>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive>
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  ),
+};

@@ -20,6 +20,16 @@ const meta: Meta<typeof Grid> = {
         defaultValue: { summary: "12" },
       },
     },
+    spacing: {
+      description: "Gap between grid items",
+      control: "select",
+      options: ["none", "xs", "sm", "md", "lg", "xl"],
+      table: {
+        category: "Grid",
+        type: { summary: "none | xs | sm | md | lg | xl" },
+        defaultValue: { summary: "md" },
+      },
+    },
     className: {
       description: "Custom classname",
       table: {
@@ -76,6 +86,33 @@ export const SixColumns: Story = {
   args: {
     cols: 6,
   },
+};
+
+/**
+ * Use the `spacing` prop to control the gap between grid items, from `none`
+ * up to `xl`.
+ */
+export const Spacing: Story = {
+  args: {
+    spacing: "xl",
+  },
+};
+
+/**
+ * Give individual `Grid.Item`s an explicit `cols` prop to span multiple
+ * columns instead of the default single column.
+ */
+export const ColumnSpan: Story = {
+  render: (args) => (
+    <Grid {...args}>
+      <Grid.Item cols="6">1</Grid.Item>
+      <Grid.Item cols="6">2</Grid.Item>
+      <Grid.Item cols="4">3</Grid.Item>
+      <Grid.Item cols="4">4</Grid.Item>
+      <Grid.Item cols="4">5</Grid.Item>
+      <Grid.Item cols="full">6</Grid.Item>
+    </Grid>
+  ),
 };
 
 /**

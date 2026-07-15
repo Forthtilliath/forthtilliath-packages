@@ -41,6 +41,16 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
+/**
+ * Use the `disabled` prop to disable the whole radio group, appearing faded
+ * and non-interactive.
+ */
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
+
 export const ShouldToggleRadio: Story = {
   name: "when clicking on a radio button, it should toggle its state",
   tags: ["!dev", "!autodocs"],

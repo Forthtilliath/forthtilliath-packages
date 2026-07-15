@@ -242,6 +242,16 @@ export const Sizes: Story = {
 };
 
 /**
+ * Large size variant of the accordion.
+ */
+export const LargeSize: Story = {
+  args: {
+    variant: "outline",
+    size: "lg",
+  },
+};
+
+/**
  * Use the `collapsible` prop to allow all items to close when clicked.
  */
 export const Collapsible: Story = {

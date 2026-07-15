@@ -1,8 +1,11 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
 
+import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import {
   Command,
+  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -54,6 +57,86 @@ type Story = StoryObj<typeof meta>;
  * The default form of the command.
  */
 export const Default: Story = {};
+
+/**
+ * `CommandDialog` renders the command list inside a modal, controlled with
+ * `open`/`onOpenChange` and labeled via the `title`/`description` props.
+ */
+export const Dialog: Story = {
+  render: () => {
+    function CommandDialogDemo() {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <>
+          <Button onClick={() => { setOpen(true); }}>Open Command Palette</Button>
+          <CommandDialog
+            open={open}
+            onOpenChange={setOpen}
+            title="Command Palette"
+            description="Search for a command to run..."
+          >
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem>Calendar</CommandItem>
+                <CommandItem>Search Emoji</CommandItem>
+                <CommandItem disabled>Calculator</CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem>Profile</CommandItem>
+                <CommandItem>Billing</CommandItem>
+                <CommandItem>Settings</CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </CommandDialog>
+        </>
+      );
+    }
+
+    return <CommandDialogDemo />;
+  },
+};
+
+/**
+ * Set `showCloseButton={false}` on `CommandDialog` to hide the top-right
+ * close button, e.g. when the dialog is dismissed only via `Escape` or a
+ * selection.
+ */
+export const DialogWithoutCloseButton: Story = {
+  render: () => {
+    function CommandDialogDemo() {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <>
+          <Button onClick={() => { setOpen(true); }}>Open Command Palette</Button>
+          <CommandDialog
+            open={open}
+            onOpenChange={setOpen}
+            title="Command Palette"
+            description="Search for a command to run..."
+            showCloseButton={false}
+          >
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem>Calendar</CommandItem>
+                <CommandItem>Search Emoji</CommandItem>
+                <CommandItem disabled>Calculator</CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </CommandDialog>
+        </>
+      );
+    }
+
+    return <CommandDialogDemo />;
+  },
+};
 
 export const TypingInCombobox: Story = {
   name: "when typing into the combobox, should filter results",

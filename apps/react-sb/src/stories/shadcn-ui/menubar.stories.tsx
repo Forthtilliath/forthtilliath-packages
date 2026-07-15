@@ -126,6 +126,25 @@ export const WithCheckboxItems: Story = {
   ),
 };
 
+/**
+ * Use `variant="destructive"` on `MenubarItem` to style a dangerous action,
+ * such as deleting an item.
+ */
+export const WithDestructiveItem: Story = {
+  render: (args) => (
+    <Menubar {...args}>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>New Tab</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem variant="destructive">Delete</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  ),
+};
+
 export const ShouldOpenClose: Story = {
   name: "when clicking an item, should close the menubar",
   tags: ["!dev", "!autodocs"],

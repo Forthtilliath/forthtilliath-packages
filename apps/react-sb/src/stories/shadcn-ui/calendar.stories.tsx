@@ -80,6 +80,15 @@ export const MultipleMonths: Story = {
   },
 };
 
+/**
+ * Use the `buttonVariant` prop to change the style of the navigation buttons.
+ */
+export const OutlineNavButtons: Story = {
+  args: {
+    buttonVariant: "outline",
+  },
+};
+
 export const MonthAndYearSelector: Story = {
   args: {
     captionLayout: "dropdown",

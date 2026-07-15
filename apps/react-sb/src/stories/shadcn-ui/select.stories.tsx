@@ -73,6 +73,27 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
+/**
+ * Use `size="sm"` on `SelectTrigger` for a more compact trigger button.
+ */
+export const Small: Story = {
+  render: (args) => (
+    <Select {...args}>
+      <SelectTrigger title="Select" size="sm" className="w-96">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Fruits</SelectLabel>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="blueberry">Blueberry</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ),
+};
+
 export const ShouldSelectOption: Story = {
   name: "when an option is selected, should be checked",
   tags: ["!dev", "!autodocs"],

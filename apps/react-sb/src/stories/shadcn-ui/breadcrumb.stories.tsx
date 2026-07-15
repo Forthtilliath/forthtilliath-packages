@@ -84,6 +84,35 @@ export const CustomSeparator: Story = {
 };
 
 /**
+ * Use ``asChild`` on ``<BreadcrumbLink />`` to compose it with another
+ * component, such as a router's own ``<a>``/``Link`` element, instead of
+ * rendering its own anchor.
+ */
+export const AsChild: Story = {
+  render: (args) => (
+    <Breadcrumb {...args}>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <a href="#home">Home</a>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <a href="#components">Components</a>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  ),
+};
+
+/**
  * You can compose ``<BreadcrumbItem />`` with a ``<DropdownMenu />`` to create a dropdown in the breadcrumb.
  */
 export const Dropdown: Story = {

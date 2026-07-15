@@ -4,6 +4,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   type ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@forthtilliath/shadcn-ui/components/chart";
@@ -156,6 +158,67 @@ export const StackedBarChart: Story = {
         />
         <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
         <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+      </BarChart>
+    </ChartContainer>
+  ),
+};
+
+/**
+ * Set `indicator="line"` on `ChartTooltipContent` to draw a solid vertical
+ * line indicator instead of the default dot or dashed styles.
+ */
+export const LineIndicatorTooltip: Story = {
+  args: {
+    config: multiSeriesConfig,
+  },
+  render: (args) => (
+    <ChartContainer {...args}>
+      <BarChart accessibilityLayer data={multiSeriesData}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => (value as string).slice(0, 3)}
+        />
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent indicator="line" />}
+        />
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+      </BarChart>
+    </ChartContainer>
+  ),
+};
+
+/**
+ * Render `ChartLegend` with `ChartLegendContent` below the chart to label
+ * each series using the swatches from the chart config.
+ */
+export const WithLegend: Story = {
+  args: {
+    config: multiSeriesConfig,
+  },
+  render: (args) => (
+    <ChartContainer {...args}>
+      <BarChart accessibilityLayer data={multiSeriesData}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => (value as string).slice(0, 3)}
+        />
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent indicator="dot" />}
+        />
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+        <ChartLegend content={<ChartLegendContent />} />
       </BarChart>
     </ChartContainer>
   ),

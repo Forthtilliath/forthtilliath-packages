@@ -49,6 +49,86 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
+/**
+ * Use `toast.success` to show a toast styled for a successful action.
+ */
+export const Success: Story = {
+  render: (args) => (
+    <div className="flex min-h-96 items-center justify-center space-x-2">
+      <Button
+        onClick={() =>
+          toast.success("Event has been created", {
+            description: new Date().toLocaleString(),
+          })
+        }
+      >
+        Show Success Toast
+      </Button>
+      <Toaster {...args} />
+    </div>
+  ),
+};
+
+/**
+ * Use `toast.error` to show a toast styled for a failed action.
+ */
+export const ErrorToast: Story = {
+  render: (args) => (
+    <div className="flex min-h-96 items-center justify-center space-x-2">
+      <Button
+        onClick={() =>
+          toast.error("Event has not been created", {
+            description: new Date().toLocaleString(),
+          })
+        }
+      >
+        Show Error Toast
+      </Button>
+      <Toaster {...args} />
+    </div>
+  ),
+};
+
+/**
+ * Use `toast.warning` to show a toast styled as a warning.
+ */
+export const Warning: Story = {
+  render: (args) => (
+    <div className="flex min-h-96 items-center justify-center space-x-2">
+      <Button
+        onClick={() =>
+          toast.warning("Event is about to start", {
+            description: new Date().toLocaleString(),
+          })
+        }
+      >
+        Show Warning Toast
+      </Button>
+      <Toaster {...args} />
+    </div>
+  ),
+};
+
+/**
+ * Use `toast.loading` to show a toast representing a pending action.
+ */
+export const Loading: Story = {
+  render: (args) => (
+    <div className="flex min-h-96 items-center justify-center space-x-2">
+      <Button
+        onClick={() =>
+          toast.loading("Creating event", {
+            description: new Date().toLocaleString(),
+          })
+        }
+      >
+        Show Loading Toast
+      </Button>
+      <Toaster {...args} />
+    </div>
+  ),
+};
+
 export const ShouldShowToast: Story = {
   name: "when clicking Show Toast button, should show a toast",
   tags: ["!dev", "!autodocs"],

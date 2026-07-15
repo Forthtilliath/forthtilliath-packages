@@ -7,6 +7,9 @@ import {
   AlertTitle,
 } from "@forthtilliath/shadcn-ui/components/alert";
 
+/**
+ * Displays a callout for user attention, with an optional icon, title and description.
+ */
 const meta = {
   title: "shadcn-ui/Alert",
   component: Alert,
@@ -34,8 +37,14 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/**
+ * The default form of the alert, with an icon, title and description.
+ */
 export const Default: Story = {};
 
+/**
+ * An alert with only a title and icon, and no description.
+ */
 export const NoDescription: Story = {
   render: (args) => (
     <Alert {...args}>
@@ -47,6 +56,10 @@ export const NoDescription: Story = {
   ),
 };
 
+/**
+ * Use the `destructive` variant to indicate an error, such as a failed
+ * action requiring user attention.
+ */
 export const Destructive: Story = {
   render: (args) => (
     <Alert {...args}>

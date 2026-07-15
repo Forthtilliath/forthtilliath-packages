@@ -202,6 +202,13 @@ export const Sizes: Story = {
   },
 };
 
+export const LargeSize: Story = {
+  args: {
+    variant: "outline",
+    size: "lg",
+  },
+};
+
 /**
  * Use the ``collapsible`` prop to allow all items to close.
  */

@@ -153,6 +153,26 @@ export const WithRadioGroup: Story = {
   ),
 };
 
+/**
+ * Use `variant="destructive"` on `ContextMenuItem` to style a dangerous
+ * action, such as deleting an item.
+ */
+export const WithDestructiveItem: Story = {
+  render: (args) => (
+    <ContextMenu {...args}>
+      <ContextMenuTrigger className="bg-accent flex h-48 w-96 items-center justify-center rounded-md border border-dashed text-sm">
+        Right click here
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-32">
+        <ContextMenuItem>Profile</ContextMenuItem>
+        <ContextMenuItem>Billing</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  ),
+};
+
 export const ShouldOpenClose: Story = {
   name: "when right-clicking the trigger area, the menu appears and can be interacted with",
   tags: ["!dev", "!autodocs"],

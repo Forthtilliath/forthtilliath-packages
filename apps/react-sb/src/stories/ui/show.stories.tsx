@@ -22,9 +22,33 @@ const meta: Meta<typeof Show> = {
 export default meta;
 type Story = StoryObj<typeof Show>;
 
+/**
+ * When `when` is truthy, `Show` renders its `children`.
+ */
 export const Default: Story = {
   args: {
     when: true,
+    fallback: <div>Pas d&apos;élément à afficher</div>,
+    children: (
+      <div>
+        <p>Liste des éléments disponibles</p>
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+        </ul>
+      </div>
+    ),
+  },
+};
+
+/**
+ * When `when` is falsy, `Show` renders the `fallback` node instead of its
+ * `children`.
+ */
+export const WhenFalse: Story = {
+  args: {
+    when: false,
     fallback: <div>Pas d&apos;élément à afficher</div>,
     children: (
       <div>

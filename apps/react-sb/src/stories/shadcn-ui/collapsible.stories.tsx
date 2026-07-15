@@ -55,6 +55,15 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * Use the `defaultOpen` prop to render the collapsible already expanded.
+ */
+export const DefaultOpen: Story = {
+  args: {
+    defaultOpen: true,
+  },
+};
+
 export const ShouldOpenClose: Story = {
   name: "when collapsable trigger is clicked, should show content",
   tags: ["!dev", "!autodocs"],

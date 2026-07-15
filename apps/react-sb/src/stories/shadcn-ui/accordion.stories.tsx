@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { PlusIcon } from "lucide-react";
 import { expect, waitFor } from "storybook/test";
 
 import {
@@ -54,6 +55,32 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/**
+ * Use `hideChevron` to remove the default chevron, and `customChevron` to
+ * render a custom icon in its place on `AccordionTrigger`.
+ */
+export const CustomChevron: Story = {
+  render: (args) => (
+    <Accordion {...args}>
+      <AccordionItem value="item-1">
+        <AccordionTrigger hideChevron>Is it accessible?</AccordionTrigger>
+        <AccordionContent>
+          Yes. It adheres to the WAI-ARIA design pattern.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger customChevron={<PlusIcon />}>
+          Is it styled?
+        </AccordionTrigger>
+        <AccordionContent>
+          Yes. It comes with default styles that matches the other components&apos;
+          aesthetic.
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+};
 
 export const ShouldOnlyOpenOne: Story = {
   name: "when accordions are clicked, should open only one item at a time",

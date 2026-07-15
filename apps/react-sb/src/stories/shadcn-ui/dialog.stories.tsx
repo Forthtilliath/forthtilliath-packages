@@ -48,6 +48,33 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+/**
+ * Set `showCloseButton={false}` on `DialogContent` to hide the top-right
+ * close button, forcing the user to use an explicit action to dismiss the dialog.
+ */
+export const WithoutCloseButton: Story = {
+  render: (args) => (
+    <Dialog {...args}>
+      <DialogTrigger>Open</DialogTrigger>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="gap-4">
+          <DialogClose className="hover:underline">Cancel</DialogClose>
+          <DialogClose className="bg-primary text-primary-foreground rounded px-4 py-2">
+            Continue
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};
+
 export const ShouldOpenCloseWithContinue: Story = {
   name: "when clicking Continue button, should close the dialog",
   tags: ["!dev", "!autodocs"],

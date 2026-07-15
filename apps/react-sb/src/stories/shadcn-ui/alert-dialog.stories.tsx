@@ -14,6 +14,10 @@ import {
 } from "@forthtilliath/shadcn-ui/components/alert-dialog";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 
+/**
+ * A modal dialog that interrupts the user with important content and expects
+ * a response, such as confirming a destructive action.
+ */
 const meta = {
   title: "shadcn-ui/AlertDialog",
   component: AlertDialog,
@@ -47,8 +51,15 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/**
+ * The default form of the alert dialog, triggered by a button.
+ */
 export const Default: Story = {};
 
+/**
+ * Interaction test verifying the dialog opens on trigger click and closes
+ * when the cancel button is clicked.
+ */
 export const ShouldOpenClose: Story = {
   name: "when alert dialog trigger is pressed, should open the dialog and be able to close it",
   tags: ["!dev", "!autodocs"],

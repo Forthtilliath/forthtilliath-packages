@@ -76,6 +76,19 @@ const meta = {
         defaultValue: { summary: "circle" },
       },
     },
+    size: {
+      description: "The size of the avatar.",
+      options: ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"],
+      control: {
+        type: "select",
+      },
+      table: {
+        type: {
+          summary: "xs | sm | md | lg | xl | 2xl | 3xl",
+        },
+        defaultValue: { summary: "md" },
+      },
+    },
   },
   args: {
     className: { root: "size-16" },
@@ -195,6 +208,25 @@ export const Ring: Story = {
         ],
       },
       { cols: 6 }
+    ),
+  ],
+};
+
+/**
+ * Use the `size` prop to control the avatar's dimensions via the `avatarVariants` scale,
+ * instead of overriding its size with a custom `className`.
+ */
+export const Size: Story = {
+  decorators: [
+    decoratorGroupStories<AvatarProps>(
+      {
+        ...meta.args,
+        className: undefined,
+      },
+      {
+        size: ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"],
+      },
+      { cols: 7 }
     ),
   ],
 };

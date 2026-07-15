@@ -26,6 +26,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarProvider,
   SidebarTrigger,
 } from "@forthtilliath/shadcn-ui/components/sidebar";
@@ -171,6 +175,144 @@ export const Footer: Story = {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+    </Sidebar>
+  ),
+};
+
+/**
+ * A menu button using the `outline` variant with the `lg` size, showing the
+ * bordered look and taller height alongside the default menu buttons.
+ */
+export const OutlineLargeMenuButton: Story = {
+  render: (args) => (
+    <Sidebar {...args}>
+      <SidebarHeader />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild variant="outline" size="lg">
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter />
+    </Sidebar>
+  ),
+};
+
+/**
+ * Marks the current page's menu button with `isActive`, highlighting it
+ * with the active background and text styles.
+ */
+export const ActiveMenuButton: Story = {
+  render: (args) => (
+    <Sidebar {...args}>
+      <SidebarHeader />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item, index) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild isActive={index === 1}>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter />
+    </Sidebar>
+  ),
+};
+
+/**
+ * Renders `SidebarMenuSkeleton` placeholders, used while menu items are
+ * still loading.
+ */
+export const Loading: Story = {
+  render: (args) => (
+    <Sidebar {...args}>
+      <SidebarHeader />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {Array.from({ length: 5 }, (_, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuSkeleton showIcon />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter />
+    </Sidebar>
+  ),
+};
+
+/**
+ * A nested submenu built from `SidebarMenuSub`, `SidebarMenuSubItem` and
+ * `SidebarMenuSubButton`, showing sub-items indented under a parent entry.
+ */
+export const NestedSubmenu: Story = {
+  render: (args) => (
+    <Sidebar {...args}>
+      <SidebarHeader />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="#">
+                    <Settings />
+                    <span>Settings</span>
+                  </a>
+                </SidebarMenuButton>
+                <SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <a href="#">Profile</a>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild isActive>
+                      <a href="#">Notifications</a>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <a href="#">Billing</a>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter />
     </Sidebar>
   ),
 };

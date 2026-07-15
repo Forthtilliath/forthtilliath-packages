@@ -159,6 +159,26 @@ export const WithCheckboxes: Story = {
   ),
 };
 
+/**
+ * Use `variant="destructive"` on `DropdownMenuItem` to style a dangerous
+ * action, such as deleting an item.
+ */
+export const WithDestructiveItem: Story = {
+  render: (args) => (
+    <DropdownMenu {...args}>
+      <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-44">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>Billing</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+};
+
 export const ShouldOpenClose: Story = {
   name: "when clicking an item, should close the dropdown menu",
   tags: ["!dev", "!autodocs"],

@@ -3,7 +3,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AvatarGroup } from "@forthtilliath/forth-ui/components/avatar";
 
 /**
- * A vertically stacked set of interactive headings that each reveal a section of content.
+ * Displays a stack of overlapping avatars, each rendered as an `Avatar` from
+ * the `avatars` prop.
  */
 const meta = {
   title: "forth-ui/AvatarGroup",
@@ -45,11 +46,3 @@ type Story = StoryObj<typeof meta>;
  * Default form of the avatar group.
  */
 export const Default: Story = {};
-
-/**
- * Use the `outline` variant to create an outline styled accordion.
- * This variant displays a minimal outline style for the accordion items.
- */
-export const Outline: Story = {
-  args: {},
-};

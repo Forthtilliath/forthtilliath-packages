@@ -171,3 +171,15 @@ export const Disabled: Story = {
     disabled: true,
   },
 };
+
+/**
+ * Use `asChild` to render the button's styles onto its child element (here
+ * an anchor) instead of a native `<button>`.
+ */
+export const AsChild: Story = {
+  render: (args) => (
+    <Button {...args} asChild>
+      <a href="#asChild">Link styled as a button</a>
+    </Button>
+  ),
+};

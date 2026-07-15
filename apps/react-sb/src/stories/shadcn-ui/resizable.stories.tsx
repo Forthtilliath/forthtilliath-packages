@@ -59,3 +59,25 @@ type Story = StoryObj<typeof meta>;
  * The default form of the resizable panel group.
  */
 export const Default: Story = {};
+
+/**
+ * Use `withHandle` on `ResizableHandle` to render a visible grip icon on the
+ * drag handle instead of a plain line.
+ */
+export const WithHandle: Story = {
+  render: (args) => (
+    <ResizablePanelGroup {...args}>
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-[200px] items-center justify-center p-6">
+          <span className="font-semibold">One</span>
+        </div>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={50}>
+        <div className="flex h-[200px] items-center justify-center p-6">
+          <span className="font-semibold">Two</span>
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  ),
+};

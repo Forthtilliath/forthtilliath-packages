@@ -42,6 +42,14 @@ export const Disabled: Story = {
 };
 
 /**
+ * Set `aria-invalid` to signal a validation error, showing the destructive
+ * border and ring styles.
+ */
+export const Invalid: Story = {
+  args: { "aria-invalid": true },
+};
+
+/**
  * Use the `Label` component to includes a clear, descriptive label above or
  * alongside the input area to guide users.
  */

@@ -85,6 +85,15 @@ export const SeparatedGroup: Story = {
   ),
 };
 
+/**
+ * Use the `disabled` prop to make the OTP field non-interactive and appear faded.
+ */
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
+
 export const ShouldEnterText: Story = {
   name: "when typing text, should call onChange and onComplete",
   tags: ["!dev", "!autodocs"],

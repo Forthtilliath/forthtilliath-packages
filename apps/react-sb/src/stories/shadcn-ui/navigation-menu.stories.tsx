@@ -77,3 +77,13 @@ type Story = StoryObj<typeof meta>;
  * The default form of the navigation menu.
  */
 export const Default: Story = {};
+
+/**
+ * Set `viewport={false}` to render each dropdown's content inline instead of
+ * inside the shared floating viewport.
+ */
+export const NoViewport: Story = {
+  args: {
+    viewport: false,
+  },
+};

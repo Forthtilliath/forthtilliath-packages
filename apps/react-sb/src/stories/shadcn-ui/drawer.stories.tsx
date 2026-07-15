@@ -19,7 +19,16 @@ const meta = {
   title: "shadcn-ui/Drawer",
   component: Drawer,
   tags: ["autodocs"],
+  argTypes: {
+    direction: {
+      options: ["top", "bottom", "left", "right"],
+      control: {
+        type: "radio",
+      },
+    },
+  },
   args: {
+    direction: "bottom",
     onOpenChange: fn(),
     onClose: fn(),
     onAnimationEnd: fn(),
@@ -54,6 +63,33 @@ type Story = StoryObj<typeof meta>;
  * The default form of the drawer.
  */
 export const Default: Story = {};
+
+/**
+ * Use the `direction` prop to slide the drawer in from the top of the screen.
+ */
+export const Top: Story = {
+  args: {
+    direction: "top",
+  },
+};
+
+/**
+ * Use the `direction` prop to slide the drawer in from the right of the screen.
+ */
+export const Right: Story = {
+  args: {
+    direction: "right",
+  },
+};
+
+/**
+ * Use the `direction` prop to slide the drawer in from the left of the screen.
+ */
+export const Left: Story = {
+  args: {
+    direction: "left",
+  },
+};
 
 export const ShouldOpenCloseWithSubmit: Story = {
   name: "when clicking Submit button, should close the drawer",

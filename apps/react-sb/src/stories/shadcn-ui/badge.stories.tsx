@@ -61,6 +61,18 @@ export const Outline: Story = {
     variant: "outline",
   },
 };
+/**
+ * Use `asChild` to render the badge's styles onto its child element (here an
+ * anchor) instead of a `<span>`.
+ */
+export const AsChild: Story = {
+  render: (args) => (
+    <Badge {...args} asChild>
+      <a href="#asChild">Link Badge</a>
+    </Badge>
+  ),
+};
+
 export const WithIcon: Story = {
   args: {
     variant: "secondary",

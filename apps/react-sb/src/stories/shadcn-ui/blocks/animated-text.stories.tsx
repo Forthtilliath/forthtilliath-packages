@@ -48,6 +48,24 @@ export const Reveal: Story = {
   },
 };
 
+/**
+ * Reveal variant using the default `from="bottom"` direction and
+ * `split="letter"` to animate each letter individually instead of each word.
+ */
+export const RevealFromBottomByLetter: Story = {
+  args: {
+    variant: "reveal",
+    from: "bottom",
+    split: "letter",
+    blur: 3,
+    delay: 0.2,
+    duration: 1.2,
+    children: "Lorem ipsum dolor",
+    className:
+      "font-medium text-2xl bg-gradient-to-b from-amber-200 via-orange-400 to-red-600 bg-clip-text text-transparent",
+  },
+};
+
 export const Ripple: Story = {
   args: {
     variant: "ripple",

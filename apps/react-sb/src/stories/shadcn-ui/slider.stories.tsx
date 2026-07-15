@@ -43,3 +43,12 @@ export const Disabled: Story = {
     disabled: true,
   },
 };
+
+/**
+ * Use `orientation="vertical"` to lay the slider out top to bottom.
+ */
+export const Vertical: Story = {
+  args: {
+    orientation: "vertical",
+  },
+};
