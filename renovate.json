@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "dev dependencies (non-major)",
+      "automerge": false
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "matchPackageNames": [
+        "next",
+        "react",
+        "react-dom",
+        "typescript",
+        "tailwindcss"
+      ],
+      "groupName": "major framework upgrades (manual review)",
+      "dependencyDashboardApproval": true
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  }
+}
