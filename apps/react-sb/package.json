@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "lint": "eslint .",
+    "check-types": "tsc --noEmit",
     "preview": "vite preview",
     "dev:tw": "pnpm run build:tw --watch",
     "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./.storybook/globals.css --watch",

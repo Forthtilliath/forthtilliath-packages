@@ -73,9 +73,11 @@ export const ShouldOpenClose: Story = {
       // "Show Dialog". Both share the same click behavior, so we target
       // the first (outer, actual Radix trigger) match. See report for the
       // underlying story markup issue.
-      await userEvent.click(
-        canvas.getAllByRole("button", { name: /show dialog/i })[0],
-      );
+      const [trigger] = canvas.getAllByRole("button", {
+        name: /show dialog/i,
+      });
+      if (!trigger) throw new Error("No trigger found");
+      await userEvent.click(trigger);
     });
 
     await step("close the alert dialog", async () => {

@@ -222,7 +222,12 @@ export const WithLegend: Story = {
         />
         <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
         <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-        <ChartLegend content={<ChartLegendContent />} />
+        {/* Recharts injects the real `payload` at render time via
+        cloneElement; this placeholder only exists to satisfy
+        ChartLegendContent's prop type, which (like ChartTooltipContent)
+        marks `payload` as required even though the component itself
+        handles it being empty gracefully. */}
+        <ChartLegend content={<ChartLegendContent payload={[]} />} />
       </BarChart>
     </ChartContainer>
   ),

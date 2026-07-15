@@ -55,7 +55,9 @@ describe("downloadTextBlob", () => {
   });
 
   it("creates a blob download link, clicks it, then revokes the URL and removes the link", () => {
-    const createObjectURL = vi.fn((_blob: Blob) => "blob:mock-url");
+    const createObjectURL = vi.fn<(blob: Blob) => string>(
+      () => "blob:mock-url",
+    );
     const revokeObjectURL = vi.fn();
     URL.createObjectURL = createObjectURL;
     URL.revokeObjectURL = revokeObjectURL;
@@ -71,7 +73,8 @@ describe("downloadTextBlob", () => {
     downloadTextBlob("report.txt", "some content");
 
     expect(createObjectURL).toHaveBeenCalledTimes(1);
-    const blobArg = createObjectURL.mock.calls[0]?.[0] as Blob;
+    const blobArg = createObjectURL.mock.calls[0]?.[0];
+    if (!blobArg) throw new Error("createObjectURL was not called with a Blob");
     expect(blobArg).toBeInstanceOf(Blob);
     expect(blobArg.type).toBe("text/plain");
 

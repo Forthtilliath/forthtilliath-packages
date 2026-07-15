@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
     "clean": "rm -rf dist",
     "dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
     "dev:ts": "tsc --watch",
