@@ -5,3 +5,7 @@ dist
 storybook-static
 pnpm-lock.yaml
 CHANGELOG.md
+
+# Deliberately invalid CSS (bare selectors, no braces) used as a Tailwind
+# safelist scan target — not meant to be parsed as real CSS.
+packages/react/forth-ui/src/styles/safelist.css
