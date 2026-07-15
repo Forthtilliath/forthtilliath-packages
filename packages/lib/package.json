@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "exports": {
     "./*": "./src/*.tsx"
@@ -14,6 +16,8 @@
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "eslint": "catalog:",
-    "typescript": "catalog:"
+    "jsdom": "^29.1.1",
+    "typescript": "catalog:",
+    "vitest": "^4.1.10"
   }
 }
