@@ -17,6 +17,7 @@ export const baseConfig = defineConfig([
   {
     ignores: [
       "dist/**",
+      "storybook-static/**",
       "postcss.config.cjs",
       "postcss.config.mjs",
       "eslint.config.js",
