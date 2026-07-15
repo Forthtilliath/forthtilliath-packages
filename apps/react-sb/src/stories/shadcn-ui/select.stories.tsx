@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, within } from "storybook/test";
+import { expect, fireEvent, fn, within } from "storybook/test";
 
 import {
   Select,
@@ -97,24 +97,29 @@ export const Small: Story = {
 export const ShouldSelectOption: Story = {
   name: "when an option is selected, should be checked",
   tags: ["!dev", "!autodocs"],
-  play: async ({ canvasElement, step, userEvent }) => {
+  // Radix keeps `pointer-events: none` on the body for a moment while the
+  // select content is opening/closing/animating, which trips user-event's
+  // strict pointer-events check even though the click is perfectly valid
+  // from a real user's perspective; use fireEvent to bypass that check
+  // instead of racing the transition.
+  play: async ({ canvasElement, step }) => {
     const canvasBody = within(canvasElement.ownerDocument.body);
     const select = await canvasBody.findByRole("combobox");
 
     await step("open and select item", async () => {
-      await userEvent.click(select);
-      await userEvent.click(
+      await fireEvent.click(select);
+      await fireEvent.click(
         await canvasBody.findByRole("option", { name: /banana/i }),
       );
       await expect(select).toHaveTextContent("Banana");
     });
 
     await step("verify the selected option", async () => {
-      await userEvent.click(select);
+      await fireEvent.click(select);
       await expect(
         await canvasBody.findByRole("option", { name: /banana/i }),
       ).toHaveAttribute("data-state", "checked");
-      await userEvent.click(
+      await fireEvent.click(
         await canvasBody.findByRole("option", { name: /banana/i }),
       );
     });
