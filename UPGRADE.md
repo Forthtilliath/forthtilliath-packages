@@ -30,14 +30,16 @@ Tous les points listés dans la section originale ci-dessous ont été traités 
 
 Bugs réels trouvés en cours de route : `packages/lib`'s `tsc` build compilait les fichiers `*.test.ts` directement dans `dist/` (tsconfig ne les excluait pas) ; l'`alert-dialog.stories.tsx`'s `play` function cherchait un bouton "Open" copié-collé d'un autre composant alors que celui-ci dit "Show Dialog" — jamais détecté avant puisque personne n'exécutait ces `play` functions comme de vrais tests ; lint plantait à nouveau (même bug de fond que le fix eslint-config du dessus) dès que `storybook-static/` existait sur disque, car ESLint n'a aucun `tsconfig` pour du JS bundlé/minifié.
 
-## Couverture `check-types` / `lint` incomplète
+## Couverture `check-types` / `lint` incomplète — traité le 2026-07-16
 
-`turbo.json` déclare les tâches `check-types` et `lint` avec `dependsOn: ["^check-types"]` / `["^lint"]`, mais turbo **ignore silencieusement** les packages sans le script correspondant :
+`check-types` ajouté à `packages/lib`, `packages/react/forth-ui`, `packages/react/shadcn-ui`, `packages/react/hooks` et `apps/react-sb` (les 5 packages que turbo ignorait silencieusement faute de script). `lint` de `packages/lib` réparé au passage : son `eslint.config.ts` important `@forthtilliath/eslint-config/` (slash final, hors du champ `exports` du package) plantait avec `ERR_PACKAGE_PATH_NOT_EXPORTED` — jamais vu puisque le script `lint` n'existait pas du tout avant.
 
-- Pas de script `check-types` dans : `packages/lib`, `packages/react/forth-ui`, `packages/react/shadcn-ui`, `packages/react/hooks`, `apps/react-sb`. Les deux vraies librairies de composants (`forth-ui`, `shadcn-ui`) ne sont donc **jamais typecheckées** par `pnpm check-types` — seul `pnpm build` (via `tsc`) le fait indirectement pour `forth-ui`.
-- Pas de script `lint` dans `packages/lib`.
+Deux découvertes en activant la couverture :
 
-À homogénéiser pour que `pnpm check-types` et `pnpm lint` à la racine couvrent vraiment tout le repo.
+- Le `tsconfig.json` de `lib` excluait déjà `*.test.ts` (pour ne pas les livrer dans `dist/`), ce qui les cachait aussi du typed-linting et de `check-types`. Séparé en `tsconfig.json` (projet complet, utilisé par lint/check-types) + `tsconfig.build.json` (exclut les tests, utilisé uniquement par `build`/`dev`).
+- `shadcn-ui` échoue maintenant `check-types` pour de vrai : `chart.tsx` et `form.tsx` ont des erreurs de types pré-existantes (generics recharts / react-hook-form+zod) — exactement les mêmes fichiers déjà signalés côté lint. Dette documentée, non traitée ici (voir section lint plus haut). Deux erreurs propres à `react-sb` que ça a révélées ont été corrigées directement (accès de tableau non gardé, prop `payload` marquée requise à tort sur `ChartLegendContent`).
+
+`pnpm check-types` et `pnpm lint` à la racine couvrent maintenant vraiment tout le repo — les seuls échecs restants sont la dette de lint/types déjà documentée (`types`, `shadcn-ui`, `react-sb`), pas des trous de couverture.
 
 ## Documentation
 
