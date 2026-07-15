@@ -1,5 +1,4 @@
 import type { StorybookConfig } from "@storybook/react-vite";
-import tailwindcss from "@tailwindcss/postcss";
 import { dirname, join } from "node:path";
 
 /**
@@ -9,6 +8,7 @@ import { dirname, join } from "node:path";
 function getAbsolutePath(value: string): string {
   return dirname(require.resolve(join(value, "package.json")));
 }
+
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(ts|tsx)"],
   addons: [
@@ -21,17 +21,6 @@ const config: StorybookConfig = {
   },
   docs: {
     defaultName: "Documentation",
-  },
-  viteFinal: (config) => {
-    // Configuration Tailwind v4 directement dans Vite
-    config.css = {
-      ...config.css,
-      postcss: {
-        plugins: [tailwindcss()],
-      },
-    };
-
-    return config;
   },
 };
 export default config;

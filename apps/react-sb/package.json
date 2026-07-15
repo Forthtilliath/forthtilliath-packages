@@ -8,7 +8,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "dev:tw": "pnpm run build:tw --watch",
-    "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./.storybook/globals.css"
+    "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./.storybook/globals.css --watch",
+    "build:tw:once": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./.storybook/globals.css",
+    "prebuild-storybook": "pnpm run build:tw:once",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "react": "catalog:",

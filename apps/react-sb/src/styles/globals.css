@@ -2,5 +2,11 @@
 
 @import "@forthtilliath/forth-ui/styles/globals.css";
 
-@source "../**/*.{ts,tsx,stories.ts,stories.tsx}";
+/* Sources spécifiques à Storybook - incluent explicitement les stories */
+@source "../src/**/*.{ts,tsx,stories.ts,stories.tsx}";
 @source "../../.storybook/**/*.{ts,tsx}";
+@source "../../../packages/react/forth-ui/src/**/*.{ts,tsx}";
+@source "../../../packages/react/shadcn-ui/src/**/*.{ts,tsx}";
+
+/* Sources pour les composants dans les stories */
+@source "../src/stories/**/*.{ts,tsx}";
