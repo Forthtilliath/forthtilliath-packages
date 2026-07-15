@@ -117,6 +117,7 @@ export function Avatar({
   fallback,
   fallbackVariant,
   shape,
+  size,
   ring = false,
   status,
   position,
@@ -129,7 +130,7 @@ export function Avatar({
       <AvatarPrimitive
         className={cn(
           "block",
-          avatarVariants({ shape, ring }),
+          avatarVariants({ shape, ring, size }),
           className?.root
         )}
         {...props}
