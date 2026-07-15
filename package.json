@@ -15,6 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,css,md}\"",
     "check-types": "turbo run check-types",
+    "test": "turbo run test",
     "publish-packages": "turbo run build lint && changeset version && changeset publish",
     "clean": "turbo run clean",
     "update": "pnpm update -r --latest",
