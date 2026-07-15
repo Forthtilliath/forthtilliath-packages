@@ -67,7 +67,15 @@ export const ShouldOpenClose: Story = {
     const canvasBody = within(canvasElement.ownerDocument.body);
 
     await step("open the alert dialog", async () => {
-      await userEvent.click(canvas.getByRole("button", { name: /open/i }));
+      // NOTE: `AlertDialogTrigger` wraps a `<Button>` without `asChild`,
+      // so Radix renders a real `<button>` around the inner `<Button>`'s
+      // own `<button>`, producing two accessible elements named
+      // "Show Dialog". Both share the same click behavior, so we target
+      // the first (outer, actual Radix trigger) match. See report for the
+      // underlying story markup issue.
+      await userEvent.click(
+        canvas.getAllByRole("button", { name: /show dialog/i })[0],
+      );
     });
 
     await step("close the alert dialog", async () => {
