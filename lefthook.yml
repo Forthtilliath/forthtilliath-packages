@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    format:
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs,json,css,md}"
+      run: corepack pnpm exec prettier --write {staged_files}
+      stage_fixed: true

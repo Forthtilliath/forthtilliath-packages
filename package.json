@@ -17,10 +17,12 @@
     "check-types": "turbo run check-types",
     "publish-packages": "turbo run build lint && changeset version && changeset publish",
     "clean": "turbo run clean",
-    "update": "pnpm update -r --latest"
+    "update": "pnpm update -r --latest",
+    "prepare": "lefthook install"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",
+    "lefthook": "^2.1.10",
     "prettier": "^3.6.2",
     "taze": "^19.3.0",
     "tsup": "^8.5.0",
