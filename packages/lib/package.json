@@ -12,7 +12,7 @@
     "test:watch": "vitest"
   },
   "exports": {
-    "./*": "./src/*.tsx"
+    "./*": "./dist/*.js"
   },
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
