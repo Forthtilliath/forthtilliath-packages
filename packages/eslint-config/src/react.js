@@ -53,11 +53,13 @@ export const reactConfig = defineConfig([
         {
           selector: "variable",
           format: ["camelCase"],
+          leadingUnderscore: "allow",
         },
         {
           selector: "variable",
-          modifiers: ["const", "exported"],
+          modifiers: ["const"],
           format: ["camelCase", "UPPER_CASE", "PascalCase"],
+          leadingUnderscore: "allow",
         },
         {
           selector: "function",
