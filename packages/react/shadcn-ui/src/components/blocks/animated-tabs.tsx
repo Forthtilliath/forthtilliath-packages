@@ -68,24 +68,42 @@ const Tabs = ({
   setSelectedTab,
   transition,
 }: TabsProps): React.ReactElement => {
-  const [buttonRefs, setButtonRefs] = React.useState<
-    (HTMLButtonElement | null)[]
-  >([]);
-
-  React.useEffect(() => {
-    setButtonRefs((prev) => prev.slice(0, tabs.length));
-  }, [tabs.length]);
-
+  const buttonNodesRef = React.useRef<(HTMLSpanElement | null)[]>([]);
   const navRef = React.useRef<HTMLDivElement>(null);
-  const navRect = navRef.current?.getBoundingClientRect();
-
-  const selectedRect = buttonRefs[selectedTabIndex]?.getBoundingClientRect();
 
   const [hoveredTabIndex, setHoveredTabIndex] = React.useState<number | null>(
     null,
   );
-  const hoveredRect =
-    buttonRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
+
+  const [rects, setRects] = React.useState<{
+    nav: DOMRect | null;
+    selected: DOMRect | null;
+    hovered: DOMRect | null;
+  }>({ nav: null, selected: null, hovered: null });
+
+  // Refs are populated during commit, before this runs, so measuring here
+  // (rather than reading ref.current during render) avoids stale/impure
+  // reads and still updates before the browser paints. This is React's own
+  // documented pattern for "measure layout, then setState" (useLayoutEffect
+  // exists specifically for this), so the set-state-in-effect warning here
+  // is a known false positive for this case.
+  React.useLayoutEffect(() => {
+    buttonNodesRef.current = buttonNodesRef.current.slice(0, tabs.length);
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
+    setRects({
+      nav: navRef.current?.getBoundingClientRect() ?? null,
+      selected:
+        buttonNodesRef.current[selectedTabIndex]?.getBoundingClientRect() ??
+        null,
+      hovered:
+        hoveredTabIndex !== null
+          ? (buttonNodesRef.current[hoveredTabIndex]?.getBoundingClientRect() ??
+            null)
+          : null,
+    });
+  }, [tabs.length, selectedTabIndex, hoveredTabIndex]);
+
+  const { nav: navRect, selected: selectedRect, hovered: hoveredRect } = rects;
 
   return (
     <nav
@@ -114,7 +132,7 @@ const Tabs = ({
           >
             <motion.span
               ref={(el) => {
-                buttonRefs[i] = el as HTMLButtonElement;
+                buttonNodesRef.current[i] = el;
               }}
               className={cn("block", {
                 "text-zinc-500": !isActive,
@@ -186,13 +204,16 @@ export function AnimatedTabs<T extends readonly [Tab, ...Tab[]]>({
   defaultTabValue,
   options: opt = {},
 }: AnimatedTabsProps<T>) {
-  const hookPropsRef = React.useRef({
+  const options = { ...opt, ...defaultOptions };
+
+  // `initialTabId` only matters for useTabs' lazy useState initializer,
+  // which React only ever calls once (on mount), so it doesn't need to be
+  // frozen in a ref — passing `tabs` live also means it stays in sync if
+  // the prop changes after mount, instead of being stuck with the first one.
+  const framer = useTabs({
     tabs: [...tabs],
     initialTabId: defaultTabValue ?? tabs[0].value,
   });
-  const options = { ...opt, ...defaultOptions };
-
-  const framer = useTabs(hookPropsRef.current);
 
   return (
     <div className="w-full">
@@ -215,14 +236,13 @@ function useTabs({
   initialTabId: string;
   onChange?: (id: string) => void;
 }) {
-  const [[selectedTabIndex, direction], setSelectedTab] = useState<
-    [number, number]
-  >(() => {
+  const [selectedTab, setSelectedTab] = useState<[number, number]>(() => {
     const indexOfInitialTab = tabs.findIndex(
       (tab: Tab) => tab.value === initialTabId,
     );
     return [indexOfInitialTab === -1 ? 0 : indexOfInitialTab, 0];
   });
+  const [selectedTabIndex, direction] = selectedTab;
 
   /**
    * Returns the tabs prop, the selected tab, and the content props.

@@ -72,14 +72,14 @@ const defaultConfig: TableConfig = {
 };
 
 /**
- * Hook to provide table configuration
- * Allows overriding default configuration
+ * Provides table configuration, merging in any overrides.
+ *
+ * Not a hook (calls no hooks internally) despite the data it computes being
+ * hook-shaped — renamed off the `use` prefix so tooling doesn't treat it as
+ * one.
  */
-export function useTableConfig(
+export function getTableConfig(
   overrideConfig?: Partial<TableConfig>,
 ): TableConfig {
-  // Merge default config with any overrides
-  const config = { ...defaultConfig, ...overrideConfig };
-
-  return config;
+  return { ...defaultConfig, ...overrideConfig };
 }

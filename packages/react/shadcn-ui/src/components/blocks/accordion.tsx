@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import {
   type AccordionMultipleProps,
   type AccordionSingleProps,
@@ -290,7 +290,7 @@ function Items({
           >
             {title}
           </span>
-          {subtitle && (
+          {Boolean(subtitle) && (
             <span
               data-slot="subtitle"
               className="text-muted-foreground font-normal"

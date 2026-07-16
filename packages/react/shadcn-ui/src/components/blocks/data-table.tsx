@@ -34,8 +34,8 @@ import {
 
 import { DataTablePagination } from "./data-table-ext/pagination";
 import {
+  getTableConfig,
   type TableConfig,
-  useTableConfig,
 } from "./data-table-ext/utils/table-config";
 
 interface Props<T> {
@@ -45,7 +45,13 @@ interface Props<T> {
 }
 
 export function DataTable<T>({ columns, data, config }: Props<T>) {
-  const tableConfig = useTableConfig(config);
+  "use no memo";
+  // TanStack Table's useReactTable() returns functions that can't be safely
+  // memoized by the React Compiler (an upstream, documented limitation) —
+  // opt this component out of compiler memoization rather than let it skip
+  // silently.
+
+  const tableConfig = getTableConfig(config);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -55,6 +61,12 @@ export function DataTable<T>({ columns, data, config }: Props<T>) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  // TanStack Table's useReactTable() is a documented, upstream React
+  // Compiler incompatibility (it returns functions the compiler can't
+  // memoize safely) — not something fixable here; the "use no memo"
+  // directive above already opts this component out of compiler
+  // memoization, so this is expected, not a bug.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
@@ -105,7 +117,7 @@ export function DataTable<T>({ columns, data, config }: Props<T>) {
                     className="capitalize"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => {
-                      column.toggleVisibility(!!value);
+                      column.toggleVisibility(value);
                     }}
                   >
                     {column.id}

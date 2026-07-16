@@ -45,7 +45,7 @@ interface SidebarContextProps {
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
 
 function useSidebar() {
-  const context = React.useContext(SidebarContext);
+  const context = React.use(SidebarContext);
   if (!context) {
     throw new Error("useSidebar must be used within a SidebarProvider.");
   }
@@ -69,8 +69,11 @@ function SidebarProvider({
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
 
-  // This is the internal state of the sidebar.
-  // We use openProp and setOpenProp for control from outside the component.
+  // This is the internal state of the sidebar. Named with a leading
+  // underscore (not `open`/`setOpen`, hence the setter can't start with
+  // "set" per the naming rule) because those names are reserved below for
+  // the derived, public value that also accounts for `openProp`.
+  // eslint-disable-next-line @eslint-react/use-state
   const [_open, _setOpen] = React.useState(defaultOpen);
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
@@ -133,7 +136,7 @@ function SidebarProvider({
   );
 
   return (
-    <SidebarContext.Provider value={contextValue}>
+    <SidebarContext value={contextValue}>
       <TooltipProvider delayDuration={0}>
         <div
           data-slot="sidebar-wrapper"
@@ -153,7 +156,7 @@ function SidebarProvider({
           {children}
         </div>
       </TooltipProvider>
-    </SidebarContext.Provider>
+    </SidebarContext>
   );
 }
 
@@ -612,10 +615,12 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean;
 }) {
-  // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
-    return `${String(Math.floor(Math.random() * 40) + 50)}%`;
-  }, []);
+  // Random width between 50 to 90%. `Math.random()` is impure, so it's
+  // seeded once via useState's lazy initializer (mount time) rather than
+  // computed in a useMemo, which the compiler still treats as impure.
+  const [width] = React.useState(
+    () => `${String(Math.floor(Math.random() * 40) + 50)}%`,
+  );
 
   return (
     <div

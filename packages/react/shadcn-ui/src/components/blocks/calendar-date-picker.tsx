@@ -81,92 +81,96 @@ interface CalendarDatePickerProps
   numberOfMonths?: 1 | 2;
   yearsRange?: number;
   onDateSelect: (range: { from: Date; to: Date }) => void;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
-export const CalendarDatePicker = React.forwardRef<
-  HTMLButtonElement,
-  CalendarDatePickerProps
->(
-  (
-    {
-      id = "calendar-date-picker",
-      className,
-      date,
-      closeOnSelect = false,
-      numberOfMonths = 2,
-      yearsRange = 10,
-      onDateSelect,
-      variant,
-      ...props
-    },
-    ref,
-  ) => {
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const [selectedRange, setSelectedRange] = React.useState<string | null>(
-      numberOfMonths === 2 ? "This Year" : "Today",
-    );
-    const [monthFrom, setMonthFrom] = React.useState<Date | undefined>(
-      date?.from,
-    );
-    const [yearFrom, setYearFrom] = React.useState<number | undefined>(
-      date?.from?.getFullYear(),
-    );
-    const [monthTo, setMonthTo] = React.useState<Date | undefined>(
-      numberOfMonths === 2 ? date?.to : date?.from,
-    );
-    const [yearTo, setYearTo] = React.useState<number | undefined>(
-      numberOfMonths === 2
-        ? date?.to?.getFullYear()
-        : date?.from?.getFullYear(),
-    );
-    const [highlightedPart, setHighlightedPart] = React.useState<string | null>(
-      null,
-    );
+export function CalendarDatePicker({
+  id = "calendar-date-picker",
+  className,
+  date,
+  closeOnSelect = false,
+  numberOfMonths = 2,
+  yearsRange = 10,
+  onDateSelect,
+  variant,
+  ref,
+  ...props
+}: CalendarDatePickerProps) {
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const [selectedRange, setSelectedRange] = React.useState<string | null>(
+    numberOfMonths === 2 ? "This Year" : "Today",
+  );
+  const [monthFrom, setMonthFrom] = React.useState<Date | undefined>(date.from);
+  const [yearFrom, setYearFrom] = React.useState<number | undefined>(
+    date.from?.getFullYear(),
+  );
+  const [monthTo, setMonthTo] = React.useState<Date | undefined>(
+    numberOfMonths === 2 ? date.to : date.from,
+  );
+  const [yearTo, setYearTo] = React.useState<number | undefined>(
+    numberOfMonths === 2 ? date.to?.getFullYear() : date.from?.getFullYear(),
+  );
+  const [highlightedPart, setHighlightedPart] = React.useState<string | null>(
+    null,
+  );
 
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const timeZone = React.useMemo(
+    () => Intl.DateTimeFormat().resolvedOptions().timeZone,
+    [],
+  );
 
-    const handleClose = () => {
-      setIsPopoverOpen(false);
-    };
+  // `new Date()` is impure, so it's seeded once via useState's lazy
+  // initializer (mount time) rather than recomputed directly during render.
+  const [today] = React.useState(() => new Date());
 
-    const handleTogglePopover = () => {
-      setIsPopoverOpen((prev) => !prev);
-    };
+  const years = Array.from(
+    { length: yearsRange + 1 },
+    (_, i) => today.getFullYear() - yearsRange / 2 + i,
+  );
 
-    const selectDateRange = (from: Date, to: Date, range: string) => {
-      const startDate = startOfDay(toDate(from, { timeZone }));
-      const endDate =
-        numberOfMonths === 2 ? endOfDay(toDate(to, { timeZone })) : startDate;
-      onDateSelect({ from: startDate, to: endDate });
-      setSelectedRange(range);
+  const handleClose = () => {
+    setIsPopoverOpen(false);
+  };
+
+  const handleTogglePopover = () => {
+    setIsPopoverOpen((prev) => !prev);
+  };
+
+  const selectDateRange = (from: Date, to: Date, range: string) => {
+    const startDate = startOfDay(toDate(from, { timeZone }));
+    const endDate =
+      numberOfMonths === 2 ? endOfDay(toDate(to, { timeZone })) : startDate;
+    onDateSelect({ from: startDate, to: endDate });
+    setSelectedRange(range);
+    setMonthFrom(from);
+    setYearFrom(from.getFullYear());
+    setMonthTo(to);
+    setYearTo(to.getFullYear());
+    if (closeOnSelect) setIsPopoverOpen(false);
+  };
+
+  const handleDateSelect = (range: DateRange | undefined) => {
+    if (range?.from) {
+      let from = startOfDay(toDate(range.from, { timeZone }));
+      let to = range.to ? endOfDay(toDate(range.to, { timeZone })) : from;
+      if (numberOfMonths === 1) {
+        if (range.from !== date.from) {
+          to = from;
+        } else if (range.to) {
+          from = startOfDay(toDate(range.to, { timeZone }));
+        }
+      }
+      onDateSelect({ from, to });
       setMonthFrom(from);
       setYearFrom(from.getFullYear());
       setMonthTo(to);
       setYearTo(to.getFullYear());
-      closeOnSelect && setIsPopoverOpen(false);
-    };
+    }
+    setSelectedRange(null);
+  };
 
-    const handleDateSelect = (range: DateRange | undefined) => {
-      if (range) {
-        let from = startOfDay(toDate(range.from!, { timeZone }));
-        let to = range.to ? endOfDay(toDate(range.to, { timeZone })) : from;
-        if (numberOfMonths === 1) {
-          if (range.from !== date.from) {
-            to = from;
-          } else {
-            from = startOfDay(toDate(range.to!, { timeZone }));
-          }
-        }
-        onDateSelect({ from, to });
-        setMonthFrom(from);
-        setYearFrom(from.getFullYear());
-        setMonthTo(to);
-        setYearTo(to.getFullYear());
-      }
-      setSelectedRange(null);
-    };
-
-    const handleMonthChange = (newMonthIndex: number, part: string) => {
+  const handleMonthChange = React.useCallback(
+    (newMonthIndex: number, part: string) => {
       setSelectedRange(null);
       if (part === "from") {
         if (yearFrom !== undefined) {
@@ -175,7 +179,7 @@ export const CalendarDatePicker = React.forwardRef<
           const from =
             numberOfMonths === 2
               ? startOfMonth(toDate(newMonth, { timeZone }))
-              : date?.from
+              : date.from
                 ? new Date(
                     date.from.getFullYear(),
                     newMonth.getMonth(),
@@ -212,14 +216,25 @@ export const CalendarDatePicker = React.forwardRef<
           }
         }
       }
-    };
+    },
+    [
+      date,
+      numberOfMonths,
+      timeZone,
+      yearFrom,
+      yearTo,
+      yearsRange,
+      onDateSelect,
+    ],
+  );
 
-    const handleYearChange = (newYear: number, part: string) => {
+  const handleYearChange = React.useCallback(
+    (newYear: number, part: string) => {
       setSelectedRange(null);
       if (part === "from") {
         if (years.includes(newYear)) {
           const newMonth = monthFrom
-            ? new Date(newYear, monthFrom ? monthFrom.getMonth() : 0, 1)
+            ? new Date(newYear, monthFrom.getMonth(), 1)
             : new Date(newYear, 0, 1);
           const from =
             numberOfMonths === 2
@@ -262,68 +277,73 @@ export const CalendarDatePicker = React.forwardRef<
           }
         }
       }
-    };
+    },
+    [date, numberOfMonths, timeZone, monthFrom, monthTo, years, onDateSelect],
+  );
 
-    const today = new Date();
+  const dateRanges = [
+    { label: "Today", start: today, end: today },
+    { label: "Yesterday", start: subDays(today, 1), end: subDays(today, 1) },
+    {
+      label: "This Week",
+      start: startOfWeek(today, { weekStartsOn: 1 }),
+      end: endOfWeek(today, { weekStartsOn: 1 }),
+    },
+    {
+      label: "Last Week",
+      start: subDays(startOfWeek(today, { weekStartsOn: 1 }), 7),
+      end: subDays(endOfWeek(today, { weekStartsOn: 1 }), 7),
+    },
+    { label: "Last 7 Days", start: subDays(today, 6), end: today },
+    {
+      label: "This Month",
+      start: startOfMonth(today),
+      end: endOfMonth(today),
+    },
+    {
+      label: "Last Month",
+      start: startOfMonth(subDays(today, today.getDate())),
+      end: endOfMonth(subDays(today, today.getDate())),
+    },
+    { label: "This Year", start: startOfYear(today), end: endOfYear(today) },
+    {
+      label: "Last Year",
+      start: startOfYear(subDays(today, 365)),
+      end: endOfYear(subDays(today, 365)),
+    },
+  ];
 
-    const years = Array.from(
-      { length: yearsRange + 1 },
-      (_, i) => today.getFullYear() - yearsRange / 2 + i,
-    );
+  const handleMouseOver = (part: string) => {
+    setHighlightedPart(part);
+  };
 
-    const dateRanges = [
-      { label: "Today", start: today, end: today },
-      { label: "Yesterday", start: subDays(today, 1), end: subDays(today, 1) },
-      {
-        label: "This Week",
-        start: startOfWeek(today, { weekStartsOn: 1 }),
-        end: endOfWeek(today, { weekStartsOn: 1 }),
-      },
-      {
-        label: "Last Week",
-        start: subDays(startOfWeek(today, { weekStartsOn: 1 }), 7),
-        end: subDays(endOfWeek(today, { weekStartsOn: 1 }), 7),
-      },
-      { label: "Last 7 Days", start: subDays(today, 6), end: today },
-      {
-        label: "This Month",
-        start: startOfMonth(today),
-        end: endOfMonth(today),
-      },
-      {
-        label: "Last Month",
-        start: startOfMonth(subDays(today, today.getDate())),
-        end: endOfMonth(subDays(today, today.getDate())),
-      },
-      { label: "This Year", start: startOfYear(today), end: endOfYear(today) },
-      {
-        label: "Last Year",
-        start: startOfYear(subDays(today, 365)),
-        end: endOfYear(subDays(today, 365)),
-      },
-    ];
+  const handleMouseLeave = () => {
+    setHighlightedPart(null);
+  };
 
-    const handleMouseOver = (part: string) => {
-      setHighlightedPart(part);
-    };
+  // Wired up via a native `addEventListener` below (not a JSX event prop),
+  // which never passes a second argument, so there's no "part" parameter —
+  // the branch to act on comes from `highlightedPart` state instead.
+  const handleWheel = React.useCallback(
+    (event: WheelEvent) => {
+      if (!date.from || !date.to) return;
+      const from = date.from;
+      const to = date.to;
 
-    const handleMouseLeave = () => {
-      setHighlightedPart(null);
-    };
-
-    const handleWheel = (event: React.WheelEvent, part: string) => {
       event.preventDefault();
       setSelectedRange(null);
       if (highlightedPart === "firstDay") {
-        const newDate = new Date(date.from!);
+        const newDate = new Date(from);
         const increment = event.deltaY > 0 ? -1 : 1;
         newDate.setDate(newDate.getDate() + increment);
-        if (newDate <= date.to!) {
-          numberOfMonths === 2
-            ? onDateSelect({ from: newDate, to: new Date(date.to!) })
-            : onDateSelect({ from: newDate, to: newDate });
+        if (newDate <= to) {
+          if (numberOfMonths === 2) {
+            onDateSelect({ from: newDate, to: new Date(to) });
+          } else {
+            onDateSelect({ from: newDate, to: newDate });
+          }
           setMonthFrom(newDate);
-        } else if (newDate > date.to! && numberOfMonths === 1) {
+        } else if (newDate > to && numberOfMonths === 1) {
           onDateSelect({ from: newDate, to: newDate });
           setMonthFrom(newDate);
         }
@@ -335,11 +355,11 @@ export const CalendarDatePicker = React.forwardRef<
         const newYear = yearFrom + (event.deltaY > 0 ? -1 : 1);
         handleYearChange(newYear, "from");
       } else if (highlightedPart === "secondDay") {
-        const newDate = new Date(date.to!);
+        const newDate = new Date(to);
         const increment = event.deltaY > 0 ? -1 : 1;
         newDate.setDate(newDate.getDate() + increment);
-        if (newDate >= date.from!) {
-          onDateSelect({ from: new Date(date.from!), to: newDate });
+        if (newDate >= from) {
+          onDateSelect({ from: new Date(from), to: newDate });
           setMonthTo(newDate);
         }
       } else if (highlightedPart === "secondMonth") {
@@ -350,273 +370,317 @@ export const CalendarDatePicker = React.forwardRef<
         const newYear = yearTo + (event.deltaY > 0 ? -1 : 1);
         handleYearChange(newYear, "to");
       }
+    },
+    [
+      date,
+      highlightedPart,
+      numberOfMonths,
+      monthFrom,
+      monthTo,
+      yearFrom,
+      yearTo,
+      onDateSelect,
+      handleMonthChange,
+      handleYearChange,
+    ],
+  );
+
+  React.useEffect(() => {
+    const firstDayElement = document.getElementById(`firstDay-${id}`);
+    const firstMonthElement = document.getElementById(`firstMonth-${id}`);
+    const firstYearElement = document.getElementById(`firstYear-${id}`);
+    const secondDayElement = document.getElementById(`secondDay-${id}`);
+    const secondMonthElement = document.getElementById(`secondMonth-${id}`);
+    const secondYearElement = document.getElementById(`secondYear-${id}`);
+
+    const elements = [
+      firstDayElement,
+      firstMonthElement,
+      firstYearElement,
+      secondDayElement,
+      secondMonthElement,
+      secondYearElement,
+    ];
+
+    const addPassiveEventListener = (element: HTMLElement | null) => {
+      if (element) {
+        element.addEventListener("wheel", handleWheel, {
+          passive: false,
+        });
+      }
     };
 
-    React.useEffect(() => {
-      const firstDayElement = document.getElementById(`firstDay-${id}`);
-      const firstMonthElement = document.getElementById(`firstMonth-${id}`);
-      const firstYearElement = document.getElementById(`firstYear-${id}`);
-      const secondDayElement = document.getElementById(`secondDay-${id}`);
-      const secondMonthElement = document.getElementById(`secondMonth-${id}`);
-      const secondYearElement = document.getElementById(`secondYear-${id}`);
+    elements.forEach(addPassiveEventListener);
 
-      const elements = [
-        firstDayElement,
-        firstMonthElement,
-        firstYearElement,
-        secondDayElement,
-        secondMonthElement,
-        secondYearElement,
-      ];
-
-      const addPassiveEventListener = (element: HTMLElement | null) => {
+    return () => {
+      elements.forEach((element) => {
         if (element) {
-          element.addEventListener(
-            "wheel",
-            handleWheel as unknown as EventListener,
-            {
-              passive: false,
-            },
-          );
+          element.removeEventListener("wheel", handleWheel);
         }
-      };
+      });
+    };
+  }, [highlightedPart, date, id, handleWheel]);
 
-      elements.forEach(addPassiveEventListener);
+  const formatWithTz = (date: Date, fmt: string) =>
+    formatInTimeZone(date, timeZone, fmt);
 
-      return () => {
-        elements.forEach((element) => {
-          if (element) {
-            element.removeEventListener(
-              "wheel",
-              handleWheel as unknown as EventListener,
-            );
-          }
-        });
-      };
-    }, [highlightedPart, date]);
-
-    const formatWithTz = (date: Date, fmt: string) =>
-      formatInTimeZone(date, timeZone, fmt);
-
-    return (
-      <>
-        <style>
-          {`
+  return (
+    <>
+      <style>
+        {`
             .date-part {
               touch-action: none;
             }
           `}
-        </style>
-        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              id="date"
-              ref={ref}
-              {...props}
-              className={cn(
-                "w-auto",
-                multiSelectVariants({ variant, className }),
-              )}
-              size="default"
-              onClick={handleTogglePopover}
-              suppressHydrationWarning
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              <span>
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      <span
-                        id={`firstDay-${id}`}
-                        className={cn(
-                          "date-part",
-                          highlightedPart === "firstDay" &&
-                            "underline font-bold",
-                        )}
-                        onMouseOver={() => {
-                          handleMouseOver("firstDay");
-                        }}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {formatWithTz(date.from, "dd")}
-                      </span>{" "}
-                      <span
-                        id={`firstMonth-${id}`}
-                        className={cn(
-                          "date-part",
-                          highlightedPart === "firstMonth" &&
-                            "underline font-bold",
-                        )}
-                        onMouseOver={() => {
-                          handleMouseOver("firstMonth");
-                        }}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {formatWithTz(date.from, "LLL")}
-                      </span>
-                      ,{" "}
-                      <span
-                        id={`firstYear-${id}`}
-                        className={cn(
-                          "date-part",
-                          highlightedPart === "firstYear" &&
-                            "underline font-bold",
-                        )}
-                        onMouseOver={() => {
-                          handleMouseOver("firstYear");
-                        }}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {formatWithTz(date.from, "y")}
-                      </span>
-                      {numberOfMonths === 2 && (
-                        <>
-                          {" - "}
-                          <span
-                            id={`secondDay-${id}`}
-                            className={cn(
-                              "date-part",
-                              highlightedPart === "secondDay" &&
-                                "underline font-bold",
-                            )}
-                            onMouseOver={() => {
-                              handleMouseOver("secondDay");
-                            }}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            {formatWithTz(date.to, "dd")}
-                          </span>{" "}
-                          <span
-                            id={`secondMonth-${id}`}
-                            className={cn(
-                              "date-part",
-                              highlightedPart === "secondMonth" &&
-                                "underline font-bold",
-                            )}
-                            onMouseOver={() => {
-                              handleMouseOver("secondMonth");
-                            }}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            {formatWithTz(date.to, "LLL")}
-                          </span>
-                          ,{" "}
-                          <span
-                            id={`secondYear-${id}`}
-                            className={cn(
-                              "date-part",
-                              highlightedPart === "secondYear" &&
-                                "underline font-bold",
-                            )}
-                            onMouseOver={() => {
-                              handleMouseOver("secondYear");
-                            }}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            {formatWithTz(date.to, "y")}
-                          </span>
-                        </>
+      </style>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            ref={ref}
+            {...props}
+            className={cn(
+              "w-auto",
+              multiSelectVariants({ variant, className }),
+            )}
+            size="default"
+            onClick={handleTogglePopover}
+            suppressHydrationWarning
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            <span>
+              {date.from ? (
+                date.to ? (
+                  <>
+                    <span
+                      id={`firstDay-${id}`}
+                      className={cn(
+                        "date-part",
+                        highlightedPart === "firstDay" && "underline font-bold",
                       )}
-                    </>
-                  ) : (
-                    <>
-                      <span
-                        id="day"
-                        className={cn(
-                          "date-part",
-                          highlightedPart === "day" && "underline font-bold",
-                        )}
-                        onMouseOver={() => {
-                          handleMouseOver("day");
-                        }}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {formatWithTz(date.from, "dd")}
-                      </span>{" "}
-                      <span
-                        id="month"
-                        className={cn(
-                          "date-part",
-                          highlightedPart === "month" && "underline font-bold",
-                        )}
-                        onMouseOver={() => {
-                          handleMouseOver("month");
-                        }}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {formatWithTz(date.from, "LLL")}
-                      </span>
-                      ,{" "}
-                      <span
-                        id="year"
-                        className={cn(
-                          "date-part",
-                          highlightedPart === "year" && "underline font-bold",
-                        )}
-                        onMouseOver={() => {
-                          handleMouseOver("year");
-                        }}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {formatWithTz(date.from, "y")}
-                      </span>
-                    </>
-                  )
+                      onMouseOver={() => {
+                        handleMouseOver("firstDay");
+                      }}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {formatWithTz(date.from, "dd")}
+                    </span>{" "}
+                    <span
+                      id={`firstMonth-${id}`}
+                      className={cn(
+                        "date-part",
+                        highlightedPart === "firstMonth" &&
+                          "underline font-bold",
+                      )}
+                      onMouseOver={() => {
+                        handleMouseOver("firstMonth");
+                      }}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {formatWithTz(date.from, "LLL")}
+                    </span>
+                    ,{" "}
+                    <span
+                      id={`firstYear-${id}`}
+                      className={cn(
+                        "date-part",
+                        highlightedPart === "firstYear" &&
+                          "underline font-bold",
+                      )}
+                      onMouseOver={() => {
+                        handleMouseOver("firstYear");
+                      }}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {formatWithTz(date.from, "y")}
+                    </span>
+                    {numberOfMonths === 2 && (
+                      <>
+                        {" - "}
+                        <span
+                          id={`secondDay-${id}`}
+                          className={cn(
+                            "date-part",
+                            highlightedPart === "secondDay" &&
+                              "underline font-bold",
+                          )}
+                          onMouseOver={() => {
+                            handleMouseOver("secondDay");
+                          }}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {formatWithTz(date.to, "dd")}
+                        </span>{" "}
+                        <span
+                          id={`secondMonth-${id}`}
+                          className={cn(
+                            "date-part",
+                            highlightedPart === "secondMonth" &&
+                              "underline font-bold",
+                          )}
+                          onMouseOver={() => {
+                            handleMouseOver("secondMonth");
+                          }}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {formatWithTz(date.to, "LLL")}
+                        </span>
+                        ,{" "}
+                        <span
+                          id={`secondYear-${id}`}
+                          className={cn(
+                            "date-part",
+                            highlightedPart === "secondYear" &&
+                              "underline font-bold",
+                          )}
+                          onMouseOver={() => {
+                            handleMouseOver("secondYear");
+                          }}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {formatWithTz(date.to, "y")}
+                        </span>
+                      </>
+                    )}
+                  </>
                 ) : (
-                  <span>Select a date</span>
-                )}
-              </span>
-            </Button>
-          </PopoverTrigger>
-          {isPopoverOpen && (
-            <PopoverContent
-              className="w-auto"
-              align="start"
-              avoidCollisions={false}
-              onInteractOutside={handleClose}
-              onEscapeKeyDown={handleClose}
-              style={{
-                maxHeight: "var(--radix-popover-content-available-height)",
-                overflowY: "auto",
-              }}
-            >
-              <div className="flex">
-                {numberOfMonths === 2 && (
-                  <div className="flex flex-col gap-1 pr-4 text-left border-r border-foreground/10">
-                    {dateRanges.map(({ label, start, end }) => (
-                      <Button
-                        key={label}
-                        variant="ghost"
-                        size="default"
-                        className={cn(
-                          "justify-start hover:bg-primary/90 hover:text-background",
-                          selectedRange === label &&
-                            "bg-primary text-background hover:bg-primary/90 hover:text-background",
-                        )}
-                        onClick={() => {
-                          selectDateRange(start, end, label);
-                          setMonthFrom(start);
-                          setYearFrom(start.getFullYear());
-                          setMonthTo(end);
-                          setYearTo(end.getFullYear());
-                        }}
-                      >
-                        {label}
-                      </Button>
-                    ))}
+                  <>
+                    <span
+                      id="day"
+                      className={cn(
+                        "date-part",
+                        highlightedPart === "day" && "underline font-bold",
+                      )}
+                      onMouseOver={() => {
+                        handleMouseOver("day");
+                      }}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {formatWithTz(date.from, "dd")}
+                    </span>{" "}
+                    <span
+                      id="month"
+                      className={cn(
+                        "date-part",
+                        highlightedPart === "month" && "underline font-bold",
+                      )}
+                      onMouseOver={() => {
+                        handleMouseOver("month");
+                      }}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {formatWithTz(date.from, "LLL")}
+                    </span>
+                    ,{" "}
+                    <span
+                      id="year"
+                      className={cn(
+                        "date-part",
+                        highlightedPart === "year" && "underline font-bold",
+                      )}
+                      onMouseOver={() => {
+                        handleMouseOver("year");
+                      }}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {formatWithTz(date.from, "y")}
+                    </span>
+                  </>
+                )
+              ) : (
+                <span>Select a date</span>
+              )}
+            </span>
+          </Button>
+        </PopoverTrigger>
+        {isPopoverOpen && (
+          <PopoverContent
+            className="w-auto"
+            align="start"
+            avoidCollisions={false}
+            onInteractOutside={handleClose}
+            onEscapeKeyDown={handleClose}
+            style={{
+              maxHeight: "var(--radix-popover-content-available-height)",
+              overflowY: "auto",
+            }}
+          >
+            <div className="flex">
+              {numberOfMonths === 2 && (
+                <div className="flex flex-col gap-1 pr-4 text-left border-r border-foreground/10">
+                  {dateRanges.map(({ label, start, end }) => (
+                    <Button
+                      key={label}
+                      variant="ghost"
+                      size="default"
+                      className={cn(
+                        "justify-start hover:bg-primary/90 hover:text-background",
+                        selectedRange === label &&
+                          "bg-primary text-background hover:bg-primary/90 hover:text-background",
+                      )}
+                      onClick={() => {
+                        selectDateRange(start, end, label);
+                        setMonthFrom(start);
+                        setYearFrom(start.getFullYear());
+                        setMonthTo(end);
+                        setYearTo(end.getFullYear());
+                      }}
+                    >
+                      {label}
+                    </Button>
+                  ))}
+                </div>
+              )}
+              <div className="flex flex-col">
+                <div className="flex items-center gap-4">
+                  <div className="flex gap-2 ml-3">
+                    <Select
+                      onValueChange={(value) => {
+                        handleMonthChange(months.indexOf(value), "from");
+                        setSelectedRange(null);
+                      }}
+                      value={
+                        monthFrom ? months[monthFrom.getMonth()] : undefined
+                      }
+                    >
+                      <SelectTrigger className="w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
+                        <SelectValue placeholder="Month" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {months.map((month, idx) => (
+                          <SelectItem key={idx} value={month}>
+                            {month}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Select
+                      onValueChange={(value) => {
+                        handleYearChange(Number(value), "from");
+                        setSelectedRange(null);
+                      }}
+                      value={yearFrom ? yearFrom.toString() : undefined}
+                    >
+                      <SelectTrigger className="w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
+                        <SelectValue placeholder="Year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {years.map((year, idx) => (
+                          <SelectItem key={idx} value={year.toString()}>
+                            {year}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
-                )}
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-4">
-                    <div className="flex gap-2 ml-3">
+                  {numberOfMonths === 2 && (
+                    <div className="flex gap-2">
                       <Select
                         onValueChange={(value) => {
-                          handleMonthChange(months.indexOf(value), "from");
+                          handleMonthChange(months.indexOf(value), "to");
                           setSelectedRange(null);
                         }}
-                        value={
-                          monthFrom ? months[monthFrom.getMonth()] : undefined
-                        }
+                        value={monthTo ? months[monthTo.getMonth()] : undefined}
                       >
                         <SelectTrigger className="w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
                           <SelectValue placeholder="Month" />
@@ -631,10 +695,10 @@ export const CalendarDatePicker = React.forwardRef<
                       </Select>
                       <Select
                         onValueChange={(value) => {
-                          handleYearChange(Number(value), "from");
+                          handleYearChange(Number(value), "to");
                           setSelectedRange(null);
                         }}
-                        value={yearFrom ? yearFrom.toString() : undefined}
+                        value={yearTo ? yearTo.toString() : undefined}
                       >
                         <SelectTrigger className="w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
                           <SelectValue placeholder="Year" />
@@ -648,70 +712,26 @@ export const CalendarDatePicker = React.forwardRef<
                         </SelectContent>
                       </Select>
                     </div>
-                    {numberOfMonths === 2 && (
-                      <div className="flex gap-2">
-                        <Select
-                          onValueChange={(value) => {
-                            handleMonthChange(months.indexOf(value), "to");
-                            setSelectedRange(null);
-                          }}
-                          value={
-                            monthTo ? months[monthTo.getMonth()] : undefined
-                          }
-                        >
-                          <SelectTrigger className="w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
-                            <SelectValue placeholder="Month" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {months.map((month, idx) => (
-                              <SelectItem key={idx} value={month}>
-                                {month}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <Select
-                          onValueChange={(value) => {
-                            handleYearChange(Number(value), "to");
-                            setSelectedRange(null);
-                          }}
-                          value={yearTo ? yearTo.toString() : undefined}
-                        >
-                          <SelectTrigger className="w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
-                            <SelectValue placeholder="Year" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {years.map((year, idx) => (
-                              <SelectItem key={idx} value={year.toString()}>
-                                {year}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex">
-                    <Calendar
-                      mode="range"
-                      defaultMonth={monthFrom}
-                      month={monthFrom}
-                      onMonthChange={setMonthFrom}
-                      selected={date}
-                      onSelect={handleDateSelect}
-                      numberOfMonths={numberOfMonths}
-                      showOutsideDays={false}
-                      className={className}
-                    />
-                  </div>
+                  )}
+                </div>
+                <div className="flex">
+                  <Calendar
+                    mode="range"
+                    defaultMonth={monthFrom}
+                    month={monthFrom}
+                    onMonthChange={setMonthFrom}
+                    selected={date}
+                    onSelect={handleDateSelect}
+                    numberOfMonths={numberOfMonths}
+                    showOutsideDays={false}
+                    className={className}
+                  />
                 </div>
               </div>
-            </PopoverContent>
-          )}
-        </Popover>
-      </>
-    );
-  },
-);
-
-CalendarDatePicker.displayName = "CalendarDatePicker";
+            </div>
+          </PopoverContent>
+        )}
+      </Popover>
+    </>
+  );
+}

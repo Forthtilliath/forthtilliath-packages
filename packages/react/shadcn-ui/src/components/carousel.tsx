@@ -33,7 +33,7 @@ type CarouselContextProps = {
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
 function useCarousel() {
-  const context = React.useContext(CarouselContext);
+  const context = React.use(CarouselContext);
 
   if (!context) {
     throw new Error("useCarousel must be used within a <Carousel />");
@@ -61,9 +61,14 @@ function Carousel({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
+  // Shared between an immediate initial-sync call and embla's `.on()`
+  // listeners below (both legitimate "sync state from an external system"
+  // uses), so the setState calls here aren't gated behind an event handler.
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setCanScrollPrev(api.canScrollPrev());
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setCanScrollNext(api.canScrollNext());
   }, []);
 
@@ -95,23 +100,27 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return;
+    // Embla's API only exists once mounted, so syncing the initial scroll
+    // state has to happen here — this is the same "subscribe to an external
+    // system, sync state in the callback" pattern as the `.on()` listeners
+    // right below, just invoked once upfront for the initial state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api);
     api.on("reInit", onSelect);
     api.on("select", onSelect);
 
     return () => {
-      api?.off("select", onSelect);
+      api.off("select", onSelect);
     };
   }, [api, onSelect]);
 
   return (
-    <CarouselContext.Provider
+    <CarouselContext
       value={{
         carouselRef,
         api: api,
         opts,
-        orientation:
-          orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+        orientation,
         scrollPrev,
         scrollNext,
         canScrollPrev,
@@ -128,7 +137,7 @@ function Carousel({
       >
         {children}
       </div>
-    </CarouselContext.Provider>
+    </CarouselContext>
   );
 }
 

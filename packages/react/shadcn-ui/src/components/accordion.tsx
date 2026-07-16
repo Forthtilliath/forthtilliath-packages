@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDownIcon, LucideProps } from "lucide-react";
+import type { LucideProps } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
@@ -55,6 +56,10 @@ function AccordionTrigger({
       >
         {children}
         {!hideChevron && React.isValidElement(customChevron) ? (
+          // cloneElement is required here (not the `Slot` pattern) so the merged
+          // className goes through `cn()`'s tailwind-merge dedup, and the icon
+          // stays the trigger's direct child for the `>svg` CSS selector above.
+          // eslint-disable-next-line @eslint-react/no-clone-element
           React.cloneElement(customChevron, chevronProps)
         ) : (
           <ChevronDownIcon {...chevronProps} />
