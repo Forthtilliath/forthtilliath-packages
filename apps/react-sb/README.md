@@ -1,54 +1,56 @@
-# React + TypeScript + Vite
+# react-sb
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Storybook workspace for this monorepo — documents and tests every component
+from [`@forthtilliath/shadcn-ui`](../../packages/react/shadcn-ui),
+[`@forthtilliath/forth-ui`](../../packages/react/forth-ui), and
+[`@forthtilliath/react-ui`](../../packages/react/ui).
 
-Currently, two official plugins are available:
+## Develop
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+```bash
+corepack pnpm run dev:sb    # from the repo root, or:
+corepack pnpm --filter react-sb dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [http://localhost:6006](http://localhost:6006).
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+## Story organization
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
 ```
+src/stories/
+├── shadcn-ui/        # one file per shadcn/ui primitive (button, dialog, ...)
+│   └── blocks/        # composed blocks (data-table, navbar-01, ...)
+├── forth-ui/          # accordion, avatar, avatar-group, grid, repeat
+└── ui/                # headless components: show, repeat, slot-or-callback
+```
+
+Each story file mirrors the component's props/variants and includes
+interaction tests (`play` functions) using Testing Library queries.
+
+## Testing
+
+Stories double as component tests via `@storybook/addon-vitest`, run in a
+real browser (Playwright/Chromium):
+
+```bash
+pnpm run test    # vitest run — executes every story's play function
+```
+
+## Scripts
+
+```bash
+pnpm run dev               # storybook dev -p 6006
+pnpm run build-storybook   # static Storybook build (runs build:tw:once first)
+pnpm run preview            # vite preview
+pnpm run check-types        # tsc --noEmit
+pnpm run lint                # eslint (includes eslint-plugin-storybook)
+pnpm run test                 # vitest run
+pnpm run dev:tw                # tailwind --watch for .storybook/globals.css
+```
+
+## Stack
+
+- [Storybook](https://storybook.js.org) 9 (`@storybook/react-vite`),
+  with `addon-docs`, `addon-themes` (theme switcher toolbar), `addon-vitest`
+- [Vitest](https://vitest.dev/) browser mode (`@vitest/browser` + Playwright)
+- [Vite](https://vitejs.dev/) + `@vitejs/plugin-react`
