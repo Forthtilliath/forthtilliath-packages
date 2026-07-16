@@ -4,26 +4,13 @@ Ce qu'il reste réellement à faire sur ce repo (branche `dev-tw-sb`). Pour
 l'historique des sessions précédentes (bugs corrigés, montées de version
 déjà faites, etc.), voir `git log`.
 
-## Lint — dette de style (pas de crash, juste des erreurs de règles)
+## check-types — dette restante
 
-- `packages/types` : 5 erreurs `consistent-type-exports` (`export type`
-  manquant dans `src/index.ts`, `src/array/index.ts`, `src/helpers/index.ts`).
-  Fix mécanique rapide.
-- `packages/react/shadcn-ui` : **215 erreurs + 109 warnings**, réparties sur
-  la majorité des composants générés par la CLI shadcn
-  (`consistent-type-imports`, `naming-convention` sur des variables
-  PascalCase/UPPER_CASE issues du code généré, `no-unsafe-*` concentrées
-  dans `calendar-date-picker.tsx`, `no-unnecessary-condition`). Soit
-  assouplir la config pour ce code généré, soit traiter en plusieurs passes.
-- `apps/react-sb` : 3 erreurs (`naming-convention`, `no-unnecessary-condition`)
-  - 7 warnings mineurs.
-
-## check-types — même dette, mêmes fichiers
-
-- `packages/react/shadcn-ui` : `src/components/blocks/form.tsx` (generics
-  `react-hook-form` + résolveur `zod` incompatibles) et
-  `src/components/chart.tsx` (prop `payload` mal typée côté `recharts`).
-  Erreurs pré-existantes, pas des régressions.
+- `packages/react/shadcn-ui` : `src/components/blocks/form.tsx` — generics
+  `react-hook-form` + résolveur `zod` incompatibles
+  (`Resolver<FieldValues, ...>` vs `Resolver<TFieldValues, ...>`). Isolé à ce
+  fichier, n'affecte pas `chart.tsx` (retypé et corrigé) ni le reste du
+  package.
 
 ## Sélecteur de thème (non fait)
 
