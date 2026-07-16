@@ -103,7 +103,7 @@ export const ShouldChangeMonths: Story = {
   },
   play: async ({ canvas, userEvent }) => {
     const title = await canvas.findByText(/2025/i);
-    const startTitle = title.textContent ?? "";
+    const startTitle = title.textContent;
     const backBtn = await canvas.findByRole("button", { name: /previous/i });
     const nextBtn = await canvas.findByRole("button", { name: /next/i });
     const steps = 6;
