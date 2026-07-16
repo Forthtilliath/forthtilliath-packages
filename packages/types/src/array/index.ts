@@ -1,1 +1,1 @@
-export * from "./non-empty-array.js";
+export type * from "./non-empty-array.js";

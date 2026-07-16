@@ -1,1 +1,1 @@
-export * from "./storybook.js";
+export type * from "./storybook.js";
