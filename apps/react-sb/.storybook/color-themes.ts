@@ -22,6 +22,13 @@ export const colorThemeNames = Object.keys(colorThemeCss).sort();
 
 const STYLE_ELEMENT_ID = "storybook-color-theme-override";
 
+// Forces every custom-property declaration to win regardless of where/how
+// Tailwind's compiled globals.css ends up declaring the same variables
+// (layer, specificity and DOM order are otherwise too fragile to rely on).
+function forceImportant(css: string): string {
+  return css.replace(/(--[\w-]+\s*:\s*[^;{}]+?)\s*;/g, "$1 !important;");
+}
+
 function applyColorTheme(name: string) {
   const css = colorThemeCss[name] ?? "";
   let styleElement = document.getElementById(STYLE_ELEMENT_ID);
@@ -30,14 +37,8 @@ function applyColorTheme(name: string) {
     styleElement.id = STYLE_ELEMENT_ID;
     document.head.append(styleElement);
   }
-  styleElement.textContent = css;
+  styleElement.textContent = forceImportant(css);
 }
-
-// Compiled `globals.css` defines the default theme's `:root`/`.dark`
-// variables inside `@layer theme`. An un-layered <style> tag always wins the
-// CSS cascade over any layered style regardless of DOM order, so injecting
-// the selected theme's raw CSS here reliably overrides it without needing to
-// rebuild globals.css per theme.
 export const withColorTheme: Decorator = (Story, context) => {
   const colorTheme =
     (context.globals as { colorTheme?: string }).colorTheme ??
