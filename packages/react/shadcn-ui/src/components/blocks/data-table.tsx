@@ -38,7 +38,7 @@ import {
   type TableConfig,
 } from "./data-table-ext/utils/table-config";
 
-interface Props<T> {
+export interface Props<T> {
   columns: ColumnDef<T>[];
   data: T[];
   config?: Partial<TableConfig>;

@@ -1,6 +1,8 @@
+import type { Linter } from "eslint";
+
 import { reactConfig } from "@forthtilliath/eslint-config/react";
 
-export default [
+const config: Linter.Config[] = [
   ...reactConfig,
   {
     // shadcn/ui components intentionally co-locate a `xxxVariants` cva()
@@ -19,3 +21,5 @@ export default [
     },
   },
 ];
+
+export default config;

@@ -4,14 +4,6 @@ Ce qu'il reste réellement à faire sur ce repo (branche `dev-tw-sb`). Pour
 l'historique des sessions précédentes (bugs corrigés, montées de version
 déjà faites, etc.), voir `git log`.
 
-## check-types — dette restante
-
-- `packages/react/shadcn-ui` : `src/components/blocks/form.tsx` — generics
-  `react-hook-form` + résolveur `zod` incompatibles
-  (`Resolver<FieldValues, ...>` vs `Resolver<TFieldValues, ...>`). Isolé à ce
-  fichier, n'affecte pas `chart.tsx` (retypé et corrigé) ni le reste du
-  package.
-
 ## Sélecteur de thème (non fait)
 
 - 10 thèmes [tweakcn](https://tweakcn.com) prêts dans

@@ -1,6 +1,8 @@
+import type { Linter } from "eslint";
+
 import { storybookConfig } from "@forthtilliath/eslint-config/storybook";
 
-export default [
+const config: Linter.Config[] = [
   ...storybookConfig,
   {
     // Renders a purely count-based placeholder list
@@ -12,3 +14,5 @@ export default [
     },
   },
 ];
+
+export default config;
