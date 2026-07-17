@@ -1,0 +1,15 @@
+/* CodeBlock renders Shiki's dual-theme output (`defaultColor: false`),
+   which emits `--shiki-light`/`--shiki-dark` custom properties per token
+   instead of baked-in colors — this switches between them on the same
+   `.dark` class toggle used throughout this repo's theme system. */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
