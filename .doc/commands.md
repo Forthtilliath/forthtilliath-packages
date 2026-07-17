@@ -5,6 +5,7 @@ tant que le pnpm global de la machine est cassé (`corepack pnpm run <script>`).
 
 ```bash
 pnpm run dev:web           # apps/web (Next.js)
+pnpm run dev:shadweb        # apps/shadweb (Next.js, port 3001)
 pnpm run dev:sb             # apps/react-sb (Storybook)
 pnpm run dev:forth-ui       # packages/react/forth-ui (tsc --watch + tailwind --watch)
 pnpm run dev:react-ui       # packages/react/ui (tsup --watch)

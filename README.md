@@ -1,6 +1,6 @@
 # @forthtilliath/turborepo
 
-A pnpm + Turborepo monorepo: a Next.js showcase app and a Storybook
+A pnpm + Turborepo monorepo: two Next.js apps and a Storybook
 component-library workspace, sharing a set of internal React/UI/utility
 packages.
 
@@ -12,6 +12,7 @@ packages.
 | Name                                                       | Description                                                            |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
 | [`apps/web`](apps/web)                                     | Next.js showcase app, consumes `shadcn-ui` + `react-ui`                |
+| [`apps/shadweb`](apps/shadweb)                             | Fictional dashboard app proving `shadcn-ui` works as an installed dep  |
 | [`apps/react-sb`](apps/react-sb)                           | Storybook workspace documenting/testing every component                |
 | [`packages/react/shadcn-ui`](packages/react/shadcn-ui)     | shadcn/ui component library (Radix + Tailwind), source-consumed        |
 | [`packages/react/forth-ui`](packages/react/forth-ui)       | Higher-level components built on `shadcn-ui` (Accordion, Avatar, Grid) |
@@ -51,6 +52,7 @@ To work on a single app/package instead of everything:
 
 ```bash
 pnpm run dev:web            # apps/web
+pnpm run dev:shadweb         # apps/shadweb
 pnpm run dev:sb              # apps/react-sb
 pnpm run dev:forth-ui        # packages/react/forth-ui
 pnpm run dev:react-ui        # packages/react/ui

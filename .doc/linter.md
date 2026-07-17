@@ -1,99 +1,72 @@
-https://www.youtube.com/watch?v=lEkXbneUnWg
-https://www.ultracite.ai/examples
-https://www.ultracite.ai/setup
+# ESLint
 
-Okay, je te balance un exemple de fichier `eslint.config.ts` optimisé pour un mono repo Turbo avec TypeScript et React. Ensuite, je te filerai une liste de libs qui te simplifient grave la vie côté config ESLint.
+Setup réel dans `packages/eslint-config/src/`. Flat config
+(`eslint.config.ts`), pas de `.eslintrc`. Chaque app/package importe l'un
+de ces 4 presets et les étend au besoin dans son propre `eslint.config.ts`.
 
----
+## Presets
 
-### Exemple `eslint.config.ts`
+| Fichier        | Étend      | Pour                                          |
+| -------------- | ---------- | --------------------------------------------- |
+| `base.js`      | —          | Tout package TS pur (pas de React)            |
+| `react.js`     | `base.js`  | Packages/apps React (Vite, packages internes) |
+| `nextjs.js`    | `react.js` | Apps Next.js                                  |
+| `storybook.js` | `react.js` | `apps/react-sb` (règles Storybook en plus)    |
 
-```ts
-import { Linter } from "eslint";
+## Ce qui est activé (`base.js`)
 
-const config: Linter.Config = {
-  root: true,
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    ecmaVersion: 2024,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  env: {
-    browser: true,
-    node: true,
-    es2024: true,
-  },
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended",
-  ],
-  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
-  rules: {
-    "prettier/prettier": "error",
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "react/prop-types": "off", // Si tu utilises TS, inutile
-    "react/react-in-jsx-scope": "off", // React 17+ ne nécessite plus l'import React explicite
-  },
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
-  overrides: [
-    {
-      files: ["*.ts", "*.tsx"],
-      rules: {
-        // Règles spécifiques TS si besoin
-      },
-    },
-    {
-      files: ["*.js", "*.jsx"],
-      rules: {
-        // Possibilité de désactiver ou adapter certaines règles JS
-      },
-    },
-  ],
-};
+- `typescript-eslint` **strict-type-checked** + **stylistic-type-checked**
+  (pas juste `recommended`) — nécessite `parserOptions.projectService`.
+- `eslint-plugin-simple-import-sort` — ordre d'imports auto-fixable
+  (`--fix` corrige, ne pas trier à la main).
+- `eslint-plugin-turbo` — détecte les env vars non déclarées dans
+  `turbo.json`.
+- `@typescript-eslint/consistent-type-imports` /
+  `consistent-type-exports` — `import type`/`export type` obligatoires.
+- `@typescript-eslint/naming-convention` — camelCase pour variables/
+  fonctions, PascalCase pour les types ; les `const` locales tolèrent
+  aussi `UPPER_CASE` (et `PascalCase` dans `react.js`, pour les refs de
+  composants et les objets `Context`). `leadingUnderscore: "allow"`
+  partout (variables `_ignorées` volontairement).
+- `**/*.js` désactive les règles type-checked (pas de `tsconfig` pour les
+  fichiers JS).
 
-export default config;
-```
+## En plus dans `react.js`
 
----
+- `@eslint-react/eslint-plugin` en mode **recommended-type-checked**.
+- `eslint-plugin-react-hooks` — inclut les règles "React Compiler"
+  (`set-state-in-effect`, `refs`, `purity`, `incompatible-library`,
+  `preserve-manual-memoization`), pas seulement `rules-of-hooks`/
+  `exhaustive-deps`.
+- `eslint-plugin-react-refresh` — `only-export-components` en erreur
+  (désactivé au cas par cas via override de package quand un fichier
+  co-locale volontairement un export non-composant, ex. `buttonVariants`
+  à côté de `Button`).
+- `restrict-template-expressions` et `no-unsafe-call` en **warn** (pas
+  error) ici — plus permissif que `base.js` pour absorber le typing
+  parfois lâche de certaines libs React tierces.
 
-### Les librairies qui déchirent pour générer ou gérer les configs ESLint
+## Cas récurrents rencontrés en pratique
 
-1. **eslint-config-airbnb**
-   - Standard ultra populaire avec règles strictes, très utilisée dans le monde React/JS.
-   - Tu peux l’adapter en y ajoutant TS avec `eslint-config-airbnb-typescript`.
+- **`Linter.Config[]` explicite dans `eslint.config.ts`** : dès qu'un
+  fichier fait `export default [...preset, { ...override }]` (spread +
+  objet inline) dans un package avec `declaration: true`, TS peut
+  échouer avec `TS2742` ("inferred type... cannot be named") — le type
+  inféré référence un type interne non exporté de `@eslint/core`.
+  Fix : annoter explicitement `const config: Linter.Config[] = [...]`
+  plutôt que compter sur l'inférence. `apps/web`/`apps/shadweb`
+  n'y sont pas exposés (leur tsconfig a `noEmit: true`, qui désactive ce
+  diagnostic) ; les packages qui émettent des déclarations (`shadcn-ui`,
+  `apps/react-sb`) si.
+- **`no-array-index-key`** : à désactiver par fichier (pas globalement)
+  pour les listes statiques jamais réordonnées (placeholders comptés,
+  `Array.from({length: n})`) — voir les overrides dans
+  `apps/react-sb/eslint.config.ts` et
+  `packages/react/shadcn-ui/eslint.config.ts`.
 
-2. **eslint-config-prettier**
-   - Pour désactiver les règles ESLint qui pourraient entrer en conflit avec Prettier.
-   - Indispensable si tu utilises Prettier pour le formatage.
+## Historique de session
 
-3. **eslint-config-standard**
-   - Une autre config très clean et simple, plus permissive que Airbnb.
-
-4. **eslint-config-next**
-   - Si tu fais du Next.js, c’est un must.
-   - Elle optimise la config ESLint pour l’environnement Next.
-
-5. **@typescript-eslint/eslint-plugin** et **@typescript-eslint/parser**
-   - Le duo TypeScript officiel pour ESLint, une base solide.
-
-6. **eslint-plugin-react** et **eslint-plugin-react-hooks**
-   - Pour tout ce qui est React évidemment, avec règles spécifiques aux hooks.
-
-7. **eslint-plugin-import**
-   - Gère et vérifie l’ordre des imports, évite les imports non résolus, etc.
-
----
-
-Si tu veux, je peux aussi te faire un script d’installation simplifié de toutes ces dépendances avec leurs versions compatibles. Ça peut sauver du temps.
-
-Alors, t’en penses quoi ? Je continue dans cette voie ou tu veux que je rentre dans les détails plus pointus ?
+Une passe de nettoyage lint complète (226 erreurs/warnings → 0 sur tout
+le monorepo) a eu lieu — voir `git log` pour les commits détaillés
+(root-cause fixes, pas de suppressions en masse). `UPGRADE.md` ne liste
+plus de dette lint : elle est résolue.
