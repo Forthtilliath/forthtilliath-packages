@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/react-vite";
 
+import { colorThemeNames, withColorTheme } from "./color-themes";
 import { twDecoratorHtml } from "./decorators";
 
 const preview: Preview = {
@@ -14,7 +15,21 @@ const preview: Preview = {
     backgrounds: { disable: true },
   },
   tags: ["autodocs"],
-  decorators: [twDecoratorHtml],
+  decorators: [twDecoratorHtml, withColorTheme],
+  globalTypes: {
+    colorTheme: {
+      description: "Color theme",
+      toolbar: {
+        title: "Color theme",
+        icon: "paintbrush",
+        items: colorThemeNames,
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: {
+    colorTheme: "default",
+  },
 };
 
 export default preview;
