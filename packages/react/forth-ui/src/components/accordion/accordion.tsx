@@ -5,9 +5,10 @@ import type { AccordionProps, MultipleProps, SingleProps } from "./types";
 /**
  * A vertically stacked set of interactive headings that each reveal a section of content.
  *
- * @description Inspired from multiple sources, to make a consistent and reusable component.
- * @version 0.0.1
+ * _Inspired from multiple sources, to make a consistent and reusable component._
+ * @version 0.1.0
  * @author Forth
+ * @copyright 2025 Forth
  *
  * @see https://ui.shadcn.com/docs/components/accordion
  * @see https://motion-primitives.com/docs/accordion

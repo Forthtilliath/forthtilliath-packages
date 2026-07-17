@@ -42,7 +42,7 @@ export type AlertProps = React.ComponentProps<"div"> &
  *
  * @version 0.1.0
  * @author Forth
- * @copyright 2025 Forth
+ * @copyright 2026 Forth
  */
 export function Alert({
   className,
