@@ -63,6 +63,58 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  apps/docs:
+    dependencies:
+      '@forthtilliath/shadcn-ui':
+        specifier: workspace:*
+        version: link:../../packages/react/shadcn-ui
+      '@tanstack/react-table':
+        specifier: ^8.21.3
+        version: 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      lucide-react:
+        specifier: ^1.24.0
+        version: 1.24.0(react@19.2.7)
+      next:
+        specifier: ^16.2.10
+        version: 16.2.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.7(react@19.2.7)
+      sonner:
+        specifier: ^2.0.7
+        version: 2.0.7(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
+    devDependencies:
+      '@forthtilliath/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@forthtilliath/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.1.1
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      eslint:
+        specifier: 'catalog:'
+        version: 10.7.0(jiti@2.7.0)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   apps/react-sb:
     dependencies:
       react:
