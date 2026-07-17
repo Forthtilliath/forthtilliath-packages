@@ -5,6 +5,12 @@ import { useScrollspy } from "@forthtilliath/forth-ui/components/scrollspy";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 const SECTIONS = ["introduction", "installation", "usage", "api"];
+const LABELS: Record<string, string> = {
+  introduction: "Introduction",
+  installation: "Installation",
+  usage: "Usage",
+  api: "API",
+};
 
 function ScrollspyExample() {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -22,13 +28,13 @@ function ScrollspyExample() {
             key={id}
             href={`#${id}`}
             className={cn(
-              "rounded px-2 py-1 text-sm capitalize",
+              "rounded px-2 py-1 text-sm",
               activeId === id
                 ? "bg-accent text-foreground font-medium"
                 : "text-muted-foreground",
             )}
           >
-            {id}
+            {LABELS[id]}
           </a>
         ))}
       </nav>
@@ -38,7 +44,7 @@ function ScrollspyExample() {
       >
         {SECTIONS.map((id) => (
           <section key={id} id={id} className="border-b p-6 last:border-0">
-            <h3 className="mb-2 text-sm font-semibold capitalize">{id}</h3>
+            <h3 className="mb-2 text-sm font-semibold">{LABELS[id]}</h3>
             <p className="text-muted-foreground text-sm">
               Content for the {id} section.
             </p>

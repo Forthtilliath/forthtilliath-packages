@@ -19,19 +19,19 @@ const meta = {
       {
         src: "https://bundui-images.netlify.app/avatars/06.png",
         alt: "Avatar 06",
-        fallback: "@shadcn06",
+        fallback: "06",
         // renderTooltip: () => <p>@shadcn</p>,
       },
       {
         src: "https://bundui-images.netlify.app/avatars/07.png",
         alt: "Avatar 07",
-        fallback: "@shadcn07",
+        fallback: "07",
         // renderTooltip: () => <p>@shadcn</p>,
       },
       {
         src: "https://bundui-images.netlify.app/avatars/10.png",
         alt: "Avatar 10",
-        fallback: "@shadcn10",
+        fallback: "10",
         // renderTooltip: () => <p>@shadcn</p>,
       },
     ],
@@ -59,12 +59,12 @@ export const Max: Story = {
       {
         src: "https://bundui-images.netlify.app/avatars/08.png",
         alt: "Avatar 08",
-        fallback: "@shadcn08",
+        fallback: "08",
       },
       {
         src: "https://bundui-images.netlify.app/avatars/09.png",
         alt: "Avatar 09",
-        fallback: "@shadcn09",
+        fallback: "09",
       },
     ],
   },
