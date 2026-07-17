@@ -1,12 +1,11 @@
 "use client";
 
-import { toast } from "sonner";
-import { z } from "zod/v4";
-
 import { Form } from "@forthtilliath/shadcn-ui/components/blocks/form";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import { Input } from "@forthtilliath/shadcn-ui/components/input";
 import { Label } from "@forthtilliath/shadcn-ui/components/label";
+import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
+import { z } from "@forthtilliath/shadcn-ui/lib/zod";
 
 import { Demo, Section } from "../section";
 

@@ -1,8 +1,7 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
-
 import { DataTable } from "@forthtilliath/shadcn-ui/components/blocks/data-table";
+import type { ColumnDef } from "@forthtilliath/shadcn-ui/lib/react-table";
 
 import { Demo, Section } from "../section";
 

@@ -68,9 +68,6 @@ importers:
       '@forthtilliath/shadcn-ui':
         specifier: workspace:*
         version: link:../../packages/react/shadcn-ui
-      '@tanstack/react-table':
-        specifier: ^8.21.3
-        version: 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       lucide-react:
         specifier: ^1.24.0
         version: 1.24.0(react@19.2.7)
@@ -86,12 +83,6 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
-      sonner:
-        specifier: ^2.0.7
-        version: 2.0.7(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      zod:
-        specifier: ^4.4.3
-        version: 4.4.3
     devDependencies:
       '@forthtilliath/eslint-config':
         specifier: workspace:*

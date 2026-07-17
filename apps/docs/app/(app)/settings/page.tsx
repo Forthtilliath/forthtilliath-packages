@@ -1,8 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
-import { z } from "zod/v4";
-
 import { Form } from "@forthtilliath/shadcn-ui/components/blocks/form";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import {
@@ -22,6 +19,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@forthtilliath/shadcn-ui/components/tabs";
+import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
+import { z } from "@forthtilliath/shadcn-ui/lib/zod";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),

@@ -1,7 +1,6 @@
 "use client";
 
 import { AlertCircle, Terminal } from "lucide-react";
-import { toast } from "sonner";
 
 import {
   Alert,
@@ -9,6 +8,7 @@ import {
   AlertTitle,
 } from "@forthtilliath/shadcn-ui/components/alert";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
+import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
 
 import { Demo, Section } from "../section";
 
