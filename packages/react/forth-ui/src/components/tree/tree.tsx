@@ -79,8 +79,8 @@ function TreeItem({
         <CollapsibleContent className="pl-4">
           <ul className="grid gap-0.5">
             {node.children?.map((child, index) => (
-              // eslint-disable-next-line @eslint-react/no-array-index-key -- see above
               <TreeItem
+                // eslint-disable-next-line @eslint-react/no-array-index-key -- see above
                 key={index}
                 node={child}
                 defaultExpanded={defaultExpanded}

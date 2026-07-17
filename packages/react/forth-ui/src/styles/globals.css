@@ -5,6 +5,7 @@
 @import "./safelist.css";
 @import "./storybook.css";
 @import "./shiki.css";
+@import "./marquee.css";
 
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";

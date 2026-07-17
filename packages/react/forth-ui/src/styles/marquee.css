@@ -1,0 +1,30 @@
+/* `Marquee` scrolls two duplicated tracks side-by-side and loops the
+   translation by exactly one track's width, so the seam between the
+   original and its copy is invisible. */
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* `duration` is overridden per-instance via an inline `animationDuration`
+   style, which wins over this shorthand's 20s default. */
+@utility animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+@utility animate-marquee-vertical {
+  animation: marquee-vertical 20s linear infinite;
+}
