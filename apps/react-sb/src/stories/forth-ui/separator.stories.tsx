@@ -6,7 +6,7 @@ import { Separator } from "@forthtilliath/forth-ui/components/separator";
  * Visually or semantically separates content.
  */
 const meta = {
-  title: "forth-ui/Separator",
+  title: "forth-ui/Layout/Separator",
   component: Separator,
   args: {
     className: "w-64",

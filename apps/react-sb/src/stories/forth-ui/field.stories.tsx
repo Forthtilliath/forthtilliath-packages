@@ -10,7 +10,7 @@ import { Input } from "@forthtilliath/shadcn-ui/components/input";
  * error) applied to any control type, independent of any form library.
  */
 const meta = {
-  title: "forth-ui/Field",
+  title: "forth-ui/Forms/Field",
   component: Field,
   args: {
     label: "Username",

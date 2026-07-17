@@ -7,7 +7,7 @@ import { AvatarGroup } from "@forthtilliath/forth-ui/components/avatar";
  * the `avatars` prop.
  */
 const meta = {
-  title: "forth-ui/AvatarGroup",
+  title: "forth-ui/Data Display/AvatarGroup",
   component: AvatarGroup,
   argTypes: {
     avatars: {

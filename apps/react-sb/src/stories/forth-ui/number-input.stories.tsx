@@ -6,7 +6,7 @@ import { NumberInput } from "@forthtilliath/forth-ui/components/number-input";
  * A numeric input with increment/decrement stepper buttons.
  */
 const meta = {
-  title: "forth-ui/NumberInput",
+  title: "forth-ui/Forms/NumberInput",
   component: NumberInput,
   args: {
     defaultValue: 1,

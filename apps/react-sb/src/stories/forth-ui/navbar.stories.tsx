@@ -23,7 +23,7 @@ const NAV_ITEMS = [
  * `NavbarMobileMenu` (mobile).
  */
 const meta = {
-  title: "forth-ui/Navbar",
+  title: "forth-ui/Navigation/Navbar",
   component: Navbar,
 } satisfies Meta<typeof Navbar>;
 

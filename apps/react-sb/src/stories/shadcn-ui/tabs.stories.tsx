@@ -13,7 +13,7 @@ import {
  * one at a time.
  */
 const meta = {
-  title: "shadcn-ui/Tabs",
+  title: "shadcn-ui/Navigation/Tabs",
   component: Tabs,
   tags: ["autodocs"],
   argTypes: {},

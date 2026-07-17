@@ -29,7 +29,7 @@ const LOOKS: NonNullable<AlertVariants["look"]>[] = [
  * description, action button and close button.
  */
 const meta = {
-  title: "forth-ui/Alert",
+  title: "forth-ui/Feedback/Alert",
   component: Alert,
   argTypes: {
     variant: {

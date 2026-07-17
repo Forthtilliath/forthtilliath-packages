@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AspectRatio } from "@forthtilliath/shadcn-ui/components/aspect-ratio";
 
 const meta: Meta<typeof AspectRatio> = {
-  title: "shadcn-ui/AspectRatio",
+  title: "shadcn-ui/Layout/AspectRatio",
   component: AspectRatio,
   argTypes: {},
   render: (args) => (

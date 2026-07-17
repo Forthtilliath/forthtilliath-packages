@@ -18,7 +18,7 @@ import {
  * Fast, composable, unstyled command menu for React.
  */
 const meta = {
-  title: "shadcn-ui/Command",
+  title: "shadcn-ui/Overlays/Command",
   component: Command,
   tags: ["autodocs"],
   argTypes: {},

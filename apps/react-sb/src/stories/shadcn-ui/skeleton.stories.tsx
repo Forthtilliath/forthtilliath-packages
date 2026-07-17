@@ -6,7 +6,7 @@ import { Skeleton } from "@forthtilliath/shadcn-ui/components/skeleton";
  * Use to show a placeholder while content is loading.
  */
 const meta = {
-  title: "shadcn-ui/Skeleton",
+  title: "shadcn-ui/Feedback/Skeleton",
   component: Skeleton,
   tags: ["autodocs"],
   argTypes: {},

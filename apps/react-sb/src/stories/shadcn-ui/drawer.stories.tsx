@@ -16,7 +16,7 @@ import {
  * A drawer component for React.
  */
 const meta = {
-  title: "shadcn-ui/Drawer",
+  title: "shadcn-ui/Overlays/Drawer",
   component: Drawer,
   tags: ["autodocs"],
   argTypes: {

@@ -14,7 +14,7 @@ async function sleep(ms: number) {
  * rendered inside a `<form>`.
  */
 const meta = {
-  title: "forth-ui/SubmitButton",
+  title: "forth-ui/Forms/SubmitButton",
   component: SubmitButton,
   args: {
     children: "Submit",

@@ -10,7 +10,7 @@ import { RadioGroup } from "@forthtilliath/shadcn-ui/components/radio-group";
  * `RadioGroup`.
  */
 const meta = {
-  title: "forth-ui/RadioCard",
+  title: "forth-ui/Forms/RadioCard",
   component: RadioCard,
   args: {
     value: "standard",

@@ -12,7 +12,7 @@ import {
  * to hand-wiring an `AlertDialog`'s open state.
  */
 const meta = {
-  title: "forth-ui/ConfirmDialog",
+  title: "forth-ui/Overlays/ConfirmDialog",
   component: ConfirmDialogProvider,
   args: {
     children: null,

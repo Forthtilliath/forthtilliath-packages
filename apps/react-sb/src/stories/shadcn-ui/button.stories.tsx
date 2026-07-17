@@ -7,7 +7,7 @@ import { Button } from "@forthtilliath/shadcn-ui/components/button";
  * Displays a button or a component that looks like a button.
  */
 const meta = {
-  title: "shadcn-ui/Button",
+  title: "shadcn-ui/Buttons & Actions/Button",
   component: Button,
   tags: ["autodocs"],
   argTypes: {

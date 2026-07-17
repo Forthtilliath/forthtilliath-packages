@@ -10,7 +10,7 @@ import {
  * A set of two-state buttons that can be toggled on or off.
  */
 const meta = {
-  title: "shadcn-ui/ToggleGroup",
+  title: "shadcn-ui/Buttons & Actions/ToggleGroup",
   component: ToggleGroup,
   tags: ["autodocs"],
   argTypes: {

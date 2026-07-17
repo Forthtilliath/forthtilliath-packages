@@ -26,7 +26,7 @@ const LOOKS: NonNullable<BadgeVariants["look"]>[] = [
  * Displays a badge or a component that looks like a badge.
  */
 const meta = {
-  title: "forth-ui/Badge",
+  title: "forth-ui/Feedback/Badge",
   component: Badge,
   argTypes: {
     variant: {

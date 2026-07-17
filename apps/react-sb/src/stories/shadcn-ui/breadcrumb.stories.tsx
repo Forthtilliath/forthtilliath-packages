@@ -20,7 +20,7 @@ import {
  * Displays the path to the current resource using a hierarchy of links.
  */
 const meta = {
-  title: "shadcn-ui/Breadcrumb",
+  title: "shadcn-ui/Navigation/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
   argTypes: {},

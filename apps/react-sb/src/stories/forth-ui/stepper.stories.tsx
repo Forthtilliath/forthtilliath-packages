@@ -14,7 +14,7 @@ const STEPS = [
  * current/upcoming state.
  */
 const meta = {
-  title: "forth-ui/Stepper",
+  title: "forth-ui/Layout/Stepper",
   component: Stepper,
   args: {
     steps: STEPS,

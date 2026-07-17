@@ -6,7 +6,7 @@ import { Label } from "@forthtilliath/shadcn-ui/components/label";
  * Renders an accessible label associated with controls.
  */
 const meta = {
-  title: "shadcn-ui/Label",
+  title: "shadcn-ui/Forms/Label",
   component: Label,
   tags: ["autodocs"],
   argTypes: {

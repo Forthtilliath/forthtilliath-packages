@@ -11,7 +11,7 @@ import {
  * `PasswordStrengthMeter`.
  */
 const meta = {
-  title: "forth-ui/PasswordInput",
+  title: "forth-ui/Forms/PasswordInput",
   component: PasswordInput,
   args: {
     className: "w-72",

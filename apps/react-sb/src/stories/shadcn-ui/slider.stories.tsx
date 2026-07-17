@@ -6,7 +6,7 @@ import { Slider } from "@forthtilliath/shadcn-ui/components/slider";
  * An input where the user selects a value from within a given range.
  */
 const meta = {
-  title: "shadcn-ui/Slider",
+  title: "shadcn-ui/Forms/Slider",
   component: Slider,
   tags: ["autodocs"],
   argTypes: {},

@@ -6,7 +6,7 @@ import { Link } from "@forthtilliath/forth-ui/components/link";
  * A styled hyperlink, or a component that looks like one.
  */
 const meta = {
-  title: "forth-ui/Link",
+  title: "forth-ui/Navigation/Link",
   component: Link,
   args: {
     href: "#",

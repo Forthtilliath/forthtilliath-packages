@@ -8,7 +8,7 @@ import { Label } from "@forthtilliath/shadcn-ui/components/label";
  * A control that allows the user to toggle between checked and not checked.
  */
 const meta: Meta<typeof Checkbox> = {
-  title: "shadcn-ui/Checkbox",
+  title: "shadcn-ui/Forms/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
   argTypes: {},

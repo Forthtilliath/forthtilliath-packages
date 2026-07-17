@@ -6,7 +6,7 @@ import { Rating } from "@forthtilliath/forth-ui/components/rating";
  * A star rating control with keyboard navigation and hover preview.
  */
 const meta = {
-  title: "forth-ui/Rating",
+  title: "forth-ui/Forms/Rating",
   component: Rating,
   args: {
     defaultValue: 3,

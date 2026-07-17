@@ -15,7 +15,7 @@ const LOGOS = [
  * Infinitely scrolls its children (a logo wall, a ticker).
  */
 const meta = {
-  title: "forth-ui/Marquee",
+  title: "forth-ui/Layout/Marquee",
   component: Marquee,
   args: {
     className: "w-96",

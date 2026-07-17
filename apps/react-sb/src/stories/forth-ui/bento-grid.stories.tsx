@@ -9,7 +9,7 @@ import {
  * A CSS-grid layout for unevenly-sized cards ("bento box" layouts).
  */
 const meta = {
-  title: "forth-ui/BentoGrid",
+  title: "forth-ui/Layout/BentoGrid",
   component: BentoGrid,
 } satisfies Meta<typeof BentoGrid>;
 

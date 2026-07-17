@@ -7,7 +7,7 @@ import { Badge } from "@forthtilliath/shadcn-ui/components/badge";
  * Displays a badge or a component that looks like a badge.
  */
 const meta = {
-  title: "shadcn-ui/Badge",
+  title: "shadcn-ui/Feedback/Badge",
   component: Badge,
   tags: ["autodocs"],
   argTypes: {

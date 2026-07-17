@@ -15,7 +15,7 @@ const LABELS = [
  * `Badge` chips in the trigger.
  */
 const meta = {
-  title: "forth-ui/MultiSelect",
+  title: "forth-ui/Forms/MultiSelect",
   component: MultiSelect,
   args: {
     options: LABELS,

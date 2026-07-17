@@ -14,7 +14,7 @@ import {
  * A collection of links for navigating websites.
  */
 const meta = {
-  title: "shadcn-ui/NavigationMenu",
+  title: "shadcn-ui/Navigation/NavigationMenu",
   component: NavigationMenu,
   tags: ["autodocs"],
   argTypes: {},

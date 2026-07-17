@@ -7,7 +7,7 @@ import { Chip } from "@forthtilliath/forth-ui/components/chip";
  * filters — `Badge` with an optional avatar slot for tagging people/entities.
  */
 const meta = {
-  title: "forth-ui/Chip",
+  title: "forth-ui/Buttons & Actions/Chip",
   component: Chip,
   args: {
     children: "Chip",

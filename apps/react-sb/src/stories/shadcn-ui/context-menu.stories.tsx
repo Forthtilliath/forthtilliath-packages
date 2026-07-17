@@ -22,7 +22,7 @@ import {
  * triggered by a button.
  */
 const meta = {
-  title: "shadcn-ui/ContextMenu",
+  title: "shadcn-ui/Overlays/ContextMenu",
   component: ContextMenu,
   tags: ["autodocs"],
   argTypes: {},

@@ -12,7 +12,7 @@ import {
  * the buttons can be checked at a time.
  */
 const meta = {
-  title: "shadcn-ui/RadioGroup",
+  title: "shadcn-ui/Forms/RadioGroup",
   component: RadioGroup,
   tags: ["autodocs"],
   argTypes: {},

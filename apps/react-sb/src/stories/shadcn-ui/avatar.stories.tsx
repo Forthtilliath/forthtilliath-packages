@@ -10,7 +10,7 @@ import {
  * An image element with a fallback for representing the user.
  */
 const meta = {
-  title: "shadcn-ui/Avatar",
+  title: "shadcn-ui/Data Display/Avatar",
   component: Avatar,
   tags: ["autodocs"],
   argTypes: {},

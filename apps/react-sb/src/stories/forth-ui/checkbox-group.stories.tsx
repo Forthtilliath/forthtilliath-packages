@@ -6,7 +6,7 @@ import { CheckboxGroup } from "@forthtilliath/forth-ui/components/checkbox";
  * A group of `Checkbox`es sharing a single array value.
  */
 const meta = {
-  title: "forth-ui/CheckboxGroup",
+  title: "forth-ui/Forms/CheckboxGroup",
   component: CheckboxGroup,
   args: {
     options: [

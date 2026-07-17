@@ -75,7 +75,7 @@ const singleSeriesConfig = {
  * Beautiful charts. Built using Recharts. Copy and paste into your apps.
  */
 const meta = {
-  title: "shadcn-ui/Chart",
+  title: "shadcn-ui/Data Display/Chart",
   component: ChartContainer,
   tags: ["autodocs"],
   argTypes: {},

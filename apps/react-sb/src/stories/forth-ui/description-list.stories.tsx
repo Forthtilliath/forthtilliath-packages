@@ -12,7 +12,7 @@ import { Badge } from "@forthtilliath/shadcn-ui/components/badge";
  * A description list, with terms and descriptions.
  */
 const meta = {
-  title: "forth-ui/DescriptionList",
+  title: "forth-ui/Data Display/DescriptionList",
   component: DescriptionList,
   args: {
     className: "w-96",

@@ -7,7 +7,7 @@ import { Snippet } from "@forthtilliath/forth-ui/components/snippet";
  * yarn add / pnpm add" pattern.
  */
 const meta = {
-  title: "forth-ui/Snippet",
+  title: "forth-ui/Code & Content/Snippet",
   component: Snippet,
   args: {
     className: "w-96",

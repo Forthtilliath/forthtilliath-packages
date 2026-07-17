@@ -14,7 +14,7 @@ import {
  * receives keyboard focus or the mouse hovers over it.
  */
 const meta: Meta<typeof TooltipContent> = {
-  title: "shadcn-ui/Tooltip",
+  title: "shadcn-ui/Overlays/Tooltip",
   component: TooltipContent,
   tags: ["autodocs"],
   argTypes: {

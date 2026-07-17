@@ -7,7 +7,7 @@ import { Toggle } from "@forthtilliath/shadcn-ui/components/toggle";
  * A two-state button that can be either on or off.
  */
 const meta: Meta<typeof Toggle> = {
-  title: "shadcn-ui/Toggle",
+  title: "shadcn-ui/Buttons & Actions/Toggle",
   component: Toggle,
   tags: ["autodocs"],
   argTypes: {

@@ -8,7 +8,7 @@ import { Banner } from "@forthtilliath/forth-ui/components/banner";
  * is an inline callout within page content.
  */
 const meta = {
-  title: "forth-ui/Banner",
+  title: "forth-ui/Feedback/Banner",
   component: Banner,
   argTypes: {
     variant: {

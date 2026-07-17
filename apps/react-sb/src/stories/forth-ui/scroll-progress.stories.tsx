@@ -6,7 +6,7 @@ import { ScrollProgress } from "@forthtilliath/forth-ui/components/scroll-progre
  * A fixed bar at the top of the page that fills as the user scrolls.
  */
 const meta = {
-  title: "forth-ui/ScrollProgress",
+  title: "forth-ui/Feedback/ScrollProgress",
   component: ScrollProgress,
 } satisfies Meta<typeof ScrollProgress>;
 

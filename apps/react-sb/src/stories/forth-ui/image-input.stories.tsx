@@ -6,7 +6,7 @@ import { ImageInput } from "@forthtilliath/forth-ui/components/image-input";
  * A click-to-upload image picker with a live preview.
  */
 const meta = {
-  title: "forth-ui/ImageInput",
+  title: "forth-ui/Forms/ImageInput",
   component: ImageInput,
   args: {
     className: "w-72",

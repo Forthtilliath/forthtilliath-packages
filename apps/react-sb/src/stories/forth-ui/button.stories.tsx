@@ -12,7 +12,7 @@ import { Grid } from "@forthtilliath/forth-ui/components/grid";
  * Displays a button or a component that looks like a button.
  */
 const meta = {
-  title: "forth-ui/Button",
+  title: "forth-ui/Buttons & Actions/Button",
   component: Button,
   argTypes: {
     variant: {

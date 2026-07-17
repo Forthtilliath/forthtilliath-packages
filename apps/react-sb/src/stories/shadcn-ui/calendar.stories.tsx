@@ -9,7 +9,7 @@ import { Calendar } from "@forthtilliath/shadcn-ui/components/calendar";
  * A date field component that allows users to enter and edit date.
  */
 const meta = {
-  title: "shadcn-ui/Calendar",
+  title: "shadcn-ui/Forms/Calendar",
   component: Calendar,
   tags: ["autodocs"],
   args: {

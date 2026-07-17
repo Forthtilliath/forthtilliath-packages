@@ -7,7 +7,7 @@ import { Progress } from "@forthtilliath/forth-ui/components/progress";
  * Displays an indicator showing the completion progress of a task.
  */
 const meta = {
-  title: "forth-ui/Progress",
+  title: "forth-ui/Feedback/Progress",
   component: Progress,
   argTypes: {
     variant: {

@@ -7,7 +7,7 @@ import { Timeline } from "@forthtilliath/forth-ui/components/timeline";
  * A vertical sequence of dated events, connected by a line.
  */
 const meta = {
-  title: "forth-ui/Timeline",
+  title: "forth-ui/Data Display/Timeline",
   component: Timeline,
   args: {
     items: [

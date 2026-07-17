@@ -11,7 +11,7 @@ import {
  * Accessible resizable panel groups and layouts with keyboard support.
  */
 const meta: Meta<typeof ResizablePanelGroup> = {
-  title: "shadcn-ui/ResizablePanelGroup",
+  title: "shadcn-ui/Layout/ResizablePanelGroup",
   component: ResizablePanelGroup,
   tags: ["autodocs"],
   argTypes: {

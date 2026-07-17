@@ -6,7 +6,7 @@ import { Kbd, KbdGroup } from "@forthtilliath/forth-ui/components/kbd";
  * Displays which key or combination of keys performs a given action.
  */
 const meta = {
-  title: "forth-ui/Kbd",
+  title: "forth-ui/Data Display/Kbd",
   component: Kbd,
   args: {
     children: "K",

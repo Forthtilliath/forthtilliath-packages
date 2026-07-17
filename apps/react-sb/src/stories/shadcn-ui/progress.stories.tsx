@@ -7,7 +7,7 @@ import { Progress } from "@forthtilliath/shadcn-ui/components/progress";
  * displayed as a progress bar.
  */
 const meta = {
-  title: "shadcn-ui/Progress",
+  title: "shadcn-ui/Feedback/Progress",
   component: Progress,
   tags: ["autodocs"],
   argTypes: {},

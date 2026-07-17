@@ -22,7 +22,7 @@ import {
  * Building forms with React Hook Form and Zod.
  */
 const meta: Meta<typeof Form> = {
-  title: "shadcn-ui/Form",
+  title: "shadcn-ui/Forms/Form",
   component: Form,
   tags: ["autodocs"],
   argTypes: {},

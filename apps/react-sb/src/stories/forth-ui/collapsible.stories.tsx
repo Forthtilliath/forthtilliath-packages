@@ -12,7 +12,7 @@ import {
  * single-item primitive `Accordion` is built on top of.
  */
 const meta = {
-  title: "forth-ui/Collapsible",
+  title: "forth-ui/Layout/Collapsible",
   component: Collapsible,
   args: {
     className: "w-80",

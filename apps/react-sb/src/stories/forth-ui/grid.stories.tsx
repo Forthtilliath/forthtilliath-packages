@@ -7,7 +7,7 @@ import { Repeat } from "@forthtilliath/forth-ui/components/repeat";
  * A grid layout component with optional debug mode.
  */
 const meta: Meta<typeof Grid> = {
-  title: "forth-ui/Grid",
+  title: "forth-ui/Layout/Grid",
   component: Grid,
   argTypes: {
     cols: {

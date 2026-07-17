@@ -10,7 +10,7 @@ import { Input } from "@forthtilliath/shadcn-ui/components/input";
  * search box jump between the two boxes below.
  */
 const meta = {
-  title: "forth-ui/Reparent",
+  title: "forth-ui/Layout/Reparent",
   component: Reparent,
   args: {
     targets: [],

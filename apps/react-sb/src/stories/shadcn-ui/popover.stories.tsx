@@ -11,7 +11,7 @@ import {
  * Displays rich content in a portal, triggered by a button.
  */
 const meta = {
-  title: "shadcn-ui/Popover",
+  title: "shadcn-ui/Overlays/Popover",
   component: Popover,
   tags: ["autodocs"],
   argTypes: {},

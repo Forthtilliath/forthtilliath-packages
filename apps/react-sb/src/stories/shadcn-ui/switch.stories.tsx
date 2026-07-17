@@ -8,7 +8,7 @@ import { Switch } from "@forthtilliath/shadcn-ui/components/switch";
  * A control that allows the user to toggle between checked and not checked.
  */
 const meta = {
-  title: "shadcn-ui/Switch",
+  title: "shadcn-ui/Forms/Switch",
   component: Switch,
   tags: ["autodocs"],
   argTypes: {},

@@ -20,7 +20,7 @@ const INITIAL_TASKS: Task[] = [
  * A drag-to-reorder list, built on native HTML5 drag events.
  */
 const meta = {
-  title: "forth-ui/Sortable",
+  title: "forth-ui/Data Display/Sortable",
   component: Sortable,
   args: {
     items: [],

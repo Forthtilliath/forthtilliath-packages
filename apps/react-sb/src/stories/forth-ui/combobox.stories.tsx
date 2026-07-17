@@ -15,7 +15,7 @@ const FRAMEWORKS = [
  * `Command` recipe into an `options`/`value`/`onValueChange` component.
  */
 const meta = {
-  title: "forth-ui/Combobox",
+  title: "forth-ui/Forms/Combobox",
   component: Combobox,
   args: {
     options: FRAMEWORKS,

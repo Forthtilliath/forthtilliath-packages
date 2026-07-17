@@ -14,7 +14,7 @@ import {
  * Pagination with page navigation, next and previous links.
  */
 const meta = {
-  title: "shadcn-ui/Pagination",
+  title: "shadcn-ui/Navigation/Pagination",
   component: Pagination,
   tags: ["autodocs"],
   argTypes: {},

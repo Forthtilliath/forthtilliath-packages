@@ -8,7 +8,7 @@ import { Link, LinkPreview } from "@forthtilliath/forth-ui/components/link";
  * supplied by the caller, not fetched live (see the component's JSDoc).
  */
 const meta = {
-  title: "forth-ui/LinkPreview",
+  title: "forth-ui/Navigation/LinkPreview",
   component: LinkPreview,
   args: {
     metadata: {

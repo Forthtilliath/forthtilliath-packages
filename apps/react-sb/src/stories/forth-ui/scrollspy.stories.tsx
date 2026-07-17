@@ -55,7 +55,7 @@ function ScrollspyExample() {
  * a table-of-contents/side nav.
  */
 const meta = {
-  title: "forth-ui/Scrollspy",
+  title: "forth-ui/Navigation/Scrollspy",
   component: ScrollspyExample,
 } satisfies Meta<typeof ScrollspyExample>;
 

@@ -21,7 +21,7 @@ import {
  * progress.
  */
 const meta = {
-  title: "forth-ui/FileList",
+  title: "forth-ui/Data Display/FileList",
   component: FileList,
   args: {
     className: "w-96",

@@ -7,7 +7,7 @@ import { Spinner } from "@forthtilliath/forth-ui/components/spinner";
  * An accessible loading indicator, in one of a few visual styles.
  */
 const meta = {
-  title: "forth-ui/Spinner",
+  title: "forth-ui/Feedback/Spinner",
   component: Spinner,
   argTypes: {
     variant: {

@@ -19,7 +19,7 @@ import { Button } from "@forthtilliath/shadcn-ui/components/button";
  * a response, such as confirming a destructive action.
  */
 const meta = {
-  title: "shadcn-ui/AlertDialog",
+  title: "shadcn-ui/Overlays/AlertDialog",
   component: AlertDialog,
   argTypes: {},
   render: (args) => (

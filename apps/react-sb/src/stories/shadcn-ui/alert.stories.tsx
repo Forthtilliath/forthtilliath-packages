@@ -11,7 +11,7 @@ import {
  * Displays a callout for user attention, with an optional icon, title and description.
  */
 const meta = {
-  title: "shadcn-ui/Alert",
+  title: "shadcn-ui/Feedback/Alert",
   component: Alert,
   argTypes: {
     variant: {

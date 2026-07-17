@@ -24,7 +24,7 @@ import {
  * quick access to a consistent set of commands.
  */
 const meta = {
-  title: "shadcn-ui/Menubar",
+  title: "shadcn-ui/Overlays/Menubar",
   component: Menubar,
   tags: ["autodocs"],
   argTypes: {},

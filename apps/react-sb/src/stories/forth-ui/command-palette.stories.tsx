@@ -14,7 +14,7 @@ import { CommandPalette } from "@forthtilliath/forth-ui/components/command-palet
  * `groups`/`items` API.
  */
 const meta = {
-  title: "forth-ui/CommandPalette",
+  title: "forth-ui/Overlays/CommandPalette",
   component: CommandPalette,
   args: {
     groups: [

@@ -7,7 +7,7 @@ import { QrCode } from "@forthtilliath/forth-ui/components/qr-code";
  * Server Components too).
  */
 const meta = {
-  title: "forth-ui/QrCode",
+  title: "forth-ui/Data Display/QrCode",
   component: QrCode,
   argTypes: {
     robustness: {

@@ -11,7 +11,7 @@ import {
  * For sighted users to preview content available behind a link.
  */
 const meta = {
-  title: "shadcn-ui/HoverCard",
+  title: "shadcn-ui/Overlays/HoverCard",
   component: HoverCard,
   tags: ["autodocs"],
   argTypes: {},

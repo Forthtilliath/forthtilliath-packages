@@ -13,7 +13,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/dialog";
 
 const meta = {
-  title: "shadcn-ui/Dialog",
+  title: "shadcn-ui/Overlays/Dialog",
   component: Dialog,
   tags: ["autodocs"],
   argTypes: {},

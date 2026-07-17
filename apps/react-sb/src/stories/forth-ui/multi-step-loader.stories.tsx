@@ -18,7 +18,7 @@ const LOADING_STATES = [
  * stuck.
  */
 const meta = {
-  title: "forth-ui/MultiStepLoader",
+  title: "forth-ui/Feedback/MultiStepLoader",
   component: MultiStepLoader,
   args: {
     loadingStates: LOADING_STATES,

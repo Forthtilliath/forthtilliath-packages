@@ -42,7 +42,7 @@ const invoices = [
  * Powerful table and datagrids built using TanStack Table.
  */
 const meta = {
-  title: "shadcn-ui/Table",
+  title: "shadcn-ui/Data Display/Table",
   component: Table,
   tags: ["autodocs"],
   argTypes: {},

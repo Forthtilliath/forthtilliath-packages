@@ -7,7 +7,7 @@ import { TagsInput } from "@forthtilliath/forth-ui/components/tags-input";
  * the current text, `Backspace` on empty removes the last tag.
  */
 const meta = {
-  title: "forth-ui/TagsInput",
+  title: "forth-ui/Forms/TagsInput",
   component: TagsInput,
   args: {
     className: "w-96",

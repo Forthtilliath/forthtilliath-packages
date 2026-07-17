@@ -30,7 +30,7 @@ const notifications = [
  * Displays a card with header, content, and footer.
  */
 const meta = {
-  title: "shadcn-ui/Card",
+  title: "shadcn-ui/Layout/Card",
   component: Card,
   tags: ["autodocs"],
   argTypes: {},

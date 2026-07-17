@@ -8,7 +8,7 @@ import { Pagination } from "@forthtilliath/forth-ui/components/pagination";
  * numbers and ellipses itself from `page`/`totalPages`.
  */
 const meta = {
-  title: "forth-ui/Pagination",
+  title: "forth-ui/Navigation/Pagination",
   component: Pagination,
   args: {
     page: 1,

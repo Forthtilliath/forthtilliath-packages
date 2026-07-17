@@ -8,7 +8,7 @@ import { InfiniteScroll } from "@forthtilliath/forth-ui/components/infinite-scro
  * into view, via `IntersectionObserver`.
  */
 const meta = {
-  title: "forth-ui/InfiniteScroll",
+  title: "forth-ui/Layout/InfiniteScroll",
   component: InfiniteScroll,
   args: {
     hasMore: true,

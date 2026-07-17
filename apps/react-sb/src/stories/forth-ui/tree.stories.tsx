@@ -6,7 +6,7 @@ import { Tree } from "@forthtilliath/forth-ui/components/tree";
  * A hierarchical, expandable/collapsible list of nodes.
  */
 const meta = {
-  title: "forth-ui/Tree",
+  title: "forth-ui/Data Display/Tree",
   component: Tree,
   args: {
     data: [

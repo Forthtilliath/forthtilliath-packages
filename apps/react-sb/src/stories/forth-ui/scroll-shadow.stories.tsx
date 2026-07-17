@@ -7,7 +7,7 @@ import { ScrollShadow } from "@forthtilliath/forth-ui/components/scroll-shadow";
  * top/bottom edges, hidden once scrolled all the way to that edge.
  */
 const meta = {
-  title: "forth-ui/ScrollShadow",
+  title: "forth-ui/Layout/ScrollShadow",
   component: ScrollShadow,
   args: {
     className: "h-64 w-72 rounded-lg border",

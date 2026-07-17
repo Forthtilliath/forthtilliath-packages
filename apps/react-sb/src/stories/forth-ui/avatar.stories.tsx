@@ -11,7 +11,7 @@ import { decoratorGroupStories } from "../../decorators/group-stories";
  * A vertically stacked set of interactive headings that each reveal a section of content.
  */
 const meta = {
-  title: "forth-ui/Avatar",
+  title: "forth-ui/Data Display/Avatar",
   component: Avatar,
   argTypes: {
     status: {

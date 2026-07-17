@@ -7,7 +7,7 @@ import { Breadcrumb } from "@forthtilliath/forth-ui/components/breadcrumb";
  * Displays the path to the current resource using a hierarchy of links.
  */
 const meta = {
-  title: "forth-ui/Breadcrumb",
+  title: "forth-ui/Navigation/Breadcrumb",
   component: Breadcrumb,
   args: {
     items: [

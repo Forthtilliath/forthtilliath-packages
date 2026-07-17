@@ -7,7 +7,7 @@ import { ColorPicker } from "@forthtilliath/forth-ui/components/color-picker";
  * native `<input type="color">`.
  */
 const meta = {
-  title: "forth-ui/ColorPicker",
+  title: "forth-ui/Forms/ColorPicker",
   component: ColorPicker,
   args: {
     defaultValue: "#6d28d9",

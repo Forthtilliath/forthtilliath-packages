@@ -8,7 +8,7 @@ import { Accordion } from "@forthtilliath/forth-ui/components/accordion";
  * A vertically stacked set of interactive headings that each reveal a section of content.
  */
 const meta = {
-  title: "forth-ui/Accordion",
+  title: "forth-ui/Layout/Accordion",
   component: Accordion,
   argTypes: {
     collapsible: {

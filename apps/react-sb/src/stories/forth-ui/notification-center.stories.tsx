@@ -7,7 +7,7 @@ import { NotificationCenter } from "@forthtilliath/forth-ui/components/notificat
  * of notifications.
  */
 const meta = {
-  title: "forth-ui/NotificationCenter",
+  title: "forth-ui/Feedback/NotificationCenter",
   component: NotificationCenter,
   args: {
     notifications: [

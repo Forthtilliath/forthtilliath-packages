@@ -11,7 +11,7 @@ import { Dropdrawer } from "@forthtilliath/forth-ui/components/dropdrawer";
  * it switch.
  */
 const meta = {
-  title: "forth-ui/Dropdrawer",
+  title: "forth-ui/Overlays/Dropdrawer",
   component: Dropdrawer,
   args: {
     trigger: <Button variant="outline">Actions</Button>,

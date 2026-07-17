@@ -25,7 +25,7 @@ import {
  * triggered by a button.
  */
 const meta = {
-  title: "shadcn-ui/DropdownMenu",
+  title: "shadcn-ui/Overlays/DropdownMenu",
   component: DropdownMenu,
   tags: ["autodocs"],
   argTypes: {},

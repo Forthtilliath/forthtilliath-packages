@@ -13,7 +13,7 @@ import {
  * A vertically stacked set of interactive headings that each reveal a section of content.
  */
 const meta = {
-  title: "shadcn-ui/Accordion",
+  title: "shadcn-ui/Layout/Accordion",
   component: Accordion,
   argTypes: {
     type: {

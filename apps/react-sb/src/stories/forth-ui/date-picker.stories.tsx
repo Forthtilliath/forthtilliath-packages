@@ -7,7 +7,7 @@ import { DatePicker } from "@forthtilliath/forth-ui/components/date-picker";
  * recipe into a `value`/`onValueChange` component.
  */
 const meta = {
-  title: "forth-ui/DatePicker",
+  title: "forth-ui/Forms/DatePicker",
   component: DatePicker,
   args: {
     className: "w-64",

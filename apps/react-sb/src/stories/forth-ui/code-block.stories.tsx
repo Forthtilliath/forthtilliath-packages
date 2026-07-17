@@ -13,7 +13,7 @@ console.log(greet("world"));`;
  * button, an optional filename/language header, and optional line numbers.
  */
 const meta = {
-  title: "forth-ui/CodeBlock",
+  title: "forth-ui/Code & Content/CodeBlock",
   component: CodeBlock,
   args: {
     code: SAMPLE_TS,

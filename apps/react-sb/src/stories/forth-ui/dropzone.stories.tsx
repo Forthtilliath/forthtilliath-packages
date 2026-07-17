@@ -6,7 +6,7 @@ import { Dropzone } from "@forthtilliath/forth-ui/components/dropzone";
  * A drag-and-drop file upload zone, listing accepted files below.
  */
 const meta = {
-  title: "forth-ui/Dropzone",
+  title: "forth-ui/Forms/Dropzone",
   component: Dropzone,
   args: {
     className: "w-96",

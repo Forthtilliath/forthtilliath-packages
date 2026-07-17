@@ -17,7 +17,7 @@ import {
  * content of the screen.
  */
 const meta: Meta<typeof SheetContent> = {
-  title: "shadcn-ui/Sheet",
+  title: "shadcn-ui/Overlays/Sheet",
   component: Sheet,
   tags: ["autodocs"],
   argTypes: {

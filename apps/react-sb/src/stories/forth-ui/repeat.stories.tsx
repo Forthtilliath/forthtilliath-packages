@@ -6,7 +6,7 @@ import { Repeat } from "@forthtilliath/forth-ui/components/repeat";
  * Repeat a component a specified number of times.
  */
 const meta: Meta<typeof Repeat> = {
-  title: "forth-ui/Repeat",
+  title: "forth-ui/Layout/Repeat",
   component: Repeat,
   parameters: {
     layout: "centered",

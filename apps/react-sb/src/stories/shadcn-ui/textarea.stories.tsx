@@ -8,7 +8,7 @@ import { Textarea } from "@forthtilliath/shadcn-ui/components/textarea";
  * Displays a form textarea or a component that looks like a textarea.
  */
 const meta = {
-  title: "shadcn-ui/Textarea",
+  title: "shadcn-ui/Forms/Textarea",
   component: Textarea,
   tags: ["autodocs"],
   argTypes: {},

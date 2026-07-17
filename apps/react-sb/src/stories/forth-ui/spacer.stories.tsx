@@ -8,7 +8,7 @@ import { Button } from "@forthtilliath/shadcn-ui/components/button";
  * fixed gap via `size`.
  */
 const meta = {
-  title: "forth-ui/Spacer",
+  title: "forth-ui/Layout/Spacer",
   component: Spacer,
 } satisfies Meta<typeof Spacer>;
 

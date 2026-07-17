@@ -7,7 +7,7 @@ import { RelativeTime } from "@forthtilliath/forth-ui/components/relative-time";
  * unless given a fixed `date`/`timeZone`.
  */
 const meta = {
-  title: "forth-ui/RelativeTime",
+  title: "forth-ui/Data Display/RelativeTime",
   component: RelativeTime,
 } satisfies Meta<typeof RelativeTime>;
 

@@ -8,7 +8,7 @@ import { CountAnimation } from "@forthtilliath/forth-ui/components/count-animati
  * Animates a number counting up (or down) to `value` whenever it changes.
  */
 const meta = {
-  title: "forth-ui/CountAnimation",
+  title: "forth-ui/Feedback/CountAnimation",
   component: CountAnimation,
   args: {
     value: 1234,

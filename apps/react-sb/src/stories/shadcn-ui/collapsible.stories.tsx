@@ -12,7 +12,7 @@ import {
  * An interactive component which expands/collapses a panel.
  */
 const meta = {
-  title: "shadcn-ui/Collapsible",
+  title: "shadcn-ui/Layout/Collapsible",
   component: Collapsible,
   tags: ["autodocs"],
   argTypes: {},

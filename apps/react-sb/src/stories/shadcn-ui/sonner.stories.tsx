@@ -10,7 +10,7 @@ import { toast } from "@forthtilliath/shadcn-ui/lib/sonner";
  * An opinionated toast component for React.
  */
 const meta: Meta<typeof Toaster> = {
-  title: "shadcn-ui/Sonner",
+  title: "shadcn-ui/Feedback/Sonner",
   component: Toaster,
   tags: ["autodocs"],
   argTypes: {},
