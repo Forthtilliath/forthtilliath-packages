@@ -46,3 +46,26 @@ type Story = StoryObj<typeof meta>;
  * Default form of the avatar group.
  */
 export const Default: Story = {};
+
+/**
+ * Use the `max` prop to collapse avatars beyond that count into a "+N"
+ * indicator, matching the `avatars` array's order.
+ */
+export const Max: Story = {
+  args: {
+    max: 3,
+    avatars: [
+      ...meta.args.avatars,
+      {
+        src: "https://bundui-images.netlify.app/avatars/08.png",
+        alt: "Avatar 08",
+        fallback: "@shadcn08",
+      },
+      {
+        src: "https://bundui-images.netlify.app/avatars/09.png",
+        alt: "Avatar 09",
+        fallback: "@shadcn09",
+      },
+    ],
+  },
+};

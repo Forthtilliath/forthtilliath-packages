@@ -13,10 +13,15 @@ import {
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 import type { Shape, Size } from "./constants";
-import { STATUS_LABEL } from "./constants";
-import type { FallbackVariants, StatusVariants } from "./variants";
+import { DEFAULT_BADGE_POSITION, STATUS_LABEL } from "./constants";
+import type {
+  BadgeVariants,
+  FallbackVariants,
+  StatusVariants,
+} from "./variants";
 import {
   avatarVariants,
+  badgeVariants,
   fallbackVariants,
   statusVariants,
   tooltipTriggerVariants,
@@ -72,6 +77,31 @@ export type AvatarProps = Omit<
    */
   position?: StatusVariants["position"];
   /**
+   * Arbitrary content (notification count, icon) shown in a badge overlay.
+   *
+   * Distinct from `status`: `status` is a plain color dot for
+   * online/offline/away/busy, `badge` holds real content and its own color
+   * variant. Both can be shown at once, since they default to opposite
+   * corners (`status` bottom-right, `badge` top-right) and accept
+   * independent `position`/`badgePosition` overrides.
+   *
+   * @example
+   * ```tsx
+   * <Avatar fallback="CN" badge={5} />
+   * <Avatar fallback="CN" badge={<Check className="size-3" />} badgeVariant="default" />
+   * ```
+   */
+  badge?: React.ReactNode;
+  /**
+   * The color variant of the `badge`.
+   */
+  badgeVariant?: BadgeVariants["badgeVariant"];
+  /**
+   * Position of the `badge`.
+   * @default "top-right"
+   */
+  badgePosition?: BadgeVariants["position"];
+  /**
    * Render a tooltip for the avatar.
    */
   renderTooltip?: () => React.ReactNode;
@@ -83,6 +113,7 @@ export type AvatarProps = Omit<
    * - `image` is the image element.
    * - `fallback` is the fallback element.
    * - `status` is the status element.
+   * - `badge` is the badge element.
    * - `tooltipTrigger` is the tooltip trigger element.
    * - `tooltipContent` is the tooltip content element.
    */
@@ -92,6 +123,7 @@ export type AvatarProps = Omit<
       | "image"
       | "fallback"
       | "status"
+      | "badge"
       | "tooltipTrigger"
       | "tooltipContent",
       string
@@ -106,6 +138,7 @@ export type AvatarProps = Omit<
  * @see https://ui.shadcn.com/docs/components/avatar
  * @see https://bundui.io/components/avatar
  * @see https://www.shadcnui-blocks.com/components/avatar
+ * @see https://ktui.io/docs/avatar
  *
  * @version 0.1.0
  * @author Forth
@@ -121,6 +154,9 @@ export function Avatar({
   ring = false,
   status,
   position,
+  badge,
+  badgeVariant,
+  badgePosition = DEFAULT_BADGE_POSITION,
   className,
   renderTooltip,
   ...props
@@ -153,6 +189,16 @@ export function Avatar({
           )}
         >
           <span className="sr-only">{STATUS_LABEL[status]}</span>
+        </div>
+      )}
+      {badge !== undefined && (
+        <div
+          className={cn(
+            badgeVariants({ badgeVariant, position: badgePosition }),
+            className?.badge,
+          )}
+        >
+          {badge}
         </div>
       )}
     </div>

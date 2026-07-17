@@ -1,8 +1,8 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
-import type { Shape, Size, StatusLabel } from "./constants";
-import { DEFAULT_SHAPE } from "./constants";
+import type { IndicatorPosition, Shape, Size, StatusLabel } from "./constants";
+import { DEFAULT_BADGE_POSITION, DEFAULT_SHAPE } from "./constants";
 
 export const avatarVariants = cva("size-10", {
   variants: {
@@ -46,7 +46,7 @@ export const statusVariants = cva("", {
       "bottom-right": "absolute right-0.25 bottom-0.25",
       "top-left": "absolute left-0.25 top-0.25",
       "bottom-left": "absolute left-0.25 bottom-0.25",
-    },
+    } satisfies Record<IndicatorPosition, string>,
   },
   defaultVariants: {
     position: "bottom-right",
@@ -60,6 +60,38 @@ export const statusVariants = cva("", {
 });
 
 export type StatusVariants = VariantProps<typeof statusVariants>;
+
+/**
+ * A badge overlay for arbitrary content (notification count, icon), distinct
+ * from `statusVariants`' plain color dot — positioned independently so both
+ * can be shown on the same avatar at once (e.g. status bottom-right, badge
+ * top-right).
+ */
+export const badgeVariants = cva(
+  "border-background absolute flex h-5 min-w-5 items-center justify-center rounded-full border-2 px-1 text-[10px] leading-none font-medium",
+  {
+    variants: {
+      badgeVariant: {
+        default: "bg-primary text-primary-foreground",
+        secondary: "bg-secondary text-secondary-foreground",
+        destructive: "bg-destructive text-white",
+        outline: "bg-background text-foreground",
+      },
+      position: {
+        "top-right": "-top-1 -right-1",
+        "bottom-right": "-bottom-1 -right-1",
+        "top-left": "-top-1 -left-1",
+        "bottom-left": "-bottom-1 -left-1",
+      } satisfies Record<IndicatorPosition, string>,
+    },
+    defaultVariants: {
+      badgeVariant: "default",
+      position: DEFAULT_BADGE_POSITION,
+    },
+  },
+);
+
+export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 export const fallbackVariants = cva("", {
   variants: {

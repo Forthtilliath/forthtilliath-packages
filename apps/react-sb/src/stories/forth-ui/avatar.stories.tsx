@@ -239,3 +239,24 @@ export const Tooltip: Story = {
     renderTooltip: () => <p>@shadcn</p>,
   },
 };
+
+/**
+ * Use the `badge` prop to overlay arbitrary content (a notification count,
+ * an icon) — unlike `status`, it's not limited to a plain color dot. Both
+ * can be shown at once since they default to opposite corners.
+ */
+export const Badge: Story = {
+  decorators: [
+    decoratorGroupStories<AvatarProps>(
+      {
+        ...meta.args,
+        className: { root: "size-16" },
+      },
+      {
+        badge: [5, "9+", undefined],
+        badgeVariant: ["default", "secondary", "destructive", "outline"],
+      },
+      { cols: 4 },
+    ),
+  ],
+};
