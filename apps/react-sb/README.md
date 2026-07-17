@@ -20,9 +20,18 @@ Open [http://localhost:6006](http://localhost:6006).
 src/stories/
 ├── shadcn-ui/        # one file per shadcn/ui primitive (button, dialog, ...)
 │   └── blocks/        # composed blocks (data-table, navbar-01, ...)
-├── forth-ui/          # accordion, avatar, avatar-group, grid, repeat
+├── forth-ui/          # one file per forth-ui component (58 of them)
 └── ui/                # headless components: show, repeat, slot-or-callback
 ```
+
+Every story's `title` is prefixed with a category segment (e.g.
+`"forth-ui/Forms/Combobox"`), so the Storybook sidebar groups both
+`forth-ui/` and `shadcn-ui/` into the same 8 folders instead of one long
+alphabetical list: **Layout**, **Navigation**, **Buttons & Actions**,
+**Forms**, **Feedback**, **Overlays**, **Data Display**, and (`forth-ui`
+only) **Code & Content**. Keep new stories consistent with this grouping —
+see [`packages/react/forth-ui/README.md`](../../packages/react/forth-ui/README.md)
+for which category each component belongs to.
 
 Each story file mirrors the component's props/variants and includes
 interaction tests (`play` functions) using Testing Library queries.

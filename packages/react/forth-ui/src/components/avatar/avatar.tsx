@@ -29,7 +29,7 @@ import {
 
 export type AvatarProps = Omit<
   React.ComponentProps<typeof AvatarPrimitive>,
-  "className"
+  "className" | "size"
 > & {
   /**
    * The source URL of the image.

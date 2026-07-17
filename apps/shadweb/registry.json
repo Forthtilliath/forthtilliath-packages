@@ -1,0 +1,1164 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "forth-ui",
+  "homepage": "https://github.com/Forthtilliath/turborepo",
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:component",
+      "title": "Accordion",
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+      "files": [
+        {
+          "path": "registry/forth-ui/accordion/accordion-items.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/accordion-items.tsx"
+        },
+        {
+          "path": "registry/forth-ui/accordion/accordion-multiple.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/accordion-multiple.tsx"
+        },
+        {
+          "path": "registry/forth-ui/accordion/accordion-single.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/accordion-single.tsx"
+        },
+        {
+          "path": "registry/forth-ui/accordion/accordion.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/accordion.tsx"
+        },
+        {
+          "path": "registry/forth-ui/accordion/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/accordion/types.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/types.ts"
+        },
+        {
+          "path": "registry/forth-ui/accordion/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-accordion"],
+      "registryDependencies": ["accordion"]
+    },
+    {
+      "name": "alert",
+      "type": "registry:component",
+      "title": "Alert",
+      "description": "Displays a callout for user attention.",
+      "files": [
+        {
+          "path": "registry/forth-ui/alert/alert.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/alert/alert.tsx"
+        },
+        {
+          "path": "registry/forth-ui/alert/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/alert/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/alert/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/alert/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["alert"]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:component",
+      "title": "Avatar",
+      "description": "An image element with a fallback, plus badge/status indicators and grouping via AvatarGroup.",
+      "files": [
+        {
+          "path": "registry/forth-ui/avatar/avatar-group.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/avatar/avatar-group.tsx"
+        },
+        {
+          "path": "registry/forth-ui/avatar/avatar.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/avatar/avatar.tsx"
+        },
+        {
+          "path": "registry/forth-ui/avatar/constants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/avatar/constants.ts"
+        },
+        {
+          "path": "registry/forth-ui/avatar/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/avatar/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/avatar/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/avatar/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["avatar", "tooltip"]
+    },
+    {
+      "name": "badge",
+      "type": "registry:component",
+      "title": "Badge",
+      "description": "Displays a badge or a component that looks like a badge.",
+      "files": [
+        {
+          "path": "registry/forth-ui/badge/badge.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/badge/badge.tsx"
+        },
+        {
+          "path": "registry/forth-ui/badge/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/badge/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/badge/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/badge/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "registryDependencies": ["badge"]
+    },
+    {
+      "name": "banner",
+      "type": "registry:component",
+      "title": "Banner",
+      "description": "A full-width, page-level announcement bar.",
+      "files": [
+        {
+          "path": "registry/forth-ui/banner/banner.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/banner/banner.tsx"
+        },
+        {
+          "path": "registry/forth-ui/banner/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/banner/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/banner/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/banner/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "lucide-react"]
+    },
+    {
+      "name": "bento-grid",
+      "type": "registry:component",
+      "title": "BentoGrid",
+      "description": "A CSS-grid layout for unevenly-sized cards (\"bento box\" layouts).",
+      "files": [
+        {
+          "path": "registry/forth-ui/bento-grid/bento-grid.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/bento-grid/bento-grid.tsx"
+        },
+        {
+          "path": "registry/forth-ui/bento-grid/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/bento-grid/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:component",
+      "title": "Breadcrumb",
+      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "files": [
+        {
+          "path": "registry/forth-ui/breadcrumb/breadcrumb.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/breadcrumb/breadcrumb.tsx"
+        },
+        {
+          "path": "registry/forth-ui/breadcrumb/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/breadcrumb/index.ts"
+        }
+      ],
+      "registryDependencies": ["breadcrumb", "dropdown-menu"]
+    },
+    {
+      "name": "button",
+      "type": "registry:component",
+      "title": "Button",
+      "description": "Displays a button or a component that looks like a button, plus ButtonGroup for joined rows/columns.",
+      "files": [
+        {
+          "path": "registry/forth-ui/button/button-group.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/button/button-group.tsx"
+        },
+        {
+          "path": "registry/forth-ui/button/button.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/button/button.tsx"
+        },
+        {
+          "path": "registry/forth-ui/button/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/button/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/button/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/button/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "registryDependencies": ["button"]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:component",
+      "title": "CheckboxGroup",
+      "description": "A group of Checkboxes sharing a single array value.",
+      "files": [
+        {
+          "path": "registry/forth-ui/checkbox/checkbox-group.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/checkbox/checkbox-group.tsx"
+        },
+        {
+          "path": "registry/forth-ui/checkbox/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/checkbox/index.ts"
+        }
+      ],
+      "registryDependencies": ["checkbox"]
+    },
+    {
+      "name": "chip",
+      "type": "registry:component",
+      "title": "Chip",
+      "description": "A compact, interactive element for displaying status, categories, or filters.",
+      "files": [
+        {
+          "path": "registry/forth-ui/chip/chip.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/chip/chip.tsx"
+        },
+        {
+          "path": "registry/forth-ui/chip/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/chip/index.ts"
+        }
+      ],
+      "registryDependencies": ["@forth-ui/avatar", "@forth-ui/badge"]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:component",
+      "title": "CodeBlock",
+      "description": "A syntax-highlighted code block with a copy-to-clipboard button.",
+      "files": [
+        {
+          "path": "registry/forth-ui/code-block/code-block.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/code-block/code-block.tsx"
+        },
+        {
+          "path": "registry/forth-ui/code-block/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/code-block/index.ts"
+        }
+      ],
+      "dependencies": ["lucide-react", "shiki"],
+      "registryDependencies": ["badge", "button"]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:component",
+      "title": "Collapsible",
+      "description": "An interactive component which expands/collapses a single panel.",
+      "files": [
+        {
+          "path": "registry/forth-ui/collapsible/collapsible.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/collapsible/collapsible.tsx"
+        },
+        {
+          "path": "registry/forth-ui/collapsible/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/collapsible/index.ts"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["collapsible"]
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:component",
+      "title": "ColorPicker",
+      "description": "A color swatch + hex text input, kept in sync with the browser's native color picker.",
+      "files": [
+        {
+          "path": "registry/forth-ui/color-picker/color-picker.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/color-picker/color-picker.tsx"
+        },
+        {
+          "path": "registry/forth-ui/color-picker/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/color-picker/index.ts"
+        }
+      ],
+      "registryDependencies": ["input"]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:component",
+      "title": "Combobox",
+      "description": "An autocomplete/searchable select, plus MultiSelect for multi-value selection.",
+      "files": [
+        {
+          "path": "registry/forth-ui/combobox/combobox.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/combobox/combobox.tsx"
+        },
+        {
+          "path": "registry/forth-ui/combobox/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/combobox/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/combobox/multi-select.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/combobox/multi-select.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "button",
+        "command",
+        "popover",
+        "@forth-ui/badge",
+        "@forth-ui/button"
+      ]
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:component",
+      "title": "CommandPalette",
+      "description": "A global command menu (Cmd/Ctrl+K to open).",
+      "files": [
+        {
+          "path": "registry/forth-ui/command-palette/command-palette.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/command-palette/command-palette.tsx"
+        },
+        {
+          "path": "registry/forth-ui/command-palette/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/command-palette/index.ts"
+        }
+      ],
+      "registryDependencies": ["command"]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:component",
+      "title": "ConfirmDialog",
+      "description": "Provides useConfirm, an imperative `await confirm({...})` alternative to hand-wiring an AlertDialog.",
+      "files": [
+        {
+          "path": "registry/forth-ui/confirm-dialog/confirm-context.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/confirm-dialog/confirm-context.ts"
+        },
+        {
+          "path": "registry/forth-ui/confirm-dialog/confirm-dialog.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/confirm-dialog/confirm-dialog.tsx"
+        },
+        {
+          "path": "registry/forth-ui/confirm-dialog/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/confirm-dialog/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/confirm-dialog/use-confirm.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/confirm-dialog/use-confirm.ts"
+        }
+      ],
+      "registryDependencies": ["alert-dialog", "button"]
+    },
+    {
+      "name": "count-animation",
+      "type": "registry:component",
+      "title": "CountAnimation",
+      "description": "Animates a number counting up (or down) to a value whenever it changes.",
+      "files": [
+        {
+          "path": "registry/forth-ui/count-animation/count-animation.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/count-animation/count-animation.tsx"
+        },
+        {
+          "path": "registry/forth-ui/count-animation/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/count-animation/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:component",
+      "title": "DatePicker",
+      "description": "A single-date picker built on a Popover + Calendar recipe.",
+      "files": [
+        {
+          "path": "registry/forth-ui/date-picker/date-picker.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/date-picker/date-picker.tsx"
+        },
+        {
+          "path": "registry/forth-ui/date-picker/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/date-picker/index.ts"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["calendar", "popover", "@forth-ui/button"]
+    },
+    {
+      "name": "description-list",
+      "type": "registry:component",
+      "title": "DescriptionList",
+      "description": "A description list, with terms and descriptions.",
+      "files": [
+        {
+          "path": "registry/forth-ui/description-list/description-list.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/description-list/description-list.tsx"
+        },
+        {
+          "path": "registry/forth-ui/description-list/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/description-list/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "dropdrawer",
+      "type": "registry:component",
+      "title": "Dropdrawer",
+      "description": "A menu that renders as a DropdownMenu on desktop and a bottom Drawer on mobile.",
+      "files": [
+        {
+          "path": "registry/forth-ui/dropdrawer/dropdrawer.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/dropdrawer/dropdrawer.tsx"
+        },
+        {
+          "path": "registry/forth-ui/dropdrawer/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/dropdrawer/index.ts"
+        }
+      ],
+      "registryDependencies": ["drawer", "dropdown-menu", "use-mobile"]
+    },
+    {
+      "name": "dropzone",
+      "type": "registry:component",
+      "title": "Dropzone",
+      "description": "A drag-and-drop file upload zone, listing accepted files below.",
+      "files": [
+        {
+          "path": "registry/forth-ui/dropzone/dropzone.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/dropzone/dropzone.tsx"
+        },
+        {
+          "path": "registry/forth-ui/dropzone/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/dropzone/index.ts"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@forth-ui/file-list"]
+    },
+    {
+      "name": "field",
+      "type": "registry:component",
+      "title": "Field",
+      "description": "Wires a label, description and error message to a single form control.",
+      "files": [
+        {
+          "path": "registry/forth-ui/field/field.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/field/field.tsx"
+        },
+        {
+          "path": "registry/forth-ui/field/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/field/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "file-list",
+      "type": "registry:component",
+      "title": "FileList",
+      "description": "Displays a list of files with details such as name, size, and upload progress.",
+      "files": [
+        {
+          "path": "registry/forth-ui/file-list/file-list.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/file-list/file-list.tsx"
+        },
+        {
+          "path": "registry/forth-ui/file-list/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/file-list/index.ts"
+        }
+      ],
+      "registryDependencies": ["progress"]
+    },
+    {
+      "name": "image-input",
+      "type": "registry:component",
+      "title": "ImageInput",
+      "description": "A click-to-upload image picker with a live preview.",
+      "files": [
+        {
+          "path": "registry/forth-ui/image-input/image-input.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/image-input/image-input.tsx"
+        },
+        {
+          "path": "registry/forth-ui/image-input/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/image-input/index.ts"
+        }
+      ],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "name": "infinite-scroll",
+      "type": "registry:component",
+      "title": "InfiniteScroll",
+      "description": "Calls onLoadMore once a sentinel at the bottom of children scrolls into view.",
+      "files": [
+        {
+          "path": "registry/forth-ui/infinite-scroll/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/infinite-scroll/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/infinite-scroll/infinite-scroll.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/infinite-scroll/infinite-scroll.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:component",
+      "title": "Kbd",
+      "description": "Displays which key or combination of keys performs a given action.",
+      "files": [
+        {
+          "path": "registry/forth-ui/kbd/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/kbd/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/kbd/kbd.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/kbd/kbd.tsx"
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "type": "registry:component",
+      "title": "Link",
+      "description": "A styled hyperlink, or a component that looks like one, plus LinkPreview for hover-triggered metadata cards.",
+      "files": [
+        {
+          "path": "registry/forth-ui/link/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/link/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/link/link-preview.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/link/link-preview.tsx"
+        },
+        {
+          "path": "registry/forth-ui/link/link.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/link/link.tsx"
+        },
+        {
+          "path": "registry/forth-ui/link/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/link/variants.ts"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": ["hover-card"]
+    },
+    {
+      "name": "marquee",
+      "type": "registry:component",
+      "title": "Marquee",
+      "description": "Infinitely scrolls its children (a logo wall, a ticker).",
+      "files": [
+        {
+          "path": "registry/forth-ui/marquee/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/marquee/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/marquee/marquee.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/marquee/marquee.tsx"
+        }
+      ]
+    },
+    {
+      "name": "multi-step-loader",
+      "type": "registry:component",
+      "title": "MultiStepLoader",
+      "description": "A full-screen overlay stepping through a sequence of loading messages.",
+      "files": [
+        {
+          "path": "registry/forth-ui/multi-step-loader/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/multi-step-loader/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/multi-step-loader/multi-step-loader.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/multi-step-loader/multi-step-loader.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@forth-ui/spinner"]
+    },
+    {
+      "name": "navbar",
+      "type": "registry:component",
+      "title": "Navbar",
+      "description": "A fixed, floating page header that visually shrinks on scroll, plus a mobile menu.",
+      "files": [
+        {
+          "path": "registry/forth-ui/navbar/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/navbar/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/navbar/navbar-mobile-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/navbar/navbar-mobile-menu.tsx"
+        },
+        {
+          "path": "registry/forth-ui/navbar/navbar.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/navbar/navbar.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "sheet"]
+    },
+    {
+      "name": "notification-center",
+      "type": "registry:component",
+      "title": "NotificationCenter",
+      "description": "A bell-icon trigger with an unread-count badge, opening a popover list of notifications.",
+      "files": [
+        {
+          "path": "registry/forth-ui/notification-center/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/notification-center/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/notification-center/notification-center.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/notification-center/notification-center.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["popover", "@forth-ui/badge", "@forth-ui/button"]
+    },
+    {
+      "name": "number-input",
+      "type": "registry:component",
+      "title": "NumberInput",
+      "description": "A numeric input with increment/decrement stepper buttons.",
+      "files": [
+        {
+          "path": "registry/forth-ui/number-input/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/number-input/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/number-input/number-input.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/number-input/number-input.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["input", "@forth-ui/button"]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:component",
+      "title": "Pagination",
+      "description": "Navigates between pages of a paginated set, computing the visible page numbers and ellipses.",
+      "files": [
+        {
+          "path": "registry/forth-ui/pagination/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/pagination/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/pagination/pagination-range.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/pagination/pagination-range.ts"
+        },
+        {
+          "path": "registry/forth-ui/pagination/pagination.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/pagination/pagination.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["pagination"]
+    },
+    {
+      "name": "password-input",
+      "type": "registry:component",
+      "title": "PasswordInput",
+      "description": "A password Input with a show/hide visibility toggle, plus a strength meter.",
+      "files": [
+        {
+          "path": "registry/forth-ui/password-input/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/password-input/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/password-input/password-input.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/password-input/password-input.tsx"
+        },
+        {
+          "path": "registry/forth-ui/password-input/password-strength-meter.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/password-input/password-strength-meter.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["input"]
+    },
+    {
+      "name": "progress",
+      "type": "registry:component",
+      "title": "Progress",
+      "description": "Displays an indicator showing the completion progress of a task.",
+      "files": [
+        {
+          "path": "registry/forth-ui/progress/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/progress/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/progress/progress.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/progress/progress.tsx"
+        },
+        {
+          "path": "registry/forth-ui/progress/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/progress/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["progress"]
+    },
+    {
+      "name": "qr-code",
+      "type": "registry:component",
+      "title": "QrCode",
+      "description": "Generates a QR code from a string, rendered as inline SVG.",
+      "files": [
+        {
+          "path": "registry/forth-ui/qr-code/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/qr-code/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/qr-code/qr-code.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/qr-code/qr-code.tsx"
+        }
+      ],
+      "dependencies": ["qrcode"],
+      "devDependencies": ["@types/qrcode"]
+    },
+    {
+      "name": "radio",
+      "type": "registry:component",
+      "title": "RadioCard",
+      "description": "A card-style RadioGroup item — the whole card is the clickable target.",
+      "files": [
+        {
+          "path": "registry/forth-ui/radio/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/radio/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/radio/radio-card.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/radio/radio-card.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react", "@radix-ui/react-radio-group"]
+    },
+    {
+      "name": "rating",
+      "type": "registry:component",
+      "title": "Rating",
+      "description": "A star rating control with keyboard navigation and hover preview.",
+      "files": [
+        {
+          "path": "registry/forth-ui/rating/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/rating/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/rating/rating.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/rating/rating.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "name": "relative-time",
+      "type": "registry:component",
+      "title": "RelativeTime",
+      "description": "Displays a live-updating relative time (\"2 minutes ago\").",
+      "files": [
+        {
+          "path": "registry/forth-ui/relative-time/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/relative-time/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/relative-time/relative-time.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/relative-time/relative-time.tsx"
+        }
+      ]
+    },
+    {
+      "name": "reparent",
+      "type": "registry:component",
+      "title": "Reparent",
+      "description": "Moves children between different container elements at different breakpoints.",
+      "files": [
+        {
+          "path": "registry/forth-ui/reparent/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/reparent/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/reparent/reparent.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/reparent/reparent.tsx"
+        }
+      ]
+    },
+    {
+      "name": "repeat",
+      "type": "registry:component",
+      "title": "Repeat",
+      "description": "Repeats a component a specified number of times.",
+      "files": [
+        {
+          "path": "registry/forth-ui/repeat/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/repeat/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/repeat/repeat.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/repeat/repeat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-progress",
+      "type": "registry:component",
+      "title": "ScrollProgress",
+      "description": "A fixed bar tracking scroll percentage of the page or a container.",
+      "files": [
+        {
+          "path": "registry/forth-ui/scroll-progress/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/scroll-progress/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/scroll-progress/scroll-progress.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/scroll-progress/scroll-progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-shadow",
+      "type": "registry:component",
+      "title": "ScrollShadow",
+      "description": "A vertically-scrollable container with fade-out gradient shadows at the edges.",
+      "files": [
+        {
+          "path": "registry/forth-ui/scroll-shadow/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/scroll-shadow/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/scroll-shadow/scroll-shadow.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/scroll-shadow/scroll-shadow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scrollspy",
+      "type": "registry:component",
+      "title": "Scrollspy",
+      "description": "Tracks which of the given element ids is currently scrolled into view.",
+      "files": [
+        {
+          "path": "registry/forth-ui/scrollspy/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/scrollspy/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/scrollspy/use-scrollspy.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/scrollspy/use-scrollspy.ts"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:component",
+      "title": "Separator",
+      "description": "Visually or semantically separates content.",
+      "files": [
+        {
+          "path": "registry/forth-ui/separator/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/separator/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/separator/separator.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/separator/separator.tsx"
+        }
+      ],
+      "registryDependencies": ["separator"]
+    },
+    {
+      "name": "snippet",
+      "type": "registry:component",
+      "title": "Snippet",
+      "description": "Displays and copies code in a tabbed interface.",
+      "files": [
+        {
+          "path": "registry/forth-ui/snippet/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/snippet/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/snippet/snippet.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/snippet/snippet.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "tabs"]
+    },
+    {
+      "name": "sortable",
+      "type": "registry:component",
+      "title": "Sortable",
+      "description": "A drag-to-reorder list built on native HTML5 drag events.",
+      "files": [
+        {
+          "path": "registry/forth-ui/sortable/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/sortable/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/sortable/sortable.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/sortable/sortable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spacer",
+      "type": "registry:component",
+      "title": "Spacer",
+      "description": "Adds space between components — a flexible filler or a fixed gap.",
+      "files": [
+        {
+          "path": "registry/forth-ui/spacer/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/spacer/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/spacer/spacer.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/spacer/spacer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:component",
+      "title": "Spinner",
+      "description": "An accessible loading indicator, in one of a few visual styles.",
+      "files": [
+        {
+          "path": "registry/forth-ui/spinner/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/spinner/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/spinner/spinner.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/spinner/spinner.tsx"
+        },
+        {
+          "path": "registry/forth-ui/spinner/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/spinner/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "lucide-react"]
+    },
+    {
+      "name": "stepper",
+      "type": "registry:component",
+      "title": "Stepper",
+      "description": "A numbered sequence of steps for a multi-stage flow.",
+      "files": [
+        {
+          "path": "registry/forth-ui/stepper/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/stepper/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/stepper/stepper.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/stepper/stepper.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "name": "submit-button",
+      "type": "registry:component",
+      "title": "SubmitButton",
+      "description": "A submit Button that shows its own loading state automatically via useFormStatus.",
+      "files": [
+        {
+          "path": "registry/forth-ui/submit-button/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/submit-button/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/submit-button/submit-button.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/submit-button/submit-button.tsx"
+        }
+      ],
+      "registryDependencies": ["@forth-ui/button"]
+    },
+    {
+      "name": "tags-input",
+      "type": "registry:component",
+      "title": "TagsInput",
+      "description": "A flexible input for adding/removing multiple tags.",
+      "files": [
+        {
+          "path": "registry/forth-ui/tags-input/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/tags-input/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/tags-input/tags-input.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/tags-input/tags-input.tsx"
+        }
+      ],
+      "registryDependencies": ["@forth-ui/badge"]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:component",
+      "title": "Timeline",
+      "description": "A vertical sequence of dated events, connected by a line.",
+      "files": [
+        {
+          "path": "registry/forth-ui/timeline/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/timeline/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/timeline/timeline.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/timeline/timeline.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "type": "registry:component",
+      "title": "Tree",
+      "description": "A hierarchical, expandable/collapsible list of nodes.",
+      "files": [
+        {
+          "path": "registry/forth-ui/tree/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/tree/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/tree/tree.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/tree/tree.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@forth-ui/collapsible"]
+    }
+  ]
+}

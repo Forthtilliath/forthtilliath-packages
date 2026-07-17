@@ -34,3 +34,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# forth-ui registry build output (`pnpm run registry:build`) — regenerated from
+# registry.json + registry/forth-ui/**, both committed
+/public/r/
