@@ -5,6 +5,7 @@
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=web",
     "dev:sb": "turbo run dev --filter=react-sb",
+    "dev:shadweb": "turbo run dev --filter=shadweb",
     "dev:forth-ui": "turbo run dev --filter=@forthtilliath/forth-ui",
     "dev:react-ui": "turbo run dev --filter=@forthtilliath/react-ui",
     "dev:lib": "turbo run dev --filter=@forthtilliath/lib",
