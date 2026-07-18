@@ -14,7 +14,7 @@ packages.
 | [`apps/web`](apps/web)                                     | Next.js showcase app, consumes `shadcn-ui` + `react-ui`                                                                                                                |
 | [`apps/shadweb`](apps/shadweb)                             | Fictional dashboard app proving `shadcn-ui` works as an installed dep                                                                                                  |
 | [`apps/react-sb`](apps/react-sb)                           | Storybook workspace documenting/testing every component                                                                                                                |
-| [`packages/react/shadcn-ui`](packages/react/shadcn-ui)     | shadcn/ui component library (Radix + Tailwind), source-consumed                                                                                                        |
+| [`packages/react/shadcn-ui`](packages/react/shadcn-ui)     | shadcn/ui component library (Radix + Tailwind), published to npm                                                                                                       |
 | [`packages/react/forth-ui`](packages/react/forth-ui)       | Higher-level components built on `shadcn-ui` — 58 components across 8 categories, see [its README](packages/react/forth-ui/README.md) or Storybook (`pnpm run dev:sb`) |
 | [`packages/react/ui`](packages/react/ui)                   | Headless control-flow components (`Show`, `Repeat`, ...)                                                                                                               |
 | [`packages/react/hooks`](packages/react/hooks)             | Standalone React hooks (`useKeyListener`, `useToggleState`)                                                                                                            |
@@ -61,9 +61,11 @@ pnpm run dev:types           # packages/types
 pnpm run dev:eslint-config   # packages/eslint-config
 ```
 
-`@forthtilliath/shadcn-ui` and `@forthtilliath/react-hooks` have no
-`dev`/`build` script — their `exports` point straight at `src/*.ts(x)`,
-consumed as-is by Vite/Storybook without a build step.
+`@forthtilliath/shadcn-ui`, `@forthtilliath/react-hooks`, and
+`@forthtilliath/forth-ui` are all published to npm and built to `dist/`
+(`tsc`, plus a Tailwind CSS build for the two with styles) — run their
+`dev`/`build` script (or the whole repo's) after source changes for
+consumers, including the apps in this monorepo, to pick them up.
 
 For anything not listed above, filter directly:
 

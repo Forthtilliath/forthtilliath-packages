@@ -1,15 +1,22 @@
 # @forthtilliath/shadcn-ui
 
 The [shadcn/ui](https://ui.shadcn.com) component library for this monorepo —
-Radix UI primitives styled with Tailwind CSS, generated via the shadcn CLI
-and kept in source form (not compiled) so consumers can customize freely.
-`private: true`, internal to this monorepo.
+Radix UI primitives styled with Tailwind CSS, generated via the shadcn CLI.
+Published to npm as a regular compiled package (`dist/`); within this
+monorepo it's still edited and consumed as plain source (`src/`), keeping
+the usual shadcn/ui "you own the code" experience for in-repo work.
 
 > Distinct from [`@forthtilliath/forth-ui`](../forth-ui): this package is
 > the (mostly) unmodified shadcn/ui base layer; `forth-ui` builds
 > higher-level, opinionated components on top of it.
 
 ## Install
+
+```bash
+npm install @forthtilliath/shadcn-ui
+```
+
+Or, from within this monorepo, as a workspace dependency:
 
 ```json
 {
@@ -21,9 +28,8 @@ and kept in source form (not compiled) so consumers can customize freely.
 
 ## Usage
 
-No build step — everything is consumed straight from `src/` (see the
-`exports` field), so import components, lib helpers and hooks directly by
-file name:
+Import components, lib helpers and hooks directly by file name (see the
+`exports` field in `package.json`):
 
 ```tsx
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
@@ -79,6 +85,8 @@ CSS-first theming.
 ## Scripts
 
 ```bash
-pnpm run check-types   # tsc --noEmit
-pnpm run lint          # eslint
+pnpm run dev            # tsc --watch -> dist/
+pnpm run build          # tsc -> dist/ (+ copies src/styles -> dist/styles)
+pnpm run check-types    # tsc --noEmit
+pnpm run lint           # eslint
 ```

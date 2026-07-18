@@ -1,9 +1,14 @@
 # @forthtilliath/react-hooks
 
-Small standalone React hooks. `private: true` — internal to this monorepo,
-not published.
+Small standalone React hooks, published to npm.
 
 ## Install
+
+```bash
+npm install @forthtilliath/react-hooks
+```
+
+Or, from within this monorepo, as a workspace dependency:
 
 ```json
 {
@@ -51,11 +56,14 @@ Returns `[value, setValue, toggle] as const`.
 ## Scripts
 
 ```bash
-pnpm run check-types   # tsc --noEmit
-pnpm run lint          # eslint
-pnpm run test          # vitest run
-pnpm run test:watch    # vitest
+pnpm run dev            # tsc --watch -> dist/
+pnpm run build          # tsc -> dist/
+pnpm run check-types    # tsc --noEmit
+pnpm run lint           # eslint
+pnpm run test           # vitest run
+pnpm run test:watch     # vitest
 ```
 
-No build step — consumed directly from `src/` (see the `exports` field in
-`package.json`).
+Hooks are built to `dist/` (see the `exports` field in `package.json`), so
+run `pnpm run build` (or `dev`) after source changes for consumers to see
+them.

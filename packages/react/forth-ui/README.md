@@ -44,10 +44,22 @@ so you don't have to wire the same recipe from scratch in every project.
 
 ## Installation
 
+### Via npm
+
+```bash
+npm install @forthtilliath/forth-ui @forthtilliath/shadcn-ui
+```
+
+Import the compiled stylesheet once, alongside your component imports:
+
+```ts
+import "@forthtilliath/forth-ui/styles/globals.css";
+```
+
 ### As a workspace package (this monorepo)
 
-`forth-ui` is `private: true` and consumed internally via the pnpm
-workspace:
+Within this monorepo, `forth-ui` is consumed the same way, just via the
+pnpm workspace protocol instead of a published version range:
 
 ```json
 {
@@ -55,12 +67,6 @@ workspace:
     "@forthtilliath/forth-ui": "workspace:*"
   }
 }
-```
-
-Import the compiled stylesheet once, alongside your component imports:
-
-```ts
-import "@forthtilliath/forth-ui/styles/globals.css";
 ```
 
 Components are built to `dist/` (`./components/*` →
