@@ -265,31 +265,50 @@ base file overrides the default colors via normal CSS cascade:
 @import "@forthtilliath/shadcn-ui/styles/globals-static.css";
 @import "@forthtilliath/shadcn-ui/styles/themes/rose.css";
 
-/* Tailwind auto-scans your own src/**\/*.tsx by default. Since forth-ui and
-   shadcn-ui ship pre-built (node_modules is excluded from that automatic
-   detection, and their class names only exist as strings inside the
-   already-compiled dist/*.js files), point Tailwind at them explicitly: */
-@source "../node_modules/@forthtilliath/forth-ui/dist/**/*.js";
-@source "../node_modules/@forthtilliath/shadcn-ui/dist/**/*.js";
+@source "../node_modules/@forthtilliath/*/dist/**/*.js";
 ```
 
 Don't add your own `@import "tailwindcss";` — `globals-static.css` already
 does that internally.
 
+**What that `@source` line does, and why it's needed:** Tailwind only
+generates CSS for class names it can actually find, as literal text, in
+the files it scans — by default your own project source, honoring
+`.gitignore` (which is why `node_modules` is skipped: scanning every
+dependency would be slow and mostly pointless). But forth-ui and shadcn-ui
+ship pre-built, and their component code — the literal `"bg-primary"`,
+`"rounded-md"`, etc. strings — only exists inside their already-compiled
+`node_modules/@forthtilliath/*/dist/**/*.js` files. Without pointing
+Tailwind at them explicitly, none of those classes would be generated and
+every forth-ui/shadcn-ui component would render completely unstyled. This
+one line, with a wildcard for the package name, covers both packages (and
+any other `@forthtilliath/*` package added later) — confirmed to produce
+the exact same generated CSS as listing each package's path separately.
+This isn't a workaround specific to forth-ui: it's the
+[documented, standard way](https://tailwindcss.com/docs/detecting-classes-in-source-files#explicitly-registering-sources)
+Tailwind v4 expects any npm-distributed component library to be consumed.
+
 ### Available themes
 
 11 [tweakcn](https://tweakcn.com)-generated themes ship under
-`@forthtilliath/shadcn-ui/styles/themes/`: `blue`, `bubblegum`,
-`claymorphism`, `default`, `green`, `orange`, `red`, `rose`, `twitter`,
-`violet`, `yellow`. A few, rendered with the same components:
+`@forthtilliath/shadcn-ui/styles/themes/`, all rendered here with the same
+components:
 
-| `default`                                   | `rose`                                | `twitter`                                   |
-| ------------------------------------------- | ------------------------------------- | ------------------------------------------- |
-| ![default theme](./docs/themes/default.png) | ![rose theme](./docs/themes/rose.png) | ![twitter theme](./docs/themes/twitter.png) |
+| `default`                                   | `blue`                                | `bubblegum`                                     |
+| ------------------------------------------- | ------------------------------------- | ----------------------------------------------- |
+| ![default theme](./docs/themes/default.png) | ![blue theme](./docs/themes/blue.png) | ![bubblegum theme](./docs/themes/bubblegum.png) |
 
-| `violet`                                  | `green`                                 | `bubblegum`                                     |
-| ----------------------------------------- | --------------------------------------- | ----------------------------------------------- |
-| ![violet theme](./docs/themes/violet.png) | ![green theme](./docs/themes/green.png) | ![bubblegum theme](./docs/themes/bubblegum.png) |
+| `claymorphism`                                        | `green`                                 | `orange`                                  |
+| ----------------------------------------------------- | --------------------------------------- | ----------------------------------------- |
+| ![claymorphism theme](./docs/themes/claymorphism.png) | ![green theme](./docs/themes/green.png) | ![orange theme](./docs/themes/orange.png) |
+
+| `red`                               | `rose`                                | `twitter`                                   |
+| ----------------------------------- | ------------------------------------- | ------------------------------------------- |
+| ![red theme](./docs/themes/red.png) | ![rose theme](./docs/themes/rose.png) | ![twitter theme](./docs/themes/twitter.png) |
+
+| `violet`                                  | `yellow`                                  |
+| ----------------------------------------- | ----------------------------------------- |
+| ![violet theme](./docs/themes/violet.png) | ![yellow theme](./docs/themes/yellow.png) |
 
 ## Development
 
