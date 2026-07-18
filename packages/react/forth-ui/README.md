@@ -47,8 +47,12 @@ so you don't have to wire the same recipe from scratch in every project.
 ### Via npm
 
 ```bash
-npm install @forthtilliath/forth-ui @forthtilliath/shadcn-ui
+npm install @forthtilliath/forth-ui
 ```
+
+`@forthtilliath/shadcn-ui` (the primitives forth-ui is built on) is a
+regular `dependencies` entry, not a peer — it's installed automatically,
+no need to add it yourself.
 
 Import the compiled stylesheet once, alongside your component imports:
 
