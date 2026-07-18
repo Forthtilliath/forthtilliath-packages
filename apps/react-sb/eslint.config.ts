@@ -3,6 +3,7 @@ import type { Linter } from "eslint";
 import { storybookConfig } from "@forthtilliath/eslint-config/storybook";
 
 const config: Linter.Config[] = [
+  { ignores: ["scripts/**"] },
   ...storybookConfig,
   {
     // Renders a purely count-based placeholder list

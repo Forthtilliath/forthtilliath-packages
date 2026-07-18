@@ -2,15 +2,28 @@
   "name": "@forthtilliath/react-hooks",
   "version": "0.0.0",
   "type": "module",
-  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/turborepo.git",
+    "directory": "packages/react/hooks"
+  },
+  "homepage": "https://github.com/Forthtilliath/turborepo/tree/main/packages/react/hooks#readme",
+  "bugs": "https://github.com/Forthtilliath/turborepo/issues",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json",
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./dist/*.js"
   },
   "dependencies": {
     "react": "catalog:"

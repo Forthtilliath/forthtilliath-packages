@@ -335,21 +335,21 @@ importers:
 
   packages/react/forth-ui:
     dependencies:
+      '@forthtilliath/react-hooks':
+        specifier: workspace:*
+        version: link:../hooks
+      '@forthtilliath/shadcn-ui':
+        specifier: workspace:*
+        version: link:../shadcn-ui
       '@radix-ui/react-accordion':
         specifier: ^1.2.16
         version: 1.2.16(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@radix-ui/react-avatar':
-        specifier: ^1.2.2
-        version: 1.2.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-radio-group':
         specifier: ^1.4.3
         version: 1.4.3(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-slot':
         specifier: ^1.3.0
         version: 1.3.0(@types/react@19.2.17)(react@19.2.7)
-      '@radix-ui/react-tooltip':
-        specifier: ^1.2.12
-        version: 1.2.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -375,12 +375,6 @@ importers:
       '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../../eslint-config
-      '@forthtilliath/react-hooks':
-        specifier: workspace:*
-        version: link:../hooks
-      '@forthtilliath/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       '@forthtilliath/types':
         specifier: workspace:*
         version: link:../../types

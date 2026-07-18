@@ -2,10 +2,21 @@
   "name": "@forthtilliath/shadcn-ui",
   "version": "0.1.0",
   "type": "module",
-  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/turborepo.git",
+    "directory": "packages/react/shadcn-ui"
+  },
+  "homepage": "https://github.com/Forthtilliath/turborepo/tree/main/packages/react/shadcn-ui#readme",
+  "bugs": "https://github.com/Forthtilliath/turborepo/issues",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch",
+    "build": "pnpm run clean && tsc",
+    "postbuild": "node -e \"require('node:fs').cpSync('src/styles', 'dist/styles', { recursive: true })\""
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -71,10 +82,13 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
-    "./lib/*": "./src/lib/*.ts",
-    "./components/*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts",
-    "./styles/*.css": "./src/styles/*.css"
+    "./lib/*": "./dist/lib/*.js",
+    "./components/*": "./dist/components/*.js",
+    "./hooks/*": "./dist/hooks/*.js",
+    "./styles/*.css": "./dist/styles/*.css"
   }
 }
