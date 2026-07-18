@@ -254,6 +254,43 @@ CSS variables (`--primary`, `--muted`, `--border`, ...) already defined by
 theming shadcn-ui — swap the CSS variables (or the whole theme preset) and
 every forth-ui component follows.
 
+### Setup
+
+In your app's CSS entry point, import the base stylesheet, then a theme
+from `@forthtilliath/shadcn-ui/styles/themes/*.css` — each one just
+redeclares the same `:root` custom properties, so importing it _after_ the
+base file overrides the default colors via normal CSS cascade:
+
+```css
+@import "@forthtilliath/shadcn-ui/styles/globals-static.css";
+@import "@forthtilliath/shadcn-ui/styles/themes/rose.css";
+
+/* Tailwind auto-scans your own src/**\/*.tsx by default. Since forth-ui and
+   shadcn-ui ship pre-built (node_modules is excluded from that automatic
+   detection, and their class names only exist as strings inside the
+   already-compiled dist/*.js files), point Tailwind at them explicitly: */
+@source "../node_modules/@forthtilliath/forth-ui/dist/**/*.js";
+@source "../node_modules/@forthtilliath/shadcn-ui/dist/**/*.js";
+```
+
+Don't add your own `@import "tailwindcss";` — `globals-static.css` already
+does that internally.
+
+### Available themes
+
+11 [tweakcn](https://tweakcn.com)-generated themes ship under
+`@forthtilliath/shadcn-ui/styles/themes/`: `blue`, `bubblegum`,
+`claymorphism`, `default`, `green`, `orange`, `red`, `rose`, `twitter`,
+`violet`, `yellow`. A few, rendered with the same components:
+
+| `default`                                   | `rose`                                | `twitter`                                   |
+| ------------------------------------------- | ------------------------------------- | ------------------------------------------- |
+| ![default theme](./docs/themes/default.png) | ![rose theme](./docs/themes/rose.png) | ![twitter theme](./docs/themes/twitter.png) |
+
+| `violet`                                  | `green`                                 | `bubblegum`                                     |
+| ----------------------------------------- | --------------------------------------- | ----------------------------------------------- |
+| ![violet theme](./docs/themes/violet.png) | ![green theme](./docs/themes/green.png) | ![bubblegum theme](./docs/themes/bubblegum.png) |
+
 ## Development
 
 ```bash
