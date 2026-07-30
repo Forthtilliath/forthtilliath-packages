@@ -36,7 +36,13 @@ import { parseChangelogNotes } from "@forthtilliath/expo-release-updates/parseCh
 
 ### `compareVersions(a, b)`
 
-Compares two `"x.y.z"` version strings. Returns `-1`, `0`, or `1`.
+Compares two `"x.y.z"` version strings, segment by segment. Returns `-1` if `a < b`, `0` if equal, `1` if `a > b`.
+
+```ts
+compareVersions("1.2.0", "1.10.0"); // -1 (numeric, not lexicographic)
+compareVersions("2.0.0", "1.9.9"); // 1
+compareVersions("1.2.3", "1.2.3"); // 0
+```
 
 ### `fetchLatestRelease({ owner, repo })`
 
@@ -51,7 +57,16 @@ if (release && compareVersions(release.version, currentVersion) > 0) {
 
 ### `fetchReleaseHistory({ owner, repo, limit? })`
 
-Fetches the most recent releases (version, notes, publish date), most recent first. `limit` defaults to `10`.
+Fetches the most recent releases (version, notes, publish date), most recent first. `limit` defaults to `10` — useful for a "release history" / "what's new" screen.
+
+```ts
+const history = await fetchReleaseHistory({
+  owner: "acme",
+  repo: "app",
+  limit: 5,
+});
+// [{ version: "1.11.0", notes: "### Added\n- ...", publishedAt: "2026-07-30T..." }, ...]
+```
 
 ### `downloadAndInstallApk({ apkUrl, fileName, onProgress? })`
 
@@ -67,7 +82,21 @@ await downloadAndInstallApk({
 
 ### `parseChangelogNotes(notes)`
 
-Parses a small subset of Markdown (`### heading`, `- item`, `**bold**`) commonly found in GitHub release notes into a list of typed blocks (`heading` / `item` / `text`, each with `bold`-aware segments), ready for a UI layer to render without a full Markdown dependency.
+Parses a small subset of Markdown (`### heading`, `- item`, `**bold**`) commonly found in GitHub release notes into a list of typed blocks (`heading` / `item` / `text`, each with `bold`-aware segments), ready for a UI layer to render without a full Markdown dependency. Pair it with `@forthtilliath/react-native-kit`'s `ChangelogNotes` component to render the result directly.
+
+```ts
+parseChangelogNotes("### Added\n- **Auto-backup**: saves every 5 minutes.");
+// [
+//   { type: "heading", text: "Added" },
+//   {
+//     type: "item",
+//     segments: [
+//       { text: "Auto-backup", bold: true },
+//       { text: ": saves every 5 minutes.", bold: false },
+//     ],
+//   },
+// ]
+```
 
 ## Scripts
 

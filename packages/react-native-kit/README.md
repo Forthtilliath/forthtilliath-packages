@@ -36,6 +36,22 @@ Renders GitHub-style release notes — as produced by `@forthtilliath/expo-relea
 <ChangelogNotes notes={release.notes} />
 ```
 
+It understands the small subset of Markdown GitHub release notes actually use:
+
+| `notes` input                             | Rendered as                                                                 |
+| ----------------------------------------- | --------------------------------------------------------------------------- |
+| `### Added`                               | a heading `Text` — `"Added"`                                                |
+| `- Export history to CSV.`                | a row (`View`) with a `•` bullet `Text` and an item `Text`                  |
+| `**Auto-backup**: saves every 5 minutes.` | a plain `Text`, with the bold segment split into its own bold-styled `Text` |
+
+A full example, mixing all three:
+
+```tsx
+<ChangelogNotes
+  notes={`### Added\n- **Auto-backup**: saves every 5 minutes.\n- Export history to CSV.\n\nSee the full changelog for details.`}
+/>
+```
+
 The component ships with neutral default styles and no opinion on your app's theme. Override any subset via the `styles` prop to match your colors/dark mode:
 
 ```tsx
@@ -43,10 +59,16 @@ The component ships with neutral default styles and no opinion on your app's the
   notes={release.notes}
   styles={{
     heading: { color: colors.text, fontWeight: "700" },
+    itemRow: { gap: 8 },
+    bullet: { color: colors.primary },
     itemText: { color: colors.textMuted },
+    text: { color: colors.textMuted },
+    bold: { color: colors.text, fontWeight: "700" },
   }}
 />
 ```
+
+Every field of `styles` is optional — pass only the ones you want to override; the rest fall back to the defaults (`ChangelogNotesStyles` in `ChangelogNotes.tsx`).
 
 ## Scripts
 
