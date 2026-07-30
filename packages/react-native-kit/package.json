@@ -1,0 +1,50 @@
+{
+  "name": "@forthtilliath/react-native-kit",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/turborepo.git",
+    "directory": "packages/react-native-kit"
+  },
+  "homepage": "https://github.com/Forthtilliath/turborepo/tree/main/packages/react-native-kit#readme",
+  "bugs": "https://github.com/Forthtilliath/turborepo/issues",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./*": "./dist/*.js"
+  },
+  "dependencies": {
+    "@forthtilliath/expo-release-updates": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native": ">=0.81"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-test-renderer": "^19.1.0",
+    "eslint": "catalog:",
+    "react": "catalog:",
+    "react-native": "0.86.0",
+    "react-test-renderer": "19.2.3",
+    "typescript": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}
