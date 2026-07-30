@@ -3,6 +3,12 @@ name: Release
 on:
   push:
     branches: [main]
+  # Manual fallback: if a push to main happens to land with "[skip ci]" in its
+  # head commit message (e.g. rebase-merging the changesets bot's own
+  # "Version Packages" PR replays its commit, [skip ci] included, as the new
+  # tip), GitHub skips every workflow for that push and this never fires on
+  # its own — dispatch it by hand instead of pushing a throwaway commit.
+  workflow_dispatch: {}
 
 concurrency:
   group: release-${{ github.workflow }}-${{ github.ref }}
