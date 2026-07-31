@@ -28,6 +28,100 @@ export function View({
   return React.createElement("View", { style }, children);
 }
 
+export function Image({
+  source,
+  style,
+}: {
+  source?: unknown;
+  style?: unknown;
+}) {
+  return React.createElement("Image", { source, style });
+}
+
+export function Pressable({
+  children,
+  style,
+  onPress,
+  ...rest
+}: {
+  children?: React.ReactNode;
+  style?: unknown;
+  onPress?: () => void;
+} & Record<string, unknown>) {
+  return React.createElement(
+    "Pressable",
+    { style, onPress, ...rest },
+    children,
+  );
+}
+
+export function Modal({
+  visible,
+  children,
+}: {
+  visible?: boolean;
+  children?: React.ReactNode;
+}) {
+  return visible ? React.createElement(React.Fragment, null, children) : null;
+}
+
+export function TextInput({
+  value,
+  onChangeText,
+  ...rest
+}: {
+  value?: string;
+  onChangeText?: (text: string) => void;
+} & Record<string, unknown>) {
+  return React.createElement("TextInput", { value, onChangeText, ...rest });
+}
+
+interface Section<T> {
+  title: string | null;
+  data: T[];
+}
+
+export function SectionList<T>({
+  sections,
+  keyExtractor,
+  ListHeaderComponent,
+  ListEmptyComponent,
+  renderSectionHeader,
+  renderItem,
+}: {
+  sections: Section<T>[];
+  keyExtractor: (item: T) => string;
+  ListHeaderComponent?: React.ReactNode;
+  ListEmptyComponent?: React.ReactNode;
+  renderSectionHeader?: (info: { section: Section<T> }) => React.ReactNode;
+  renderItem: (info: { item: T }) => React.ReactNode;
+}) {
+  const isEmpty = sections.every((section) => section.data.length === 0);
+  return React.createElement(
+    View,
+    null,
+    ListHeaderComponent,
+    isEmpty
+      ? ListEmptyComponent
+      : sections.map((section) =>
+          React.createElement(
+            React.Fragment,
+            // Only one section has a null title (the ungrouped/flat case),
+            // so title is unique enough here without an index.
+            { key: section.title ?? "" },
+            renderSectionHeader?.({ section }),
+            section.data.map((item) =>
+              React.createElement(
+                React.Fragment,
+                { key: keyExtractor(item) },
+                renderItem({ item }),
+              ),
+            ),
+          ),
+        ),
+  );
+}
+
 export interface AlertButton {
   text?: string;
   style?: "default" | "cancel" | "destructive";
