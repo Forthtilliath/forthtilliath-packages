@@ -1,6 +1,6 @@
 # @forthtilliath/react-native-kit
 
-Small, dependency-free-of-app-theme React Native UI components, distributed one file per component so consumers only pull in what they use.
+Small React Native building blocks — components, hooks, and framework-agnostic utils — with no opinion on your app's theme, distributed one file per export so consumers only pull in what they use.
 
 ## Install
 
@@ -69,6 +69,79 @@ The component ships with neutral default styles and no opinion on your app's the
 ```
 
 Every field of `styles` is optional — pass only the ones you want to override; the rest fall back to the defaults (`ChangelogNotesStyles` in `ChangelogNotes.tsx`).
+
+### `useSubmitGuard()`
+
+Prevents a second call while a first one is still pending — e.g. a double-tap on a "Save" button before it's had time to disable, which would otherwise create duplicate submissions.
+
+```tsx
+import { useSubmitGuard } from "@forthtilliath/react-native-kit/useSubmitGuard";
+
+const { isSaving, guard } = useSubmitGuard();
+
+<Pressable
+  disabled={isSaving}
+  onPress={() =>
+    guard(async () => {
+      await save();
+    })
+  }
+>
+  <Text>{isSaving ? "Saving…" : "Save"}</Text>
+</Pressable>;
+```
+
+### `useDebouncedChange(values, delayMs, callback)`
+
+Calls `callback` `delayMs` after the last change among `values`, ignoring renders where any value is still `undefined` (not loaded yet) and the very first render where they're all defined (no trigger on mount). A new change before the delay elapses resets the timer — a real debounce, not a throttle.
+
+```tsx
+import { useDebouncedChange } from "@forthtilliath/react-native-kit/useDebouncedChange";
+
+useDebouncedChange([settingsData, itemsData], 5 * 60 * 1000, () => {
+  runAutoBackup();
+});
+```
+
+### `confirmDestructive(title, onConfirm, options?)`
+
+Generic destructive-action confirmation (title + message + Cancel/Confirm), for anything irreversible (delete, reset...). Ships with French defaults (`message`, `cancelLabel`, `confirmLabel` all overridable).
+
+```ts
+import { confirmDestructive } from "@forthtilliath/react-native-kit/confirmDestructive";
+
+confirmDestructive("Delete this item?", () => deleteItem(id), {
+  message: "This cannot be undone.",
+  cancelLabel: "Cancel",
+  confirmLabel: "Delete",
+});
+```
+
+### Utils (`utils/`)
+
+Framework-agnostic pure functions — no React or React Native import, usable from Node/web too.
+
+```ts
+import { getPeriodStartMs } from "@forthtilliath/react-native-kit/utils/getPeriodStartMs";
+import { getMostRecentIds } from "@forthtilliath/react-native-kit/utils/getMostRecentIds";
+import { nextInCycle } from "@forthtilliath/react-native-kit/utils/nextInCycle";
+import { normalizeForSearch } from "@forthtilliath/react-native-kit/utils/normalizeForSearch";
+import { rankByNameMatch } from "@forthtilliath/react-native-kit/utils/rankByNameMatch";
+import { escapeCsvField } from "@forthtilliath/react-native-kit/utils/escapeCsvField";
+import { formatCsvNumber } from "@forthtilliath/react-native-kit/utils/formatCsvNumber";
+import { escapeHtml } from "@forthtilliath/react-native-kit/utils/escapeHtml";
+```
+
+| Function                                 | What it does                                                                                                                                                       |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `getPeriodStartMs(period, now?)`         | Start timestamp (ms) for a `"today" \| "7d" \| "30d" \| "all"` period filter, or `null` for `"all"`. `"today"` is the current calendar day, not a rolling 24h.     |
+| `getMostRecentIds(rows, limit?)`         | Most recently occurring distinct ids (`{ id, occurredAt }[]`), most recent first, deduplicated, limited (default 5).                                               |
+| `nextInCycle(ids, currentId)`            | Next id in a short list (e.g. cycling through recents on tap) — wraps to the first if `currentId` is at the end or no longer in the list.                          |
+| `normalizeForSearch(text)`               | Lowercases, trims, strips accents, and expands `œ`/`æ` ligatures (which `normalize("NFD")` alone doesn't decompose) — for accent/case-insensitive search matching. |
+| `rankByNameMatch(items, query, getName)` | Ranks `items` by relevance to `query`: earlier match position first, then shorter name — for a search-as-you-type list.                                            |
+| `escapeCsvField(value)`                  | Quotes and escapes a CSV field (RFC 4180) only if it contains a `"`, `;`, or newline.                                                                              |
+| `formatCsvNumber(value, decimals?)`      | Formats a number with a comma decimal separator (French-locale spreadsheets) instead of JS's dot.                                                                  |
+| `escapeHtml(text)`                       | Basic HTML entity escaping (`&`, `<`, `>`, `"`) for inserting user text into an HTML template.                                                                     |
 
 ## Scripts
 
