@@ -1,5 +1,11 @@
 # @forthtilliath/react-native-kit
 
+## 0.3.0
+
+### Minor Changes
+
+- 5e7e55e: Add `useSubmitGuard`, `useDebouncedChange`, `confirmDestructive`, and framework-agnostic `utils/` (getPeriodStartMs, getMostRecentIds, nextInCycle, normalizeForSearch, rankByNameMatch, escapeCsvField, formatCsvNumber, escapeHtml).
+
 ## 0.2.0
 
 ### Minor Changes
