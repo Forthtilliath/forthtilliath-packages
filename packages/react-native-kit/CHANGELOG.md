@@ -1,5 +1,11 @@
 # @forthtilliath/react-native-kit
 
+## 0.4.0
+
+### Minor Changes
+
+- 9e1538b: Add `Thumbnail`, `SwipeableRow`, `VoiceSearchButton`, `PhotoPicker`, and `PickerModal` — the same themeable-via-`styles`-prop pattern as `ChangelogNotes`, with no dependency on any app's internal theme hook.
+
 ## 0.3.0
 
 ### Minor Changes
