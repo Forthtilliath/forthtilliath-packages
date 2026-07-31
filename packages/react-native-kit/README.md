@@ -18,7 +18,7 @@ Or, from within this monorepo, as a workspace dependency:
 }
 ```
 
-`react` and `react-native` are peer dependencies — install them in the consuming app if not already present.
+`react` and `react-native` are peer dependencies — install them in the consuming app if not already present. `@expo/vector-icons`, `expo-image-picker`, `expo-speech-recognition`, and `react-native-gesture-handler` are also peer dependencies, needed only if you import the components that use them (`Thumbnail`/`PickerModal`/`SwipeableRow`, `PhotoPicker`, `VoiceSearchButton`/`PickerModal`, `SwipeableRow`, respectively).
 
 ## Usage
 
@@ -69,6 +69,93 @@ The component ships with neutral default styles and no opinion on your app's the
 ```
 
 Every field of `styles` is optional — pass only the ones you want to override; the rest fall back to the defaults (`ChangelogNotesStyles` in `ChangelogNotes.tsx`).
+
+### `<Thumbnail photoUri={...} placeholderIcon="..." />`
+
+List-row thumbnail: the photo if there is one, otherwise a placeholder icon.
+
+```tsx
+import { Thumbnail } from "@forthtilliath/react-native-kit/Thumbnail";
+
+<Thumbnail
+  photoUri={container.photoUri}
+  placeholderIcon="cube-outline"
+  size={48}
+/>;
+```
+
+### `<SwipeableRow onDelete={...} deleteLabel="...">`
+
+Swipe a list row left to reveal a delete button, on top of a tap to edit it.
+
+```tsx
+import { SwipeableRow } from "@forthtilliath/react-native-kit/SwipeableRow";
+
+<SwipeableRow
+  onDelete={() => remove(item.id)}
+  deleteLabel={`Delete ${item.name}`}
+>
+  <ItemRow item={item} />
+</SwipeableRow>;
+```
+
+### `<VoiceSearchButton onResult={...} />`
+
+Microphone button to dictate a search instead of typing it. Safe to mount more than one at a time (e.g. a name field plus a search picker on the same screen) — only the instance that started listening reacts to its result.
+
+```tsx
+import { VoiceSearchButton } from "@forthtilliath/react-native-kit/VoiceSearchButton";
+
+<VoiceSearchButton onResult={setQuery} lang="en-US" />;
+```
+
+### `<PhotoPicker photoUri={...} onChange={...} savePhoto={...} photoLabel="..." />`
+
+Photo picker (camera or library) with a preview and a remove link. `savePhoto` is injected rather than hard-coded, so where/how the picked image gets persisted is entirely up to the caller.
+
+```tsx
+import { PhotoPicker } from "@forthtilliath/react-native-kit/PhotoPicker";
+
+<PhotoPicker
+  photoUri={container.photoUri}
+  onChange={(uri) => setPhotoUri(uri)}
+  savePhoto={(sourceUri) => saveContainerPhoto(sourceUri)}
+  photoLabel="of the container"
+/>;
+```
+
+### `<PickerModal visible title items onSelect onClose />`
+
+Full-screen picker: search (typed or dictated via `VoiceSearchButton`), optional sections, and "add" actions always visible above the results.
+
+```tsx
+import {
+  PickerModal,
+  type PickerItem,
+} from "@forthtilliath/react-native-kit/PickerModal";
+
+<PickerModal
+  visible={pickerVisible}
+  title="Choose a container"
+  items={containers.map((c): PickerItem => ({
+    id: c.id,
+    label: c.name,
+    imageUri: c.photoUri,
+  }))}
+  onSelect={(item) => setContainerId(item.id)}
+  onClose={() => setPickerVisible(false)}
+  extraActions={[
+    {
+      label: "Add a new container",
+      onPress: () => router.push("/containers/new"),
+    },
+  ]}
+/>;
+```
+
+Groups results into sections via each item's `group` (e.g. food groups, ingredients vs recipes) — ignored while searching, where the best global matches are shown instead. Pass `filterItems` for custom ranking (e.g. `rankByNameMatch` from this same package's `utils/`) instead of the default case-insensitive substring match.
+
+For all 5 components above, styling and (where relevant) copy work the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults) and, for `PhotoPicker`/`PickerModal`, an optional `labels` prop for the built-in French copy.
 
 ### `useSubmitGuard()`
 
@@ -158,4 +245,4 @@ Built to `dist/` (see the `exports` field in `package.json`), so run `pnpm run b
 
 ### Testing note
 
-`react-native`'s package entry uses Flow syntax that `@babel/parser`'s flow plugin can't parse (`as Cast` casts aren't supported there), so Vitest can never load the real package directly. Tests alias `react-native` to a minimal stub (`src/__mocks__/react-native.tsx`) instead — see that file for details.
+`react-native`'s package entry uses Flow syntax that `@babel/parser`'s flow plugin can't parse (`as Cast` casts aren't supported there), so Vitest can never load the real package directly. Tests alias `react-native` to a minimal stub (`src/__mocks__/react-native.tsx`) instead — see that file for details. `react-native-gesture-handler` ships the same kind of Flow syntax, and `@expo/vector-icons` has its own unrelated ESM-resolution issue under Vite/Rollup — both are stubbed the same way (`src/__mocks__/react-native-gesture-handler.tsx`, `src/__mocks__/expo-vector-icons.tsx`). `expo-speech-recognition` and `expo-image-picker` wrap native modules unavailable under Vitest regardless, so they're mocked with plain spies (`src/__mocks__/expo-speech-recognition.tsx`, `src/__mocks__/expo-image-picker.ts`).
