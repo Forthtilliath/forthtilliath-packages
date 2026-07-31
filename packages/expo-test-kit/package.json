@@ -1,0 +1,45 @@
+{
+  "name": "@forthtilliath/expo-test-kit",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/turborepo.git",
+    "directory": "packages/expo-test-kit"
+  },
+  "homepage": "https://github.com/Forthtilliath/turborepo/tree/main/packages/expo-test-kit#readme",
+  "bugs": "https://github.com/Forthtilliath/turborepo/issues",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./*": "./dist/*.js"
+  },
+  "peerDependencies": {
+    "@libsql/client": ">=0.14.0",
+    "drizzle-orm": ">=0.44.0"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@libsql/client": "^0.17.4",
+    "@types/node": "catalog:",
+    "drizzle-orm": "^0.45.2",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}
