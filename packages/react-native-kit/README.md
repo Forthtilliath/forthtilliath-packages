@@ -204,6 +204,73 @@ confirmDestructive("Delete this item?", () => deleteItem(id), {
 });
 ```
 
+### `useEffectiveColorScheme(preference)`
+
+Resolves a `"light" | "dark" | "system"` theme preference against the device's color scheme: `"system"` follows the device, `"light"`/`"dark"` override it regardless of what the device is set to.
+
+```tsx
+import { useEffectiveColorScheme } from "@forthtilliath/react-native-kit/useEffectiveColorScheme";
+
+const scheme = useEffectiveColorScheme(themePreference); // "light" | "dark"
+const colors = scheme === "dark" ? darkColors : lightColors;
+```
+
+### `<ThemeToggle value onChange />`
+
+3-way segmented control for a light/dark/system theme preference.
+
+```tsx
+import { ThemeToggle } from "@forthtilliath/react-native-kit/ThemeToggle";
+
+<ThemeToggle value={themePreference} onChange={setThemePreference} />;
+```
+
+### `useUpdateCheck(options)`
+
+Checks once per mount (e.g. app launch) whether a newer release is available, throttled to at most one real check per `minIntervalMs` (default 12h) and silent for a release the user already dismissed. Has no opinion on where "when did we last check" / "which version did the user dismiss" are persisted — both are read/written entirely through the options you pass in.
+
+```tsx
+import { useUpdateCheck } from "@forthtilliath/react-native-kit/useUpdateCheck";
+
+const update = useUpdateCheck({
+  currentVersion: Constants.expoConfig?.version ?? "0.0.0",
+  checkForUpdate: fetchLatestRelease,
+  compareVersions,
+  getLastCheck: () => ({
+    lastCheckedAt: settings?.lastUpdateCheckAt ?? null,
+    dismissedVersion: settings?.dismissedUpdateVersion ?? null,
+  }),
+  onChecked: (lastCheckedAt) =>
+    updateSettings({ lastUpdateCheckAt: lastCheckedAt }),
+});
+
+if (update.status === "available") {
+  // update.release.version / .notes / .apkUrl
+}
+```
+
+### `<UpdateAvailableBanner version notes onPress onDismiss />`
+
+Dismissible banner announcing an available update: version, release notes (rendered via `ChangelogNotes`), an action button and a dismiss button. Has no opinion on what the action does (e.g. navigate to an update screen) or on how/whether dismissal is persisted.
+
+```tsx
+import { UpdateAvailableBanner } from "@forthtilliath/react-native-kit/UpdateAvailableBanner";
+
+{
+  update.status === "available" && (
+    <UpdateAvailableBanner
+      version={update.release.version}
+      notes={update.release.notes}
+      onPress={() => router.push("/settings/update")}
+      onDismiss={() => {
+        dismissUpdateVersion(update.release.version);
+        update.dismiss();
+      }}
+    />
+  );
+}
+```
+
 ### Utils (`utils/`)
 
 Framework-agnostic pure functions — no React or React Native import, usable from Node/web too.
