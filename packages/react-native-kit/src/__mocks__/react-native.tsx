@@ -122,6 +122,17 @@ export function SectionList<T>({
   );
 }
 
+// Tests import this directly (aliased "react-native") to control what
+// useColorScheme() returns, the same way they use `Alert` to spy on alerts.
+export const mockColorScheme: { value: "light" | "dark" | null } = {
+  value: "light",
+};
+
+// eslint-disable-next-line @eslint-react/no-unnecessary-use-prefix -- must be named useColorScheme to stand in for react-native's real hook of that name
+export function useColorScheme() {
+  return mockColorScheme.value;
+}
+
 export interface AlertButton {
   text?: string;
   style?: "default" | "cancel" | "destructive";
