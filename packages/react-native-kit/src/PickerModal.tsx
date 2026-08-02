@@ -42,7 +42,8 @@ export interface PickerModalStyles {
   sectionHeader?: StyleProp<TextStyle>;
   extraActions?: StyleProp<ViewStyle>;
   extraActionLabel?: StyleProp<TextStyle>;
-  iconColor?: string;
+  extraActionIconColor?: string;
+  rowThumbnailPlaceholderIconColor?: string;
   placeholderTextColor?: string;
 }
 
@@ -148,7 +149,8 @@ const defaultStyles: Required<PickerModalStyles> = {
   },
   extraActions: { marginBottom: 4 },
   extraActionLabel: { color: "#2563eb" },
-  iconColor: "#6b7280",
+  extraActionIconColor: "#2563eb",
+  rowThumbnailPlaceholderIconColor: "#6b7280",
   placeholderTextColor: "#6b7280",
 };
 
@@ -269,7 +271,7 @@ export function PickerModal({
                     <Ionicons
                       name="add-circle-outline"
                       size={20}
-                      color={merged.iconColor}
+                      color={merged.extraActionIconColor}
                     />
                     <Text style={[merged.rowLabel, merged.extraActionLabel]}>
                       {action.label}
@@ -316,7 +318,7 @@ export function PickerModal({
                   <Ionicons
                     name="cube-outline"
                     size={18}
-                    color={merged.iconColor}
+                    color={merged.rowThumbnailPlaceholderIconColor}
                   />
                 </View>
               ) : null}
