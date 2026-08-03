@@ -1,4 +1,4 @@
-# @forthtilliath/types
+# @forthtilliath/ts-types
 
 Generic TypeScript utility **types** (no runtime code) — the kind of small
 helpers usually found in libraries like `type-fest` or `ts-toolbelt`, kept
@@ -9,7 +9,7 @@ in-house here so the rest of the monorepo doesn't need an extra dependency.
 ```json
 {
   "devDependencies": {
-    "@forthtilliath/types": "workspace:*"
+    "@forthtilliath/ts-types": "workspace:*"
   }
 }
 ```
@@ -17,7 +17,7 @@ in-house here so the rest of the monorepo doesn't need an extra dependency.
 ## Usage
 
 ```ts
-import type { NonEmptyArray } from "@forthtilliath/types/array";
+import type { NonEmptyArray } from "@forthtilliath/ts-types/array";
 import type {
   Entries,
   ExactRecord,
@@ -26,14 +26,14 @@ import type {
   Prettify,
   RecordValues,
   UnknownRecord,
-} from "@forthtilliath/types/object";
+} from "@forthtilliath/ts-types/object";
 import type {
   StoryComponent,
   StoryDecorator,
-} from "@forthtilliath/types/helpers";
+} from "@forthtilliath/ts-types/helpers";
 ```
 
-Also available as one barrel: `import type { ... } from "@forthtilliath/types"`.
+Also available as one barrel: `import type { ... } from "@forthtilliath/ts-types"`.
 
 ### `array`
 
