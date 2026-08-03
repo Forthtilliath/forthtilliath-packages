@@ -30,7 +30,7 @@ import { ChangelogNotes } from "@forthtilliath/react-native-kit/ChangelogNotes";
 
 This is the recommended way to import: Metro (React Native's bundler) doesn't reliably tree-shake, so pulling from a single deep-import path keeps peer dependencies you don't use (`expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler`...) out of your bundle entirely, rather than merely unused.
 
-A root barrel is also available for convenience when you don't mind that trade-off:
+A root barrel is also available for convenience:
 
 ```ts
 import {
@@ -38,6 +38,8 @@ import {
   useSubmitGuard,
 } from "@forthtilliath/react-native-kit";
 ```
+
+**Avoid the barrel under Jest (or any other CommonJS `require` consumer).** `export * from` re-exports are evaluated eagerly on `require()` — unlike Metro's ESM bundling, there's no tree-shaking to skip the unused ones. Requiring the barrel from _any_ file, even one that only wants a framework-agnostic util like `getMostRecentIds`, pulls in every component's module graph, including native-module imports (`expo-speech-recognition` via `VoiceSearchButton`/`PickerModal`) that don't exist in a Jest environment — this throws `Cannot find native module '...'` at require time, not just at runtime for an unrendered component. Deep imports only ever load the one module you asked for, so they don't have this problem in any environment.
 
 ### `<ChangelogNotes notes={...} styles={...} />`
 
