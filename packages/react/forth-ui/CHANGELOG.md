@@ -1,5 +1,13 @@
 # @forthtilliath/forth-ui
 
+## 0.2.1
+
+### Patch Changes
+
+- 5ea7fd8: Updated internal dependencies to the renamed `@forthtilliath/react-kit` (was `@forthtilliath/react-hooks`) and `@forthtilliath/ts-types` (was `@forthtilliath/types`) — no behavior change.
+- Updated dependencies [5ea7fd8]
+  - @forthtilliath/react-kit@0.1.0
+
 ## 0.2.0
 
 ### Minor Changes

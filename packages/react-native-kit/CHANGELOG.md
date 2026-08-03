@@ -1,5 +1,11 @@
 # @forthtilliath/react-native-kit
 
+## 0.7.2
+
+### Patch Changes
+
+- 8fb505a: Fix every component's `styles` prop so a partial override (e.g. just `backgroundColor`) only changes the properties it specifies, instead of silently dropping the rest of the default style object (layout, border radius, alignment...). Affected: `ChangelogNotes`, `PhotoPicker`, `PickerModal`, `SwipeableRow`, `Thumbnail`, `ThemeToggle`, `UpdateAvailableBanner`.
+
 ## 0.7.1
 
 ### Patch Changes
