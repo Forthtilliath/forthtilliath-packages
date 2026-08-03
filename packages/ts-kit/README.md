@@ -1,4 +1,4 @@
-# @forthtilliath/lib
+# @forthtilliath/ts-kit
 
 Framework-agnostic TypeScript utility functions — arrays, maths, browser file
 downloads, and a couple of `Array` extensions with better type-narrowing.
@@ -14,7 +14,7 @@ Within the workspace:
 ```json
 {
   "dependencies": {
-    "@forthtilliath/lib": "workspace:*"
+    "@forthtilliath/ts-kit": "workspace:*"
   }
 }
 ```
@@ -25,15 +25,15 @@ Each module is exported individually — import the file you need directly
 rather than a single barrel:
 
 ```ts
-import { chunk } from "@forthtilliath/lib/array/chunk";
-import { flattenDeep } from "@forthtilliath/lib/array/flattenDeep";
-import { FArray } from "@forthtilliath/lib/classes/array";
+import { chunk } from "@forthtilliath/ts-kit/array/chunk";
+import { flattenDeep } from "@forthtilliath/ts-kit/array/flattenDeep";
+import { FArray } from "@forthtilliath/ts-kit/classes/array";
 import {
   downloadText,
   downloadTextBlob,
-} from "@forthtilliath/lib/files/downloadText";
-import { avg } from "@forthtilliath/lib/maths/average";
-import { sum } from "@forthtilliath/lib/maths/sum";
+} from "@forthtilliath/ts-kit/files/downloadText";
+import { avg } from "@forthtilliath/ts-kit/maths/average";
+import { sum } from "@forthtilliath/ts-kit/maths/sum";
 ```
 
 ### `array`

@@ -1,7 +1,18 @@
 {
-  "name": "@forthtilliath/lib",
-  "version": "0.1.0",
+  "name": "@forthtilliath/ts-kit",
+  "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/forthtilliath-packages.git",
+    "directory": "packages/ts-kit"
+  },
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/ts-kit#readme",
+  "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
   "scripts": {
     "dev": "tsc --watch -p tsconfig.build.json",
     "build": "tsc -p tsconfig.build.json",
@@ -11,6 +22,9 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
     "./*": "./dist/*.js"
   },
