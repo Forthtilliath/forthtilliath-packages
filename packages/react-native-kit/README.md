@@ -28,6 +28,17 @@ Each component is its own module — import the file you need directly:
 import { ChangelogNotes } from "@forthtilliath/react-native-kit/ChangelogNotes";
 ```
 
+This is the recommended way to import: Metro (React Native's bundler) doesn't reliably tree-shake, so pulling from a single deep-import path keeps peer dependencies you don't use (`expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler`...) out of your bundle entirely, rather than merely unused.
+
+A root barrel is also available for convenience when you don't mind that trade-off:
+
+```ts
+import {
+  ChangelogNotes,
+  useSubmitGuard,
+} from "@forthtilliath/react-native-kit";
+```
+
 ### `<ChangelogNotes notes={...} styles={...} />`
 
 Renders GitHub-style release notes — as produced by `@forthtilliath/expo-release-updates`'s `parseChangelogNotes` — as headings, bulleted items, and bold-aware text, instead of showing the raw Markdown syntax in a plain `Text`.
