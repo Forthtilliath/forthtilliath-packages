@@ -1,9 +1,9 @@
 import type React from "react";
 import { useMemo, useState } from "react";
 
-import { useKeyListener } from "@forthtilliath/react-hooks/useKeyListener";
+import { useKeyListener } from "@forthtilliath/react-kit/useKeyListener";
 import { type ClassValue, cn } from "@forthtilliath/shadcn-ui/lib/utils";
-import { type Prettify } from "@forthtilliath/types/object";
+import { type Prettify } from "@forthtilliath/ts-types/object";
 
 import { GridDebugContext } from "./context";
 import { GridItem } from "./grid-item";

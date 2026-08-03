@@ -336,9 +336,9 @@ pnpm run registry:build     # registry.json -> public/r/*.json (shadcn build)
 pnpm run registry:sync      # both, in order
 ```
 
-`Grid` is intentionally excluded — it depends on two private, unpublished
-monorepo packages (`@forthtilliath/react-hooks`, `@forthtilliath/types`)
-that aren't inlined into the registry item yet.
+`Grid` is intentionally excluded — it depends on
+`@forthtilliath/react-kit` and `@forthtilliath/ts-types`, external npm
+packages that aren't inlined into the registry item yet.
 
 ## License
 
