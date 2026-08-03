@@ -1,5 +1,11 @@
 # @forthtilliath/react-native-kit
 
+## 0.7.0
+
+### Minor Changes
+
+- 93d7c64: Add a root barrel export (`import { X, Y } from "@forthtilliath/react-native-kit"`) alongside the existing deep-import paths, for callers importing several exports at once who don't mind the peer-dependency-bundling trade-off (see README). Deep imports remain the recommended default.
+
 ## 0.6.0
 
 ### Minor Changes
