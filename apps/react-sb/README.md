@@ -3,7 +3,7 @@
 Storybook workspace for this monorepo — documents and tests every component
 from [`@forthtilliath/shadcn-ui`](../../packages/react/shadcn-ui),
 [`@forthtilliath/forth-ui`](../../packages/react/forth-ui), and
-[`@forthtilliath/react-ui`](../../packages/react/ui).
+[`@forthtilliath/react-kit`](../../packages/react-kit).
 
 ## Develop
 

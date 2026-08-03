@@ -16,9 +16,9 @@
  *   bare npm specifiers (qrcode, lucide-react, class-variance-authority, ...) -> left untouched,
  *     recorded into the item's own `dependencies`/`devDependencies` via COMPONENT_NPM_DEPS below.
  *
- * `grid` is deliberately excluded: it imports `@forthtilliath/react-hooks/useKeyListener`
- * (a real runtime hook) and `@forthtilliath/types/object` (a type-only utility) — both
- * private, unpublished monorepo packages. Registry-izing it needs those inlined as
+ * `grid` is deliberately excluded: it imports `@forthtilliath/react-kit/useKeyListener`
+ * (a real runtime hook) and `@forthtilliath/ts-types/object` (a type-only utility) — both
+ * external npm packages. Registry-izing it needs those inlined as
  * `registry:hook`/local-type files first; not done yet, see UPGRADE.md.
  *
  * KNOWN LIMITATION — `accordion`: this monorepo's vendored
@@ -486,7 +486,7 @@ function main() {
   const registryJson = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "forth-ui",
-    homepage: "https://github.com/Forthtilliath/turborepo",
+    homepage: "https://github.com/Forthtilliath/forthtilliath-packages",
     items,
   };
 

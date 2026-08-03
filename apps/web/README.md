@@ -2,7 +2,7 @@
 
 The Next.js showcase app for this monorepo — demonstrates
 [`@forthtilliath/shadcn-ui`](../../packages/react/shadcn-ui) blocks and
-[`@forthtilliath/react-ui`](../../packages/react/ui) control-flow
+[`@forthtilliath/react-kit`](../../packages/react-kit) control-flow
 components in a real App Router app.
 
 ## Develop
@@ -36,7 +36,7 @@ pnpm run lint           # eslint
 
 - [Next.js](https://nextjs.org) 16 (App Router, Turbopack)
 - [React](https://react.dev) 19
-- `@forthtilliath/shadcn-ui`, `@forthtilliath/react-ui`,
-  `@forthtilliath/types` — internal workspace packages
+- `@forthtilliath/shadcn-ui`, `@forthtilliath/react-kit`,
+  `@forthtilliath/ts-types` — internal workspace packages
 - [TanStack Query](https://tanstack.com/query) / [Table](https://tanstack.com/table)
 - [Zod](https://zod.dev)

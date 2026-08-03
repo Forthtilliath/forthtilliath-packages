@@ -4,7 +4,7 @@ import type {
   StoryComponent,
   StoryDecorator,
   UnknownRecord,
-} from "@forthtilliath/types";
+} from "@forthtilliath/ts-types";
 
 export function decoratorGroupStories<T extends UnknownRecord>(
   commonProps: Partial<T>,

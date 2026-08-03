@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Show } from "@forthtilliath/react-ui/show";
+import { Show } from "@forthtilliath/react-kit/show";
 import { AnimatedText } from "@forthtilliath/shadcn-ui/components/blocks/animated-text";
 
 import { ThemeImage } from "./theme-image";

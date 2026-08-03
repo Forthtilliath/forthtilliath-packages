@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   SlotOrCallback,
   type SlotOrCallbackProps,
-} from "@forthtilliath/react-ui/slot-or-callback";
+} from "@forthtilliath/react-kit/slot-or-callback";
 
 const meta: Meta<typeof SlotOrCallback> = {
   title: "Ui/SlotOrCallback",
