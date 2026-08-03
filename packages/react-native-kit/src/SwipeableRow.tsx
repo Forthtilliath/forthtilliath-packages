@@ -42,7 +42,17 @@ export function SwipeableRow({
   deleteText = "Delete",
   styles,
 }: SwipeableRowProps) {
-  const merged = { ...defaultStyles, ...styles };
+  // Style fields are merged as arrays (default, then override) so a partial
+  // override (e.g. just backgroundColor) doesn't drop the default's
+  // width/borderRadius/marginBottom/gap too.
+  const merged = {
+    deleteAction: [defaultStyles.deleteAction, styles?.deleteAction],
+    deleteActionText: [
+      defaultStyles.deleteActionText,
+      styles?.deleteActionText,
+    ],
+    deleteIconColor: styles?.deleteIconColor ?? defaultStyles.deleteIconColor,
+  };
   const swipeableRef = useRef<Swipeable>(null);
 
   return (

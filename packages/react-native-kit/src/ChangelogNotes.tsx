@@ -50,7 +50,18 @@ function renderSegments(
  * Markdown syntax in a plain `<Text>`.
  */
 export function ChangelogNotes({ notes, styles }: ChangelogNotesProps) {
-  const merged = { ...defaultStyles, ...styles };
+  // Each field is merged as a style array (default, then override) rather
+  // than the override replacing the whole default outright — so passing e.g.
+  // `styles={{ heading: { color: "red" } }}` only changes the color instead
+  // of silently dropping the default's fontSize/fontWeight/marginTop too.
+  const merged = {
+    heading: [defaultStyles.heading, styles?.heading],
+    itemRow: [defaultStyles.itemRow, styles?.itemRow],
+    bullet: [defaultStyles.bullet, styles?.bullet],
+    itemText: [defaultStyles.itemText, styles?.itemText],
+    text: [defaultStyles.text, styles?.text],
+    bold: [defaultStyles.bold, styles?.bold],
+  };
   const blocks = parseChangelogNotes(notes);
 
   return (

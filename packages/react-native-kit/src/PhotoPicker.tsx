@@ -93,7 +93,23 @@ export function PhotoPicker({
   labels,
   styles,
 }: PhotoPickerProps) {
-  const mergedStyles = { ...defaultStyles, ...styles };
+  // Style fields are merged as arrays (default, then override) so a partial
+  // override only changes the properties it specifies instead of replacing
+  // the whole default style object.
+  const mergedStyles = {
+    photoPicker: [defaultStyles.photoPicker, styles?.photoPicker],
+    photoPreview: [defaultStyles.photoPreview, styles?.photoPreview],
+    photoPlaceholder: [
+      defaultStyles.photoPlaceholder,
+      styles?.photoPlaceholder,
+    ],
+    photoPlaceholderText: [
+      defaultStyles.photoPlaceholderText,
+      styles?.photoPlaceholderText,
+    ],
+    clearLink: [defaultStyles.clearLink, styles?.clearLink],
+    iconColor: styles?.iconColor ?? defaultStyles.iconColor,
+  };
   const t = { ...defaultLabels, ...labels };
 
   async function pickFromCamera() {

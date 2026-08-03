@@ -36,7 +36,15 @@ export function Thumbnail({
   size = DEFAULT_SIZE,
   styles,
 }: ThumbnailProps) {
-  const merged = { ...defaultStyles, ...styles };
+  // Style fields are merged as arrays (default, then override) so a partial
+  // override (e.g. just backgroundColor) doesn't drop the default's
+  // borderRadius, or the placeholder's alignItems/justifyContent that center
+  // the icon.
+  const merged = {
+    thumbnail: [defaultStyles.thumbnail, styles?.thumbnail],
+    placeholder: [defaultStyles.placeholder, styles?.placeholder],
+    iconColor: styles?.iconColor ?? defaultStyles.iconColor,
+  };
   const dimensions = { width: size, height: size };
 
   if (photoUri) {

@@ -55,7 +55,19 @@ export function ThemeToggle({
   labels,
   styles,
 }: ThemeToggleProps) {
-  const merged = { ...defaultStyles, ...styles };
+  // Style fields are merged as arrays (default, then override) so a partial
+  // override only changes the properties it specifies instead of replacing
+  // the whole default style object.
+  const merged = {
+    container: [defaultStyles.container, styles?.container],
+    option: [defaultStyles.option, styles?.option],
+    optionActive: [defaultStyles.optionActive, styles?.optionActive],
+    optionText: [defaultStyles.optionText, styles?.optionText],
+    optionTextActive: [
+      defaultStyles.optionTextActive,
+      styles?.optionTextActive,
+    ],
+  };
   const t = { ...defaultLabels, ...labels };
 
   return (

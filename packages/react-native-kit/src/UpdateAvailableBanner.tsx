@@ -78,7 +78,26 @@ export function UpdateAvailableBanner({
   labels,
   styles,
 }: UpdateAvailableBannerProps) {
-  const merged = { ...defaultStyles, ...styles };
+  // Style fields are merged as arrays (default, then override) so a partial
+  // override only changes the properties it specifies instead of replacing
+  // the whole default style object. `notes` is forwarded as-is to
+  // ChangelogNotes, which does its own equivalent merge against its defaults.
+  const merged = {
+    container: [defaultStyles.container, styles?.container],
+    header: [defaultStyles.header, styles?.header],
+    title: [defaultStyles.title, styles?.title],
+    notes: styles?.notes ?? defaultStyles.notes,
+    actionButton: [defaultStyles.actionButton, styles?.actionButton],
+    actionButtonText: [
+      defaultStyles.actionButtonText,
+      styles?.actionButtonText,
+    ],
+    dismissButton: [defaultStyles.dismissButton, styles?.dismissButton],
+    dismissButtonText: [
+      defaultStyles.dismissButtonText,
+      styles?.dismissButtonText,
+    ],
+  };
   const t = { ...defaultLabels, ...labels };
 
   return (

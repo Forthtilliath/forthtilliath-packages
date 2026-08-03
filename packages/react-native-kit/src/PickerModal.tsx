@@ -179,7 +179,43 @@ export function PickerModal({
   labels,
   styles,
 }: PickerModalProps) {
-  const merged = useMemo(() => ({ ...defaultStyles, ...styles }), [styles]);
+  // Style fields are merged as arrays (default, then override) so a partial
+  // override only changes the properties it specifies instead of replacing
+  // the whole default style object (e.g. losing rowThumbnailPlaceholder's
+  // alignItems/justifyContent by only overriding its backgroundColor).
+  const merged = useMemo(
+    () => ({
+      container: [defaultStyles.container, styles?.container],
+      header: [defaultStyles.header, styles?.header],
+      title: [defaultStyles.title, styles?.title],
+      close: [defaultStyles.close, styles?.close],
+      searchRow: [defaultStyles.searchRow, styles?.searchRow],
+      search: [defaultStyles.search, styles?.search],
+      row: [defaultStyles.row, styles?.row],
+      rowThumbnail: [defaultStyles.rowThumbnail, styles?.rowThumbnail],
+      rowThumbnailPlaceholder: [
+        defaultStyles.rowThumbnailPlaceholder,
+        styles?.rowThumbnailPlaceholder,
+      ],
+      rowLabel: [defaultStyles.rowLabel, styles?.rowLabel],
+      rowSubtitle: [defaultStyles.rowSubtitle, styles?.rowSubtitle],
+      empty: [defaultStyles.empty, styles?.empty],
+      sectionHeader: [defaultStyles.sectionHeader, styles?.sectionHeader],
+      extraActions: [defaultStyles.extraActions, styles?.extraActions],
+      extraActionLabel: [
+        defaultStyles.extraActionLabel,
+        styles?.extraActionLabel,
+      ],
+      extraActionIconColor:
+        styles?.extraActionIconColor ?? defaultStyles.extraActionIconColor,
+      rowThumbnailPlaceholderIconColor:
+        styles?.rowThumbnailPlaceholderIconColor ??
+        defaultStyles.rowThumbnailPlaceholderIconColor,
+      placeholderTextColor:
+        styles?.placeholderTextColor ?? defaultStyles.placeholderTextColor,
+    }),
+    [styles],
+  );
   const t = useMemo(() => ({ ...defaultLabels, ...labels }), [labels]);
   const [query, setQuery] = useState(initialQuery ?? "");
   // Reset the search each time the modal (re-)opens — adjusted during render

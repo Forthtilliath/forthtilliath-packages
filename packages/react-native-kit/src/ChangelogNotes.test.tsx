@@ -17,6 +17,19 @@ function renderTree(element: ReactElement) {
   return tree;
 }
 
+// Style props are now merged as arrays (default, then override) rather than
+// the override replacing the default outright — flatten to a plain object
+// for assertions, the same way React Native resolves a style array/prop.
+function flattenStyle(style: unknown): Record<string, unknown> {
+  if (Array.isArray(style)) {
+    return (style as unknown[]).reduce<Record<string, unknown>>(
+      (acc, entry) => ({ ...acc, ...flattenStyle(entry) }),
+      {},
+    );
+  }
+  return (style as Record<string, unknown> | null | undefined) ?? {};
+}
+
 describe("ChangelogNotes", () => {
   it("renders a heading as a distinct Text node", () => {
     const tree = renderTree(<ChangelogNotes notes="### Added" />);
@@ -44,14 +57,21 @@ describe("ChangelogNotes", () => {
     expect(bold?.props.style).not.toEqual(rest?.props.style);
   });
 
-  it("applies custom styles over the defaults", () => {
-    const customHeading = { color: "red" };
+  it("applies custom styles over the defaults, without dropping the rest of the default style", () => {
     const tree = renderTree(
-      <ChangelogNotes notes="### Added" styles={{ heading: customHeading }} />,
+      <ChangelogNotes
+        notes="### Added"
+        styles={{ heading: { color: "red" } }}
+      />,
     );
     const texts = tree.root.findAllByType(Text);
     const heading = texts.find((t) => t.props.children === "Added");
-    expect(heading?.props.style).toEqual(customHeading);
+    expect(flattenStyle(heading?.props.style)).toEqual({
+      fontSize: 13,
+      fontWeight: "700",
+      color: "red",
+      marginTop: 8,
+    });
   });
 
   it("renders nothing for empty notes", () => {
