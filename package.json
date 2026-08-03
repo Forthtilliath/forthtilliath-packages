@@ -1,5 +1,5 @@
 {
-  "name": "@forthtilliath/turborepo",
+  "name": "forthtilliath-packages",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -7,9 +7,9 @@
     "dev:sb": "turbo run dev --filter=react-sb",
     "dev:shadweb": "turbo run dev --filter=shadweb",
     "dev:forth-ui": "turbo run dev --filter=@forthtilliath/forth-ui",
-    "dev:react-ui": "turbo run dev --filter=@forthtilliath/react-ui",
-    "dev:lib": "turbo run dev --filter=@forthtilliath/lib",
-    "dev:types": "turbo run dev --filter=@forthtilliath/types",
+    "dev:react-kit": "turbo run dev --filter=@forthtilliath/react-kit",
+    "dev:ts-kit": "turbo run dev --filter=@forthtilliath/ts-kit",
+    "dev:ts-types": "turbo run dev --filter=@forthtilliath/ts-types",
     "dev:eslint-config": "turbo run dev --filter=@forthtilliath/eslint-config",
     "dev:expo-release-updates": "turbo run dev --filter=@forthtilliath/expo-release-updates",
     "build:forth-ui": "turbo run build --filter=@forthtilliath/forth-ui",
@@ -28,7 +28,6 @@
     "lefthook": "^2.1.10",
     "prettier": "^3.9.5",
     "taze": "^19.14.1",
-    "tsup": "^8.5.1",
     "turbo": "^2.10.5",
     "typescript": "catalog:"
   },

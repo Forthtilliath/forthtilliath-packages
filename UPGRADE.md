@@ -44,6 +44,7 @@ theme` de `globals.css` quel que soit l'ordre DOM), donc aucun fichier de
   résolution `./internal/test`, ~36-46 tests cassés de façon déterministe).
   Pas un problème côté config de ce repo — à retenter quand un patch sort.
 - **TypeScript 7** : pas d'API de compilateur stable avant la 7.1
-  (~3-4 mois) — casserait `typescript-eslint` (règles typées) et
-  `tsup --dts` (build de `@forthtilliath/react-ui`). À réévaluer à ce
-  moment-là.
+  (~3-4 mois) — casserait `typescript-eslint` (règles typées). À réévaluer
+  à ce moment-là. _(Le point `tsup --dts` de `@forthtilliath/react-ui` est
+  résolu : la fusion dans `@forthtilliath/react-kit` (2026-08-03) a
+  abandonné `tsup` au profit de `tsc`, comme le reste du monorepo.)_

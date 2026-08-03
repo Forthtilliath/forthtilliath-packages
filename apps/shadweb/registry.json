@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "forth-ui",
-  "homepage": "https://github.com/Forthtilliath/turborepo",
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages",
   "items": [
     {
       "name": "accordion",

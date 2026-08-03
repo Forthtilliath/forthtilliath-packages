@@ -1,4 +1,4 @@
-# @forthtilliath/turborepo
+# forthtilliath-packages
 
 A pnpm + Turborepo monorepo: two Next.js apps and a Storybook
 component-library workspace, sharing a set of internal React/UI/utility
@@ -11,15 +11,14 @@ packages.
 
 | Name                                                       | Description                                                                                                                                                            |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`apps/web`](apps/web)                                     | Next.js showcase app, consumes `shadcn-ui` + `react-ui`                                                                                                                |
+| [`apps/web`](apps/web)                                     | Next.js showcase app, consumes `shadcn-ui` + `react-kit`                                                                                                               |
 | [`apps/shadweb`](apps/shadweb)                             | Fictional dashboard app proving `shadcn-ui` works as an installed dep                                                                                                  |
 | [`apps/react-sb`](apps/react-sb)                           | Storybook workspace documenting/testing every component                                                                                                                |
 | [`packages/react/shadcn-ui`](packages/react/shadcn-ui)     | shadcn/ui component library (Radix + Tailwind), published to npm                                                                                                       |
 | [`packages/react/forth-ui`](packages/react/forth-ui)       | Higher-level components built on `shadcn-ui` — 58 components across 8 categories, see [its README](packages/react/forth-ui/README.md) or Storybook (`pnpm run dev:sb`) |
-| [`packages/react/ui`](packages/react/ui)                   | Headless control-flow components (`Show`, `Repeat`, ...)                                                                                                               |
-| [`packages/react/hooks`](packages/react/hooks)             | Standalone React hooks (`useKeyListener`, `useToggleState`)                                                                                                            |
-| [`packages/types`](packages/types)                         | Generic TypeScript utility types, no runtime code                                                                                                                      |
-| [`packages/lib`](packages/lib)                             | Framework-agnostic TS utility functions (not yet consumed anywhere)                                                                                                    |
+| [`packages/react-kit`](packages/react-kit)                 | Hooks + headless control-flow components (`useKeyListener`, `useToggleState`, `Show`, `Repeat`, ...) — the web-React counterpart to `react-native-kit`                 |
+| [`packages/ts-types`](packages/ts-types)                   | Generic TypeScript utility types, no runtime code                                                                                                                      |
+| [`packages/ts-kit`](packages/ts-kit)                       | Framework-agnostic TS utility functions (not yet consumed anywhere)                                                                                                    |
 | [`packages/eslint-config`](packages/eslint-config)         | Shared ESLint flat configs                                                                                                                                             |
 | [`packages/typescript-config`](packages/typescript-config) | Shared `tsconfig.json` bases                                                                                                                                           |
 
@@ -55,13 +54,13 @@ pnpm run dev:web            # apps/web
 pnpm run dev:shadweb         # apps/shadweb
 pnpm run dev:sb              # apps/react-sb
 pnpm run dev:forth-ui        # packages/react/forth-ui
-pnpm run dev:react-ui        # packages/react/ui
-pnpm run dev:lib             # packages/lib
-pnpm run dev:types           # packages/types
+pnpm run dev:react-kit       # packages/react-kit
+pnpm run dev:ts-kit          # packages/ts-kit
+pnpm run dev:ts-types        # packages/ts-types
 pnpm run dev:eslint-config   # packages/eslint-config
 ```
 
-`@forthtilliath/shadcn-ui`, `@forthtilliath/react-hooks`, and
+`@forthtilliath/shadcn-ui`, `@forthtilliath/react-kit`, and
 `@forthtilliath/forth-ui` are all published to npm and built to `dist/`
 (`tsc`, plus a Tailwind CSS build for the two with styles) — run their
 `dev`/`build` script (or the whole repo's) after source changes for

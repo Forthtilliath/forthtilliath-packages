@@ -8,11 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Forthtilliath/turborepo.git",
+    "url": "https://github.com/Forthtilliath/forthtilliath-packages.git",
     "directory": "packages/expo-test-kit"
   },
-  "homepage": "https://github.com/Forthtilliath/turborepo/tree/main/packages/expo-test-kit#readme",
-  "bugs": "https://github.com/Forthtilliath/turborepo/issues",
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/expo-test-kit#readme",
+  "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
