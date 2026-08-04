@@ -26,6 +26,7 @@
     "dist"
   ],
   "exports": {
+    ".": "./dist/index.js",
     "./*": "./dist/*.js"
   },
   "peerDependencies": {

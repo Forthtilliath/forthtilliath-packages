@@ -22,7 +22,8 @@ Or, from within this monorepo, as a workspace dependency:
 
 ## Usage
 
-Each function is its own module — import the file you need directly:
+Each function is its own module — import the file you need directly, or use
+the barrel to pull everything from a single import:
 
 ```ts
 import { compareVersions } from "@forthtilliath/expo-release-updates/compareVersions";
@@ -32,7 +33,26 @@ import {
 } from "@forthtilliath/expo-release-updates/githubReleases";
 import { downloadAndInstallApk } from "@forthtilliath/expo-release-updates/downloadAndInstallApk";
 import { parseChangelogNotes } from "@forthtilliath/expo-release-updates/parseChangelogNotes";
+
+// Or, everything at once:
+import {
+  compareVersions,
+  fetchLatestRelease,
+  fetchReleaseHistory,
+  downloadAndInstallApk,
+  parseChangelogNotes,
+} from "@forthtilliath/expo-release-updates";
 ```
+
+**Avoid the barrel under Jest (or any other CommonJS `require` consumer).**
+`export * from` re-exports are evaluated eagerly on `require()` — unlike
+Metro's ESM bundling, there's no tree-shaking to skip the unused ones.
+Requiring the barrel from _any_ file, even one that only wants
+`compareVersions`, pulls in `downloadAndInstallApk`'s module graph too,
+including native-module imports (`expo-file-system`, `expo-intent-launcher`)
+that don't exist in a Jest environment — this throws at require time, not
+just at runtime for unused code. Deep imports only ever load the one module
+you asked for, so they don't have this problem in any environment.
 
 ### `compareVersions(a, b)`
 
