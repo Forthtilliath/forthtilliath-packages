@@ -1,5 +1,16 @@
 # @forthtilliath/react-native-kit
 
+## 0.8.0
+
+### Minor Changes
+
+- 5a91b24: Added `ThemeOptionList`, a row-based (icon + label + checkmark) alternative to `ThemeToggle` for a light/dark/system theme preference.
+
+### Patch Changes
+
+- Updated dependencies [b1957c9]
+  - @forthtilliath/expo-release-updates@0.3.0
+
 ## 0.7.2
 
 ### Patch Changes
