@@ -7,6 +7,7 @@ export * from "./confirmDestructive.js";
 export * from "./PhotoPicker.js";
 export * from "./PickerModal.js";
 export * from "./SwipeableRow.js";
+export * from "./ThemeOptionList.js";
 export * from "./ThemeToggle.js";
 export * from "./Thumbnail.js";
 export * from "./UpdateAvailableBanner.js";

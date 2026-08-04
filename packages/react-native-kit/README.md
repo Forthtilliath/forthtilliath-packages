@@ -238,6 +238,16 @@ import { ThemeToggle } from "@forthtilliath/react-native-kit/ThemeToggle";
 <ThemeToggle value={themePreference} onChange={setThemePreference} />;
 ```
 
+### `<ThemeOptionList value onChange />`
+
+Same light/dark/system data contract as `ThemeToggle`, but rendered as a list of full-width rows (icon + label + checkmark on the active one) instead of a segmented control.
+
+```tsx
+import { ThemeOptionList } from "@forthtilliath/react-native-kit/ThemeOptionList";
+
+<ThemeOptionList value={themePreference} onChange={setThemePreference} />;
+```
+
 ### `useUpdateCheck(options)`
 
 Checks once per mount (e.g. app launch) whether a newer release is available, throttled to at most one real check per `minIntervalMs` (default 12h) and silent for a release the user already dismissed. Has no opinion on where "when did we last check" / "which version did the user dismiss" are persisted — both are read/written entirely through the options you pass in.
