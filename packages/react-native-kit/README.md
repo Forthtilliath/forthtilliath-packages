@@ -1,6 +1,6 @@
 # @forthtilliath/react-native-kit
 
-Small React Native building blocks — components, hooks, and framework-agnostic utils — with no opinion on your app's theme, distributed one file per export so consumers only pull in what they use.
+Small React Native building blocks — components, hooks, and framework-agnostic utils — with no opinion on your app's theme, distributed one file per export (grouped under `components/{picker,theme,update,list}/`, `hooks/`, `utils/{format,helpers}/`) so consumers only pull in what they use.
 
 ## Install
 
@@ -25,7 +25,7 @@ Or, from within this monorepo, as a workspace dependency:
 Each component is its own module — import the file you need directly:
 
 ```ts
-import { ChangelogNotes } from "@forthtilliath/react-native-kit/ChangelogNotes";
+import { ChangelogNotes } from "@forthtilliath/react-native-kit/components/update/ChangelogNotes";
 ```
 
 This is the recommended way to import: Metro (React Native's bundler) doesn't reliably tree-shake, so pulling from a single deep-import path keeps peer dependencies you don't use (`expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler`...) out of your bundle entirely, rather than merely unused.
@@ -88,7 +88,7 @@ Every field of `styles` is optional — pass only the ones you want to override;
 List-row thumbnail: the photo if there is one, otherwise a placeholder icon.
 
 ```tsx
-import { Thumbnail } from "@forthtilliath/react-native-kit/Thumbnail";
+import { Thumbnail } from "@forthtilliath/react-native-kit/components/list/Thumbnail";
 
 <Thumbnail
   photoUri={container.photoUri}
@@ -102,7 +102,7 @@ import { Thumbnail } from "@forthtilliath/react-native-kit/Thumbnail";
 Swipe a list row left to reveal a delete button, on top of a tap to edit it.
 
 ```tsx
-import { SwipeableRow } from "@forthtilliath/react-native-kit/SwipeableRow";
+import { SwipeableRow } from "@forthtilliath/react-native-kit/components/list/SwipeableRow";
 
 <SwipeableRow
   onDelete={() => remove(item.id)}
@@ -117,7 +117,7 @@ import { SwipeableRow } from "@forthtilliath/react-native-kit/SwipeableRow";
 Microphone button to dictate a search instead of typing it. Safe to mount more than one at a time (e.g. a name field plus a search picker on the same screen) — only the instance that started listening reacts to its result.
 
 ```tsx
-import { VoiceSearchButton } from "@forthtilliath/react-native-kit/VoiceSearchButton";
+import { VoiceSearchButton } from "@forthtilliath/react-native-kit/components/picker/VoiceSearchButton";
 
 <VoiceSearchButton onResult={setQuery} lang="en-US" />;
 ```
@@ -127,7 +127,7 @@ import { VoiceSearchButton } from "@forthtilliath/react-native-kit/VoiceSearchBu
 Photo picker (camera or library) with a preview and a remove link. `savePhoto` is injected rather than hard-coded, so where/how the picked image gets persisted is entirely up to the caller.
 
 ```tsx
-import { PhotoPicker } from "@forthtilliath/react-native-kit/PhotoPicker";
+import { PhotoPicker } from "@forthtilliath/react-native-kit/components/picker/PhotoPicker";
 
 <PhotoPicker
   photoUri={container.photoUri}
@@ -145,7 +145,7 @@ Full-screen picker: search (typed or dictated via `VoiceSearchButton`), optional
 import {
   PickerModal,
   type PickerItem,
-} from "@forthtilliath/react-native-kit/PickerModal";
+} from "@forthtilliath/react-native-kit/components/picker/PickerModal";
 
 <PickerModal
   visible={pickerVisible}
@@ -175,7 +175,7 @@ For all 5 components above, styling and (where relevant) copy work the same way 
 Prevents a second call while a first one is still pending — e.g. a double-tap on a "Save" button before it's had time to disable, which would otherwise create duplicate submissions.
 
 ```tsx
-import { useSubmitGuard } from "@forthtilliath/react-native-kit/useSubmitGuard";
+import { useSubmitGuard } from "@forthtilliath/react-native-kit/hooks/useSubmitGuard";
 
 const { isSaving, guard } = useSubmitGuard();
 
@@ -196,7 +196,7 @@ const { isSaving, guard } = useSubmitGuard();
 Calls `callback` `delayMs` after the last change among `values`, ignoring renders where any value is still `undefined` (not loaded yet) and the very first render where they're all defined (no trigger on mount). A new change before the delay elapses resets the timer — a real debounce, not a throttle.
 
 ```tsx
-import { useDebouncedChange } from "@forthtilliath/react-native-kit/useDebouncedChange";
+import { useDebouncedChange } from "@forthtilliath/react-native-kit/hooks/useDebouncedChange";
 
 useDebouncedChange([settingsData, itemsData], 5 * 60 * 1000, () => {
   runAutoBackup();
@@ -208,7 +208,7 @@ useDebouncedChange([settingsData, itemsData], 5 * 60 * 1000, () => {
 Generic destructive-action confirmation (title + message + Cancel/Confirm), for anything irreversible (delete, reset...). Ships with French defaults (`message`, `cancelLabel`, `confirmLabel` all overridable).
 
 ```ts
-import { confirmDestructive } from "@forthtilliath/react-native-kit/confirmDestructive";
+import { confirmDestructive } from "@forthtilliath/react-native-kit/utils/helpers/confirmDestructive";
 
 confirmDestructive("Delete this item?", () => deleteItem(id), {
   message: "This cannot be undone.",
@@ -222,7 +222,7 @@ confirmDestructive("Delete this item?", () => deleteItem(id), {
 Resolves a `"light" | "dark" | "system"` theme preference against the device's color scheme: `"system"` follows the device, `"light"`/`"dark"` override it regardless of what the device is set to.
 
 ```tsx
-import { useEffectiveColorScheme } from "@forthtilliath/react-native-kit/useEffectiveColorScheme";
+import { useEffectiveColorScheme } from "@forthtilliath/react-native-kit/hooks/useEffectiveColorScheme";
 
 const scheme = useEffectiveColorScheme(themePreference); // "light" | "dark"
 const colors = scheme === "dark" ? darkColors : lightColors;
@@ -233,7 +233,7 @@ const colors = scheme === "dark" ? darkColors : lightColors;
 3-way segmented control for a light/dark/system theme preference.
 
 ```tsx
-import { ThemeToggle } from "@forthtilliath/react-native-kit/ThemeToggle";
+import { ThemeToggle } from "@forthtilliath/react-native-kit/components/theme/ThemeToggle";
 
 <ThemeToggle value={themePreference} onChange={setThemePreference} />;
 ```
@@ -243,7 +243,7 @@ import { ThemeToggle } from "@forthtilliath/react-native-kit/ThemeToggle";
 Same light/dark/system data contract as `ThemeToggle`, but rendered as a list of full-width rows (icon + label + checkmark on the active one) instead of a segmented control.
 
 ```tsx
-import { ThemeOptionList } from "@forthtilliath/react-native-kit/ThemeOptionList";
+import { ThemeOptionList } from "@forthtilliath/react-native-kit/components/theme/ThemeOptionList";
 
 <ThemeOptionList value={themePreference} onChange={setThemePreference} />;
 ```
@@ -253,7 +253,7 @@ import { ThemeOptionList } from "@forthtilliath/react-native-kit/ThemeOptionList
 Checks once per mount (e.g. app launch) whether a newer release is available, throttled to at most one real check per `minIntervalMs` (default 12h) and silent for a release the user already dismissed. Has no opinion on where "when did we last check" / "which version did the user dismiss" are persisted — both are read/written entirely through the options you pass in.
 
 ```tsx
-import { useUpdateCheck } from "@forthtilliath/react-native-kit/useUpdateCheck";
+import { useUpdateCheck } from "@forthtilliath/react-native-kit/hooks/useUpdateCheck";
 
 const update = useUpdateCheck({
   currentVersion: Constants.expoConfig?.version ?? "0.0.0",
@@ -277,7 +277,7 @@ if (update.status === "available") {
 Dismissible banner announcing an available update: version, release notes (rendered via `ChangelogNotes`), an action button and a dismiss button. Has no opinion on what the action does (e.g. navigate to an update screen) or on how/whether dismissal is persisted.
 
 ```tsx
-import { UpdateAvailableBanner } from "@forthtilliath/react-native-kit/UpdateAvailableBanner";
+import { UpdateAvailableBanner } from "@forthtilliath/react-native-kit/components/update/UpdateAvailableBanner";
 
 {
   update.status === "available" && (
@@ -299,14 +299,14 @@ import { UpdateAvailableBanner } from "@forthtilliath/react-native-kit/UpdateAva
 Framework-agnostic pure functions — no React or React Native import, usable from Node/web too.
 
 ```ts
-import { getPeriodStartMs } from "@forthtilliath/react-native-kit/utils/getPeriodStartMs";
-import { getMostRecentIds } from "@forthtilliath/react-native-kit/utils/getMostRecentIds";
-import { nextInCycle } from "@forthtilliath/react-native-kit/utils/nextInCycle";
-import { normalizeForSearch } from "@forthtilliath/react-native-kit/utils/normalizeForSearch";
-import { rankByNameMatch } from "@forthtilliath/react-native-kit/utils/rankByNameMatch";
-import { escapeCsvField } from "@forthtilliath/react-native-kit/utils/escapeCsvField";
-import { formatCsvNumber } from "@forthtilliath/react-native-kit/utils/formatCsvNumber";
-import { escapeHtml } from "@forthtilliath/react-native-kit/utils/escapeHtml";
+import { getPeriodStartMs } from "@forthtilliath/react-native-kit/utils/helpers/getPeriodStartMs";
+import { getMostRecentIds } from "@forthtilliath/react-native-kit/utils/helpers/getMostRecentIds";
+import { nextInCycle } from "@forthtilliath/react-native-kit/utils/helpers/nextInCycle";
+import { normalizeForSearch } from "@forthtilliath/react-native-kit/utils/helpers/normalizeForSearch";
+import { rankByNameMatch } from "@forthtilliath/react-native-kit/utils/helpers/rankByNameMatch";
+import { escapeCsvField } from "@forthtilliath/react-native-kit/utils/format/escapeCsvField";
+import { formatCsvNumber } from "@forthtilliath/react-native-kit/utils/format/formatCsvNumber";
+import { escapeHtml } from "@forthtilliath/react-native-kit/utils/format/escapeHtml";
 ```
 
 | Function                                 | What it does                                                                                                                                                       |
