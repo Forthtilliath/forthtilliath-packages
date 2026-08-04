@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { renderHook } from "./__mocks__/renderHook.js";
+import { renderHook } from "../__mocks__/renderHook.js";
+
 import { useDebouncedChange } from "./useDebouncedChange.js";
 
 const DELAY_MS = 5 * 60 * 1000;

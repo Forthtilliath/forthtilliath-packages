@@ -2,8 +2,9 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
+
 import type { ThemeToggleLabels } from "./ThemeToggle.js";
-import type { ThemePreference } from "./useEffectiveColorScheme.js";
 
 export interface ThemeOptionListIcons {
   light?: keyof typeof Ionicons.glyphMap;

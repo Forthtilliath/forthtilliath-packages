@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
+
 import { Pressable } from "react-native";
 import { act, create } from "react-test-renderer";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,8 +14,9 @@ import {
   emitSpeechEvent,
   ExpoSpeechRecognitionModule,
   resetSpeechEventListeners,
-} from "./__mocks__/expo-speech-recognition.js";
-import { propsOf } from "./__mocks__/testInstance.js";
+} from "../../__mocks__/expo-speech-recognition.js";
+import { propsOf } from "../../__mocks__/testInstance.js";
+
 import { VoiceSearchButton } from "./VoiceSearchButton.js";
 
 function renderTree(element: Parameters<typeof create>[0]) {

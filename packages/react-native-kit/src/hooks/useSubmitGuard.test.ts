@@ -2,7 +2,8 @@
 import { act } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
-import { renderHook } from "./__mocks__/renderHook.js";
+import { renderHook } from "../__mocks__/renderHook.js";
+
 import { useSubmitGuard } from "./useSubmitGuard.js";
 
 function deferred() {

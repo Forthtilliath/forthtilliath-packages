@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
 
-import { mockColorScheme } from "./__mocks__/react-native.js";
-import { renderHook } from "./__mocks__/renderHook.js";
+import { mockColorScheme } from "../__mocks__/react-native.js";
+import { renderHook } from "../__mocks__/renderHook.js";
+
 import { useEffectiveColorScheme } from "./useEffectiveColorScheme.js";
 
 describe("useEffectiveColorScheme", () => {

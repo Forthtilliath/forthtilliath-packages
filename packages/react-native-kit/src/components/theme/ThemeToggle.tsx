@@ -1,7 +1,7 @@
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
-import type { ThemePreference } from "./useEffectiveColorScheme.js";
+import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
 
 export interface ThemeToggleStyles {
   container?: StyleProp<ViewStyle>;

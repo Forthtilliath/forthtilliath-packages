@@ -3,7 +3,8 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "./__mocks__/testInstance.js";
+import { propsOf } from "../../__mocks__/testInstance.js";
+
 import { type PickerItem, PickerModal } from "./PickerModal.js";
 
 function renderTree(element: Parameters<typeof create>[0]) {

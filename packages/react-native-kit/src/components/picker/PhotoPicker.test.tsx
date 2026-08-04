@@ -7,8 +7,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 // PhotoPicker.tsx uses) so tsc sees this stub's own `vi.fn()` types instead
 // of the real package's. Vitest's resolve.alias makes both resolve to the
 // same file at runtime, so this is still the identical module instance.
-import * as ImagePicker from "./__mocks__/expo-image-picker.js";
-import { propsOf } from "./__mocks__/testInstance.js";
+import * as ImagePicker from "../../__mocks__/expo-image-picker.js";
+import { propsOf } from "../../__mocks__/testInstance.js";
+
 import { PhotoPicker } from "./PhotoPicker.js";
 
 function renderTree(element: Parameters<typeof create>[0]) {
