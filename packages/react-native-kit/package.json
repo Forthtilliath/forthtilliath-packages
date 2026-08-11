@@ -41,13 +41,13 @@
     "react-native-gesture-handler": ">=2.20.0"
   },
   "devDependencies": {
-    "@expo/vector-icons": "^15.0.2",
+    "@expo/vector-icons": "^15.1.1",
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-test-renderer": "^19.1.0",
     "eslint": "catalog:",
-    "expo-image-picker": "~57.0.7",
+    "expo-image-picker": "~57.0.9",
     "expo-speech-recognition": "^56.0.1",
     "react": "catalog:",
     "react-native": "0.86.0",
