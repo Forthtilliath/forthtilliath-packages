@@ -24,11 +24,11 @@
     "prepare": "lefthook install"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
+    "@changesets/cli": "^2.31.1",
     "lefthook": "^2.1.10",
-    "prettier": "^3.9.5",
-    "taze": "^19.14.1",
-    "turbo": "^2.10.5",
+    "prettier": "^3.9.6",
+    "taze": "^19.17.2",
+    "turbo": "^2.10.9",
     "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.15.0",
