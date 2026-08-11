@@ -282,6 +282,7 @@ function ChartLegendContent({
   className,
   hideIcon = false,
   payload,
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- Recharts' <Legend> still calls its content render-prop with this shape; the deprecation is on Legend's own top-level `verticalAlign` config prop (in favor of `position`), not this callback signature.
   verticalAlign = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> &
