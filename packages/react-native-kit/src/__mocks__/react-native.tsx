@@ -133,6 +133,35 @@ export function useColorScheme() {
   return mockColorScheme.value;
 }
 
+export function Switch({
+  value,
+  onValueChange,
+  ...rest
+}: {
+  value?: boolean;
+  onValueChange?: (value: boolean) => void;
+} & Record<string, unknown>) {
+  return React.createElement("Switch", { value, onValueChange, ...rest });
+}
+
+export function ActivityIndicator({
+  color,
+  size,
+}: {
+  color?: unknown;
+  size?: unknown;
+}) {
+  return React.createElement("ActivityIndicator", { color, size });
+}
+
+export const Linking = {
+  // Tests spy on this via `vi.spyOn(Linking, "openURL")`, the same way they
+  // use `Alert.alert` — see the note on `Alert` below.
+  openURL() {
+    return Promise.resolve();
+  },
+};
+
 export interface AlertButton {
   text?: string;
   style?: "default" | "cancel" | "destructive";
