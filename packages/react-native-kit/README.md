@@ -1,6 +1,6 @@
 # @forthtilliath/react-native-kit
 
-Small React Native building blocks — components, hooks, and framework-agnostic utils — with no opinion on your app's theme, distributed one file per export (grouped under `components/{picker,theme,update,list}/`, `hooks/`, `utils/{format,helpers}/`) so consumers only pull in what they use.
+Small React Native building blocks — components, hooks, and framework-agnostic utils — with no opinion on your app's theme, distributed one file per export (grouped under `components/{picker,theme,update,list,settings}/`, `hooks/`, `utils/{format,helpers}/`) so consumers only pull in what they use.
 
 ## Install
 
@@ -293,6 +293,166 @@ import { UpdateAvailableBanner } from "@forthtilliath/react-native-kit/component
   );
 }
 ```
+
+### Settings screens (`components/settings/`)
+
+The building blocks of a typical app "Settings" tab — menu, theme, update check, backup, about, contact, privacy — factored out so each new app stops rewriting the same ~7 screens from scratch. Expo Router (or any file-based router) still needs one physical route file per screen in your app; these just give each route file almost nothing left to write beyond rendering the matching component. None of them add new peer dependencies beyond what's already listed above.
+
+```tsx
+// app/(tabs)/settings/index.tsx
+import { router } from "expo-router";
+import { SettingsMenu } from "@forthtilliath/react-native-kit/components/settings/SettingsMenu";
+
+export default function SettingsMenuScreen() {
+  return (
+    <SettingsMenu
+      items={[
+        {
+          key: "backup",
+          emoji: "💾",
+          title: "Sauvegarde",
+          hint: "Exporter / importer tes données",
+          onPress: () => router.push("/settings/backup"),
+        },
+        {
+          key: "theme",
+          emoji: "🎨",
+          title: "Thème",
+          hint: "Clair, sombre, ou automatique",
+          onPress: () => router.push("/settings/theme"),
+        },
+        {
+          key: "update",
+          emoji: "⬇️",
+          title: "Mise à jour",
+          onPress: () => router.push("/settings/update"),
+        },
+        {
+          key: "about",
+          emoji: "ℹ️",
+          title: "À propos",
+          onPress: () => router.push("/settings/about"),
+        },
+        {
+          key: "contact",
+          emoji: "✉️",
+          title: "Contact",
+          onPress: () => router.push("/settings/contact"),
+        },
+        {
+          key: "privacy",
+          emoji: "🔒",
+          title: "Confidentialité",
+          onPress: () => router.push("/settings/privacy"),
+        },
+      ]}
+    />
+  );
+}
+```
+
+`SettingsMenu` doesn't depend on expo-router (or any other navigator) itself — each item carries its own `onPress`, so it works the same with any navigation setup.
+
+#### `<ThemeSettingsScreen value onChange />`
+
+Same light/dark/system data contract as `ThemeToggle`/`ThemeOptionList`, but a third visual: emoji + label + a plain-text `✓` on the active row, with a hint above explaining what "Système" does. Pick whichever of the three fits your app.
+
+```tsx
+import { ThemeSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/ThemeSettingsScreen";
+
+<ThemeSettingsScreen value={themePreference} onChange={setThemePreference} />;
+```
+
+#### `<UpdateSettingsScreen currentVersion checkForUpdate compareVersions downloadAndInstallApk />`
+
+The full "check for update" screen: installed version, a manual check button, the available-update box (changelog + install button) or an up-to-date/error message, download progress, and — if `fetchReleaseHistory` is passed — a list of past releases. Checks automatically once on mount. Pairs naturally with `@forthtilliath/expo-release-updates` and `useUpdateCheck`/`UpdateAvailableBanner` above (same `checkForUpdate`/`compareVersions` you already pass those), but takes plain functions so it isn't tied to that package's exact shape.
+
+```tsx
+import { UpdateSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/UpdateSettingsScreen";
+
+import {
+  compareVersions,
+  downloadAndInstallApk,
+  fetchLatestRelease,
+  fetchReleaseHistory,
+} from "@/lib/appUpdate";
+
+<UpdateSettingsScreen
+  currentVersion={Constants.expoConfig?.version ?? "?"}
+  checkForUpdate={fetchLatestRelease}
+  compareVersions={compareVersions}
+  downloadAndInstallApk={downloadAndInstallApk}
+  fetchReleaseHistory={fetchReleaseHistory}
+/>;
+```
+
+#### `<BackupSettingsScreen onExport onImport reminder? />`
+
+Export/import buttons plus an optional reminder-notification switch. Deliberately just a shell: what actually gets exported/imported is entirely app-specific (your own database tables), so `onExport`/`onImport` are required — this package can't have a sensible default for "how do I export my schema". Import asks for confirmation first (via `confirmDestructive`, from `utils/helpers/`) since it replaces existing data; `onImport` itself doesn't need to.
+
+```tsx
+import { BackupSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/BackupSettingsScreen";
+
+<BackupSettingsScreen
+  onExport={shareBackup}
+  onImport={pickAndImportBackup}
+  reminder={{
+    enabled: reminderEnabled,
+    onToggle: handleToggleReminder,
+    intervalDays: BACKUP_REMINDER_INTERVAL_DAYS,
+  }}
+/>;
+```
+
+Omit `reminder` entirely for an app with no backup-reminder notifications.
+
+#### `<AboutSettingsScreen appName version description developerName />`
+
+App name, version, one or more description paragraphs, and a "developed by" credit. `appName`/`version` are required rather than defaulted internally (keeps this package framework-agnostic) — pass `Constants.expoConfig?.name`/`.version` from the caller.
+
+```tsx
+import { AboutSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/AboutSettingsScreen";
+
+<AboutSettingsScreen
+  appName={Constants.expoConfig?.name ?? "My App"}
+  version={Constants.expoConfig?.version ?? "?"}
+  description="A personal tool to do the thing."
+  developerName="Your Name"
+/>;
+```
+
+#### `<ContactSettingsScreen email />`
+
+A `mailto:` button plus a short "how to report a bug" hint.
+
+```tsx
+import { ContactSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/ContactSettingsScreen";
+
+<ContactSettingsScreen email="you@example.com" />;
+```
+
+#### `<PrivacySettingsScreen sections? />`
+
+Ships with the standard "everything stays on this device" three sections (no data collected, local storage only, sharing is opt-in) as the default — the right fit for most of these small personal-data apps. Pass your own `sections` to fully replace it for an app with different data handling (e.g. one that syncs to a server).
+
+```tsx
+import { PrivacySettingsScreen } from "@forthtilliath/react-native-kit/components/settings/PrivacySettingsScreen";
+
+// Zero-config, uses the default copy:
+<PrivacySettingsScreen />;
+
+// Or fully custom:
+<PrivacySettingsScreen
+  sections={[
+    {
+      title: "What we collect",
+      paragraphs: ["Only what you enter, synced to your account."],
+    },
+  ]}
+/>;
+```
+
+For all 7 components above, styling works the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults), and where relevant an optional `labels` prop for the built-in French copy.
 
 ### Utils (`utils/`)
 
