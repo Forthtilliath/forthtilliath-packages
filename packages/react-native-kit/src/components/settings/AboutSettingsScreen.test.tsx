@@ -69,4 +69,43 @@ describe("AboutSettingsScreen", () => {
     expect(texts).toContain("v1.2.0");
     expect(texts).toContain("By Vincent LISITA");
   });
+
+  it("renders extra sections with their title and paragraphs", () => {
+    const tree = renderTree(
+      <AboutSettingsScreen
+        appName="GlucoDose"
+        version="1.2.0"
+        description="..."
+        sections={[
+          {
+            title: "Avertissement médical",
+            paragraphs: ["Ceci n'est pas un avis médical."],
+          },
+        ]}
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(texts).toContain("Avertissement médical");
+    expect(texts).toContain("Ceci n'est pas un avis médical.");
+  });
+
+  it("doesn't show a developer credit when `developerName` is omitted", () => {
+    const tree = renderTree(
+      <AboutSettingsScreen
+        appName="GlucoDose"
+        version="1.2.0"
+        description="..."
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(
+      texts.some(
+        (c) => typeof c === "string" && c.startsWith("Développée par"),
+      ),
+    ).toBe(false);
+  });
 });
