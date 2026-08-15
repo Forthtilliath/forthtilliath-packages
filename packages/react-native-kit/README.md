@@ -381,6 +381,37 @@ Two independent style knobs, both usable on their own:
 />
 ```
 
+Pass `groups` instead of `items` to render rows under optional section headers (e.g. separating app-specific settings from the standard ones) — the two are mutually exclusive:
+
+```tsx
+<SettingsMenu
+  groups={[
+    {
+      title: "Réglages de calcul",
+      items: [
+        {
+          key: "ratio",
+          emoji: "🧮",
+          title: "Ratio glucidique",
+          onPress: () => router.push("/settings/ratio"),
+        },
+      ],
+    },
+    {
+      // No `title` renders the group with no header at all, e.g. for a
+      // leading group of app-specific items above the standard ones.
+      items: [
+        {
+          key: "backup",
+          title: "Sauvegarde",
+          onPress: () => router.push("/settings/backup"),
+        },
+      ],
+    },
+  ]}
+/>
+```
+
 #### `<ThemeSettingsScreen value onChange />`
 
 Same light/dark/system data contract as `ThemeToggle`/`ThemeOptionList`. Two visuals, picked via `variant`: `"emoji"` (default) — emoji + label + a plain-text `✓` on the active row — or `"icon"` — `Ionicons` glyphs in one shared color (`styles.iconColor`/`iconColorActive`) + an `Ionicons` checkmark, matching `SettingsMenu`'s `defaultIconKind="icon"` look. `showHint={false}` hides the hint above the list.
@@ -441,9 +472,21 @@ import { BackupSettingsScreen } from "@forthtilliath/react-native-kit/components
 
 Omit `reminder` entirely for an app with no backup-reminder notifications.
 
-#### `<AboutSettingsScreen appName version description developerName />`
+Three more knobs for apps whose backup section doesn't fit the compact 2-button shell: an `info` box above everything (e.g. "last auto-backup: ..."), `layout="sections"` for a titled, full-width, stacked layout instead of side-by-side buttons, and `icons` for a leading `Ionicons` glyph on either button.
 
-App name, version, one or more description paragraphs, and a "developed by" credit. `appName`/`version` are required rather than defaulted internally (keeps this package framework-agnostic) — pass `Constants.expoConfig?.name`/`.version` from the caller.
+```tsx
+<BackupSettingsScreen
+  onExport={shareBackup}
+  onImport={pickAndImportBackup}
+  info={{ label: "Dernière sauvegarde auto", value: lastAutoBackupLabel }}
+  layout="sections"
+  icons={{ export: "cloud-upload-outline", import: "cloud-download-outline" }}
+/>
+```
+
+#### `<AboutSettingsScreen appName version description developerName? sections? />`
+
+App name, version, one or more description paragraphs, and an optional "developed by" credit. `appName`/`version` are required rather than defaulted internally (keeps this package framework-agnostic) — pass `Constants.expoConfig?.name`/`.version` from the caller.
 
 ```tsx
 import { AboutSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/AboutSettingsScreen";
@@ -456,7 +499,23 @@ import { AboutSettingsScreen } from "@forthtilliath/react-native-kit/components/
 />;
 ```
 
-#### `<ContactSettingsScreen email />`
+Omit `developerName` for an app with no credit line to show. Pass `sections` for extra titled blocks after the description — e.g. a medical/legal disclaimer:
+
+```tsx
+<AboutSettingsScreen
+  appName="GlucoDose"
+  version="1.2.0"
+  description="Un outil personnel de calcul de dose."
+  sections={[
+    {
+      title: "Avertissement médical",
+      paragraphs: ["Cet outil ne remplace pas un avis médical professionnel."],
+    },
+  ]}
+/>
+```
+
+#### `<ContactSettingsScreen email actions? emailIcon? />`
 
 A `mailto:` button plus a short "how to report a bug" hint.
 
@@ -464,6 +523,18 @@ A `mailto:` button plus a short "how to report a bug" hint.
 import { ContactSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/ContactSettingsScreen";
 
 <ContactSettingsScreen email="you@example.com" />;
+```
+
+Pass `actions` for extra rows below the email one (share the app, a donation link...) — switches the whole section from the single bordered button to a rows layout, email included:
+
+```tsx
+<ContactSettingsScreen
+  email="you@example.com"
+  actions={[
+    { icon: "share-outline", label: "Partager l'app", onPress: shareApp },
+    { icon: "star-outline", label: "Noter l'app", onPress: openStoreListing },
+  ]}
+/>
 ```
 
 #### `<PrivacySettingsScreen sections? />`
