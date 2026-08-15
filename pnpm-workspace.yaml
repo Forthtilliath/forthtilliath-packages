@@ -3,6 +3,14 @@ packages:
   - packages/*
   - packages/react/*
 
+# Explicit allowlist for dependencies allowed to run install scripts. Newer
+# pnpm (11.21.0+ at least) hard-errors on unapproved ignored build scripts
+# instead of just warning — without this, `pnpm install` fails outright.
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - esbuild
+  - lefthook
+
 catalog:
   '@tailwindcss/postcss': 4.1.12
   '@turbo/gen': ^2.10.9
