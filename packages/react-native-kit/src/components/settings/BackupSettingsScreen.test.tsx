@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
 import { Alert, Pressable, Switch, Text } from "react-native";
 import { act, create } from "react-test-renderer";
+import { Ionicons } from "@expo/vector-icons";
 import { describe, expect, it, vi } from "vitest";
 
 import type { AlertButton } from "../../__mocks__/react-native.js";
@@ -94,5 +95,53 @@ describe("BackupSettingsScreen", () => {
     });
 
     expect(onToggle).toHaveBeenCalledWith(true);
+  });
+
+  it("shows an info box with its label and value when `info` is given", () => {
+    const tree = renderTree(
+      <BackupSettingsScreen
+        onExport={vi.fn()}
+        onImport={vi.fn()}
+        info={{
+          label: "Dernière sauvegarde auto",
+          value: "Aujourd'hui à 08:00",
+        }}
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(texts).toContain("Dernière sauvegarde auto");
+    expect(texts).toContain("Aujourd'hui à 08:00");
+  });
+
+  it("renders a titled section per action when layout is 'sections'", () => {
+    const tree = renderTree(
+      <BackupSettingsScreen
+        onExport={vi.fn()}
+        onImport={vi.fn()}
+        layout="sections"
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(texts).toContain("Exporter");
+    expect(texts).toContain("Importer");
+    expect(tree.root.findAllByType(Pressable)).toHaveLength(2);
+  });
+
+  it("shows a leading icon on a button when `icons` sets one for it", () => {
+    const tree = renderTree(
+      <BackupSettingsScreen
+        onExport={vi.fn()}
+        onImport={vi.fn()}
+        icons={{ export: "cloud-upload-outline" }}
+      />,
+    );
+    const icons = tree.root
+      .findAllByType(Ionicons)
+      .map((el) => propsOf<{ name: unknown }>(el).name);
+    expect(icons).toEqual(["cloud-upload-outline"]);
   });
 });
