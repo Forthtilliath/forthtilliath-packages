@@ -55,4 +55,29 @@ describe("ContactSettingsScreen", () => {
     expect(texts).toContain("Got a question?");
     expect(texts).toContain("Thanks!");
   });
+
+  it("switches to a rows layout with the email first when `actions` is given", () => {
+    const share = vi.fn();
+    const tree = renderTree(
+      <ContactSettingsScreen
+        email="dev@example.com"
+        actions={[
+          { icon: "share-outline", label: "Partager l'app", onPress: share },
+        ]}
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(texts).toContain("Me contacter");
+    expect(texts).toContain("Partager l'app");
+    expect(texts).not.toContain("✉️ dev@example.com");
+
+    const [, shareRow] = tree.root.findAllByType(Pressable);
+    if (!shareRow) throw new Error("expected a share row");
+    act(() => {
+      propsOf<{ onPress: () => void }>(shareRow).onPress();
+    });
+    expect(share).toHaveBeenCalledTimes(1);
+  });
 });
