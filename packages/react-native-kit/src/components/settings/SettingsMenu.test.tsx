@@ -134,4 +134,26 @@ describe("SettingsMenu", () => {
       .map((t) => propsOf<{ children: unknown }>(t).children);
     expect(texts).not.toContain("Exporter tes données");
   });
+
+  it("renders items grouped under their section title when `groups` is given", () => {
+    const tree = renderTree(
+      <SettingsMenu
+        groups={[
+          {
+            title: "Réglages de calcul",
+            items: [{ key: "ratio", title: "Ratio", onPress: vi.fn() }],
+          },
+          {
+            items: [{ key: "backup", title: "Sauvegarde", onPress: vi.fn() }],
+          },
+        ]}
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(texts).toContain("Réglages de calcul");
+    expect(texts).toContain("Ratio");
+    expect(texts).toContain("Sauvegarde");
+  });
 });
