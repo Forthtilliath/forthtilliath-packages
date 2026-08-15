@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import { confirmDestructive } from "../../utils/helpers/confirmDestructive.js";
 
@@ -20,13 +21,31 @@ export interface BackupSettingsScreenReminder {
   intervalDays: number;
 }
 
+export interface BackupSettingsScreenInfo {
+  label: string;
+  value: string;
+}
+
+export interface BackupSettingsScreenIcons {
+  export?: keyof typeof Ionicons.glyphMap;
+  import?: keyof typeof Ionicons.glyphMap;
+}
+
 export interface BackupSettingsScreenStyles {
   container?: StyleProp<ViewStyle>;
+  infoBox?: StyleProp<ViewStyle>;
+  infoLabel?: StyleProp<TextStyle>;
+  infoValue?: StyleProp<TextStyle>;
+  sectionTitle?: StyleProp<TextStyle>;
   hint?: StyleProp<TextStyle>;
   row?: StyleProp<ViewStyle>;
   button?: StyleProp<ViewStyle>;
   buttonDisabled?: StyleProp<ViewStyle>;
   buttonText?: StyleProp<TextStyle>;
+  iconColor?: string;
+  /** Merged on top of `button`/`buttonText` — defaults to the same look as the export button. */
+  importButton?: StyleProp<ViewStyle>;
+  importButtonText?: StyleProp<TextStyle>;
   reminderRow?: StyleProp<ViewStyle>;
   reminderTextColumn?: StyleProp<ViewStyle>;
   reminderLabel?: StyleProp<TextStyle>;
@@ -38,6 +57,11 @@ export interface BackupSettingsScreenLabels {
   hint?: string;
   exportButton?: string;
   importButton?: string;
+  /** Only shown in `layout="sections"`. */
+  exportSectionTitle?: string;
+  exportHelpText?: string;
+  importSectionTitle?: string;
+  importHelpText?: string;
   importConfirmTitle?: string;
   importConfirmMessage?: string;
   importConfirmLabel?: string;
@@ -60,6 +84,16 @@ export interface BackupSettingsScreenProps {
   onImport: () => Promise<void>;
   /** Omit entirely to not show a reminder toggle at all. */
   reminder?: BackupSettingsScreenReminder;
+  /** An info box above everything else, e.g. "Last auto-backup: ...". Omit to not show one. */
+  info?: BackupSettingsScreenInfo;
+  /**
+   * `"compact"` (default): one shared hint, both buttons side by side.
+   * `"sections"`: each action gets its own title + help text, buttons
+   * stacked full-width.
+   */
+  layout?: "compact" | "sections";
+  /** Leading icon for each button. Omit either (or both) for a text-only button (default). */
+  icons?: BackupSettingsScreenIcons;
   labels?: BackupSettingsScreenLabels;
   styles?: BackupSettingsScreenStyles;
 }
@@ -71,6 +105,12 @@ const defaultLabels: Required<
   hint: "Les données sont stockées uniquement sur cet appareil et sont perdues en cas de réinstallation ou de mise à jour incompatible. Exporte-les régulièrement pour pouvoir les restaurer.",
   exportButton: "⬆️ Exporter",
   importButton: "⬇️ Importer",
+  exportSectionTitle: "Exporter",
+  exportHelpText:
+    "Exporte toutes tes données dans un fichier que tu peux garder précieusement ou transférer vers un autre appareil.",
+  importSectionTitle: "Importer",
+  importHelpText:
+    "Restaure une sauvegarde exportée précédemment. Remplace entièrement les données actuelles — il n'y a pas de fusion.",
   importConfirmTitle: "Importer une sauvegarde ?",
   importConfirmMessage:
     "Toutes les données actuelles seront remplacées par celles du fichier choisi.",
@@ -84,13 +124,43 @@ const defaultLabels: Required<
 };
 
 const defaultStyles: Required<
-  Omit<BackupSettingsScreenStyles, "activityIndicatorColor">
+  Omit<
+    BackupSettingsScreenStyles,
+    "activityIndicatorColor" | "iconColor" | "importButton" | "importButtonText"
+  >
 > &
-  Pick<BackupSettingsScreenStyles, "activityIndicatorColor"> = {
+  Pick<
+    BackupSettingsScreenStyles,
+    "activityIndicatorColor" | "iconColor" | "importButton" | "importButtonText"
+  > = {
   container: {},
-  hint: { fontSize: 13, color: "#6b7280", marginBottom: 16 },
+  infoBox: {
+    backgroundColor: "#f9fafb",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 20,
+    gap: 2,
+  } satisfies ViewStyle,
+  infoLabel: { fontSize: 12, color: "#6b7280" },
+  infoValue: { fontSize: 12, color: "#111827", fontWeight: "600" },
+  sectionTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#111827",
+    marginTop: 20,
+  },
+  hint: {
+    fontSize: 13,
+    color: "#6b7280",
+    marginTop: 6,
+    marginBottom: 14,
+    lineHeight: 18,
+  },
   row: { flexDirection: "row", gap: 10 },
   button: {
+    flexDirection: "row",
     flex: 1,
     paddingVertical: 12,
     borderRadius: 8,
@@ -98,9 +168,13 @@ const defaultStyles: Required<
     borderColor: "#2563eb",
     alignItems: "center",
     justifyContent: "center",
+    gap: 8,
   },
   buttonDisabled: { opacity: 0.5 },
   buttonText: { color: "#2563eb", fontWeight: "700" },
+  iconColor: "#2563eb",
+  importButton: undefined,
+  importButtonText: undefined,
   reminderRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -131,6 +205,9 @@ export function BackupSettingsScreen({
   onExport,
   onImport,
   reminder,
+  info,
+  layout = "compact",
+  icons,
   labels,
   styles,
 }: BackupSettingsScreenProps) {
@@ -138,11 +215,27 @@ export function BackupSettingsScreen({
   const [importing, setImporting] = useState(false);
   const merged = {
     container: [defaultStyles.container, styles?.container],
+    infoBox: [defaultStyles.infoBox, styles?.infoBox],
+    infoLabel: [defaultStyles.infoLabel, styles?.infoLabel],
+    infoValue: [defaultStyles.infoValue, styles?.infoValue],
+    sectionTitle: [defaultStyles.sectionTitle, styles?.sectionTitle],
     hint: [defaultStyles.hint, styles?.hint],
     row: [defaultStyles.row, styles?.row],
     button: [defaultStyles.button, styles?.button],
     buttonDisabled: [defaultStyles.buttonDisabled, styles?.buttonDisabled],
     buttonText: [defaultStyles.buttonText, styles?.buttonText],
+    importButton: [
+      defaultStyles.button,
+      styles?.button,
+      defaultStyles.importButton,
+      styles?.importButton,
+    ],
+    importButtonText: [
+      defaultStyles.buttonText,
+      styles?.buttonText,
+      defaultStyles.importButtonText,
+      styles?.importButtonText,
+    ],
     reminderRow: [defaultStyles.reminderRow, styles?.reminderRow],
     reminderTextColumn: [
       defaultStyles.reminderTextColumn,
@@ -154,6 +247,7 @@ export function BackupSettingsScreen({
   const t = { ...defaultLabels, ...labels };
   const activityIndicatorColor =
     styles?.activityIndicatorColor ?? defaultStyles.activityIndicatorColor;
+  const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
 
   async function handleExport() {
     if (exporting) return;
@@ -194,40 +288,78 @@ export function BackupSettingsScreen({
     );
   }
 
+  const exportButton = (
+    <Pressable
+      style={[merged.button, exporting && merged.buttonDisabled]}
+      disabled={exporting}
+      onPress={() => {
+        void handleExport();
+      }}
+      accessibilityRole="button"
+      accessibilityLabel={t.exportButton}
+    >
+      {exporting ? (
+        <ActivityIndicator color={activityIndicatorColor} />
+      ) : (
+        <>
+          {icons?.export && (
+            <Ionicons name={icons.export} size={18} color={iconColor} />
+          )}
+          <Text style={merged.buttonText}>{t.exportButton}</Text>
+        </>
+      )}
+    </Pressable>
+  );
+
+  const importButton = (
+    <Pressable
+      style={[merged.importButton, importing && merged.buttonDisabled]}
+      disabled={importing}
+      onPress={handleImportPress}
+      accessibilityRole="button"
+      accessibilityLabel={t.importButton}
+    >
+      {importing ? (
+        <ActivityIndicator color={activityIndicatorColor} />
+      ) : (
+        <>
+          {icons?.import && (
+            <Ionicons name={icons.import} size={18} color={iconColor} />
+          )}
+          <Text style={merged.importButtonText}>{t.importButton}</Text>
+        </>
+      )}
+    </Pressable>
+  );
+
   return (
     <View style={merged.container}>
-      <Text style={merged.hint}>{t.hint}</Text>
+      {info && (
+        <View style={merged.infoBox}>
+          <Text style={merged.infoLabel}>{info.label}</Text>
+          <Text style={merged.infoValue}>{info.value}</Text>
+        </View>
+      )}
 
-      <View style={merged.row}>
-        <Pressable
-          style={[merged.button, exporting && merged.buttonDisabled]}
-          disabled={exporting}
-          onPress={() => {
-            void handleExport();
-          }}
-          accessibilityRole="button"
-          accessibilityLabel={t.exportButton}
-        >
-          {exporting ? (
-            <ActivityIndicator color={activityIndicatorColor} />
-          ) : (
-            <Text style={merged.buttonText}>{t.exportButton}</Text>
-          )}
-        </Pressable>
-        <Pressable
-          style={[merged.button, importing && merged.buttonDisabled]}
-          disabled={importing}
-          onPress={handleImportPress}
-          accessibilityRole="button"
-          accessibilityLabel={t.importButton}
-        >
-          {importing ? (
-            <ActivityIndicator color={activityIndicatorColor} />
-          ) : (
-            <Text style={merged.buttonText}>{t.importButton}</Text>
-          )}
-        </Pressable>
-      </View>
+      {layout === "sections" ? (
+        <>
+          <Text style={merged.sectionTitle}>{t.exportSectionTitle}</Text>
+          <Text style={merged.hint}>{t.exportHelpText}</Text>
+          {exportButton}
+
+          <Text style={merged.sectionTitle}>{t.importSectionTitle}</Text>
+          <Text style={merged.hint}>{t.importHelpText}</Text>
+          {importButton}
+        </>
+      ) : (
+        <>
+          <Text style={merged.hint}>{t.hint}</Text>
+          <View style={merged.row}>
+            {exportButton}
+            {importButton}
+          </View>
+        </>
+      )}
 
       {reminder && (
         <Pressable
