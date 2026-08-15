@@ -1,12 +1,18 @@
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 
+export interface AboutSettingsScreenSection {
+  title: string;
+  paragraphs: string[];
+}
+
 export interface AboutSettingsScreenStyles {
   container?: StyleProp<ViewStyle>;
   appName?: StyleProp<TextStyle>;
   version?: StyleProp<TextStyle>;
   separator?: StyleProp<ViewStyle>;
   paragraph?: StyleProp<TextStyle>;
+  sectionTitle?: StyleProp<TextStyle>;
   hint?: StyleProp<TextStyle>;
 }
 
@@ -20,7 +26,10 @@ export interface AboutSettingsScreenProps {
   version: string;
   /** One or more paragraphs describing the app, rendered in order. */
   description: string | string[];
-  developerName: string;
+  /** Extra titled sections after the description, e.g. a medical/legal disclaimer. */
+  sections?: AboutSettingsScreenSection[];
+  /** Omit to not show a "developed by" credit line at all. */
+  developerName?: string;
   labels?: AboutSettingsScreenLabels;
   styles?: AboutSettingsScreenStyles;
 }
@@ -45,11 +54,18 @@ const defaultStyles: Required<AboutSettingsScreenStyles> = {
     color: "#111827",
     marginBottom: 12,
   },
+  sectionTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#111827",
+    marginBottom: 8,
+  },
   hint: { fontSize: 13, color: "#6b7280" },
 };
 
-// App name, version, a short description, and a "developed by" credit — the
-// standard "About" section of a settings tab. `appName`/`version` are
+// App name, version, a short description, optional extra titled sections
+// (e.g. a medical/legal disclaimer), and an optional "developed by" credit —
+// the standard "About" section of a settings tab. `appName`/`version` are
 // required rather than defaulted from `expo-constants` so this stays
 // framework-agnostic; pass `Constants.expoConfig?.name`/`.version` from the
 // caller.
@@ -57,6 +73,7 @@ export function AboutSettingsScreen({
   appName,
   version,
   description,
+  sections,
   developerName,
   labels,
   styles,
@@ -67,6 +84,7 @@ export function AboutSettingsScreen({
     version: [defaultStyles.version, styles?.version],
     separator: [defaultStyles.separator, styles?.separator],
     paragraph: [defaultStyles.paragraph, styles?.paragraph],
+    sectionTitle: [defaultStyles.sectionTitle, styles?.sectionTitle],
     hint: [defaultStyles.hint, styles?.hint],
   };
   const t = { ...defaultLabels, ...labels };
@@ -85,9 +103,24 @@ export function AboutSettingsScreen({
         </Text>
       ))}
 
-      <View style={merged.separator} />
+      {sections?.map((section) => (
+        <View key={section.title}>
+          <View style={merged.separator} />
+          <Text style={merged.sectionTitle}>{section.title}</Text>
+          {section.paragraphs.map((paragraph) => (
+            <Text key={paragraph} style={merged.paragraph}>
+              {paragraph}
+            </Text>
+          ))}
+        </View>
+      ))}
 
-      <Text style={merged.hint}>{t.developedBy(developerName)}</Text>
+      {developerName && (
+        <>
+          <View style={merged.separator} />
+          <Text style={merged.hint}>{t.developedBy(developerName)}</Text>
+        </>
+      )}
     </View>
   );
 }
