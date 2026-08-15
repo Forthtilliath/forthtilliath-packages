@@ -46,8 +46,15 @@ export interface SettingsMenuItem {
   onPress: () => void;
 }
 
+export interface SettingsMenuGroup {
+  /** Omit for a group with no visible header (e.g. the first one). */
+  title?: string;
+  items: SettingsMenuItem[];
+}
+
 export interface SettingsMenuStyles {
   container?: StyleProp<ViewStyle>;
+  groupTitle?: StyleProp<TextStyle>;
   row?: StyleProp<ViewStyle>;
   titleColumn?: StyleProp<ViewStyle>;
   emoji?: StyleProp<TextStyle>;
@@ -58,7 +65,10 @@ export interface SettingsMenuStyles {
 }
 
 export interface SettingsMenuProps {
-  items: SettingsMenuItem[];
+  /** A flat list of rows. Mutually exclusive with `groups`. */
+  items?: SettingsMenuItem[];
+  /** Rows grouped under optional section headers. Mutually exclusive with `items`. */
+  groups?: SettingsMenuGroup[];
   /**
    * Which flavor of the default icon table to use for items that don't set
    * their own `emoji`/`icon`. Doesn't affect items that do. Defaults to
@@ -72,6 +82,12 @@ export interface SettingsMenuProps {
 
 const defaultStyles = {
   container: { gap: 10 } satisfies ViewStyle,
+  groupTitle: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#6b7280",
+    textTransform: "uppercase",
+  } satisfies TextStyle,
   row: {
     flexDirection: "row",
     alignItems: "center",
@@ -108,18 +124,21 @@ function resolveIcon(
 }
 
 // Menu screen for a settings tab: one row per section (icon + title +
-// optional hint), navigating to it on press. Has no opinion on how
+// optional hint), navigating to it on press, optionally grouped under
+// section headers (`groups` instead of `items`). Has no opinion on how
 // navigation works — each item carries its own `onPress` (e.g.
 // `() => router.push("/settings/xxx")`), so this doesn't depend on
 // expo-router or any other specific navigator.
 export function SettingsMenu({
   items,
+  groups,
   defaultIconKind = "emoji",
   showHints = true,
   styles,
 }: SettingsMenuProps) {
   const merged = {
     container: [defaultStyles.container, styles?.container],
+    groupTitle: [defaultStyles.groupTitle, styles?.groupTitle],
     row: [defaultStyles.row, styles?.row],
     titleColumn: [defaultStyles.titleColumn, styles?.titleColumn],
     emoji: [defaultStyles.emoji, styles?.emoji],
@@ -129,33 +148,45 @@ export function SettingsMenu({
   const chevronColor = styles?.chevronColor ?? defaultStyles.chevronColor;
   const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
 
+  function renderItem(item: SettingsMenuItem) {
+    const { icon, emoji } = resolveIcon(item, defaultIconKind);
+    return (
+      <Pressable
+        key={item.key}
+        style={merged.row}
+        onPress={item.onPress}
+        accessibilityRole="button"
+        accessibilityLabel={item.title}
+      >
+        {icon ? (
+          <Ionicons name={icon} size={24} color={iconColor} />
+        ) : (
+          <Text style={merged.emoji}>{emoji}</Text>
+        )}
+        <View style={merged.titleColumn}>
+          <Text style={merged.title}>{item.title}</Text>
+          {showHints && item.hint ? (
+            <Text style={merged.hint}>{item.hint}</Text>
+          ) : null}
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={chevronColor} />
+      </Pressable>
+    );
+  }
+
   return (
     <View style={merged.container}>
-      {items.map((item) => {
-        const { icon, emoji } = resolveIcon(item, defaultIconKind);
-        return (
-          <Pressable
-            key={item.key}
-            style={merged.row}
-            onPress={item.onPress}
-            accessibilityRole="button"
-            accessibilityLabel={item.title}
-          >
-            {icon ? (
-              <Ionicons name={icon} size={24} color={iconColor} />
-            ) : (
-              <Text style={merged.emoji}>{emoji}</Text>
-            )}
-            <View style={merged.titleColumn}>
-              <Text style={merged.title}>{item.title}</Text>
-              {showHints && item.hint ? (
-                <Text style={merged.hint}>{item.hint}</Text>
+      {groups
+        ? groups.map((group, index) => (
+            // eslint-disable-next-line @eslint-react/no-array-index-key -- groups have no other stable identifier, and are a static, author-defined list (not reordered/filtered at runtime)
+            <View key={group.title ?? index} style={merged.container}>
+              {group.title ? (
+                <Text style={merged.groupTitle}>{group.title}</Text>
               ) : null}
+              {group.items.map(renderItem)}
             </View>
-            <Ionicons name="chevron-forward" size={20} color={chevronColor} />
-          </Pressable>
-        );
-      })}
+          ))
+        : items?.map(renderItem)}
     </View>
   );
 }
