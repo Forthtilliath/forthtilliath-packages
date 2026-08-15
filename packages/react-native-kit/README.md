@@ -307,43 +307,47 @@ export default function SettingsMenuScreen() {
   return (
     <SettingsMenu
       items={[
+        // `key` doubles as the lookup into a built-in default icon/label
+        // pairing for the 6 sections above — no `emoji`/`icon` needed here.
         {
           key: "backup",
-          emoji: "💾",
           title: "Sauvegarde",
           hint: "Exporter / importer tes données",
           onPress: () => router.push("/settings/backup"),
         },
         {
           key: "theme",
-          emoji: "🎨",
           title: "Thème",
           hint: "Clair, sombre, ou automatique",
           onPress: () => router.push("/settings/theme"),
         },
         {
           key: "update",
-          emoji: "⬇️",
           title: "Mise à jour",
           onPress: () => router.push("/settings/update"),
         },
         {
           key: "about",
-          emoji: "ℹ️",
           title: "À propos",
           onPress: () => router.push("/settings/about"),
         },
         {
           key: "contact",
-          emoji: "✉️",
           title: "Contact",
           onPress: () => router.push("/settings/contact"),
         },
         {
           key: "privacy",
-          emoji: "🔒",
           title: "Confidentialité",
           onPress: () => router.push("/settings/privacy"),
+        },
+        // An app-specific section: no default exists for an arbitrary key,
+        // so `emoji`/`icon` (and `hint`, if you want one) are yours to set.
+        {
+          key: "profile",
+          emoji: "🙋",
+          title: "Mon nom",
+          onPress: () => router.push("/settings/profile"),
         },
       ]}
     />
@@ -353,14 +357,45 @@ export default function SettingsMenuScreen() {
 
 `SettingsMenu` doesn't depend on expo-router (or any other navigator) itself — each item carries its own `onPress`, so it works the same with any navigation setup.
 
+Two independent style knobs, both usable on their own:
+
+- **Icon flavor** — each item can set its own `emoji` (naturally multicolor) or `icon` (an `Ionicons` glyph, name in `styles.iconColor`) to override its default; `defaultIconKind` (`"emoji"` by default, or `"icon"`) picks which flavor of the _default_ table applies to items that don't set either.
+- **Hints** — set `showHints={false}` to hide every item's `hint` at once, for a denser, icon-only-style menu.
+
+```tsx
+<SettingsMenu
+  items={[
+    {
+      key: "backup",
+      title: "Sauvegarde",
+      onPress: () => router.push("/settings/backup"),
+    },
+  ]}
+  defaultIconKind="icon"
+  showHints={false}
+  styles={{
+    row: { backgroundColor: colors.primary, borderWidth: 0 },
+    iconColor: "#fff",
+    title: { color: "#fff" },
+  }}
+/>
+```
+
 #### `<ThemeSettingsScreen value onChange />`
 
-Same light/dark/system data contract as `ThemeToggle`/`ThemeOptionList`, but a third visual: emoji + label + a plain-text `✓` on the active row, with a hint above explaining what "Système" does. Pick whichever of the three fits your app.
+Same light/dark/system data contract as `ThemeToggle`/`ThemeOptionList`. Two visuals, picked via `variant`: `"emoji"` (default) — emoji + label + a plain-text `✓` on the active row — or `"icon"` — `Ionicons` glyphs in one shared color (`styles.iconColor`/`iconColorActive`) + an `Ionicons` checkmark, matching `SettingsMenu`'s `defaultIconKind="icon"` look. `showHint={false}` hides the hint above the list.
 
 ```tsx
 import { ThemeSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/ThemeSettingsScreen";
 
 <ThemeSettingsScreen value={themePreference} onChange={setThemePreference} />;
+
+// Or, matching an icon-flavored SettingsMenu:
+<ThemeSettingsScreen
+  value={themePreference}
+  onChange={setThemePreference}
+  variant="icon"
+/>;
 ```
 
 #### `<UpdateSettingsScreen currentVersion checkForUpdate compareVersions downloadAndInstallApk />`

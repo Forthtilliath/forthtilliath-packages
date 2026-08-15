@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
 import { Pressable, Text } from "react-native";
 import { act, create } from "react-test-renderer";
+import { Ionicons } from "@expo/vector-icons";
 import { describe, expect, it, vi } from "vitest";
 
 import { propsOf } from "../../__mocks__/testInstance.js";
@@ -75,5 +76,43 @@ describe("ThemeSettingsScreen", () => {
       .findAllByType(Text)
       .map((t) => propsOf<{ children: string }>(t).children);
     expect(texts).toEqual(expect.arrayContaining(["🌞", "Day"]));
+  });
+
+  it("renders Ionicons instead of emoji when variant is 'icon'", () => {
+    const tree = renderTree(
+      <ThemeSettingsScreen value="dark" onChange={vi.fn()} variant="icon" />,
+    );
+    const iconNames = tree.root
+      .findAllByType(Ionicons)
+      .map((el) => propsOf<{ name: unknown }>(el).name);
+    expect(iconNames).toEqual(
+      expect.arrayContaining([
+        "sunny-outline",
+        "moon-outline",
+        "phone-portrait-outline",
+        "checkmark-circle",
+      ]),
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: string }>(t).children);
+    expect(texts).not.toContain("☀️");
+    expect(texts).not.toContain("✓");
+  });
+
+  it("hides the hint when showHint is false", () => {
+    const tree = renderTree(
+      <ThemeSettingsScreen
+        value="system"
+        onChange={vi.fn()}
+        showHint={false}
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: string }>(t).children);
+    expect(texts).not.toContain(
+      "« Système » suit automatiquement le réglage clair/sombre de ton téléphone.",
+    );
   });
 });
