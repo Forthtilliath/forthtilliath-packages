@@ -3,6 +3,7 @@ import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
 /**
@@ -28,6 +29,15 @@ export const baseConfig = defineConfig([
   },
   {
     languageOptions: {
+      // Globaux Node (process, __dirname, module, require...) : la config
+      // partagée elle-même s'exécute sous Node (ex. process.cwd() ci-dessous),
+      // et la plupart des consommateurs (scripts, configs, apps Next.js côté
+      // serveur) en ont aussi besoin. Sans risque de collision avec les
+      // globaux navigateur ajoutés par les configs plus spécifiques
+      // (react.js, nextjs.js) qui étendent celle-ci.
+      globals: {
+        ...globals.node,
+      },
       parserOptions: {
         projectService: true,
         tsconfigRootDir: process.cwd(),
