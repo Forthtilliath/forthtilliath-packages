@@ -2,24 +2,36 @@
   "name": "@forthtilliath/eslint-config",
   "version": "0.0.0",
   "type": "module",
-  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/forthtilliath-packages.git",
+    "directory": "packages/eslint-config"
+  },
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/eslint-config#readme",
+  "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
+    "clean": "rm -rf dist",
     "check-types": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0"
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": "./dist/base.js",
     "./*": "./dist/*.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "@eslint-react/eslint-plugin": "^5.18.3",
     "@eslint/js": "^10.0.1",
-    "@forthtilliath/typescript-config": "workspace:*",
     "@next/eslint-plugin-next": "^16.3.0",
     "angular-eslint": "^21.4.0",
-    "eslint": "catalog:",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -28,7 +40,15 @@
     "eslint-plugin-storybook": "^9.1.20",
     "eslint-plugin-turbo": "^2.10.9",
     "globals": "^17.9.0",
-    "typescript": "catalog:",
     "typescript-eslint": "^8.67.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "typescript": ">=5.0.0"
+  },
+  "devDependencies": {
+    "@forthtilliath/typescript-config": "workspace:*",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   }
 }
