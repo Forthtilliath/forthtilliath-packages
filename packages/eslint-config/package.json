@@ -18,6 +18,7 @@
     "@eslint/js": "^10.0.1",
     "@forthtilliath/typescript-config": "workspace:*",
     "@next/eslint-plugin-next": "^16.3.0",
+    "angular-eslint": "^21.4.0",
     "eslint": "catalog:",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",

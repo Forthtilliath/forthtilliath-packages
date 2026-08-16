@@ -21,6 +21,8 @@ export const baseConfig = defineConfig([
       "postcss.config.cjs",
       "postcss.config.mjs",
       "eslint.config.js",
+      "eslint.config.mjs",
+      "eslint.config.cjs",
       "eslint.config.ts",
     ],
   },
@@ -28,7 +30,7 @@ export const baseConfig = defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: process.cwd(),
       },
     },
   },
@@ -89,6 +91,17 @@ export const baseConfig = defineConfig([
       "@typescript-eslint/consistent-type-exports": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/method-signature-style": "error",
+      // ignoreStatic : sans ca, une reference a une methode statique (ex.
+      // Validators.required dans un FormBuilder Angular) est a tort consideree
+      // comme "unbound" alors qu'une methode statique n'a pas de `this` a lier.
+      "@typescript-eslint/unbound-method": ["error", { ignoreStatic: true }],
+      // allowNumber : tres courant de construire une URL avec un id numerique
+      // (`${this.baseUrl}/${id}`) ; sans ca, chaque service HTTP typique
+      // declenche une erreur pour un usage parfaitement sur.
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        { allowNumber: true },
+      ],
       "@typescript-eslint/naming-convention": [
         "error",
         // https://typescript-eslint.io/rules/naming-convention
