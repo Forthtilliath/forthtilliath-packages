@@ -112,6 +112,103 @@ import { SwipeableRow } from "@forthtilliath/react-native-kit/components/list/Sw
 </SwipeableRow>;
 ```
 
+### `<ColorDot color={...} />`
+
+A small round color swatch — the coloured bullet next to a category, a team, a
+tag, or a status. **Renders `null` when `color` is `undefined`**, so a list row
+can bind an optional color field without guarding it at the call site.
+
+```tsx
+import { ColorDot } from "@forthtilliath/react-native-kit/components/list/ColorDot";
+
+<View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+  <ColorDot color={category.color} />
+  <Text>{category.name}</Text>
+</View>;
+```
+
+| Prop    | Type                   | Default | Notes                                                             |
+| ------- | ---------------------- | ------- | ----------------------------------------------------------------- |
+| `color` | `string \| undefined`  | —       | Any RN color string. `undefined` → renders nothing.               |
+| `size`  | `number`               | `10`    | Diameter in px; always a full circle (`borderRadius = size / 2`). |
+| `style` | `StyleProp<ViewStyle>` | —       | Merged **after** the computed style, so it wins on conflicts.     |
+
+```tsx
+// Bigger, with a subtle ring, and some trailing space:
+<ColorDot
+  color={team.color}
+  size={16}
+  style={{ borderWidth: 1, borderColor: "rgba(0,0,0,0.15)", marginRight: 6 }}
+/>
+```
+
+### `<UndoToast message={...} onAction={...} />`
+
+A bottom-of-screen snackbar for **undoing an action that already happened** —
+the counterpart to a delete that runs immediately with no confirmation dialog
+(for instance a `SwipeableRow` swipe). Presentational only: it does not time
+itself out, animate, or stack — the host owns the "pending undo" state, the
+commit timer, and any enter/exit animation, which keeps this component free of
+timer or animation-library opinions.
+
+```tsx
+import { UndoToast } from "@forthtilliath/react-native-kit/components/list/UndoToast";
+
+{
+  recentlyDeleted && (
+    <UndoToast
+      message={`"${recentlyDeleted.name}" deleted`}
+      onAction={restoreLast}
+    />
+  );
+}
+```
+
+| Prop          | Type              | Default  | Notes                                                                               |
+| ------------- | ----------------- | -------- | ----------------------------------------------------------------------------------- |
+| `message`     | `string`          | —        | Past tense; single line, truncated with an ellipsis.                                |
+| `actionLabel` | `string`          | `"Undo"` | The tappable label on the right.                                                    |
+| `onAction`    | `() => void`      | —        | Reverse the change here. The host then hides the toast.                             |
+| `styles`      | `UndoToastStyles` | —        | Per-slot overrides (`toast` / `message` / `action`), each merged after its default. |
+
+Full pattern — commit for good after 5s, localized label, re-themed:
+
+```tsx
+const [pending, setPending] = useState<Employee | null>(null);
+
+function remove(employee: Employee) {
+  setEmployees((list) => list.filter((e) => e.id !== employee.id));
+  setPending(employee);
+}
+
+useEffect(() => {
+  if (!pending) return;
+  const id = setTimeout(() => {
+    db.deleteEmployee(pending.id); // point of no return
+    setPending(null);
+  }, 5000);
+  return () => clearTimeout(id);
+}, [pending]);
+
+{
+  pending && (
+    <UndoToast
+      message={`« ${pending.name} » supprimé`}
+      actionLabel="Annuler"
+      onAction={() => {
+        setEmployees((list) => [...list, pending]);
+        setPending(null);
+      }}
+      styles={{
+        toast: { backgroundColor: colors.inverseSurface },
+        message: { color: colors.inverseOnSurface },
+        action: { color: colors.inversePrimary },
+      }}
+    />
+  );
+}
+```
+
 ### `<VoiceSearchButton onResult={...} />`
 
 Microphone button to dictate a search instead of typing it. Safe to mount more than one at a time (e.g. a name field plus a search picker on the same screen) — only the instance that started listening reacts to its result.
