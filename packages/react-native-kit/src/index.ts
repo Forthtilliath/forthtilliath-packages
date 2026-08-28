@@ -3,8 +3,10 @@
 // etc.) remain the recommended default for apps that want to avoid pulling in
 // peer deps they don't have installed (Metro doesn't reliably tree-shake) —
 // see the README.
+export * from "./components/list/ColorDot.js";
 export * from "./components/list/SwipeableRow.js";
 export * from "./components/list/Thumbnail.js";
+export * from "./components/list/UndoToast.js";
 export * from "./components/picker/PhotoPicker.js";
 export * from "./components/picker/PickerModal.js";
 export * from "./components/picker/VoiceSearchButton.js";
