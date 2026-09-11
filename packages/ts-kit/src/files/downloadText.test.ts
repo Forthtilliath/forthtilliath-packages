@@ -76,7 +76,7 @@ describe("downloadTextBlob", () => {
     const blobArg = createObjectURL.mock.calls[0]?.[0];
     if (!blobArg) throw new Error("createObjectURL was not called with a Blob");
     expect(blobArg).toBeInstanceOf(Blob);
-    expect(blobArg.type).toBe("text/plain");
+    expect(blobArg.type).toBe("text/plain;charset=utf-8");
 
     expect(appendSpy).toHaveBeenCalledTimes(1);
     const anchor = appendSpy.mock.calls[0]?.[0] as HTMLAnchorElement;
@@ -87,5 +87,22 @@ describe("downloadTextBlob", () => {
     expect(clickSpy).toHaveBeenCalledTimes(1);
     expect(revokeObjectURL).toHaveBeenCalledWith("blob:mock-url");
     expect(removeSpy).toHaveBeenCalledWith(anchor);
+  });
+
+  it("uses the given mimeType instead of the text/plain default", () => {
+    const createObjectURL = vi.fn<(blob: Blob) => string>(
+      () => "blob:mock-url",
+    );
+    URL.createObjectURL = createObjectURL;
+    URL.revokeObjectURL = vi.fn();
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {
+      /* jsdom does not implement navigation, avoid the console warning */
+    });
+
+    downloadTextBlob("data.json", "{}", "application/json");
+
+    const blobArg = createObjectURL.mock.calls[0]?.[0];
+    if (!blobArg) throw new Error("createObjectURL was not called with a Blob");
+    expect(blobArg.type).toBe("application/json;charset=utf-8");
   });
 });
