@@ -23,9 +23,16 @@ export function downloadText(filename: string, text: string): void {
  * Downloads a text blob as a file.
  * @param filename The filename to save to.
  * @param text The text to save.
+ * @param mimeType The MIME type of the blob (defaults to `"text/plain"`).
  */
-export function downloadTextBlob(filename: string, text: string): void {
-  const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+export function downloadTextBlob(
+  filename: string,
+  text: string,
+  mimeType = "text/plain",
+): void {
+  const url = URL.createObjectURL(
+    new Blob([text], { type: `${mimeType};charset=utf-8` }),
+  );
 
   const a = document.createElement("a");
   a.setAttribute("download", filename);
