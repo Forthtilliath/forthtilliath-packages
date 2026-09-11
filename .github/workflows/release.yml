@@ -3,11 +3,9 @@ name: Release
 on:
   push:
     branches: [main]
-  # Manual fallback: if a push to main happens to land with "[skip ci]" in its
-  # head commit message (e.g. rebase-merging the changesets bot's own
-  # "Version Packages" PR replays its commit, [skip ci] included, as the new
-  # tip), GitHub skips every workflow for that push and this never fires on
-  # its own — dispatch it by hand instead of pushing a throwaway commit.
+  # Kept as a manual safety net (e.g. to re-run a failed release) now that the
+  # "Version Packages" commit no longer carries "[skip ci]" (see the `commit`
+  # override below) and reliably retriggers this workflow on its own.
   workflow_dispatch: {}
 
 concurrency:
@@ -40,6 +38,13 @@ jobs:
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
+          # changesets/action's own default commit message carries "[skip ci]",
+          # which makes GitHub skip every workflow run for that commit — including
+          # the "ci" check required by branch protection, permanently blocking the
+          # "Version Packages" PR, and the Release workflow's own push trigger once
+          # that commit becomes the tip of main after merging. Overriding it here
+          # with a plain message keeps both working without manual intervention.
+          commit: "chore: release packages"
           publish: pnpm run publish-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
