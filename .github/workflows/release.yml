@@ -38,12 +38,14 @@ jobs:
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
-          # changesets/action's own default commit message carries "[skip ci]",
-          # which makes GitHub skip every workflow run for that commit — including
-          # the "ci" check required by branch protection, permanently blocking the
-          # "Version Packages" PR, and the Release workflow's own push trigger once
-          # that commit becomes the tip of main after merging. Overriding it here
-          # with a plain message keeps both working without manual intervention.
+          # `changeset version`'s own auto-commit (triggered by "commit": true in
+          # .changeset/config.json, now set to false) used to run before this
+          # input ever applied, always with a commit message carrying "[skip ci]".
+          # GitHub skips every workflow run for that commit — including the "ci"
+          # check required by branch protection, permanently blocking the
+          # "Version Packages" PR, and this workflow's own push trigger once
+          # that commit becomes the tip of main after merging. With config.commit
+          # disabled, this override is now the one actually used.
           commit: "chore: release packages"
           publish: pnpm run publish-packages
         env:
