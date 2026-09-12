@@ -5,8 +5,6 @@ import { AnimatePresence, motion, type Transition } from "motion/react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-// https://animated-tabs-one.vercel.app/
-
 interface Tab {
   label: string;
   value: string;
@@ -243,25 +241,6 @@ function useTabs({
     return [indexOfInitialTab === -1 ? 0 : indexOfInitialTab, 0];
   });
   const [selectedTabIndex, direction] = selectedTab;
-
-  /**
-   * Returns the tabs prop, the selected tab, and the content props.
-   *
-   * The tabs prop is an object with the following properties:
-   * - tabs: The array of tabs.
-   * - selectedTabIndex: The index of the selected tab.
-   * - onChange: The function to call when the selected tab changes.
-   * - setSelectedTab: The function to call to change the selected tab.
-   *
-   * The selected tab is the currently selected tab object.
-   *
-   * The content props is an object with the following properties:
-   * - ref: The ref for the content element.
-   * - className: The class name for the content element.
-   * - "aria-hidden": Whether the content element is hidden.
-   * - "aria-labelledby": The id of the tab element that labels the content element.
-   * - role: The role of the content element.
-   */
 
   return {
     tabProps: {
