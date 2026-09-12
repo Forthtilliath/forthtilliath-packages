@@ -85,13 +85,11 @@ function SidebarProvider({
         _setOpen(openState);
       }
 
-      // This sets the cookie to keep the sidebar state.
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${String(openState)}; path=/; max-age=${String(SIDEBAR_COOKIE_MAX_AGE)}`;
     },
     [setOpenProp, open],
   );
 
-  // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
     if (isMobile) {
       setOpenMobile((open) => !open);
