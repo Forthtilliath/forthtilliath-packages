@@ -50,6 +50,10 @@ function PaginationLink({
   ...props
 }: PaginationLinkProps) {
   return (
+    // Content always comes through {...props} (children) from callers —
+    // PaginationPrevious/Next always pass an icon+label, and numbered page
+    // links pass the page number — the rule can't see through the spread.
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
     <a
       aria-current={isActive ? "page" : undefined}
       data-slot="pagination-link"

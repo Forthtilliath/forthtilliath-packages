@@ -61,6 +61,7 @@ export function MultiSelect({
   disabled = false,
   className,
 }: MultiSelectProps) {
+  const listboxId = React.useId();
   const [open, setOpen] = React.useState(false);
   const [uncontrolledValue, setUncontrolledValue] = React.useState(
     defaultValue ?? [],
@@ -98,6 +99,7 @@ export function MultiSelect({
           role="combobox"
           tabIndex={disabled ? -1 : 0}
           aria-expanded={open}
+          aria-controls={listboxId}
           aria-disabled={disabled}
           data-disabled={disabled}
           onKeyDown={(e) => {
@@ -139,7 +141,10 @@ export function MultiSelect({
           <ChevronsUpDownIcon className="shrink-0 opacity-50" />
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
+      <PopoverContent
+        id={listboxId}
+        className="w-(--radix-popover-trigger-width) p-0"
+      >
         <Command>
           <CommandInput placeholder={placeholder} />
           <CommandList>

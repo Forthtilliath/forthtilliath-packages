@@ -20,6 +20,16 @@ const config: Linter.Config[] = [
       "@eslint-react/no-array-index-key": "off",
     },
   },
+  {
+    // Hover-only highlight on non-interactive text segments inside an
+    // already-focusable trigger button (which date part will be edited) —
+    // decorative, no action is gated behind hover-only, so no keyboard
+    // equivalent (onFocus) is needed here.
+    files: ["src/components/blocks/calendar-date-picker.tsx"],
+    rules: {
+      "jsx-a11y/mouse-events-have-key-events": "off",
+    },
+  },
 ];
 
 export default config;

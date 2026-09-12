@@ -14,6 +14,19 @@ const config: Linter.Config[] = [
       "@eslint-react/no-array-index-key": "off",
     },
   },
+  {
+    // Stories demo components with simplified/placeholder markup (`href="#"`
+    // action links, illustrative alt text, label examples with no real
+    // control) — not real, navigable UI, so the strict a11y checks that
+    // assume production content don't apply here. The components themselves
+    // (forth-ui, shadcn-ui) are linted for real under their own package.
+    files: ["**/*.stories.tsx"],
+    rules: {
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/img-redundant-alt": "off",
+      "jsx-a11y/label-has-associated-control": "off",
+    },
+  },
 ];
 
 export default config;
