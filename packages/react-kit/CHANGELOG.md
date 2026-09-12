@@ -1,5 +1,11 @@
 # @forthtilliath/react-kit
 
+## 0.2.1
+
+### Patch Changes
+
+- df89512: Add the missing `"use client"` directive to `FocusOnMount`, `usePersistentState`, `useKeyListener` and `useToggleState`. Without it, rendering `FocusOnMount` (or calling one of the hooks) from a Server Component crashed with `TypeError: useRef is not a function` during SSR.
+
 ## 0.2.0
 
 ### Minor Changes
