@@ -7,8 +7,6 @@ import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-02";
 import "@forthtilliath/shadcn-ui/styles/globals.css";
 import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
 
-// import "./globals.css";
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
