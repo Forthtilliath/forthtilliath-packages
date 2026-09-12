@@ -79,7 +79,6 @@ export default meta;
 
 type Story = StoryObj<typeof Sidebar>;
 
-// Menu items.
 const items = [
   {
     title: "Home",
