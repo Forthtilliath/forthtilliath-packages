@@ -344,7 +344,6 @@ function dataKeyToString(dataKey: unknown): string | number | undefined {
     : undefined;
 }
 
-// Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(
   config: ChartConfig,
   payload: unknown,
