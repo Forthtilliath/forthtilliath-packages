@@ -1,80 +1,65 @@
-import js from "@eslint/js";
 import pluginNext from "@next/eslint-plugin-next";
 import { defineConfig } from "eslint/config";
-import eslintConfigPrettier from "eslint-config-prettier";
-import pluginReact from "eslint-plugin-react";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
-import tseslint from "typescript-eslint";
 
-import { baseConfig } from "./base.js";
+import { createReactConfig } from "./react.js";
 
 /**
- * A custom ESLint configuration for libraries that use Next.js.
+ * A custom ESLint configuration for Next.js applications, built on top of
+ * {@link createReactConfig} (same React/naming-convention rules, plus
+ * Next.js's own plugin).
+ *
+ * @param {import("./base.js").BaseConfigOptions} [options]
+ * @returns {import("eslint").Linter.Config[]}
+ * */
+export function createNextJsConfig(options) {
+  return defineConfig([
+    {
+      ignores: [".next/**", "next-env.d.ts"],
+    },
+    ...createReactConfig(options),
+    {
+      plugins: {
+        "@next/next": pluginNext,
+      },
+      rules: {
+        ...pluginNext.configs.recommended.rules,
+        ...pluginNext.configs["core-web-vitals"].rules,
+      },
+    },
+    {
+      rules: {
+        "react-refresh/only-export-components": [
+          "error",
+          {
+            // App Router convention: page.tsx/layout.tsx/template.tsx
+            // legitimately co-export a default component alongside these
+            // route-config bindings — not a Fast Refresh hazard, just how
+            // the framework wires routes.
+            allowExportNames: [
+              "metadata",
+              "generateMetadata",
+              "viewport",
+              "generateViewport",
+              "generateStaticParams",
+              "dynamic",
+              "dynamicParams",
+              "revalidate",
+              "fetchCache",
+              "runtime",
+              "preferredRegion",
+              "maxDuration",
+            ],
+          },
+        ],
+      },
+    },
+  ]);
+}
+
+/**
+ * A custom ESLint configuration for Next.js applications, with the default
+ * options. Use `createNextJsConfig(options)` instead to customize it.
  *
  * @type {import("eslint").Linter.Config[]}
  * */
-export const nextJsConfig = defineConfig([
-  {
-    ignores: [".next/**", "next-env.d.ts"],
-  },
-  ...baseConfig,
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
-  {
-    ...pluginReact.configs.flat.recommended,
-    languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
-      globals: {
-        ...globals.serviceworker,
-      },
-    },
-  },
-  {
-    plugins: {
-      "@next/next": pluginNext,
-    },
-    rules: {
-      ...pluginNext.configs.recommended.rules,
-      ...pluginNext.configs["core-web-vitals"].rules,
-    },
-  },
-  {
-    plugins: {
-      "react-hooks": pluginReactHooks,
-    },
-    settings: { react: { version: "19" } },
-    rules: {
-      ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
-    },
-  },
-  {
-    rules: {
-      "@typescript-eslint/naming-convention": [
-        "error",
-        {
-          selector: "variable",
-          format: ["camelCase"],
-          leadingUnderscore: "allow",
-        },
-        {
-          selector: "variable",
-          modifiers: ["const"],
-          format: ["camelCase", "UPPER_CASE", "PascalCase"],
-          leadingUnderscore: "allow",
-        },
-        {
-          selector: "function",
-          format: ["camelCase", "PascalCase"],
-        },
-        {
-          selector: "typeLike",
-          format: ["PascalCase"],
-        },
-      ],
-    },
-  },
-]);
+export const nextJsConfig = createNextJsConfig();
