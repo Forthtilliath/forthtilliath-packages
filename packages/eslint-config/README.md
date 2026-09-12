@@ -93,14 +93,29 @@ import { createBaseConfig } from "@forthtilliath/eslint-config";
 export default createBaseConfig({ strict: false, turbo: false });
 ```
 
-| Option     | Default | Effect                                                                         |
-| ---------- | ------- | ------------------------------------------------------------------------------ |
-| `prettier` | `true`  | Append `eslint-config-prettier` at the end.                                    |
-| `strict`   | `true`  | Use `strictTypeChecked`/`stylisticTypeChecked` instead of plain `recommended`. |
-| `turbo`    | `true`  | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule.                  |
+| Option           | Default | Effect                                                                                                      |
+| ---------------- | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `prettier`       | `true`  | Append `eslint-config-prettier` at the end.                                                                 |
+| `strict`         | `true`  | Use `strictTypeChecked`/`stylisticTypeChecked` instead of plain `recommended`.                              |
+| `turbo`          | `true`  | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule.                                               |
+| `a11y`           | `true`  | _(react/nextjs/storybook)_ Enable `eslint-plugin-jsx-a11y`'s recommended rules.                             |
+| `i18n`           | `false` | _(react/nextjs/storybook)_ Enable `eslint-plugin-i18next`'s `no-literal-string` rule.                       |
+| `testingLibrary` | `false` | _(react/nextjs/storybook)_ Enable `eslint-plugin-testing-library` + `eslint-plugin-jest-dom` on test files. |
 
 Options are forwarded down the chain, so `createNextJsConfig({ prettier: false })`
 also disables Prettier in the `reactConfig`/`baseConfig` layers it builds on.
+
+```ts
+// Full i18n project (next-intl, react-intl...): forbid hardcoded JSX strings
+import { createNextJsConfig } from "@forthtilliath/eslint-config/nextjs";
+export default createNextJsConfig({ i18n: true });
+```
+
+```ts
+// React Native / Expo: jsx-a11y targets DOM semantics and doesn't apply
+import { createReactConfig } from "@forthtilliath/eslint-config/react";
+export default createReactConfig({ a11y: false });
+```
 
 ### Typed linting and non-project files
 
