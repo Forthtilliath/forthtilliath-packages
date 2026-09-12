@@ -4,3 +4,8 @@ pre-commit:
       glob: "*.{js,jsx,ts,tsx,mjs,cjs,json,css,md}"
       run: corepack pnpm exec prettier --write {staged_files}
       stage_fixed: true
+
+commit-msg:
+  commands:
+    strip-claude-attribution:
+      run: node scripts/strip-claude-attribution.mjs {1}
