@@ -82,10 +82,10 @@ export default function BillingPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingPlan, setPendingPlan] = useState<string | null>(null);
   const [cycle, setCycle] = useState("monthly");
-  const [exportRange, setExportRange] = useState({
+  const [exportRange, setExportRange] = useState(() => ({
     from: new Date(2024, 0, 1),
     to: new Date(),
-  });
+  }));
 
   function handlePlanChange(value: string) {
     const currentIndex = plans.findIndex((p) => p.value === currentPlan);

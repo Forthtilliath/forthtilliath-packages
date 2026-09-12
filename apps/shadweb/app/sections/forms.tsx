@@ -27,6 +27,11 @@ import { Textarea } from "@forthtilliath/shadcn-ui/components/textarea";
 
 import { Demo, Section } from "../section";
 
+// Computed once at module load rather than during render (avoids the
+// @eslint-react/purity warning on `new Date()` in JSX below); this is a
+// static showcase, not state that needs to track the current instant.
+const today = new Date();
+
 export function FormsSection() {
   return (
     <Section
@@ -118,8 +123,8 @@ export function CalendarSection() {
       <Demo label="Calendar">
         <Calendar
           mode="single"
-          defaultMonth={new Date()}
-          selected={new Date()}
+          defaultMonth={today}
+          selected={today}
           className="rounded-md border"
         />
       </Demo>
