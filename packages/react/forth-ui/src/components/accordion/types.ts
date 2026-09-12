@@ -87,7 +87,6 @@ interface BaseProps {
   generateId?: (index: number) => string;
 }
 
-// Props removed from Primitive props
 type OmittedProps = "type" | "defaultValue" | "collapsible";
 export type SingleProps = BaseProps &
   Omit<AccordionSingleProps, OmittedProps> & {

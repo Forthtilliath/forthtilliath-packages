@@ -156,7 +156,6 @@ interface BaseProps {
   generateId?: (index: number) => string;
 }
 
-// Props removed from Primitive props
 type OmittedProps = "type";
 type SingleProps = BaseProps & Omit<AccordionSingleProps, OmittedProps>;
 type MultipleProps = BaseProps & Omit<AccordionMultipleProps, OmittedProps>;

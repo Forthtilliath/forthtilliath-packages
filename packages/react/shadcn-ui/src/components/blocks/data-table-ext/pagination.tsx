@@ -30,20 +30,21 @@ const getButtonSizeClass = (size: "sm" | "default" | "lg") => {
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
-  totalItems?: number; // Total number of items from API
-  totalSelectedItems?: number; // Total selected items across all pages
-  pageSizeOptions?: number[]; // Custom page size options
-  size?: "sm" | "default" | "lg"; // Size prop for components
+  totalItems?: number;
+  /** Total selected items across all pages, not just the current page. */
+  totalSelectedItems?: number;
+  pageSizeOptions?: number[];
+  size?: "sm" | "default" | "lg";
 }
 
 export function DataTablePagination<TData>({
   table,
   totalItems = 0,
   totalSelectedItems = 0,
-  pageSizeOptions = [10, 20, 30, 40, 50], // Default options if none provided
+  pageSizeOptions = [10, 20, 30, 40, 50],
   size = "default",
 }: DataTablePaginationProps<TData>) {
-  // Convert 'lg' size to 'default' for SelectTrigger since it only accepts 'sm' | 'default'
+  // SelectTrigger only accepts "sm" | "default".
   const selectSize = size === "lg" ? "default" : size;
 
   return (
@@ -57,7 +58,6 @@ export function DataTablePagination<TData>({
           <Select
             value={table.getState().pagination.pageSize.toString()}
             onValueChange={(value) => {
-              // Validate the input value
               const numericValue = parseInt(value, 10);
               if (isNaN(numericValue) || numericValue <= 0) {
                 console.error(`Invalid page size value: ${value}`);
@@ -65,17 +65,15 @@ export function DataTablePagination<TData>({
               }
 
               try {
-                // Force URL update via direct window manipulation first
-                // This ensures the URL gets updated before the table state changes
+                // Update the URL before the table state, so a consumer
+                // syncing pagination from the URL doesn't read a stale value.
                 const url = new URL(window.location.href);
                 url.searchParams.set("pageSize", value);
-                url.searchParams.set("page", "1"); // Always reset to page 1
+                url.searchParams.set("page", "1");
                 window.history.replaceState({}, "", url.toString());
 
-                // Then use the table's pagination change handler to update table state
-                // This order ensures the URL is already set when the table state updates
                 table.setPagination({
-                  pageIndex: 0, // Reset to first page
+                  pageIndex: 0,
                   pageSize: numericValue,
                 });
               } catch (error) {
