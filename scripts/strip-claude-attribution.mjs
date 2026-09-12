@@ -22,7 +22,12 @@ const kept = lines.filter((line) => !ATTRIBUTION_LINE.test(line));
 if (kept.length !== lines.length) {
   // Collapse any run of blank lines left behind by the removal, and drop a
   // trailing blank line so the message doesn't end with dangling newlines.
-  const cleaned = kept.join("\n").replace(/\n{3,}/g, "\n\n").replace(/\n+$/, "\n");
+  const cleaned = kept
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/\n+$/, "\n");
   writeFileSync(file, cleaned);
-  console.log("strip-claude-attribution: removed Claude attribution line(s) from commit message.");
+  console.log(
+    "strip-claude-attribution: removed Claude attribution line(s) from commit message.",
+  );
 }
