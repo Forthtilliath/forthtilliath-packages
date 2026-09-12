@@ -71,6 +71,37 @@ exactly this bug at one point; use the named-import form above.
 Each variant is additive: `reactConfig`/`angularConfig` extend `baseConfig`,
 `nextJsConfig`/`storybookConfig` extend `reactConfig`.
 
+### Customizing a variant
+
+Each variant is also exported as a factory (`createBaseConfig`,
+`createReactConfig`, `createNextJsConfig`, `createStorybookConfig`,
+`createAngularConfig`) taking an options object — the plain `baseConfig`,
+`reactConfig`, etc. exports above are just that factory called with no
+arguments. Pass options to opt out of a default:
+
+```ts
+// Turn off Prettier conflict-resolution (e.g. the project doesn't use Prettier)
+import { createReactConfig } from "@forthtilliath/eslint-config/react";
+export default createReactConfig({ prettier: false });
+```
+
+```ts
+// Fall back to typescript-eslint's `recommended` preset instead of
+// `strictTypeChecked`/`stylisticTypeChecked` (e.g. while migrating an
+// existing codebase), and skip the Turborepo-only rule outside a Turborepo.
+import { createBaseConfig } from "@forthtilliath/eslint-config";
+export default createBaseConfig({ strict: false, turbo: false });
+```
+
+| Option     | Default | Effect                                                                         |
+| ---------- | ------- | ------------------------------------------------------------------------------ |
+| `prettier` | `true`  | Append `eslint-config-prettier` at the end.                                    |
+| `strict`   | `true`  | Use `strictTypeChecked`/`stylisticTypeChecked` instead of plain `recommended`. |
+| `turbo`    | `true`  | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule.                  |
+
+Options are forwarded down the chain, so `createNextJsConfig({ prettier: false })`
+also disables Prettier in the `reactConfig`/`baseConfig` layers it builds on.
+
 ### Typed linting and non-project files
 
 Rules that need type information (`consistent-type-exports`,
