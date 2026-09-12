@@ -8,7 +8,7 @@ import { createReactConfig } from "./react.js";
  * {@link createReactConfig} (same React/naming-convention rules, plus
  * Next.js's own plugin).
  *
- * @param {import("./base.js").BaseConfigOptions} [options]
+ * @param {import("./base.js").BaseConfigOptions & import("./react.js").ReactConfigOptions} [options]
  * @returns {import("eslint").Linter.Config[]}
  * */
 export function createNextJsConfig(options) {
@@ -48,6 +48,12 @@ export function createNextJsConfig(options) {
               "runtime",
               "preferredRegion",
               "maxDuration",
+              // icon.tsx / apple-icon.tsx / opengraph-image.tsx /
+              // twitter-image.tsx: same convention, for the image-generation
+              // route handlers.
+              "alt",
+              "size",
+              "contentType",
             ],
           },
         ],
