@@ -6,7 +6,7 @@ import { createReactConfig } from "./react.js";
 /**
  * A custom ESLint configuration for libraries that use React and Storybook.
  *
- * @param {import("./base.js").BaseConfigOptions} [options]
+ * @param {import("./base.js").BaseConfigOptions & import("./react.js").ReactConfigOptions} [options]
  * @returns {import("eslint").Linter.Config[]} */
 export function createStorybookConfig(options) {
   return defineConfig([
