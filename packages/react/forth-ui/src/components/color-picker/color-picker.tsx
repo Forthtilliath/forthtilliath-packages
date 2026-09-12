@@ -11,6 +11,8 @@ export interface ColorPickerProps {
   onValueChange?: (value: string) => void;
   disabled?: boolean;
   className?: string;
+  /** Accessible name for the color swatch, which otherwise has no visible text. */
+  ariaLabel?: string;
 }
 
 const HEX_PATTERN = /^#[0-9a-f]{6}$/i;
@@ -35,6 +37,7 @@ export function ColorPicker({
   onValueChange,
   disabled = false,
   className,
+  ariaLabel = "Choose color",
 }: ColorPickerProps) {
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState(defaultValue);
@@ -53,6 +56,7 @@ export function ColorPicker({
       className={cn("flex items-center gap-2", className)}
     >
       <label
+        aria-label={ariaLabel}
         className={cn(
           "border-input size-9 shrink-0 overflow-hidden rounded-md border shadow-xs",
           disabled && "pointer-events-none opacity-50",
