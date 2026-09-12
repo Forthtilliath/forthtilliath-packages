@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode, useEffect, useRef } from "react";
 
 export interface FocusOnMountProps {
