@@ -63,19 +63,25 @@ import { angularConfig } from "@forthtilliath/eslint-config/angular";
 export default angularConfig;
 ```
 
-All five are **named** exports — a default import (`import config from "..."`)
+```ts
+// A React Native / Expo app
+import { reactNativeConfig } from "@forthtilliath/eslint-config/react-native";
+export default reactNativeConfig;
+```
+
+All six are **named** exports — a default import (`import config from "..."`)
 resolves to the whole module namespace object instead of the config array and
 crashes ESLint's flat-config loader outright. Two of the five variants had
 exactly this bug at one point; use the named-import form above.
 
 Each variant is additive: `reactConfig`/`angularConfig` extend `baseConfig`,
-`nextJsConfig`/`storybookConfig` extend `reactConfig`.
+`nextJsConfig`/`storybookConfig`/`reactNativeConfig` extend `reactConfig`.
 
 ### Customizing a variant
 
 Each variant is also exported as a factory (`createBaseConfig`,
 `createReactConfig`, `createNextJsConfig`, `createStorybookConfig`,
-`createAngularConfig`) taking an options object — the plain `baseConfig`,
+`createAngularConfig`, `createReactNativeConfig`) taking an options object — the plain `baseConfig`,
 `reactConfig`, etc. exports above are just that factory called with no
 arguments. Pass options to opt out of a default:
 
@@ -93,17 +99,23 @@ import { createBaseConfig } from "@forthtilliath/eslint-config";
 export default createBaseConfig({ strict: false, turbo: false });
 ```
 
-| Option           | Default | Effect                                                                                                      |
-| ---------------- | ------- | ----------------------------------------------------------------------------------------------------------- |
-| `prettier`       | `true`  | Append `eslint-config-prettier` at the end.                                                                 |
-| `strict`         | `true`  | Use `strictTypeChecked`/`stylisticTypeChecked` instead of plain `recommended`.                              |
-| `turbo`          | `true`  | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule.                                               |
-| `a11y`           | `true`  | _(react/nextjs/storybook)_ Enable `eslint-plugin-jsx-a11y`'s recommended rules.                             |
-| `i18n`           | `false` | _(react/nextjs/storybook)_ Enable `eslint-plugin-i18next`'s `no-literal-string` rule.                       |
-| `testingLibrary` | `false` | _(react/nextjs/storybook)_ Enable `eslint-plugin-testing-library` + `eslint-plugin-jest-dom` on test files. |
+| Option           | Default  | Effect                                                                                                                                                                                                   |
+| ---------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prettier`       | `true`   | Append `eslint-config-prettier` at the end.                                                                                                                                                              |
+| `strict`         | `true`   | Use `strictTypeChecked`/`stylisticTypeChecked` instead of plain `recommended`.                                                                                                                           |
+| `turbo`          | `true`   | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule.                                                                                                                                            |
+| `a11y`           | `true`\* | _(react/nextjs/storybook/react-native)_ Enable `eslint-plugin-jsx-a11y`'s recommended rules. \*Defaults to `false` in `createReactNativeConfig` (jsx-a11y targets DOM semantics, which RN doesn't have). |
+| `i18n`           | `false`  | _(react/nextjs/storybook/react-native)_ Enable `eslint-plugin-i18next`'s `no-literal-string` rule.                                                                                                       |
+| `testingLibrary` | `false`  | _(react/nextjs/storybook/react-native)_ Enable `eslint-plugin-testing-library` + `eslint-plugin-jest-dom` on test files.                                                                                 |
 
 Options are forwarded down the chain, so `createNextJsConfig({ prettier: false })`
 also disables Prettier in the `reactConfig`/`baseConfig` layers it builds on.
+
+`createReactNativeConfig` also always adds `eslint-plugin-react-native`
+(`no-unused-styles`, `no-single-element-style-arrays`,
+`split-platform-components`, `no-raw-text`; `no-inline-styles` and
+`sort-styles` stay off — stylistic, not correctness) and the RN/Metro-injected
+`__DEV__` global — these aren't behind an option, unlike the toggles above.
 
 ```ts
 // Full i18n project (next-intl, react-intl...): forbid hardcoded JSX strings
@@ -112,9 +124,11 @@ export default createNextJsConfig({ i18n: true });
 ```
 
 ```ts
-// React Native / Expo: jsx-a11y targets DOM semantics and doesn't apply
-import { createReactConfig } from "@forthtilliath/eslint-config/react";
-export default createReactConfig({ a11y: false });
+// React Native / Expo, customized: same options as createReactConfig, plus
+// eslint-plugin-react-native's rules (a11y is off by default here, since
+// jsx-a11y targets DOM semantics and doesn't apply to RN)
+import { createReactNativeConfig } from "@forthtilliath/eslint-config/react-native";
+export default createReactNativeConfig({ testingLibrary: true });
 ```
 
 ### Typed linting and non-project files
