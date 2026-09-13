@@ -32,8 +32,6 @@ export function createReactNativeConfig({ a11y = false, ...options } = {}) {
         "react-native": pluginReactNative,
       },
       rules: {
-        "react-native/no-unused-styles": "error",
-        "react-native/no-single-element-style-arrays": "error",
         "react-native/split-platform-components": "error",
         "react-native/no-raw-text": "error",
         // Off by default: both are stylistic preferences rather than
@@ -41,6 +39,13 @@ export function createReactNativeConfig({ a11y = false, ...options } = {}) {
         // legitimate RN pattern (one-off layout tweaks) that Prettier already
         // keeps readable.
         "react-native/no-inline-styles": "off",
+        // Off: crashes outright under ESLint 10 ("context.getSourceCode is
+        // not a function") — eslint-plugin-react-native@5.0.0 still calls the
+        // API ESLint 10 removed, in the util shared by no-unused-styles/
+        // no-color-literals and in sort-styles/no-single-element-style-arrays
+        // directly. Re-enable once the plugin ships a fix.
+        "react-native/no-unused-styles": "off",
+        "react-native/no-single-element-style-arrays": "off",
         "react-native/sort-styles": "off",
       },
     },
