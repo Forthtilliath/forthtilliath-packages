@@ -32,21 +32,25 @@ export function createReactNativeConfig({ a11y = false, ...options } = {}) {
         "react-native": pluginReactNative,
       },
       rules: {
-        "react-native/split-platform-components": "error",
+        // The only rule of the plugin that doesn't crash under ESLint 10 (see
+        // below) — real, useful signal (raw text outside a <Text>).
         "react-native/no-raw-text": "error",
-        // Off by default: both are stylistic preferences rather than
-        // correctness checks, and inline styles in particular are a common,
-        // legitimate RN pattern (one-off layout tweaks) that Prettier already
-        // keeps readable.
+        // Off by default: stylistic preference rather than a correctness
+        // check, and a common, legitimate RN pattern (one-off layout tweaks)
+        // that Prettier already keeps readable.
         "react-native/no-inline-styles": "off",
-        // Off: crashes outright under ESLint 10 ("context.getSourceCode is
-        // not a function") — eslint-plugin-react-native@5.0.0 still calls the
-        // API ESLint 10 removed, in the util shared by no-unused-styles/
-        // no-color-literals and in sort-styles/no-single-element-style-arrays
-        // directly. Re-enable once the plugin ships a fix.
+        // Off: every other rule crashes outright under ESLint 10
+        // ("context.getSourceCode/getFilename is not a function") —
+        // eslint-plugin-react-native@5.0.0 still calls APIs ESLint 10
+        // removed, either directly (sort-styles,
+        // no-single-element-style-arrays, split-platform-components) or via
+        // the util shared with no-unused-styles/no-color-literals. Re-enable
+        // each once the plugin ships a fix.
         "react-native/no-unused-styles": "off",
         "react-native/no-single-element-style-arrays": "off",
         "react-native/sort-styles": "off",
+        "react-native/split-platform-components": "off",
+        "react-native/no-color-literals": "off",
       },
     },
   ]);
