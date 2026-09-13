@@ -112,10 +112,12 @@ Options are forwarded down the chain, so `createNextJsConfig({ prettier: false }
 also disables Prettier in the `reactConfig`/`baseConfig` layers it builds on.
 
 `createReactNativeConfig` also always adds `eslint-plugin-react-native`
-(`no-unused-styles`, `no-single-element-style-arrays`,
-`split-platform-components`, `no-raw-text`; `no-inline-styles` and
-`sort-styles` stay off — stylistic, not correctness) and the RN/Metro-injected
+(`split-platform-components`, `no-raw-text`) and the RN/Metro-injected
 `__DEV__` global — these aren't behind an option, unlike the toggles above.
+`no-inline-styles` and `sort-styles` stay off (stylistic, not correctness);
+`no-unused-styles` and `no-single-element-style-arrays` also stay off —
+`eslint-plugin-react-native@5.0.0` crashes running them under ESLint 10
+(`context.getSourceCode is not a function`, an API ESLint 10 removed).
 
 ```ts
 // Full i18n project (next-intl, react-intl...): forbid hardcoded JSX strings
