@@ -293,6 +293,9 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^7.1.1
         version: 7.1.1(eslint@10.7.0(jiti@2.7.0))
+      eslint-plugin-react-native:
+        specifier: ^5.0.0
+        version: 5.0.0(eslint@10.7.0(jiti@2.7.0))
       eslint-plugin-react-refresh:
         specifier: ^0.5.4
         version: 0.5.4(eslint@10.7.0(jiti@2.7.0))
@@ -5257,6 +5260,14 @@ packages:
     peerDependencies:
       eslint: '*'
       typescript: '*'
+
+  eslint-plugin-react-native-globals@0.1.2:
+    resolution: {integrity: sha512-9aEPf1JEpiTjcFAmmyw8eiIXmcNZOqaZyHO77wgm0/dWfT/oxC1SrIq8ET38pMxHYrcB6Uew+TzUVsBeczF88g==}
+
+  eslint-plugin-react-native@5.0.0:
+    resolution: {integrity: sha512-VyWlyCC/7FC/aONibOwLkzmyKg4j9oI8fzrk9WYNs4I8/m436JuOTAFwLvEn1CVvc7La4cPfbCyspP4OYpP52Q==}
+    peerDependencies:
+      eslint: ^3.17.0 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
 
   eslint-plugin-react-refresh@0.5.4:
     resolution: {integrity: sha512-7bqTKz7T0r+HKWFarNXByDE9/5+73wI2ru+M3zuqGbR7s/b/5/pQJXZoufWlrngqGqoZto73ZkGumCdLxk+4rw==}
@@ -13810,6 +13821,13 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
+
+  eslint-plugin-react-native-globals@0.1.2: {}
+
+  eslint-plugin-react-native@5.0.0(eslint@10.7.0(jiti@2.7.0)):
+    dependencies:
+      eslint: 10.7.0(jiti@2.7.0)
+      eslint-plugin-react-native-globals: 0.1.2
 
   eslint-plugin-react-refresh@0.5.4(eslint@10.7.0(jiti@2.7.0)):
     dependencies:
