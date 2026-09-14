@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
+/* eslint-disable @typescript-eslint/no-deprecated -- react-test-renderer is deprecated upstream with no drop-in replacement for RN component trees yet; matches the version glucodose itself uses. */
 import { Pressable, Text, TextInput, View } from "react-native";
 import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
