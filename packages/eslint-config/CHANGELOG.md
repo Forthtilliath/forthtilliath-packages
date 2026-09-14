@@ -1,5 +1,15 @@
 # @forthtilliath/eslint-config
 
+## 0.5.0
+
+### Minor Changes
+
+- 159b7dd: `angularConfig` is now actually tested: `src/angular.test.js` lints fixture files under `src/__fixtures__/angular/` through ESLint's Node API — the only variant with no real consumer in this monorepo to catch it breaking. `angularConfig` also gets a `simple-import-sort/imports` override so `@angular/core`/`rxjs` sort before every other package, ahead of the generic third-party group `baseConfig` uses elsewhere (the conventional Angular reading order). `base.js` exports its Node builtins regex as `NODE_BUILTIN_IMPORT_GROUP` so `angular.js` doesn't duplicate it. README gets a quick-reference table of every variant (subpath, use case, what it extends).
+
+### Patch Changes
+
+- 09ad1c5: Excluded `coverage/**` from every variant's default ignores, alongside `dist/**` and `storybook-static/**`. Without it, a package with a vitest `coverage` report on disk (e.g. the generated `coverage/lcov-report/*.js`) crashed type-aware linting outright instead of being skipped.
+
 ## 0.4.2
 
 ### Patch Changes
