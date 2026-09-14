@@ -33,6 +33,9 @@
     "expo-file-system": ">=54.0.0",
     "expo-intent-launcher": ">=12.0.0"
   },
+  "dependencies": {
+    "@forthtilliath/ts-kit": "workspace:*"
+  },
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
