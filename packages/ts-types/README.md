@@ -18,7 +18,12 @@ in-house here so the rest of the monorepo doesn't need an extra dependency.
 
 ```ts
 import type { NonEmptyArray } from "@forthtilliath/ts-types/array";
+import type { Brand, Opaque } from "@forthtilliath/ts-types/brand";
+import type { Maybe, Nullable } from "@forthtilliath/ts-types/common";
+import type { AsyncReturnType } from "@forthtilliath/ts-types/function";
 import type {
+  DeepPartial,
+  DeepReadonly,
   Entries,
   ExactRecord,
   KeysMatching,
@@ -31,6 +36,7 @@ import type {
   StoryComponent,
   StoryDecorator,
 } from "@forthtilliath/ts-types/helpers";
+import type { UnionToTuple } from "@forthtilliath/ts-types/union";
 ```
 
 Also available as one barrel: `import type { ... } from "@forthtilliath/ts-types"`.
@@ -52,6 +58,31 @@ Also available as one barrel: `import type { ... } from "@forthtilliath/ts-types
   type, with `S`'s keys taking priority over `F`'s.
 - `Prettify<T>` — cosmetic only: expands a type alias into its full object
   shape in editor tooltips, instead of showing the alias name.
+- `DeepPartial<T>` — recursively makes all properties (including nested
+  objects and array items) optional.
+- `DeepReadonly<T>` — recursively makes all properties (including nested
+  objects and array items) readonly.
+
+### `brand`
+
+- `Brand<T, B>` / `Opaque<T, B>` — nominal typing: tags a primitive type
+  (e.g. `Brand<string, "UserId">`) so values with the same runtime shape but
+  different brands can't be mixed up by mistake.
+
+### `common`
+
+- `Nullable<T>` — `T | null`.
+- `Maybe<T>` — `T | null | undefined`.
+
+### `function`
+
+- `AsyncReturnType<T>` — resolved value type of an async function
+  (`Awaited<ReturnType<T>>`, constrained to async functions).
+
+### `union`
+
+- `UnionToTuple<T>` — turns a union into a tuple of its members (order not
+  guaranteed; best for small, stable unions).
 
 ### `helpers`
 
