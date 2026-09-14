@@ -5,8 +5,14 @@ interface ProgressEvent {
   totalBytes: number;
 }
 
+interface FakeDownloadedFile {
+  contentUri: string;
+  info: () => { md5?: string };
+  delete: () => void;
+}
+
 interface FakeDownloadTask {
-  downloadAsync: () => Promise<{ contentUri: string } | undefined>;
+  downloadAsync: () => Promise<FakeDownloadedFile | undefined>;
 }
 
 type CreateDownloadTask = (
@@ -16,6 +22,7 @@ type CreateDownloadTask = (
 ) => FakeDownloadTask;
 
 let fileExists = false;
+let downloadedMd5: string | undefined = "abc123";
 const mockDelete = vi.fn();
 const mockCreateDownloadTask = vi.fn<CreateDownloadTask>();
 
@@ -49,11 +56,22 @@ vi.mock("expo-intent-launcher", () => ({
 
 const { downloadAndInstallApk } = await import("./downloadAndInstallApk.js");
 
-function mockDownloadTask(result: { contentUri: string } | undefined) {
+const mockDeleteDownloadedFile = vi.fn();
+
+function mockDownloadTask(
+  result: { contentUri: string } | undefined,
+  md5 = downloadedMd5,
+) {
   mockCreateDownloadTask.mockImplementation((_url, _dest, options) => ({
     downloadAsync: () => {
       options.onProgress({ bytesWritten: 50, totalBytes: 100 });
-      return Promise.resolve(result);
+      return Promise.resolve(
+        result && {
+          ...result,
+          info: () => ({ md5 }),
+          delete: mockDeleteDownloadedFile,
+        },
+      );
     },
   }));
 }
@@ -61,7 +79,9 @@ function mockDownloadTask(result: { contentUri: string } | undefined) {
 describe("downloadAndInstallApk", () => {
   beforeEach(() => {
     fileExists = false;
+    downloadedMd5 = "abc123";
     mockDelete.mockClear();
+    mockDeleteDownloadedFile.mockClear();
     mockCreateDownloadTask.mockReset();
     mockStartActivityAsync.mockClear();
   });
@@ -124,5 +144,43 @@ describe("downloadAndInstallApk", () => {
       }),
     ).rejects.toThrow("The download failed.");
     expect(mockStartActivityAsync).not.toHaveBeenCalled();
+  });
+
+  it("installs when the downloaded file matches the expected md5", async () => {
+    mockDownloadTask({ contentUri: "content://downloads/app.apk" }, "abc123");
+
+    await downloadAndInstallApk({
+      apkUrl: "https://example.com/app.apk",
+      fileName: "app-update.apk",
+      expectedMd5: "ABC123",
+    });
+
+    expect(mockStartActivityAsync).toHaveBeenCalled();
+    expect(mockDeleteDownloadedFile).not.toHaveBeenCalled();
+  });
+
+  it("deletes the file and throws when the md5 doesn't match", async () => {
+    mockDownloadTask({ contentUri: "content://downloads/app.apk" }, "abc123");
+
+    await expect(
+      downloadAndInstallApk({
+        apkUrl: "https://example.com/app.apk",
+        fileName: "app-update.apk",
+        expectedMd5: "def456",
+      }),
+    ).rejects.toThrow("APK checksum mismatch: expected def456, got abc123.");
+    expect(mockDeleteDownloadedFile).toHaveBeenCalledTimes(1);
+    expect(mockStartActivityAsync).not.toHaveBeenCalled();
+  });
+
+  it("skips the checksum check when expectedMd5 is not provided", async () => {
+    mockDownloadTask({ contentUri: "content://downloads/app.apk" }, undefined);
+
+    await downloadAndInstallApk({
+      apkUrl: "https://example.com/app.apk",
+      fileName: "app-update.apk",
+    });
+
+    expect(mockStartActivityAsync).toHaveBeenCalled();
   });
 });
