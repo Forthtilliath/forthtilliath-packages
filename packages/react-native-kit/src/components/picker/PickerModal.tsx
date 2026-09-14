@@ -1,7 +1,5 @@
 import { useMemo, useState } from "react";
-import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
 import {
-  Image,
   Modal,
   Pressable,
   SectionList,
@@ -11,7 +9,19 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import type {
+  PickerModalLabels,
+  PickerModalStyles,
+} from "./PickerModal.styles.js";
+import { defaultLabels, defaultStyles } from "./PickerModal.styles.js";
+import { PickerModalRow } from "./PickerModalRow.js";
+import { usePickerModalSections } from "./usePickerModalSections.js";
 import { VoiceSearchButton } from "./VoiceSearchButton.js";
+
+export type {
+  PickerModalLabels,
+  PickerModalStyles,
+} from "./PickerModal.styles.js";
 
 export interface PickerItem {
   id: number;
@@ -24,36 +34,6 @@ export interface PickerItem {
    * best global matches are shown instead, not the grouped-by-section list.
    */
   group?: string;
-}
-
-export interface PickerModalStyles {
-  container?: StyleProp<ViewStyle>;
-  header?: StyleProp<ViewStyle>;
-  title?: StyleProp<TextStyle>;
-  close?: StyleProp<TextStyle>;
-  searchRow?: StyleProp<ViewStyle>;
-  search?: StyleProp<TextStyle>;
-  row?: StyleProp<ViewStyle>;
-  rowThumbnail?: StyleProp<ImageStyle>;
-  rowThumbnailPlaceholder?: StyleProp<ViewStyle>;
-  rowLabel?: StyleProp<TextStyle>;
-  rowSubtitle?: StyleProp<TextStyle>;
-  empty?: StyleProp<TextStyle>;
-  sectionHeader?: StyleProp<TextStyle>;
-  extraActions?: StyleProp<ViewStyle>;
-  extraActionLabel?: StyleProp<TextStyle>;
-  extraActionIconColor?: string;
-  rowThumbnailPlaceholderIconColor?: string;
-  placeholderTextColor?: string;
-}
-
-export interface PickerModalLabels {
-  close?: string;
-  searchPlaceholder?: string;
-  searchAccessibilityLabel?: string;
-  voiceSearchAccessibilityLabel?: string;
-  defaultEmptyMessage?: string;
-  otherGroupLabel?: string;
 }
 
 export interface PickerModalProps {
@@ -78,90 +58,6 @@ export interface PickerModalProps {
   labels?: PickerModalLabels;
   styles?: PickerModalStyles;
 }
-
-const defaultStyles: Required<PickerModalStyles> = {
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    paddingTop: 60,
-    paddingHorizontal: 16,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  title: { fontSize: 20, fontWeight: "700", color: "#111827" },
-  close: { fontSize: 16, color: "#2563eb" },
-  searchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    marginBottom: 8,
-  },
-  search: {
-    backgroundColor: "#f9fafb",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 16,
-    color: "#111827",
-    flex: 1,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    backgroundColor: "#f9fafb",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 8,
-  },
-  rowThumbnail: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: "#ffffff",
-  },
-  rowThumbnailPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rowLabel: { fontSize: 16, fontWeight: "600", color: "#111827" },
-  rowSubtitle: { fontSize: 13, color: "#6b7280", marginTop: 2 },
-  empty: { textAlign: "center", color: "#6b7280", marginTop: 24 },
-  sectionHeader: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#6b7280",
-    textTransform: "uppercase",
-    marginTop: 8,
-    marginBottom: 6,
-  },
-  extraActions: { marginBottom: 4 },
-  extraActionLabel: { color: "#2563eb" },
-  extraActionIconColor: "#2563eb",
-  rowThumbnailPlaceholderIconColor: "#6b7280",
-  placeholderTextColor: "#6b7280",
-};
-
-const defaultLabels: Required<PickerModalLabels> = {
-  close: "Fermer",
-  searchPlaceholder: "Rechercher…",
-  searchAccessibilityLabel: "Rechercher",
-  voiceSearchAccessibilityLabel: "Dicter la recherche",
-  defaultEmptyMessage: "Aucun résultat.",
-  otherGroupLabel: "Autres",
-};
 
 // Full-screen picker: search (typed or dictated), optional sections, and
 // "add" actions always visible above the results.
@@ -235,29 +131,17 @@ export function PickerModal({
     return items.filter((item) => item.label.toLowerCase().includes(q));
   }, [items, query, filterItems, isSearching]);
 
-  // Sections sorted by title: stable order, independent of the source
-  // groups' order. No sections during a search (results ranked by relevance,
-  // not by group), nor if no item has a group (uncategorized pickers,
-  // unchanged behavior).
-  const sections = useMemo(() => {
-    if (isSearching || !filtered.some((item) => item.group)) {
-      return [{ title: null as string | null, data: filtered }];
-    }
-    const byGroup = new Map<string, PickerItem[]>();
-    for (const item of filtered) {
-      const key = item.group ?? t.otherGroupLabel;
-      const group = byGroup.get(key);
-      if (group) group.push(item);
-      else byGroup.set(key, [item]);
-    }
-    function sortIndex(groupTitle: string): number {
-      const index = groupOrder?.indexOf(groupTitle) ?? -1;
-      return index === -1 ? (groupOrder?.length ?? 0) : index;
-    }
-    return [...byGroup.entries()]
-      .sort(([a], [b]) => sortIndex(a) - sortIndex(b) || a.localeCompare(b))
-      .map(([sectionTitle, data]) => ({ title: sectionTitle, data }));
-  }, [filtered, isSearching, groupOrder, t.otherGroupLabel]);
+  const sections = usePickerModalSections(
+    filtered,
+    isSearching,
+    groupOrder,
+    t.otherGroupLabel,
+  );
+
+  function handleSelect(item: PickerItem) {
+    onSelect(item);
+    setQuery("");
+  }
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -332,39 +216,11 @@ export function PickerModal({
             ) : null
           }
           renderItem={({ item }: { item: PickerItem }) => (
-            <Pressable
-              style={merged.row}
-              onPress={() => {
-                onSelect(item);
-                setQuery("");
-              }}
-              accessibilityRole="button"
-              accessibilityLabel={
-                item.subtitle ? `${item.label}, ${item.subtitle}` : item.label
-              }
-            >
-              {item.imageUri ? (
-                <Image
-                  source={{ uri: item.imageUri }}
-                  style={merged.rowThumbnail}
-                  accessibilityIgnoresInvertColors
-                />
-              ) : item.imageUri === null ? (
-                <View style={merged.rowThumbnailPlaceholder}>
-                  <Ionicons
-                    name="cube-outline"
-                    size={18}
-                    color={merged.rowThumbnailPlaceholderIconColor}
-                  />
-                </View>
-              ) : null}
-              <View style={{ flex: 1 }}>
-                <Text style={merged.rowLabel}>{item.label}</Text>
-                {item.subtitle ? (
-                  <Text style={merged.rowSubtitle}>{item.subtitle}</Text>
-                ) : null}
-              </View>
-            </Pressable>
+            <PickerModalRow
+              item={item}
+              styles={merged}
+              onSelect={handleSelect}
+            />
           )}
         />
       </View>
