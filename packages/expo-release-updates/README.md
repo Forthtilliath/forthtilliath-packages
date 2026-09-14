@@ -27,6 +27,7 @@ the barrel to pull everything from a single import:
 
 ```ts
 import { compareVersions } from "@forthtilliath/expo-release-updates/compareVersions";
+import { isUpdateAvailable } from "@forthtilliath/expo-release-updates/isUpdateAvailable";
 import {
   fetchLatestRelease,
   fetchReleaseHistory,
@@ -37,6 +38,7 @@ import { parseChangelogNotes } from "@forthtilliath/expo-release-updates/parseCh
 // Or, everything at once:
 import {
   compareVersions,
+  isUpdateAvailable,
   fetchLatestRelease,
   fetchReleaseHistory,
   downloadAndInstallApk,
@@ -64,18 +66,28 @@ compareVersions("2.0.0", "1.9.9"); // 1
 compareVersions("1.2.3", "1.2.3"); // 0
 ```
 
-### `fetchLatestRelease({ owner, repo })`
+### `isUpdateAvailable(currentVersion, latestVersion)`
 
-Fetches the latest GitHub release and its `.apk` asset. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails.
+Named wrapper around `compareVersions` for the common "should I show the update prompt?" check — reads as intent instead of a bare `compareVersions(a, b) > 0` repeated at every call site.
+
+```ts
+if (release && isUpdateAvailable(currentVersion, release.version)) {
+  // an update is available
+}
+```
+
+### `fetchLatestRelease({ owner, repo, token? })`
+
+Fetches the latest GitHub release and its `.apk` asset. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails. Pass `token` (a GitHub personal access token or `GITHUB_TOKEN`) for private repos, or to raise the API rate limit from 60 to 5000 requests/hour on public ones.
 
 ```ts
 const release = await fetchLatestRelease({ owner: "acme", repo: "app" });
-if (release && compareVersions(release.version, currentVersion) > 0) {
+if (release && isUpdateAvailable(currentVersion, release.version)) {
   // an update is available: release.version, release.notes, release.apkUrl
 }
 ```
 
-### `fetchReleaseHistory({ owner, repo, limit? })`
+### `fetchReleaseHistory({ owner, repo, limit?, token? })`
 
 Fetches the most recent releases (version, notes, publish date), most recent first. `limit` defaults to `10` — useful for a "release history" / "what's new" screen.
 
@@ -88,15 +100,16 @@ const history = await fetchReleaseHistory({
 // [{ version: "1.11.0", notes: "### Added\n- ...", publishedAt: "2026-07-30T..." }, ...]
 ```
 
-### `downloadAndInstallApk({ apkUrl, fileName, onProgress? })`
+### `downloadAndInstallApk({ apkUrl, fileName, onProgress?, expectedMd5? })`
 
-Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there).
+Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there). Pass `expectedMd5` to verify the downloaded file's integrity before installing — a mismatch deletes the file and throws instead. GitHub Releases has no built-in signature check the way an app store does, so this is the standard safeguard against a corrupted or tampered download; publish the checksum alongside the release (e.g. in the release notes or a `.md5` asset).
 
 ```ts
 await downloadAndInstallApk({
   apkUrl: release.apkUrl,
   fileName: "myapp-update.apk",
   onProgress: (fraction) => setProgress(fraction),
+  expectedMd5: release.apkMd5,
 });
 ```
 
