@@ -1,0 +1,51 @@
+{
+  "name": "@forthtilliath/expo-release-updates-ui",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/forthtilliath-packages.git",
+    "directory": "packages/expo-release-updates-ui"
+  },
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/expo-release-updates-ui#readme",
+  "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js"
+  },
+  "dependencies": {
+    "@forthtilliath/expo-release-updates": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native": ">=0.81"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-test-renderer": "^19.1.0",
+    "eslint": "catalog:",
+    "react": "catalog:",
+    "react-native": "0.86.0",
+    "react-test-renderer": "19.2.3",
+    "typescript": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}
