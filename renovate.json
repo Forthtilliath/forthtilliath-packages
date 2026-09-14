@@ -19,6 +19,11 @@
       ],
       "groupName": "major framework upgrades (manual review)",
       "dependencyDashboardApproval": true
+    },
+    {
+      "matchFileNames": ["packages/eslint-config/package.json"],
+      "groupName": "eslint-config (eslint/angular plugins)",
+      "description": "The ESLint/angular-eslint/typescript-eslint plugin ecosystem eslint-config wraps is declared as regular `dependencies` there (consumers need it at runtime), not `devDependencies` — the generic devDependencies group above doesn't cover it. A version mismatch between e.g. `eslint` and `eslint-plugin-react` breaks eslint-config outright, so every update coming from this one package.json (its own devDependencies too, incl. the @angular/core/rxjs test fixtures) is grouped into a single PR instead of racing each other."
     }
   ],
   "lockFileMaintenance": {
