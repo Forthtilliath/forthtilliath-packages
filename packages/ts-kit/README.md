@@ -37,6 +37,15 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 
 - `chunk(array, size)` — splits an array into chunks of a given size.
 - `flattenDeep(array)` — recursively flattens nested arrays.
+- `getMostRecentIds(rows, limit?)` — most recently occurring distinct ids
+  (`{ id, occurredAt }[]`), most recent first, deduplicated, limited
+  (default 5).
+- `nextInCycle(ids, currentId)` — next id in a short list (e.g. cycling
+  through recents on tap) — wraps to the first if `currentId` is at the end
+  or no longer in the list.
+- `rankByNameMatch(items, query, getName)` — ranks `items` by relevance to
+  `query`: earlier match position first, then shorter name — for a
+  search-as-you-type list.
 
 ### `async`
 
@@ -78,6 +87,9 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `isSameDay(a, b)` — checks whether two dates fall on the same local day.
 - `formatRelativeTime(date, baseDate?, locale?)` — human-readable relative
   time ("3 hours ago"), backed by `Intl.RelativeTimeFormat`.
+- `getPeriodStartMs(period, now?)` — start timestamp (ms) for a
+  `"today" | "7d" | "30d" | "all"` period filter, or `null` for `"all"`.
+  `"today"` is the current calendar day, not a rolling 24h window.
 
 ### `files`
 
@@ -102,6 +114,8 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `round(value, decimals?)` — rounds to a given number of decimal places.
 - `formatBytes(bytes, decimals?)` — human-readable byte size ("1.5 MB").
 - `formatDuration(ms)` — human-readable duration ("1d 1h 1m 1s").
+- `formatCsvNumber(value, decimals?)` — formats a number with a comma
+  decimal separator (French-locale spreadsheets) instead of JS's dot.
 
 ### `object`
 
@@ -122,6 +136,13 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
   hyphenated).
 - `pluralize(count, singular, plural?)` — naive English pluralization, with an
   override for irregular words.
+- `normalizeForSearch(text)` — lowercases, trims, strips accents, and expands
+  œ/æ ligatures (which `normalize("NFD")` alone doesn't decompose) — for
+  accent/case-insensitive search matching.
+- `escapeCsvField(value)` — quotes and escapes a CSV field (RFC 4180) only if
+  it contains a `"`, `;`, or newline.
+- `escapeHtml(text)` — basic HTML entity escaping (`&`, `<`, `>`, `"`) for
+  inserting user text into an HTML template.
 
 ## Scripts
 
