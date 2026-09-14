@@ -20,7 +20,8 @@
     "lint": "eslint . --max-warnings 0",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "files": [
     "dist"
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
+    "@vitest/coverage-v8": "4.1.10",
     "eslint": "catalog:",
     "jsdom": "^29.1.1",
     "typescript": "catalog:",

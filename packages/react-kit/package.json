@@ -20,7 +20,8 @@
     "dev": "tsc --watch -p tsconfig.build.json",
     "build": "pnpm run clean && tsc -p tsconfig.build.json",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "size": "size-limit"
   },
   "files": [
     "dist"
@@ -34,12 +35,21 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
+    "@size-limit/file": "^11.2.0",
     "@testing-library/react": "^16.3.2",
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "jsdom": "^29.1.1",
     "react-dom": "catalog:",
+    "size-limit": "^11.2.0",
     "typescript": "catalog:",
     "vitest": "^4.1.10"
-  }
+  },
+  "size-limit": [
+    {
+      "name": "dist (all modules, brotli)",
+      "path": "dist/**/*.js",
+      "limit": "10 KB"
+    }
+  ]
 }
