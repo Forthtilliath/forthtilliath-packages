@@ -337,6 +337,9 @@ importers:
       '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@forthtilliath/test-kit':
+        specifier: workspace:*
+        version: link:../test-kit
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -768,6 +771,27 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+
+  packages/test-kit:
+    devDependencies:
+      '@forthtilliath/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@forthtilliath/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.2.0
+      eslint:
+        specifier: 'catalog:'
+        version: 10.7.0(jiti@2.7.0)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.10
+        version: 4.1.10(@types/node@26.2.0)(jsdom@29.1.1)(vite@7.3.6(@types/node@26.2.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.49.2)(tsx@4.23.12)(yaml@2.9.0))
 
   packages/ts-kit:
     devDependencies:

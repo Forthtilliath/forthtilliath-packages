@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { createMockResponse } from "@forthtilliath/test-kit/createMockResponse";
+
 import { fetchLatestRelease, fetchReleaseHistory } from "./githubReleases.js";
 
 const ref = { owner: "acme", repo: "app" };
 
 function mockFetchOnce(body: unknown, ok = true, status = 200) {
-  const fetchMock = vi.fn().mockResolvedValue({
-    ok,
-    status,
-    json: () => Promise.resolve(body),
-  });
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValue(createMockResponse(body, { ok, status }));
   vi.stubGlobal("fetch", fetchMock);
   return fetchMock;
 }
