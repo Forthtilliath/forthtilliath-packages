@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
+/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import { Pressable, Text, View } from "react-native";
 import type { ReactTestInstance } from "react-test-renderer";
 import { act, create } from "react-test-renderer";

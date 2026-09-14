@@ -19,18 +19,23 @@ export * from "./components/settings/ThemeSettingsScreen.js";
 export * from "./components/settings/UpdateSettingsScreen.js";
 export * from "./components/theme/ThemeOptionList.js";
 export * from "./components/theme/ThemeToggle.js";
-export * from "./components/update/ChangelogNotes.js";
-export * from "./components/update/UpdateAvailableBanner.js";
 export * from "./hooks/useDebouncedChange.js";
 export * from "./hooks/useEffectiveColorScheme.js";
 export * from "./hooks/useSubmitGuard.js";
-export * from "./hooks/useUpdateCheck.js";
-export * from "./utils/format/escapeCsvField.js";
-export * from "./utils/format/escapeHtml.js";
-export * from "./utils/format/formatCsvNumber.js";
 export * from "./utils/helpers/confirmDestructive.js";
-export * from "./utils/helpers/getMostRecentIds.js";
-export * from "./utils/helpers/getPeriodStartMs.js";
-export * from "./utils/helpers/nextInCycle.js";
-export * from "./utils/helpers/normalizeForSearch.js";
-export * from "./utils/helpers/rankByNameMatch.js";
+// Framework-agnostic — actually implemented (and tested/documented) in
+// ts-kit, re-exported here so existing imports of these names keep working.
+export {
+  getMostRecentIds,
+  type RecentIdRow,
+} from "@forthtilliath/ts-kit/array/getMostRecentIds";
+export { nextInCycle } from "@forthtilliath/ts-kit/array/nextInCycle";
+export { rankByNameMatch } from "@forthtilliath/ts-kit/array/rankByNameMatch";
+export {
+  getPeriodStartMs,
+  type PeriodFilter,
+} from "@forthtilliath/ts-kit/date/getPeriodStartMs";
+export { formatCsvNumber } from "@forthtilliath/ts-kit/number/formatCsvNumber";
+export { escapeCsvField } from "@forthtilliath/ts-kit/string/escapeCsvField";
+export { escapeHtml } from "@forthtilliath/ts-kit/string/escapeHtml";
+export { normalizeForSearch } from "@forthtilliath/ts-kit/string/normalizeForSearch";

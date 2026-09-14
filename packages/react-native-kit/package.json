@@ -30,7 +30,8 @@
     "./*": "./dist/*.js"
   },
   "dependencies": {
-    "@forthtilliath/expo-release-updates": "workspace:*"
+    "@forthtilliath/expo-release-updates-ui": "workspace:*",
+    "@forthtilliath/ts-kit": "workspace:*"
   },
   "peerDependencies": {
     "@expo/vector-icons": ">=15.0.0",

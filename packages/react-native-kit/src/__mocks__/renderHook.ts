@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
+/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import * as React from "react";
 import { act, create } from "react-test-renderer";
 
