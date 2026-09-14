@@ -1,8 +1,8 @@
 # @forthtilliath/ts-kit
 
 Framework-agnostic TypeScript utility functions — arrays, objects, strings,
-async control-flow, dates, numbers, browser file downloads, and a couple of
-`Array` extensions with better type-narrowing.
+async control-flow, dates, numbers, browser file downloads, changelog/version
+parsing, and a couple of `Array` extensions with better type-narrowing.
 
 ## Install
 
@@ -103,6 +103,14 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `randomId()` — `crypto.randomUUID()` with fallbacks for older/insecure
   contexts.
 
+### `markdown`
+
+- `parseChangelogNotes(notes)` — parses a small subset of Markdown
+  (`### heading`, `- item`, `**bold**`) commonly found in GitHub release
+  notes into a list of typed blocks (`heading` / `item` / `text`, each with
+  `bold`-aware segments), ready for a UI layer to render without a full
+  Markdown dependency.
+
 ### `maths`
 
 - `sum(numbers)` — sum of an array of numbers.
@@ -143,6 +151,11 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
   it contains a `"`, `;`, or newline.
 - `escapeHtml(text)` — basic HTML entity escaping (`&`, `<`, `>`, `"`) for
   inserting user text into an HTML template.
+
+### `version`
+
+- `compareVersions(a, b)` — compares two `"x.y.z"` version strings, segment
+  by segment; `-1`/`0`/`1`.
 
 ## Scripts
 
