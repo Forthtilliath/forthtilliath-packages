@@ -1,5 +1,11 @@
 # @forthtilliath/ts-kit
 
+## 0.5.0
+
+### Minor Changes
+
+- 05f2fa3: Moved `compareVersions` (new `version/` category) and `parseChangelogNotes` (new `markdown/` category) from `@forthtilliath/expo-release-updates` into `@forthtilliath/ts-kit` — both were 100% framework-agnostic. `expo-release-updates` now re-exports them from `ts-kit`, so its public API (root barrel and `@forthtilliath/expo-release-updates/compareVersions` / `.../parseChangelogNotes` deep imports) is unchanged.
+
 ## 0.4.0
 
 ### Minor Changes
