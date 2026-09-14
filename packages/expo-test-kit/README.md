@@ -22,16 +22,21 @@ Or, from within this monorepo, as a workspace dependency:
 
 ## Usage
 
-Each function is its own module — import the file you need directly:
+Each function is its own module — import the file you need directly. Files
+are grouped by config so a future addition (another DB driver, another fake)
+has an obvious home instead of piling into one flat `src/`:
+
+- `sqlite/` — the SQLite/Drizzle/libsql test database and its mocking helper.
+- `file-system/` — the `expo-file-system` fake.
 
 ```ts
 import {
   createTestDb,
   type TestDb,
-} from "@forthtilliath/expo-test-kit/createTestDb";
-import { closeTestDb } from "@forthtilliath/expo-test-kit/closeTestDb";
-import { resetTestDb } from "@forthtilliath/expo-test-kit/resetTestDb";
-import { mockDbClient } from "@forthtilliath/expo-test-kit/mockDbClient";
+} from "@forthtilliath/expo-test-kit/sqlite/createTestDb";
+import { closeTestDb } from "@forthtilliath/expo-test-kit/sqlite/closeTestDb";
+import { resetTestDb } from "@forthtilliath/expo-test-kit/sqlite/resetTestDb";
+import { mockDbClient } from "@forthtilliath/expo-test-kit/sqlite/mockDbClient";
 ```
 
 ### `createTestDb(schema, migrationsFolder)` / `closeTestDb(db)` / `resetTestDb(db, tables)`
@@ -77,7 +82,7 @@ A minimal in-memory `File`/`Paths` fake — enough to test code that reads/write
 import {
   createFakeExpoFileSystem,
   getFakeExpoFileSystem,
-} from "@forthtilliath/expo-test-kit/createFakeExpoFileSystem";
+} from "@forthtilliath/expo-test-kit/file-system/createFakeExpoFileSystem";
 
 // jest.mock's factory can't reference an outer variable, so stash + retrieve
 // instead of closing over one:
