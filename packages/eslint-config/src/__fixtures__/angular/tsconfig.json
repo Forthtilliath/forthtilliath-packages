@@ -1,7 +1,6 @@
 {
-  "extends": "@forthtilliath/typescript-config/base.json",
+  "extends": "@forthtilliath/typescript-config/angular.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
     "types": []
   },
   "include": ["*.ts"]
