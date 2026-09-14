@@ -16,8 +16,12 @@
   "exports": {
     ".": "./dist/index.js",
     "./array": "./dist/array/index.js",
+    "./brand": "./dist/brand/index.js",
+    "./common": "./dist/common/index.js",
+    "./function": "./dist/function/index.js",
     "./object": "./dist/object/index.js",
-    "./helpers": "./dist/helpers/index.js"
+    "./helpers": "./dist/helpers/index.js",
+    "./union": "./dist/union/index.js"
   },
   "scripts": {
     "dev": "tsc --watch",
