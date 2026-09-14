@@ -1,6 +1,12 @@
 export interface GithubRepoRef {
   owner: string;
   repo: string;
+  /**
+   * A GitHub personal access token (or `GITHUB_TOKEN` in CI), sent as a
+   * `Bearer` token. Required for private repos; also raises the API rate
+   * limit from 60 to 5000 requests/hour for public ones.
+   */
+  token?: string;
 }
 
 export interface LatestRelease {
@@ -31,6 +37,13 @@ function releasesUrl({ owner, repo }: GithubRepoRef): string {
   return `https://api.github.com/repos/${owner}/${repo}/releases`;
 }
 
+function githubHeaders({ token }: GithubRepoRef): HeadersInit {
+  return {
+    Accept: "application/vnd.github+json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 /**
  * Fetches the latest GitHub release for a repo, along with its `.apk` asset.
  *
@@ -41,7 +54,7 @@ export async function fetchLatestRelease(
   ref: GithubRepoRef,
 ): Promise<LatestRelease | null> {
   const response = await fetch(`${releasesUrl(ref)}/latest`, {
-    headers: { Accept: "application/vnd.github+json" },
+    headers: githubHeaders(ref),
   });
   if (!response.ok)
     throw new Error(`GitHub responded with ${String(response.status)}`);
@@ -69,9 +82,7 @@ export async function fetchReleaseHistory(
   const { limit = 10 } = ref;
   const response = await fetch(
     `${releasesUrl(ref)}?per_page=${String(limit)}`,
-    {
-      headers: { Accept: "application/vnd.github+json" },
-    },
+    { headers: githubHeaders(ref) },
   );
   if (!response.ok)
     throw new Error(`GitHub responded with ${String(response.status)}`);
