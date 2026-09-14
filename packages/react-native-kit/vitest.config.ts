@@ -42,5 +42,19 @@ export default defineConfig({
     // react-test-renderer produces a plain JSON tree, no real DOM needed.
     environment: "node",
     setupFiles: ["./vitest.setup.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "lcov"],
+      exclude: ["**/*.test.{ts,tsx}", "**/__mocks__/**", "src/index.ts"],
+      // Thresholds pinned near this package's actual coverage rather than a
+      // round number — catches a real regression without blocking every PR
+      // that doesn't happen to add a test for its one new line.
+      thresholds: {
+        lines: 88,
+        functions: 85,
+        branches: 83,
+        statements: 87,
+      },
+    },
   },
 });

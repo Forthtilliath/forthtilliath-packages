@@ -22,7 +22,8 @@
     "dev:tw": "pnpm run build:tw --watch",
     "build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw",
     "build:ts": "tsc",
-    "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./dist/globals.css"
+    "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./dist/globals.css",
+    "size": "size-limit"
   },
   "dependencies": {
     "@forthtilliath/react-kit": "workspace:*",
@@ -42,6 +43,7 @@
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/ts-types": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
+    "@size-limit/file": "^11.2.0",
     "@tailwindcss/postcss": "catalog:",
     "@turbo/gen": "catalog:",
     "@types/node": "catalog:",
@@ -50,6 +52,7 @@
     "@types/react-dom": "catalog:",
     "concurrently": "^10.0.4",
     "eslint": "catalog:",
+    "size-limit": "^11.2.0",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   },
@@ -59,5 +62,17 @@
   "exports": {
     "./components/*": "./dist/components/*/index.js",
     "./styles/globals.css": "./dist/globals.css"
-  }
+  },
+  "size-limit": [
+    {
+      "name": "components (all, brotli)",
+      "path": "dist/**/*.js",
+      "limit": "70 KB"
+    },
+    {
+      "name": "globals.css (brotli)",
+      "path": "dist/globals.css",
+      "limit": "20 KB"
+    }
+  ]
 }
