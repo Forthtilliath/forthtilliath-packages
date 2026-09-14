@@ -329,6 +329,10 @@ importers:
         version: 5.9.3
 
   packages/expo-release-updates:
+    dependencies:
+      '@forthtilliath/ts-kit':
+        specifier: workspace:*
+        version: link:../ts-kit
     devDependencies:
       '@forthtilliath/eslint-config':
         specifier: workspace:*
