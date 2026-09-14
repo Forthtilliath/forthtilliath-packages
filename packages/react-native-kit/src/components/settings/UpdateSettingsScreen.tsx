@@ -1,21 +1,23 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
-import type { ChangelogNotesStyles } from "../update/ChangelogNotes.js";
-import { ChangelogNotes } from "../update/ChangelogNotes.js";
+import { ChangelogNotes } from "@forthtilliath/expo-release-updates-ui";
 
-export interface UpdateSettingsScreenRelease {
-  version: string;
-  notes: string;
-  apkUrl: string;
-}
+import type {
+  UpdateSettingsScreenHistoryEntry,
+  UpdateSettingsScreenLabels,
+  UpdateSettingsScreenRelease,
+  UpdateSettingsScreenStyles,
+} from "./UpdateSettingsScreen.styles.js";
+import { defaultLabels, defaultStyles } from "./UpdateSettingsScreen.styles.js";
+import { UpdateSettingsScreenHistory } from "./UpdateSettingsScreenHistory.js";
 
-export interface UpdateSettingsScreenHistoryEntry {
-  version: string;
-  notes: string;
-  publishedAt?: string | null;
-}
+export type {
+  UpdateSettingsScreenHistoryEntry,
+  UpdateSettingsScreenLabels,
+  UpdateSettingsScreenRelease,
+  UpdateSettingsScreenStyles,
+} from "./UpdateSettingsScreen.styles.js";
 
 type UpdateState =
   | { status: "idle" }
@@ -24,42 +26,6 @@ type UpdateState =
   | { status: "available"; release: UpdateSettingsScreenRelease }
   | { status: "downloading"; progress: number }
   | { status: "error"; message: string };
-
-export interface UpdateSettingsScreenLabels {
-  installedVersionLabel?: string;
-  checkButton?: string;
-  upToDate?: string;
-  checkError?: string;
-  downloadError?: string;
-  availableTitle?: (version: string) => string;
-  installButton?: (version: string) => string;
-  installButtonAccessibilityLabel?: (version: string) => string;
-  downloadingLabel?: (percent: number) => string;
-  downloadingHint?: string;
-  historyTitle?: string;
-}
-
-export interface UpdateSettingsScreenStyles {
-  container?: StyleProp<ViewStyle>;
-  infoBox?: StyleProp<ViewStyle>;
-  infoLabel?: StyleProp<TextStyle>;
-  infoValue?: StyleProp<TextStyle>;
-  helpText?: StyleProp<TextStyle>;
-  errorText?: StyleProp<TextStyle>;
-  button?: StyleProp<ViewStyle>;
-  buttonDisabled?: StyleProp<ViewStyle>;
-  buttonText?: StyleProp<TextStyle>;
-  activityIndicatorColor?: string;
-  updateAvailableBox?: StyleProp<ViewStyle>;
-  updateAvailableTitle?: StyleProp<TextStyle>;
-  changelog?: StyleProp<ViewStyle>;
-  changelogTitle?: StyleProp<TextStyle>;
-  changelogEntry?: StyleProp<ViewStyle>;
-  changelogEntryHeader?: StyleProp<ViewStyle>;
-  changelogVersion?: StyleProp<TextStyle>;
-  changelogDate?: StyleProp<TextStyle>;
-  notes?: ChangelogNotesStyles;
-}
 
 export interface UpdateSettingsScreenProps {
   currentVersion: string;
@@ -78,89 +44,6 @@ export interface UpdateSettingsScreenProps {
   labels?: UpdateSettingsScreenLabels;
   styles?: UpdateSettingsScreenStyles;
 }
-
-const defaultLabels: Required<UpdateSettingsScreenLabels> = {
-  installedVersionLabel: "Version installée",
-  checkButton: "Rechercher une mise à jour",
-  upToDate: "Tu as déjà la dernière version.",
-  checkError: "Impossible de vérifier les mises à jour.",
-  downloadError: "Le téléchargement a échoué.",
-  availableTitle: (version) => `Version ${version} disponible`,
-  installButton: () => "Télécharger et installer",
-  installButtonAccessibilityLabel: (version) =>
-    `Télécharger et installer la version ${version}`,
-  downloadingLabel: (percent) => `Téléchargement… ${String(percent)}%`,
-  downloadingHint:
-    "Ton téléphone va ensuite te demander confirmation pour installer la mise à jour.",
-  historyTitle: "Historique des versions",
-};
-
-const defaultStyles: Required<
-  Omit<UpdateSettingsScreenStyles, "activityIndicatorColor" | "notes">
-> &
-  Pick<UpdateSettingsScreenStyles, "activityIndicatorColor" | "notes"> = {
-  container: { gap: 4 },
-  infoBox: {
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 8,
-  },
-  infoLabel: { fontSize: 13, fontWeight: "600", color: "#6b7280" },
-  infoValue: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#111827",
-    marginTop: 2,
-  },
-  helpText: { fontSize: 12, color: "#6b7280", marginTop: 8 },
-  errorText: { fontSize: 12, color: "#dc2626", marginTop: 8 },
-  button: {
-    backgroundColor: "#2563eb",
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: "#ffffff", fontSize: 16, fontWeight: "700" },
-  activityIndicatorColor: "#ffffff",
-  updateAvailableBox: {
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    borderRadius: 10,
-    padding: 14,
-    marginTop: 12,
-    gap: 4,
-  },
-  updateAvailableTitle: { fontSize: 15, fontWeight: "700", color: "#111827" },
-  changelog: { marginTop: 28 },
-  changelogTitle: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#111827",
-    marginBottom: 8,
-  },
-  changelogEntry: {
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 8,
-  },
-  changelogEntryHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  changelogVersion: { fontSize: 14, fontWeight: "700", color: "#111827" },
-  changelogDate: { fontSize: 12, color: "#6b7280" },
-  notes: undefined,
-};
 
 // Full "check for update" screen: installed version, a manual check button,
 // the available-update box (with changelog + install button) or an
@@ -345,26 +228,13 @@ export function UpdateSettingsScreen({
       )}
 
       {releaseHistory && releaseHistory.length > 0 && (
-        <View style={merged.changelog}>
-          <Text style={merged.changelogTitle}>{t.historyTitle}</Text>
-          {releaseHistory.map((release) => (
-            <View key={release.version} style={merged.changelogEntry}>
-              <View style={merged.changelogEntryHeader}>
-                <Text style={merged.changelogVersion}>v{release.version}</Text>
-                {release.publishedAt ? (
-                  <Text style={merged.changelogDate}>
-                    {new Date(release.publishedAt).toLocaleDateString(
-                      dateLocale,
-                    )}
-                  </Text>
-                ) : null}
-              </View>
-              {release.notes ? (
-                <ChangelogNotes notes={release.notes} styles={notesStyles} />
-              ) : null}
-            </View>
-          ))}
-        </View>
+        <UpdateSettingsScreenHistory
+          releaseHistory={releaseHistory}
+          historyTitle={t.historyTitle}
+          dateLocale={dateLocale}
+          notesStyles={notesStyles}
+          styles={merged}
+        />
       )}
     </View>
   );
