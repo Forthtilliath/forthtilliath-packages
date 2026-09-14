@@ -61,6 +61,31 @@ describe("fetchLatestRelease", () => {
       "GitHub responded with 404",
     );
   });
+
+  it("sends a bearer token when provided, for private repos and higher rate limits", async () => {
+    const fetchMock = mockFetchOnce({ tag_name: "v1.0.0", assets: [] });
+    await fetchLatestRelease({ ...ref, token: "gh-token" });
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: "Bearer gh-token",
+        },
+      }),
+    );
+  });
+
+  it("omits the Authorization header when no token is provided", async () => {
+    const fetchMock = mockFetchOnce({ tag_name: "v1.0.0", assets: [] });
+    await fetchLatestRelease(ref);
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        headers: { Accept: "application/vnd.github+json" },
+      }),
+    );
+  });
 });
 
 describe("fetchReleaseHistory", () => {
@@ -119,6 +144,20 @@ describe("fetchReleaseHistory", () => {
     mockFetchOnce({}, false, 500);
     await expect(fetchReleaseHistory(ref)).rejects.toThrow(
       "GitHub responded with 500",
+    );
+  });
+
+  it("sends a bearer token when provided", async () => {
+    const fetchMock = mockFetchOnce([]);
+    await fetchReleaseHistory({ ...ref, token: "gh-token" });
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: "Bearer gh-token",
+        },
+      }),
     );
   });
 });
