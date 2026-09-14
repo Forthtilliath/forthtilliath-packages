@@ -31,6 +31,17 @@ there's nothing else to install per variant.
 
 ## Usage
 
+Quick reference — pick the row matching the package, in its `eslint.config.ts`:
+
+| Variant             | Subpath         | Use for                    | Extends       |
+| ------------------- | --------------- | -------------------------- | ------------- |
+| `baseConfig`        | `.` (root)      | A plain TypeScript library | —             |
+| `reactConfig`       | `/react`        | A React library            | `baseConfig`  |
+| `nextJsConfig`      | `/nextjs`       | A Next.js app              | `reactConfig` |
+| `storybookConfig`   | `/storybook`    | A Storybook app            | `reactConfig` |
+| `reactNativeConfig` | `/react-native` | A React Native / Expo app  | `reactConfig` |
+| `angularConfig`     | `/angular`      | An Angular app/library     | `baseConfig`  |
+
 Pick the variant that matches the package, in its `eslint.config.ts`:
 
 ```ts
@@ -144,6 +155,23 @@ Rules that need type information (`consistent-type-exports`,
 from linting entirely — none of them belong to a package's own `tsconfig`
 project, so type-aware rules crash on them otherwise.
 
+### Angular import order
+
+`angularConfig` overrides `simple-import-sort/imports` on `**/*.ts` so
+`@angular/core`/`rxjs` sort before every other package, ahead of the generic
+"third-party packages, alphabetically" group `baseConfig` uses everywhere
+else — the conventional Angular reading order (framework, then everything
+else, then app code).
+
+## Testing this package
+
+Unlike the other five variants — each already exercised by whatever
+package/app in this monorepo lints under them — `angularConfig` has no real
+consumer here yet, so `src/angular.test.js` lints small fixture files under
+`src/__fixtures__/angular/` through ESLint's Node API directly, standing in
+for that. Extend it (or add a sibling `<variant>.test.js`) whenever a variant
+changes without a real consumer to catch a regression.
+
 ## Scripts
 
 ```bash
@@ -151,6 +179,8 @@ pnpm run build        # tsc -> dist/ (consumers import the built output)
 pnpm run dev           # tsc --watch
 pnpm run check-types   # tsc --noEmit
 pnpm run lint          # eslint (lints its own src/)
+pnpm run test          # vitest run
+pnpm run test:watch    # vitest
 ```
 
 Run `pnpm run build` after editing `src/*.js` — consuming packages resolve
