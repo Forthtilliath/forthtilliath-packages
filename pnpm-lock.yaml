@@ -318,15 +318,24 @@ importers:
         specifier: ^8.67.0
         version: 8.67.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
     devDependencies:
+      '@angular/core':
+        specifier: ^21.0.0
+        version: 21.2.23(rxjs@7.8.2)
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       eslint:
         specifier: 'catalog:'
         version: 10.7.0(jiti@2.7.0)
+      rxjs:
+        specifier: ^7.8.0
+        version: 7.8.2
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+      vitest:
+        specifier: ^4.1.10
+        version: 4.1.10(@types/node@26.2.0)(jsdom@29.1.1)(vite@7.3.6(@types/node@26.2.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.49.2)(tsx@4.23.12)(yaml@2.9.0))
 
   packages/expo-release-updates:
     dependencies:
@@ -965,6 +974,19 @@ packages:
     resolution: {integrity: sha512-9TqWGpguYGpAsycSYX/Ji6csuPrEntdd+D2iK0TWIVQ1APCma7UmBgI1ltcATQNezxWiLTiJIMIOEuPG+cIVnw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     hasBin: true
+
+  '@angular/core@21.2.23':
+    resolution: {integrity: sha512-O8i8ntukAhg3nM9y9A/o1eXVFnFk5/VltA2gQrDuWTpIPLyWmyZW+Zb65UBJI14tGOTt99Y3l3teIuF36mLBgQ==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
+    peerDependencies:
+      '@angular/compiler': 21.2.23
+      rxjs: ^6.5.3 || ^7.4.0
+      zone.js: ~0.15.0 || ~0.16.0
+    peerDependenciesMeta:
+      '@angular/compiler':
+        optional: true
+      zone.js:
+        optional: true
 
   '@antfu/ni@30.5.0':
     resolution: {integrity: sha512-VwQoM9qF1dzDrye55b1qIBeLr4zQ1a5wZQMPCe496HTiquViBZqxtNBaq98WX3ze5kC9Yl7gKSU4W2vtLztxYw==}
@@ -9040,6 +9062,11 @@ snapshots:
       - '@types/node'
       - chokidar
       - supports-color
+
+  '@angular/core@21.2.23(rxjs@7.8.2)':
+    dependencies:
+      rxjs: 7.8.2
+      tslib: 2.8.1
 
   '@antfu/ni@30.5.0':
     dependencies:

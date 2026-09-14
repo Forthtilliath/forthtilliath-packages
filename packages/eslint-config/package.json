@@ -14,11 +14,13 @@
   "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/eslint-config#readme",
   "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist",
     "check-types": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "files": [
     "dist"
@@ -52,8 +54,11 @@
     "typescript": ">=5.0.0"
   },
   "devDependencies": {
+    "@angular/core": "^21.0.0",
     "@forthtilliath/typescript-config": "workspace:*",
     "eslint": "catalog:",
-    "typescript": "catalog:"
+    "rxjs": "^7.8.0",
+    "typescript": "catalog:",
+    "vitest": "^4.1.10"
   }
 }
