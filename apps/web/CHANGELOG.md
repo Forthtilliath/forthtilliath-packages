@@ -1,5 +1,12 @@
 # web
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [ca2e7c5]
+  - @forthtilliath/react-kit@0.3.0
+
 ## 0.1.4
 
 ### Patch Changes
