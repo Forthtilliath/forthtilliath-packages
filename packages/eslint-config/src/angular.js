@@ -2,7 +2,7 @@ import angular from "angular-eslint";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-import { createBaseConfig } from "./base.js";
+import { createBaseConfig, NODE_BUILTIN_IMPORT_GROUP } from "./base.js";
 
 /**
  * A custom ESLint configuration for Angular applications/libraries.
@@ -40,6 +40,26 @@ export function createAngularConfig(options) {
         // Un composant/page Angular sans logique propre (juste un template +
         // decorateur) est un corps de classe legitimement vide, pas du code mort.
         "@typescript-eslint/no-extraneous-class": "off",
+        // Convention Angular : le framework (et RxJS, quasi-systematiquement
+        // utilise a ses cotes) se lit avant le reste — packages tiers, puis
+        // imports internes de l'app. baseConfig's generic "^@?\\w" group
+        // sorts every third-party package alphabetically together, which
+        // would interleave "@angular/core" with unrelated libs instead.
+        "simple-import-sort/imports": [
+          "error",
+          {
+            groups: [
+              NODE_BUILTIN_IMPORT_GROUP,
+              ["^@angular", "^rxjs"],
+              ["^@?\\w"],
+              ["^(@forthtilliath)(/.*|$)"],
+              ["^(@|@ui|components|utils|config)(/.*|$)"],
+              ["^\\u0000"],
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+            ],
+          },
+        ],
       },
     },
     {

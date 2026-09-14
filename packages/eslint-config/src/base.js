@@ -7,6 +7,21 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 /**
+ * Node.js builtins without the `node:` prefix, as the first
+ * `simple-import-sort/imports` group. Exported so other variants (e.g.
+ * angular.js, which overrides this rule with Angular-specific groups) don't
+ * have to duplicate the list to keep builtins sorted first too.
+ * @type {string[]}
+ */
+export const NODE_BUILTIN_IMPORT_GROUP = [
+  // Node.js builtins. You could also generate this regex if you use a `.js` config.
+  // For example: `^(${require("module").builtinModules.join("|")})(/|$)`
+  // Note that if you use the `node:` prefix for Node.js builtins,
+  // you can avoid this complexity: You can simply use "^node:".
+  "^(assert|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|https|module|net|os|path|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|tty|url|util|vm|zlib|freelist|v8|process|async_hooks|http2|perf_hooks)(/.*|$)",
+];
+
+/**
  * @typedef {object} BaseConfigOptions
  * @property {boolean} [prettier=true] - Append eslint-config-prettier at the
  *   end, turning off stylistic rules that would fight Prettier (which runs
@@ -78,13 +93,7 @@ export function createBaseConfig({
           "error",
           {
             groups: [
-              // Node.js builtins. You could also generate this regex if you use a `.js` config.
-              // For example: `^(${require("module").builtinModules.join("|")})(/|$)`
-              // Note that if you use the `node:` prefix for Node.js builtins,
-              // you can avoid this complexity: You can simply use "^node:".
-              [
-                "^(assert|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|https|module|net|os|path|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|tty|url|util|vm|zlib|freelist|v8|process|async_hooks|http2|perf_hooks)(/.*|$)",
-              ],
+              NODE_BUILTIN_IMPORT_GROUP,
               // Packages. `react` related packages come first.
               ["^react", "^@?\\w"],
               // Internal packages.
