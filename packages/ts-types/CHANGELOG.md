@@ -1,5 +1,11 @@
 # @forthtilliath/ts-types
 
+## 0.2.0
+
+### Minor Changes
+
+- f4652cf: Added `DeepPartial`/`DeepReadonly` to `object`, and four new categories: `brand` (`Brand`, `Opaque`), `function` (`AsyncReturnType`), `union` (`UnionToTuple`) and `common` (`Nullable`, `Maybe`). All are exported from the root barrel and from their own `@forthtilliath/ts-types/<category>` subpath.
+
 ## 0.1.0
 
 ### Minor Changes
