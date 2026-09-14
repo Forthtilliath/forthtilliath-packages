@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
+/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import type { ReactTestInstance } from "react-test-renderer";
 
 // react-test-renderer types every TestInstance's `.props` as `any` — this

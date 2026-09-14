@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
+/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import { Text } from "react-native";
 import { act, create } from "react-test-renderer";
 import { describe, expect, it } from "vitest";
