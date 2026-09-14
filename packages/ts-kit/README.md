@@ -53,9 +53,24 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 
 ### `classes`
 
-- `FArray` — an `Array` subclass whose `includes()` narrows the type of the
-  searched value when it's found (unlike the native `Array.prototype.includes`,
-  which only narrows the _array's_ element type).
+- `FArray` — an `Array` subclass that fixes a handful of spots where the
+  native `Array` typings are wrong or overly restrictive:
+  - `includes()` narrows the type of the searched value when it's found
+    (the native `Array.prototype.includes` only narrows the _array's_
+    element type).
+  - `indexOf()` / `lastIndexOf()` accept a search value outside of the
+    array's element type instead of rejecting it at compile-time (same
+    root cause as `includes`, fixed the same way).
+  - `filter(Boolean)` strips `null`/`undefined` from the result's type
+    (the native typings don't recognize `Boolean` as a type guard, so the
+    result keeps the nullish types even though they're removed at runtime).
+  - `FArray.from(...)` / `FArray.of(...)` are typed to return an `FArray`
+    instead of a plain array (the native static typings return a plain
+    array even though these methods already construct an instance of the
+    calling class at runtime).
+  - `toArray()` converts an `FArray` back into a plain `Array` instance —
+    rarely needed since `FArray` is already assignable to `T[]` anywhere a
+    plain array is expected, but useful when the runtime type matters too.
 
 ### `date`
 
