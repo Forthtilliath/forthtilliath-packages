@@ -1,5 +1,11 @@
 # @forthtilliath/react-kit
 
+## 0.3.0
+
+### Minor Changes
+
+- ca2e7c5: Added the most commonly used React hooks in production apps: `useDebounce`, `useThrottle`, `useMediaQuery`, `useClickOutside`, `useOnlineStatus`, `useIntersectionObserver`, `useCopyToClipboard` and `useControllableState`. Each is its own module, importable from `@forthtilliath/react-kit/<hookName>`.
+
 ## 0.2.1
 
 ### Patch Changes
