@@ -1,3 +1,5 @@
+export type * from "./deep-partial.js";
+export type * from "./deep-readonly.js";
 export type * from "./entries.js";
 export type * from "./exact-record.js";
 export type * from "./keys-matching.js";
