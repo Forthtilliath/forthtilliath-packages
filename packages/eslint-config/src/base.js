@@ -54,6 +54,7 @@ export function createBaseConfig({
     {
       ignores: [
         "dist/**",
+        "coverage/**",
         "storybook-static/**",
         "postcss.config.cjs",
         "postcss.config.mjs",
