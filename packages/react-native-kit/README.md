@@ -1,6 +1,6 @@
 # @forthtilliath/react-native-kit
 
-Small React Native building blocks — components, hooks, and framework-agnostic utils — with no opinion on your app's theme, distributed one file per export (grouped under `components/{picker,theme,update,list,settings}/`, `hooks/`, `utils/{format,helpers}/`) so consumers only pull in what they use.
+Small React Native building blocks — components, hooks, and a framework-agnostic util — with no opinion on your app's theme, distributed one file per export (grouped under `components/{picker,theme,list,settings}/`, `hooks/`, `utils/helpers/`) so consumers only pull in what they use. Update-checking UI (`ChangelogNotes`, `UpdateAvailableBanner`, `useUpdateCheck`) lives in the sibling `@forthtilliath/expo-release-updates-ui` package instead.
 
 ## Install
 
@@ -25,7 +25,7 @@ Or, from within this monorepo, as a workspace dependency:
 Each component is its own module — import the file you need directly:
 
 ```ts
-import { ChangelogNotes } from "@forthtilliath/react-native-kit/components/update/ChangelogNotes";
+import { PhotoPicker } from "@forthtilliath/react-native-kit/components/picker/PhotoPicker";
 ```
 
 This is the recommended way to import: Metro (React Native's bundler) doesn't reliably tree-shake, so pulling from a single deep-import path keeps peer dependencies you don't use (`expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler`...) out of your bundle entirely, rather than merely unused.
@@ -33,55 +33,10 @@ This is the recommended way to import: Metro (React Native's bundler) doesn't re
 A root barrel is also available for convenience:
 
 ```ts
-import {
-  ChangelogNotes,
-  useSubmitGuard,
-} from "@forthtilliath/react-native-kit";
+import { PhotoPicker, useSubmitGuard } from "@forthtilliath/react-native-kit";
 ```
 
 **Avoid the barrel under Jest (or any other CommonJS `require` consumer).** `export * from` re-exports are evaluated eagerly on `require()` — unlike Metro's ESM bundling, there's no tree-shaking to skip the unused ones. Requiring the barrel from _any_ file, even one that only wants a framework-agnostic util like `getMostRecentIds`, pulls in every component's module graph, including native-module imports (`expo-speech-recognition` via `VoiceSearchButton`/`PickerModal`) that don't exist in a Jest environment — this throws `Cannot find native module '...'` at require time, not just at runtime for an unrendered component. Deep imports only ever load the one module you asked for, so they don't have this problem in any environment.
-
-### `<ChangelogNotes notes={...} styles={...} />`
-
-Renders GitHub-style release notes — as produced by `@forthtilliath/expo-release-updates`'s `parseChangelogNotes` — as headings, bulleted items, and bold-aware text, instead of showing the raw Markdown syntax in a plain `Text`.
-
-```tsx
-<ChangelogNotes notes={release.notes} />
-```
-
-It understands the small subset of Markdown GitHub release notes actually use:
-
-| `notes` input                             | Rendered as                                                                 |
-| ----------------------------------------- | --------------------------------------------------------------------------- |
-| `### Added`                               | a heading `Text` — `"Added"`                                                |
-| `- Export history to CSV.`                | a row (`View`) with a `•` bullet `Text` and an item `Text`                  |
-| `**Auto-backup**: saves every 5 minutes.` | a plain `Text`, with the bold segment split into its own bold-styled `Text` |
-
-A full example, mixing all three:
-
-```tsx
-<ChangelogNotes
-  notes={`### Added\n- **Auto-backup**: saves every 5 minutes.\n- Export history to CSV.\n\nSee the full changelog for details.`}
-/>
-```
-
-The component ships with neutral default styles and no opinion on your app's theme. Override any subset via the `styles` prop to match your colors/dark mode:
-
-```tsx
-<ChangelogNotes
-  notes={release.notes}
-  styles={{
-    heading: { color: colors.text, fontWeight: "700" },
-    itemRow: { gap: 8 },
-    bullet: { color: colors.primary },
-    itemText: { color: colors.textMuted },
-    text: { color: colors.textMuted },
-    bold: { color: colors.text, fontWeight: "700" },
-  }}
-/>
-```
-
-Every field of `styles` is optional — pass only the ones you want to override; the rest fall back to the defaults (`ChangelogNotesStyles` in `ChangelogNotes.tsx`).
 
 ### `<Thumbnail photoUri={...} placeholderIcon="..." />`
 
@@ -345,51 +300,9 @@ import { ThemeOptionList } from "@forthtilliath/react-native-kit/components/them
 <ThemeOptionList value={themePreference} onChange={setThemePreference} />;
 ```
 
-### `useUpdateCheck(options)`
-
-Checks once per mount (e.g. app launch) whether a newer release is available, throttled to at most one real check per `minIntervalMs` (default 12h) and silent for a release the user already dismissed. Has no opinion on where "when did we last check" / "which version did the user dismiss" are persisted — both are read/written entirely through the options you pass in.
-
-```tsx
-import { useUpdateCheck } from "@forthtilliath/react-native-kit/hooks/useUpdateCheck";
-
-const update = useUpdateCheck({
-  currentVersion: Constants.expoConfig?.version ?? "0.0.0",
-  checkForUpdate: fetchLatestRelease,
-  compareVersions,
-  getLastCheck: () => ({
-    lastCheckedAt: settings?.lastUpdateCheckAt ?? null,
-    dismissedVersion: settings?.dismissedUpdateVersion ?? null,
-  }),
-  onChecked: (lastCheckedAt) =>
-    updateSettings({ lastUpdateCheckAt: lastCheckedAt }),
-});
-
-if (update.status === "available") {
-  // update.release.version / .notes / .apkUrl
-}
-```
-
-### `<UpdateAvailableBanner version notes onPress onDismiss />`
-
-Dismissible banner announcing an available update: version, release notes (rendered via `ChangelogNotes`), an action button and a dismiss button. Has no opinion on what the action does (e.g. navigate to an update screen) or on how/whether dismissal is persisted.
-
-```tsx
-import { UpdateAvailableBanner } from "@forthtilliath/react-native-kit/components/update/UpdateAvailableBanner";
-
-{
-  update.status === "available" && (
-    <UpdateAvailableBanner
-      version={update.release.version}
-      notes={update.release.notes}
-      onPress={() => router.push("/settings/update")}
-      onDismiss={() => {
-        dismissUpdateVersion(update.release.version);
-        update.dismiss();
-      }}
-    />
-  );
-}
-```
+> `useUpdateCheck`, `<UpdateAvailableBanner>` and `<ChangelogNotes>` moved to
+> [`@forthtilliath/expo-release-updates-ui`](../expo-release-updates-ui#readme) —
+> install that package alongside this one if you need them.
 
 ### Settings screens (`components/settings/`)
 
@@ -528,7 +441,7 @@ import { ThemeSettingsScreen } from "@forthtilliath/react-native-kit/components/
 
 #### `<UpdateSettingsScreen currentVersion checkForUpdate compareVersions downloadAndInstallApk />`
 
-The full "check for update" screen: installed version, a manual check button, the available-update box (changelog + install button) or an up-to-date/error message, download progress, and — if `fetchReleaseHistory` is passed — a list of past releases. Checks automatically once on mount. Pairs naturally with `@forthtilliath/expo-release-updates` and `useUpdateCheck`/`UpdateAvailableBanner` above (same `checkForUpdate`/`compareVersions` you already pass those), but takes plain functions so it isn't tied to that package's exact shape.
+The full "check for update" screen: installed version, a manual check button, the available-update box (changelog + install button) or an up-to-date/error message, download progress, and — if `fetchReleaseHistory` is passed — a list of past releases. Checks automatically once on mount. Renders release notes via `@forthtilliath/expo-release-updates-ui`'s `ChangelogNotes`, and pairs naturally with that package's `useUpdateCheck`/`UpdateAvailableBanner` (same `checkForUpdate`/`compareVersions` you already pass those), but takes plain functions so it isn't tied to that package's exact shape.
 
 ```tsx
 import { UpdateSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/UpdateSettingsScreen";
@@ -657,31 +570,20 @@ import { PrivacySettingsScreen } from "@forthtilliath/react-native-kit/component
 
 For all 7 components above, styling works the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults), and where relevant an optional `labels` prop for the built-in French copy.
 
-### Utils (`utils/`)
+### Utils (`utils/helpers/`)
 
-Framework-agnostic pure functions — no React or React Native import, usable from Node/web too.
+`confirmDestructive` is the only remaining util here — it wraps React Native's `Alert`, so it isn't framework-agnostic (see its own section above).
+
+The framework-agnostic helpers that used to live here (`getPeriodStartMs`, `getMostRecentIds`, `nextInCycle`, `normalizeForSearch`, `rankByNameMatch`, `escapeCsvField`, `formatCsvNumber`, `escapeHtml`) moved to [`@forthtilliath/ts-kit`](../ts-kit#readme) — no React Native dependency on them, so they're usable from Node/web too. They're still re-exported from this package's root barrel for convenience:
 
 ```ts
-import { getPeriodStartMs } from "@forthtilliath/react-native-kit/utils/helpers/getPeriodStartMs";
-import { getMostRecentIds } from "@forthtilliath/react-native-kit/utils/helpers/getMostRecentIds";
-import { nextInCycle } from "@forthtilliath/react-native-kit/utils/helpers/nextInCycle";
-import { normalizeForSearch } from "@forthtilliath/react-native-kit/utils/helpers/normalizeForSearch";
-import { rankByNameMatch } from "@forthtilliath/react-native-kit/utils/helpers/rankByNameMatch";
-import { escapeCsvField } from "@forthtilliath/react-native-kit/utils/format/escapeCsvField";
-import { formatCsvNumber } from "@forthtilliath/react-native-kit/utils/format/formatCsvNumber";
-import { escapeHtml } from "@forthtilliath/react-native-kit/utils/format/escapeHtml";
+import {
+  getPeriodStartMs,
+  getMostRecentIds,
+} from "@forthtilliath/react-native-kit";
 ```
 
-| Function                                 | What it does                                                                                                                                                       |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `getPeriodStartMs(period, now?)`         | Start timestamp (ms) for a `"today" \| "7d" \| "30d" \| "all"` period filter, or `null` for `"all"`. `"today"` is the current calendar day, not a rolling 24h.     |
-| `getMostRecentIds(rows, limit?)`         | Most recently occurring distinct ids (`{ id, occurredAt }[]`), most recent first, deduplicated, limited (default 5).                                               |
-| `nextInCycle(ids, currentId)`            | Next id in a short list (e.g. cycling through recents on tap) — wraps to the first if `currentId` is at the end or no longer in the list.                          |
-| `normalizeForSearch(text)`               | Lowercases, trims, strips accents, and expands `œ`/`æ` ligatures (which `normalize("NFD")` alone doesn't decompose) — for accent/case-insensitive search matching. |
-| `rankByNameMatch(items, query, getName)` | Ranks `items` by relevance to `query`: earlier match position first, then shorter name — for a search-as-you-type list.                                            |
-| `escapeCsvField(value)`                  | Quotes and escapes a CSV field (RFC 4180) only if it contains a `"`, `;`, or newline.                                                                              |
-| `formatCsvNumber(value, decimals?)`      | Formats a number with a comma decimal separator (French-locale spreadsheets) instead of JS's dot.                                                                  |
-| `escapeHtml(text)`                       | Basic HTML entity escaping (`&`, `<`, `>`, `"`) for inserting user text into an HTML template.                                                                     |
+Prefer importing straight from `ts-kit` (deep import, see its README) if you don't otherwise need this package.
 
 ## Scripts
 
