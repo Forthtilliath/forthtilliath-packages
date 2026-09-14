@@ -5,4 +5,5 @@
 export * from "./compareVersions.js";
 export * from "./downloadAndInstallApk.js";
 export * from "./githubReleases.js";
+export * from "./isUpdateAvailable.js";
 export * from "./parseChangelogNotes.js";
