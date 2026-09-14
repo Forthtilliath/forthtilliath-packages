@@ -39,4 +39,9 @@ yarn-error.log*
 .DS_Store
 *.pem
 
-.doc/branches.md
+# Markdown : ignoré par défaut, sauf README/CHANGELOG et exceptions listées ci-dessous
+*.md
+!README.md
+!CHANGELOG.md
+!/.changeset/*.md
+!/packages/**/*.md
