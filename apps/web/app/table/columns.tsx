@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@forthtilliath/shadcn-ui/components/dropdown-menu";
 
+import { CopyMenuItem } from "./copy-menu-item";
 import type { Payment } from "./page";
 
 export const columns: ColumnDef<Payment>[] = [
@@ -97,11 +98,7 @@ export const columns: ColumnDef<Payment>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => void navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
+            <CopyMenuItem value={payment.id}>Copy payment ID</CopyMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
