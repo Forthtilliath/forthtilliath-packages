@@ -1,0 +1,8 @@
+{
+  "extends": "@forthtilliath/typescript-config/base.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "types": []
+  },
+  "include": ["*.ts"]
+}
