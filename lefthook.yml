@@ -6,6 +6,15 @@ pre-commit:
       stage_fixed: true
 
 commit-msg:
+  # Sequential, not parallel (lefthook's default), and in explicit priority
+  # order rather than relying on declaration/alphabetical order: commitlint
+  # must see the message after strip-claude-attribution has already run on
+  # it, not the original.
+  piped: true
   commands:
     strip-claude-attribution:
+      priority: 1
       run: node scripts/strip-claude-attribution.mjs {1}
+    commitlint:
+      priority: 2
+      run: corepack pnpm exec commitlint --edit {1}
