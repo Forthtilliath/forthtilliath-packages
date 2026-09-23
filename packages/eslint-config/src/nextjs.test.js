@@ -49,4 +49,28 @@ describe("createNextJsConfig", () => {
       expect(await eslint.isPathIgnored(path)).toBe(true);
     }
   });
+
+  it("never enables the same rule in both react-hooks and @eslint-react", async () => {
+    const config = await createLinter().calculateConfigForFile("component.tsx");
+    const enabled = Object.entries(
+      /** @type {Record<string, import("eslint").Linter.RuleEntry>} */ (
+        config.rules
+      ),
+    )
+      .filter(([, entry]) => {
+        const level = Array.isArray(entry) ? entry[0] : entry;
+        return level !== "off" && level !== 0;
+      })
+      .map(([name]) => name);
+    const eslintReact = new Set(
+      enabled
+        .filter((name) => name.startsWith("@eslint-react/"))
+        .map((name) => name.slice("@eslint-react/".length)),
+    );
+    const duplicated = enabled
+      .filter((name) => name.startsWith("react-hooks/"))
+      .map((name) => name.slice("react-hooks/".length))
+      .filter((rule) => eslintReact.has(rule));
+    expect(duplicated).toEqual([]);
+  });
 });
