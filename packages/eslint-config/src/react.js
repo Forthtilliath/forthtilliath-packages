@@ -9,7 +9,7 @@ import pluginReactRefresh from "eslint-plugin-react-refresh";
 import pluginTestingLibrary from "eslint-plugin-testing-library";
 import globals from "globals";
 
-import { createBaseConfig } from "./base.js";
+import { createBaseConfig, createNamingConventionRule } from "./base.js";
 
 /**
  * Any file matching this is a test file, whatever runner or naming
@@ -47,10 +47,11 @@ export function createReactConfig({
   a11y = true,
   i18n = false,
   testingLibrary = false,
+  snakeCase = false,
   ...options
 } = {}) {
   return defineConfig([
-    ...createBaseConfig(options),
+    ...createBaseConfig({ snakeCase, ...options }),
     a11y ? pluginJsxA11y.flatConfigs.recommended : [],
     i18n
       ? {
@@ -111,28 +112,10 @@ export function createReactConfig({
       rules: {
         "@typescript-eslint/no-unsafe-call": "warn",
         "@typescript-eslint/restrict-template-expressions": "warn",
-        "@typescript-eslint/naming-convention": [
-          "error",
-          {
-            selector: "variable",
-            format: ["camelCase"],
-            leadingUnderscore: "allow",
-          },
-          {
-            selector: "variable",
-            modifiers: ["const"],
-            format: ["camelCase", "UPPER_CASE", "PascalCase"],
-            leadingUnderscore: "allow",
-          },
-          {
-            selector: "function",
-            format: ["camelCase", "PascalCase"],
-          },
-          {
-            selector: "typeLike",
-            format: ["PascalCase"],
-          },
-        ],
+        "@typescript-eslint/naming-convention": createNamingConventionRule({
+          snakeCase,
+          react: true,
+        }),
       },
     },
   ]);

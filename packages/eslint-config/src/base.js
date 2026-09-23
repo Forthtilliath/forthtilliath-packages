@@ -34,7 +34,53 @@ export const NODE_BUILTIN_IMPORT_GROUP = [
  * @property {boolean} [turbo=true] - Enable eslint-plugin-turbo's
  *   `no-undeclared-env-vars` rule. Only relevant inside a Turborepo; set to
  *   `false` for a standalone project.
+ * @property {boolean} [snakeCase=false] - Also accept `snake_case` variable
+ *   names in `@typescript-eslint/naming-convention` — for code that
+ *   destructures rows straight from a SQL database (e.g. Supabase), whose
+ *   columns are snake_case.
  */
+
+/**
+ * Builds the `@typescript-eslint/naming-convention` rule entry. Exported so
+ * variants that loosen it (react.js accepts PascalCase components) stay in
+ * sync with the `snakeCase` option instead of redeclaring the whole list.
+ *
+ * @param {object} [options]
+ * @param {boolean} [options.snakeCase=false] - See {@link BaseConfigOptions}.
+ * @param {boolean} [options.react=false] - Accept PascalCase for `const`
+ *   variables and functions (React components).
+ * @returns {import("eslint").Linter.RuleEntry}
+ */
+export function createNamingConventionRule({
+  snakeCase = false,
+  react = false,
+} = {}) {
+  const snake = snakeCase ? ["snake_case"] : [];
+  const pascal = react ? ["PascalCase"] : [];
+  return [
+    "error",
+    // https://typescript-eslint.io/rules/naming-convention
+    {
+      selector: "variable",
+      format: ["camelCase", ...snake],
+      leadingUnderscore: "allow",
+    },
+    {
+      selector: "variable",
+      modifiers: ["const"],
+      format: ["camelCase", "UPPER_CASE", ...pascal, ...snake],
+      leadingUnderscore: "allow",
+    },
+    {
+      selector: "function",
+      format: ["camelCase", ...pascal],
+    },
+    {
+      selector: "typeLike",
+      format: ["PascalCase"],
+    },
+  ];
+}
 
 /**
  * Builds a shared ESLint configuration for the repository.
@@ -46,6 +92,7 @@ export function createBaseConfig({
   prettier = true,
   strict = true,
   turbo = true,
+  snakeCase = false,
 } = {}) {
   return defineConfig([
     eslint.configs.recommended,
@@ -145,29 +192,9 @@ export function createBaseConfig({
           "error",
           { allowNumber: true },
         ],
-        "@typescript-eslint/naming-convention": [
-          "error",
-          // https://typescript-eslint.io/rules/naming-convention
-          {
-            selector: "variable",
-            format: ["camelCase"],
-            leadingUnderscore: "allow",
-          },
-          {
-            selector: "variable",
-            modifiers: ["const"],
-            format: ["camelCase", "UPPER_CASE"],
-            leadingUnderscore: "allow",
-          },
-          {
-            selector: "function",
-            format: ["camelCase"],
-          },
-          {
-            selector: "typeLike",
-            format: ["PascalCase"],
-          },
-        ],
+        "@typescript-eslint/naming-convention": createNamingConventionRule({
+          snakeCase,
+        }),
       },
     },
     prettier ? eslintConfigPrettier : [],

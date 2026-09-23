@@ -14,7 +14,10 @@ import { createReactConfig } from "./react.js";
 export function createNextJsConfig(options) {
   return defineConfig([
     {
-      ignores: [".next/**", "next-env.d.ts"],
+      // Same default ignores as eslint-config-next: build output
+      // (`.next/`, and `out/`/`build/` for static exports) and the generated
+      // `next-env.d.ts`.
+      ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"],
     },
     ...createReactConfig(options),
     {
