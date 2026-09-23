@@ -20,6 +20,24 @@ import { createBaseConfig, createNamingConventionRule } from "./base.js";
 const TEST_FILE_GLOBS = ["**/*.{test,spec}.{ts,tsx,js,jsx}"];
 
 /**
+ * eslint-plugin-react-hooks rules that @eslint-react also implements, under
+ * the same name. Only the @eslint-react version is kept (see the rules block
+ * below); `src/nextjs.test.js` fails if a new overlap appears.
+ * @type {string[]}
+ */
+const RULES_COVERED_BY_ESLINT_REACT = [
+  "rules-of-hooks",
+  "exhaustive-deps",
+  "static-components",
+  "use-memo",
+  "set-state-in-effect",
+  "error-boundaries",
+  "purity",
+  "set-state-in-render",
+  "unsupported-syntax",
+];
+
+/**
  * @typedef {object} ReactConfigOptions
  * @property {boolean} [a11y=true] - Enable eslint-plugin-jsx-a11y's
  *   recommended rules.
@@ -89,6 +107,16 @@ export function createReactConfig({
       settings: { react: { version: "19" } },
       rules: {
         ...pluginReactHooks.configs.recommended.rules,
+        // Already covered by @eslint-react's recommended-type-checked preset
+        // (sometimes more thoroughly: its `purity` flags `new Date()`, the
+        // react-hooks one doesn't). Left on, every problem is reported twice
+        // and every disable comment has to name both plugins.
+        ...Object.fromEntries(
+          RULES_COVERED_BY_ESLINT_REACT.map((rule) => [
+            `react-hooks/${rule}`,
+            "off",
+          ]),
+        ),
         // React scope no longer necessary with new JSX transform.
         "react/react-in-jsx-scope": "off",
       },
