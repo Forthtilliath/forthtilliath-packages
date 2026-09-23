@@ -901,7 +901,11 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
-  packages/typescript-config: {}
+  packages/typescript-config:
+    dependencies:
+      typescript:
+        specifier: '>=5.5.0'
+        version: 5.9.3
 
 packages:
 
