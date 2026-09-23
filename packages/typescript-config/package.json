@@ -1,6 +1,6 @@
 {
   "name": "@forthtilliath/typescript-config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared tsconfig bases: plain TypeScript, React, Next.js and Angular.",
   "license": "MIT",
   "publishConfig": {
