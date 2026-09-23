@@ -1,10 +1,25 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./react.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "include": [
+    "${configDir}/next-env.d.ts",
+    "${configDir}/**/*.ts",
+    "${configDir}/**/*.tsx",
+    "${configDir}/**/*.mts",
+    "${configDir}/.next/types/**/*.ts",
+    "${configDir}/.next/dev/types/**/*.ts"
+  ],
+  "exclude": ["${configDir}/node_modules"],
   "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "declaration": false,
+    "declarationMap": false,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
     "plugins": [{ "name": "next" }],
-    "paths": { "@/*": ["./src/*"] }
+    "paths": { "@/*": ["${configDir}/src/*"] }
   }
 }
