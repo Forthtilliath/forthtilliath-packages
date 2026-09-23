@@ -37,7 +37,7 @@ export function ImageInput({
 
   React.useEffect(() => {
     if (file === null) {
-      // eslint-disable-next-line @eslint-react/set-state-in-effect, react-hooks/set-state-in-effect -- syncs the object URL lifecycle (create/revoke) with the selected File, an external browser resource that can't be derived during render
+      // eslint-disable-next-line @eslint-react/set-state-in-effect -- syncs the object URL lifecycle (create/revoke) with the selected File, an external browser resource that can't be derived during render
       setObjectUrl(null);
       return;
     }

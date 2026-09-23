@@ -79,7 +79,7 @@ export function CommandPalette({
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps -- `setOpen` is a plain function redefined every render; including it would re-register this listener every render instead of only when `isOpen`/`shortcutKey` actually change, which is what its own re-closure over `isOpen` depends on
+    // eslint-disable-next-line @eslint-react/exhaustive-deps -- `setOpen` is a plain function redefined every render; including it would re-register this listener every render instead of only when `isOpen`/`shortcutKey` actually change, which is what its own re-closure over `isOpen` depends on
   }, [isOpen, shortcutKey]);
 
   return (

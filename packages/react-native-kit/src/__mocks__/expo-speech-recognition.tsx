@@ -31,7 +31,7 @@ export function useSpeechRecognitionEvent(
     return () => {
       listeners.delete(handler);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps -- registers once; VoiceSearchButton's handlers only close over refs/stable setState, never stale.
+    // eslint-disable-next-line @eslint-react/exhaustive-deps -- registers once; VoiceSearchButton's handlers only close over refs/stable setState, never stale.
   }, []);
 }
 
