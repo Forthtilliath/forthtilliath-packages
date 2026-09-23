@@ -78,7 +78,7 @@ export function useUpdateCheck({
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps -- runs once per mount by design (e.g. once per app launch); options are expected to be stable for the caller's lifetime.
+    // eslint-disable-next-line @eslint-react/exhaustive-deps -- runs once per mount by design (e.g. once per app launch); options are expected to be stable for the caller's lifetime.
   }, []);
 
   return {

@@ -68,7 +68,7 @@ export function RelativeTime({
     // ones — there's no way to read "now" during render without
     // reintroducing the hydration mismatch this state is starting
     // `undefined` to avoid.
-    // eslint-disable-next-line @eslint-react/set-state-in-effect, react-hooks/set-state-in-effect
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setLiveNow(new Date());
     const interval = setInterval(() => {
       setLiveNow(new Date());

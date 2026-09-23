@@ -104,7 +104,6 @@ function Carousel({
     // state has to happen here — this is the same "subscribe to an external
     // system, sync state in the callback" pattern as the `.on()` listeners
     // right below, just invoked once upfront for the initial state.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api);
     api.on("reInit", onSelect);
     api.on("select", onSelect);
