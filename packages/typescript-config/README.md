@@ -20,8 +20,6 @@ Within this monorepo:
 }
 ```
 
-Requires TypeScript 5.5+ (the presets use `${configDir}`, see below).
-
 ## Usage
 
 ```json
@@ -36,50 +34,58 @@ Requires TypeScript 5.5+ (the presets use `${configDir}`, see below).
 ```json
 // A React library or Vite app (packages/react/*, apps/react-sb)
 {
-  "extends": "@forthtilliath/typescript-config/react.json"
+  "extends": "@forthtilliath/typescript-config/react.json",
+  "include": ["src"]
 }
 ```
 
 ```json
-// A Next.js app (apps/web) — nothing else needed
+// A Next.js app (apps/web)
 {
-  "extends": "@forthtilliath/typescript-config/nextjs.json"
+  "extends": "@forthtilliath/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }
 ```
 
 ```json
 // An Angular app/library
 {
-  "extends": "@forthtilliath/typescript-config/angular.json"
+  "extends": "@forthtilliath/typescript-config/angular.json",
+  "include": ["src/**/*.ts"]
 }
 ```
 
-| Preset         | Extends      | Adds                                                                                                                                                                                                                                                               |
-| -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `base.json`    | —            | `strict`, `noUncheckedIndexedAccess`, `isolatedModules`, ES2022, NodeNext, declarations                                                                                                                                                                            |
-| `react.json`   | `base.json`  | `jsx: react-jsx`, bundler resolution                                                                                                                                                                                                                               |
-| `nextjs.json`  | `react.json` | Everything `create-next-app` generates (`next` TS plugin, `allowJs`, `noEmit`, `incremental`, ESNext + DOM libs, `next-env.d.ts` / `.next/types` / `.next/dev/types` inclusion, `@/*` → `src/*` alias), plus `noImplicitOverride` and `noFallthroughCasesInSwitch` |
-| `angular.json` | `base.json`  | Angular CLI's generated settings (see below)                                                                                                                                                                                                                       |
+| Preset         | Extends      | Adds                                                                                                                                                                                   |
+| -------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base.json`    | —            | `strict`, `noUncheckedIndexedAccess`, `isolatedModules`, ES2022, NodeNext, declarations                                                                                                |
+| `react.json`   | `base.json`  | `jsx: react-jsx`, bundler resolution                                                                                                                                                   |
+| `nextjs.json`  | `react.json` | The compiler options `create-next-app` generates (`next` TS plugin, `allowJs`, `noEmit`, `incremental`, ESNext + DOM libs), plus `noImplicitOverride` and `noFallthroughCasesInSwitch` |
+| `angular.json` | `base.json`  | Angular CLI's generated settings (see below)                                                                                                                                           |
 
-### Paths resolve against _your_ project
+### `include`, `exclude` and `paths` stay in your project
 
-A path in a tsconfig resolves relative to the file that declares it — so an
-`include` or a `paths` alias written in this package would point inside
-`node_modules/@forthtilliath/typescript-config/`, and every consumer used to
-have to redeclare them. The presets use `${configDir}` (TypeScript 5.5+)
-instead, which resolves to the directory of the tsconfig that _extends_ the
-preset: `include`, `exclude` and the `@/*` alias work as-is.
+The presets only carry `compilerOptions`. File lists and path aliases belong
+in the consuming project's own tsconfig:
 
-Redeclaring `include`/`exclude` in your own tsconfig replaces the preset's
-list entirely (tsconfig doesn't merge arrays) — relist what you still need,
-e.g. to exclude a service worker built separately:
-
-```json
-{
-  "extends": "@forthtilliath/typescript-config/nextjs.json",
-  "exclude": ["node_modules", "src/sw.ts"]
-}
-```
+- a relative path in a tsconfig resolves against the file that declares it,
+  so written here it would point inside
+  `node_modules/@forthtilliath/typescript-config/`;
+- TypeScript 5.5's `${configDir}` fixes that for `tsc`, but not for the tools
+  that actually resolve imports at build/test time — Turbopack ignores a
+  `${configDir}` `paths` alias (every `@/…` import fails to resolve) and
+  `vite-tsconfig-paths` (Vitest) ignores a `${configDir}` `include` (the
+  alias is never applied to the matched files).
 
 ### Angular
 
