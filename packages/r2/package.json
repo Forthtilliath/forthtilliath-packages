@@ -1,6 +1,6 @@
 {
   "name": "@forthtilliath/r2",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Direct browser-to-bucket uploads for Cloudflare R2 (or any S3-compatible storage) via presigned URLs.",
   "type": "module",
   "license": "MIT",
