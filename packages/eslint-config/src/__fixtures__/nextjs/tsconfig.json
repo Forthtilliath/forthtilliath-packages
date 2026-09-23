@@ -1,0 +1,7 @@
+{
+  "extends": "@forthtilliath/typescript-config/react.json",
+  "compilerOptions": {
+    "types": []
+  },
+  "include": ["*.ts"]
+}
