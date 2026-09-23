@@ -1,10 +1,16 @@
 # @forthtilliath/typescript-config
 
-Shared `tsconfig.json` bases for every package/app in this monorepo:
-`strict: true`, `noUncheckedIndexedAccess`, ES2022 target, NodeNext module
-resolution.
+Shared `tsconfig.json` bases: `strict: true`, `noUncheckedIndexedAccess`,
+ES2022 target, NodeNext module resolution — plus React, Next.js and Angular
+presets on top.
 
 ## Install
+
+```bash
+npm install -D @forthtilliath/typescript-config
+```
+
+Within this monorepo:
 
 ```json
 {
@@ -14,12 +20,16 @@ resolution.
 }
 ```
 
+Requires TypeScript 5.5+ (the presets use `${configDir}`, see below).
+
 ## Usage
 
 ```json
-// A plain TypeScript library (packages/lib, packages/types, packages/eslint-config)
+// A plain TypeScript library (packages/ts-kit, packages/eslint-config...)
 {
-  "extends": "@forthtilliath/typescript-config/base.json"
+  "extends": "@forthtilliath/typescript-config/base.json",
+  "compilerOptions": { "outDir": "dist", "rootDir": "src" },
+  "include": ["src"]
 }
 ```
 
@@ -31,7 +41,7 @@ resolution.
 ```
 
 ```json
-// A Next.js app (apps/web)
+// A Next.js app (apps/web) — nothing else needed
 {
   "extends": "@forthtilliath/typescript-config/nextjs.json"
 }
@@ -44,10 +54,34 @@ resolution.
 }
 ```
 
-`react.json` and `angular.json` both extend `base.json` directly (each
-targets a different framework, neither needs the other's settings);
-`nextjs.json` extends `react.json` (adds the `next` TS plugin, `.next/types`
-inclusion, and the `@/*` path alias).
+| Preset         | Extends      | Adds                                                                                                                                                                                                                                                               |
+| -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `base.json`    | —            | `strict`, `noUncheckedIndexedAccess`, `isolatedModules`, ES2022, NodeNext, declarations                                                                                                                                                                            |
+| `react.json`   | `base.json`  | `jsx: react-jsx`, bundler resolution                                                                                                                                                                                                                               |
+| `nextjs.json`  | `react.json` | Everything `create-next-app` generates (`next` TS plugin, `allowJs`, `noEmit`, `incremental`, ESNext + DOM libs, `next-env.d.ts` / `.next/types` / `.next/dev/types` inclusion, `@/*` → `src/*` alias), plus `noImplicitOverride` and `noFallthroughCasesInSwitch` |
+| `angular.json` | `base.json`  | Angular CLI's generated settings (see below)                                                                                                                                                                                                                       |
+
+### Paths resolve against _your_ project
+
+A path in a tsconfig resolves relative to the file that declares it — so an
+`include` or a `paths` alias written in this package would point inside
+`node_modules/@forthtilliath/typescript-config/`, and every consumer used to
+have to redeclare them. The presets use `${configDir}` (TypeScript 5.5+)
+instead, which resolves to the directory of the tsconfig that _extends_ the
+preset: `include`, `exclude` and the `@/*` alias work as-is.
+
+Redeclaring `include`/`exclude` in your own tsconfig replaces the preset's
+list entirely (tsconfig doesn't merge arrays) — relist what you still need,
+e.g. to exclude a service worker built separately:
+
+```json
+{
+  "extends": "@forthtilliath/typescript-config/nextjs.json",
+  "exclude": ["node_modules", "src/sw.ts"]
+}
+```
+
+### Angular
 
 `angular.json` mirrors the Angular CLI's own generated tsconfig:
 `experimentalDecorators` (paired with `useDefineForClassFields: false`, the
@@ -62,10 +96,6 @@ Angular ones — and `angularCompilerOptions.strictTemplates` (checked by
 `ngc`, not `tsc`, but read from this same file), which is what actually
 catches a typo'd property or wrong-typed binding in a `.html` template
 instead of failing silently at runtime.
-
-Packages typically add their own `compilerOptions` on top for `outDir`/
-`rootDir`, and their own `include`/`exclude` — this package only supplies the
-shared defaults, not a full ready-to-use config.
 
 ## Scripts
 
