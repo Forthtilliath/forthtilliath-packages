@@ -103,6 +103,13 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `randomId()` — `crypto.randomUUID()` with fallbacks for older/insecure
   contexts.
 
+### `image`
+
+- `compressImage(file, { maxWidth?, quality? })` — browser-side compression
+  via the Canvas API: scales down to `maxWidth` (default 2400px, aspect ratio
+  kept) and converts to WebP (default quality 0.82). Non-image files are
+  returned unchanged.
+
 ### `markdown`
 
 - `parseChangelogNotes(notes)` — parses a small subset of Markdown
