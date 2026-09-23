@@ -128,9 +128,8 @@ export function UpdateSettingsScreen({
   }, [checkForUpdate, compareVersions, currentVersion, t.checkError]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- the caller navigated here specifically to check, so this fires a real check on mount rather than waiting for a manual tap; the actual state update happens after the async checkForUpdate() call, not synchronously.
     void handleCheckForUpdate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps -- runs once on mount by design; handleCheckForUpdate is expected to be stable enough for the screen's lifetime.
+    // eslint-disable-next-line @eslint-react/exhaustive-deps -- runs once on mount by design; handleCheckForUpdate is expected to be stable enough for the screen's lifetime.
   }, []);
 
   async function handleInstall(apkUrl: string) {

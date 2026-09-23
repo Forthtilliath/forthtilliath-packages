@@ -26,6 +26,6 @@ export function useDebouncedChange(
     return () => {
       clearTimeout(timeout);
     };
-    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps -- `values` IS the dependency list, by design (caller-provided, variable length not expected to change).
+    // eslint-disable-next-line @eslint-react/exhaustive-deps -- `values` IS the dependency list, by design (caller-provided, variable length not expected to change).
   }, values);
 }
