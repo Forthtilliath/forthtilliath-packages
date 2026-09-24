@@ -6,6 +6,7 @@
 export * from "./array/index.js";
 export * from "./async/index.js";
 export * from "./classes/index.js";
+export * from "./csv/index.js";
 export * from "./date/index.js";
 export * from "./files/index.js";
 export * from "./id/index.js";
