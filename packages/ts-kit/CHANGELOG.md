@@ -1,5 +1,11 @@
 # @forthtilliath/ts-kit
 
+## 0.7.0
+
+### Minor Changes
+
+- e2d621a: Add `swapItems(items, i, j)` to the `array` category: returns a copy of `items` with the elements at `i` and `j` swapped, or a plain copy if either position is out of bounds.
+
 ## 0.6.0
 
 ### Minor Changes
