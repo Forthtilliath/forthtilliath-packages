@@ -1,5 +1,12 @@
 # @forthtilliath/forth-ui
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies [f4e5779]
+  - @forthtilliath/react-kit@0.4.0
+
 ## 0.2.4
 
 ### Patch Changes

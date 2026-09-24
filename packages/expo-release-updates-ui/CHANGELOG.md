@@ -1,5 +1,11 @@
 # @forthtilliath/expo-release-updates-ui
 
+## 0.2.6
+
+### Patch Changes
+
+- @forthtilliath/expo-release-updates@0.4.5
+
 ## 0.2.5
 
 ### Patch Changes
