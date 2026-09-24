@@ -46,6 +46,9 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `rankByNameMatch(items, query, getName)` — ranks `items` by relevance to
   `query`: earlier match position first, then shorter name — for a
   search-as-you-type list.
+- `swapItems(items, i, j)` — copy of `items` with the elements at `i` and `j`
+  swapped (e.g. moving an item up/down) — a plain copy if either position is
+  out of bounds.
 
 ### `async`
 
