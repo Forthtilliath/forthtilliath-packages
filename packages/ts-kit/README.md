@@ -84,6 +84,16 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
     rarely needed since `FArray` is already assignable to `T[]` anywhere a
     plain array is expected, but useful when the runtime type matters too.
 
+### `csv`
+
+- `parseCsvLine(line, delimiter?)` — splits one CSV line into trimmed cells;
+  quoted cells may contain the delimiter, `""` stands for a literal quote.
+  Delimiter defaults to `","`.
+- `toCsv(rows, delimiter?)` — serializes rows to CSV, every cell quoted and
+  escaped, rows joined with `\n`.
+- `downloadCsv(filename, content)` — browser download as `text/csv`, with a
+  UTF-8 BOM so Excel reads accented characters.
+
 ### `date`
 
 - `startOfDay(date?)` — returns a new `Date` at local midnight.
