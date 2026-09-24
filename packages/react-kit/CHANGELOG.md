@@ -1,5 +1,11 @@
 # @forthtilliath/react-kit
 
+## 0.4.0
+
+### Minor Changes
+
+- f4e5779: Add `useHorizontalScroll({ step?, keyboard? })`: tracks whether a horizontally scrollable container can scroll left/right (kept in sync by a `ResizeObserver`), with `scrollByStep` and optional arrow-key scrolling outside form fields.
+
 ## 0.3.0
 
 ### Minor Changes
