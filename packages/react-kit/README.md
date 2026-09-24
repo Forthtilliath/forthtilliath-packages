@@ -41,6 +41,7 @@ import { useOnlineStatus } from "@forthtilliath/react-kit/useOnlineStatus";
 import { useIntersectionObserver } from "@forthtilliath/react-kit/useIntersectionObserver";
 import { useCopyToClipboard } from "@forthtilliath/react-kit/useCopyToClipboard";
 import { useControllableState } from "@forthtilliath/react-kit/useControllableState";
+import { useHorizontalScroll } from "@forthtilliath/react-kit/useHorizontalScroll";
 import { Repeat, type RepeatProps } from "@forthtilliath/react-kit/repeat";
 import { Show, type ShowProps } from "@forthtilliath/react-kit/show";
 import {
@@ -156,6 +157,30 @@ const [pressed, setPressed] = useControllableState({
   defaultValue,
   onChange,
 });
+```
+
+### `useHorizontalScroll<TInner>({ step?, keyboard? })`
+
+Tracks whether a horizontally scrollable container can scroll further left
+or right — for edge shadows or arrow buttons — kept in sync via a
+`ResizeObserver` on the container (`scrollRef`) and its content
+(`innerRef`). `scrollByStep(-1 | 1)` smooth-scrolls by `step` px (default
+`240`); the left/right arrow keys do the same unless focus is in a form field
+(`keyboard: false` to opt out). Call `updateScrollState` from `onScroll`:
+
+```tsx
+const {
+  scrollRef,
+  innerRef,
+  canScrollLeft,
+  canScrollRight,
+  updateScrollState,
+  scrollByStep,
+} = useHorizontalScroll<HTMLTableElement>();
+
+<div ref={scrollRef} onScroll={updateScrollState} className="overflow-x-auto">
+  <table ref={innerRef}>…</table>
+</div>;
 ```
 
 ### `Show<T>`
