@@ -46,6 +46,10 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `rankByNameMatch(items, query, getName)` — ranks `items` by relevance to
   `query`: earlier match position first, then shorter name — for a
   search-as-you-type list.
+- `sortUpcomingFirst(items, getDates, { now? })` — upcoming items first
+  (nearest first), then past ones (most recent first), undated last — for a
+  list of events. An item may carry several dates: it stays upcoming while
+  one is ahead (ranked by its next date), then is ranked by its latest date.
 - `swapItems(items, i, j)` — copy of `items` with the elements at `i` and `j`
   swapped (e.g. moving an item up/down) — a plain copy if either position is
   out of bounds.
