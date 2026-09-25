@@ -1,5 +1,11 @@
 # @forthtilliath/ts-kit
 
+## 0.9.0
+
+### Minor Changes
+
+- d8e0863: Add `sortUpcomingFirst(items, getDates, { now? })` to the `array` category: upcoming items first (nearest first), then past ones (most recent first), undated last. Items may carry several dates.
+
 ## 0.8.0
 
 ### Minor Changes

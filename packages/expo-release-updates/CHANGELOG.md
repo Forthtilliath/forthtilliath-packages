@@ -1,5 +1,12 @@
 # @forthtilliath/expo-release-updates
 
+## 0.4.6
+
+### Patch Changes
+
+- Updated dependencies [d8e0863]
+  - @forthtilliath/ts-kit@0.9.0
+
 ## 0.4.5
 
 ### Patch Changes
