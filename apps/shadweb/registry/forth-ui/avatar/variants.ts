@@ -23,7 +23,6 @@ export const avatarVariants = cva("size-10", {
       xl: "size-20",
       "2xl": "size-40",
       "3xl": "size-60",
-      // @container ? for ring and border
     } satisfies Record<Size, string>,
   },
   defaultVariants: {
