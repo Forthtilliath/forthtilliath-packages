@@ -1,5 +1,11 @@
 # @forthtilliath/ts-kit
 
+## 0.10.0
+
+### Minor Changes
+
+- a2b9dee: Add `sanitizeFileName(name)` to the `files` category, `padNumber(n, total, minWidth?)` to the `number` category and `createColumnStorage(defaults)` to the `array` category (persists a user-customized column list: order and visibility).
+
 ## 0.9.0
 
 ### Minor Changes

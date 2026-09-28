@@ -1,5 +1,13 @@
 # @forthtilliath/react-native-kit
 
+## 0.14.8
+
+### Patch Changes
+
+- Updated dependencies [a2b9dee]
+  - @forthtilliath/ts-kit@0.10.0
+  - @forthtilliath/expo-release-updates-ui@0.2.8
+
 ## 0.14.7
 
 ### Patch Changes
