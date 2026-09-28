@@ -144,6 +144,17 @@ const COMPONENTS: Record<string, RegistryItemMeta & NpmDeps> = {
     description:
       "A color swatch + hex text input, kept in sync with the browser's native color picker.",
   },
+  "column-menu": {
+    title: "ColumnMenu",
+    description:
+      "A dropdown to show/hide and reorder (drag and drop) the columns of a table.",
+    dependencies: [
+      "@dnd-kit/core",
+      "@dnd-kit/sortable",
+      "@dnd-kit/utilities",
+      "lucide-react",
+    ],
+  },
   combobox: {
     title: "Combobox",
     description:
@@ -193,6 +204,15 @@ const COMPONENTS: Record<string, RegistryItemMeta & NpmDeps> = {
     title: "FileList",
     description:
       "Displays a list of files with details such as name, size, and upload progress.",
+  },
+  "gradient-frame": {
+    title: "GradientFrame",
+    description: "A visual laid on an offset, gradient-filled frame.",
+  },
+  "icon-bubble": {
+    title: "IconBubble",
+    description: "An icon inside a round, tinted bubble.",
+    dependencies: ["class-variance-authority"],
   },
   "image-input": {
     title: "ImageInput",
@@ -352,6 +372,12 @@ const COMPONENTS: Record<string, RegistryItemMeta & NpmDeps> = {
   timeline: {
     title: "Timeline",
     description: "A vertical sequence of dated events, connected by a line.",
+  },
+  "toggle-switch": {
+    title: "ToggleSwitch",
+    description:
+      "An on/off switch with an optional visible label and description.",
+    dependencies: ["class-variance-authority"],
   },
   tree: {
     title: "Tree",
