@@ -36,6 +36,10 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 ### `array`
 
 - `chunk(array, size)` — splits an array into chunks of a given size.
+- `createColumnStorage(defaults)` — `{ serialize, deserialize }` pair to
+  persist a user-customized column list (order + visibility, e.g. in
+  `localStorage`). Only `key`/`visible` are stored; on read, unknown keys are
+  dropped, new columns appended, and invalid input falls back to `defaults`.
 - `flattenDeep(array)` — recursively flattens nested arrays.
 - `getMostRecentIds(rows, limit?)` — most recently occurring distinct ids
   (`{ id, occurredAt }[]`), most recent first, deduplicated, limited
@@ -114,6 +118,8 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
   via a `data:` URI.
 - `downloadTextBlob(filename, text)` — same, but via a `Blob` + object URL
   (better for larger content).
+- `sanitizeFileName(name)` — replaces characters forbidden in file names
+  (`\ / : * ? " < > |`) with hyphens, collapses whitespace and trims.
 
 ### `id`
 
@@ -148,6 +154,8 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `formatDuration(ms)` — human-readable duration ("1d 1h 1m 1s").
 - `formatCsvNumber(value, decimals?)` — formats a number with a comma
   decimal separator (French-locale spreadsheets) instead of JS's dot.
+- `padNumber(n, total, minWidth?)` — zero-pads `n` to the width of `total`
+  (at least `minWidth`, default 2) so numbered file names sort correctly.
 
 ### `object`
 
