@@ -56,6 +56,11 @@ export function Rating({
   return (
     <div
       role="radiogroup"
+      // Not a Tab stop itself — focus lives on the roving `role="radio"`
+      // children below — but jsx-a11y wants an interactive-role element with
+      // a mouse handler (onMouseLeave, used only to clear the hover preview)
+      // to declare an explicit tabIndex.
+      tabIndex={-1}
       aria-disabled={disabled}
       data-slot="rating"
       className={cn(
