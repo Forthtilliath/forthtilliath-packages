@@ -32,9 +32,26 @@ export interface ColumnMenuProps<C extends ColumnMenuColumn> {
    *
    * - `root` wraps the trigger and the dropdown.
    * - `trigger` is the toggle button.
+   * - `badge` is the "visible / total" counter inside the trigger.
    * - `content` is the dropdown panel.
+   * - `header` is the title + reset bar.
+   * - `hint` is the usage hint under the header.
+   * - `list` wraps the rows.
+   * - `row` is applied to every column row.
    */
-  className?: Partial<Record<"root" | "trigger" | "content", string>>;
+  className?: Partial<
+    Record<
+      | "root"
+      | "trigger"
+      | "badge"
+      | "content"
+      | "header"
+      | "hint"
+      | "list"
+      | "row",
+      string
+    >
+  >;
 }
 
 /**
@@ -132,6 +149,7 @@ export function ColumnMenu<C extends ColumnMenuColumn>({
             allVisible
               ? "bg-foreground/10 text-foreground/40"
               : "bg-primary text-primary-foreground",
+            className?.badge,
           )}
         >
           {visibleCount}/{columns.length}
@@ -155,7 +173,12 @@ export function ColumnMenu<C extends ColumnMenuColumn>({
             className?.content,
           )}
         >
-          <div className="border-border bg-muted flex items-center justify-between border-b px-4 py-3">
+          <div
+            className={cn(
+              "border-border bg-muted flex items-center justify-between border-b px-4 py-3",
+              className?.header,
+            )}
+          >
             <p className="text-foreground text-xs font-medium">{text.title}</p>
             <button
               type="button"
@@ -166,10 +189,15 @@ export function ColumnMenu<C extends ColumnMenuColumn>({
               {text.reset}
             </button>
           </div>
-          <p className="border-border bg-muted/50 text-foreground/50 border-b px-4 py-2 text-xs">
+          <p
+            className={cn(
+              "border-border bg-muted/50 text-foreground/50 border-b px-4 py-2 text-xs",
+              className?.hint,
+            )}
+          >
             {text.hint}
           </p>
-          <div className="p-2">
+          <div className={cn("p-2", className?.list)}>
             <DndContext
               id={dndId}
               sensors={sensors}
@@ -188,6 +216,7 @@ export function ColumnMenu<C extends ColumnMenuColumn>({
                     total={columns.length}
                     dragHandleLabel={text.dragHandle(column.label)}
                     onToggle={toggleColumn}
+                    className={className?.row}
                   />
                 ))}
               </SortableContext>

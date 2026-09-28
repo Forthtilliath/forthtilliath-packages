@@ -16,6 +16,8 @@ export interface SortableColumnRowProps<K extends string> {
   total: number;
   dragHandleLabel: string;
   onToggle: (key: K) => void;
+  /** Carries `data-dragging` while the row is being dragged. */
+  className?: string;
 }
 
 /** One row of `ColumnMenu`: drag handle, visibility switch, position. */
@@ -25,6 +27,7 @@ export function SortableColumnRow<K extends string>({
   total,
   dragHandleLabel,
   onToggle,
+  className,
 }: SortableColumnRowProps<K>) {
   const {
     attributes,
@@ -39,6 +42,7 @@ export function SortableColumnRow<K extends string>({
     <div
       ref={setNodeRef}
       data-slot="column-menu-row"
+      data-dragging={isDragging || undefined}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
@@ -48,6 +52,7 @@ export function SortableColumnRow<K extends string>({
       className={cn(
         "flex items-center gap-3 rounded-lg px-3 py-2 transition-colors",
         isDragging ? "bg-primary/5 border-primary/20 border" : "hover:bg-muted",
+        className,
       )}
     >
       <button
