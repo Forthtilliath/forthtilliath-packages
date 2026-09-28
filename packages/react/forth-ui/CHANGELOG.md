@@ -1,5 +1,15 @@
 # @forthtilliath/forth-ui
 
+## 0.3.0
+
+### Minor Changes
+
+- 405dda7: Add `ToggleSwitch` (on/off switch with optional label and description, three sizes), `ColumnMenu` (show/hide and reorder a table's columns with dnd-kit, plus `useDndSensors`), `GradientFrame` (visual on an offset gradient frame) and `IconBubble` (icon in a tinted round bubble).
+
+### Patch Changes
+
+- f433475: `ColumnMenu`: add `badge`, `header`, `hint`, `list` and `row` to the `className` parts, so every area's default style can be overridden; rows carry `data-dragging` while dragged.
+
 ## 0.2.5
 
 ### Patch Changes
