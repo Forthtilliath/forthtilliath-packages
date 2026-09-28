@@ -322,6 +322,46 @@
       "registryDependencies": ["input"]
     },
     {
+      "name": "column-menu",
+      "type": "registry:component",
+      "title": "ColumnMenu",
+      "description": "A dropdown to show/hide and reorder (drag and drop) the columns of a table.",
+      "files": [
+        {
+          "path": "registry/forth-ui/column-menu/column-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/column-menu/column-menu.tsx"
+        },
+        {
+          "path": "registry/forth-ui/column-menu/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/column-menu/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/column-menu/sortable-column-row.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/column-menu/sortable-column-row.tsx"
+        },
+        {
+          "path": "registry/forth-ui/column-menu/types.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/column-menu/types.ts"
+        },
+        {
+          "path": "registry/forth-ui/column-menu/use-dnd-sensors.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/column-menu/use-dnd-sensors.ts"
+        }
+      ],
+      "dependencies": [
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "lucide-react"
+      ],
+      "registryDependencies": ["@forth-ui/toggle-switch"]
+    },
+    {
       "name": "combobox",
       "type": "registry:component",
       "title": "Combobox",
@@ -531,6 +571,48 @@
         }
       ],
       "registryDependencies": ["progress"]
+    },
+    {
+      "name": "gradient-frame",
+      "type": "registry:component",
+      "title": "GradientFrame",
+      "description": "A visual laid on an offset, gradient-filled frame.",
+      "files": [
+        {
+          "path": "registry/forth-ui/gradient-frame/gradient-frame.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/gradient-frame/gradient-frame.tsx"
+        },
+        {
+          "path": "registry/forth-ui/gradient-frame/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/gradient-frame/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "icon-bubble",
+      "type": "registry:component",
+      "title": "IconBubble",
+      "description": "An icon inside a round, tinted bubble.",
+      "files": [
+        {
+          "path": "registry/forth-ui/icon-bubble/icon-bubble.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/icon-bubble/icon-bubble.tsx"
+        },
+        {
+          "path": "registry/forth-ui/icon-bubble/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/icon-bubble/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/icon-bubble/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/icon-bubble/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority"]
     },
     {
       "name": "image-input",
@@ -1139,6 +1221,30 @@
           "target": "@components/forth-ui/timeline/timeline.tsx"
         }
       ]
+    },
+    {
+      "name": "toggle-switch",
+      "type": "registry:component",
+      "title": "ToggleSwitch",
+      "description": "An on/off switch with an optional visible label and description.",
+      "files": [
+        {
+          "path": "registry/forth-ui/toggle-switch/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/toggle-switch/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/toggle-switch/toggle-switch.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/toggle-switch/toggle-switch.tsx"
+        },
+        {
+          "path": "registry/forth-ui/toggle-switch/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/toggle-switch/variants.ts"
+        }
+      ],
+      "dependencies": ["class-variance-authority"]
     },
     {
       "name": "tree",
