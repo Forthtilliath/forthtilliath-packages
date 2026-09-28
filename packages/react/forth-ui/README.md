@@ -8,7 +8,7 @@ built from `Popover` + `Command`, a `PasswordInput` with a strength meter, a
 `Dropdrawer` that's a `DropdownMenu` on desktop and a `Drawer` on mobile —
 so you don't have to wire the same recipe from scratch in every project.
 
-58 components across 8 categories, styled with Tailwind CSS and
+62 components across 8 categories, styled with Tailwind CSS and
 `class-variance-authority`, fully typed, and browsable in Storybook
 (`pnpm run dev:sb` from the repo root).
 
@@ -186,6 +186,7 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 | `Rating`                  | `components/rating`         | A star rating control with keyboard navigation and hover preview.        |
 | `SubmitButton`            | `components/submit-button`  | A submit `Button` that shows its own loading state via `useFormStatus`.  |
 | `TagsInput`               | `components/tags-input`     | A flexible input for adding/removing multiple tags.                      |
+| `ToggleSwitch`            | `components/toggle-switch`  | An on/off switch with an optional visible label and description.         |
 
 ### Feedback
 
@@ -211,17 +212,20 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 
 ### Data Display
 
-| Component               | Import                        | Description                                                              |
-| ----------------------- | ----------------------------- | ------------------------------------------------------------------------ |
-| `Avatar`, `AvatarGroup` | `components/avatar`           | An image with a fallback, status/badge indicators, and stacked grouping. |
-| `DescriptionList`       | `components/description-list` | A description list, with terms and descriptions.                         |
-| `FileList`              | `components/file-list`        | Displays a list of files with name, size, and upload progress.           |
-| `Kbd`                   | `components/kbd`              | Displays which key or combination of keys performs a given action.       |
-| `QrCode`                | `components/qr-code`          | Generates a QR code from a string, rendered as inline SVG.               |
-| `RelativeTime`          | `components/relative-time`    | Displays a live-updating time, defaulting to the local timezone.         |
-| `Sortable`              | `components/sortable`         | A drag-to-reorder list built on native HTML5 drag events.                |
-| `Timeline`              | `components/timeline`         | A vertical sequence of dated events, connected by a line.                |
-| `Tree`                  | `components/tree`             | A hierarchical, expandable/collapsible list of nodes.                    |
+| Component                      | Import                        | Description                                                              |
+| ------------------------------ | ----------------------------- | ------------------------------------------------------------------------ |
+| `Avatar`, `AvatarGroup`        | `components/avatar`           | An image with a fallback, status/badge indicators, and stacked grouping. |
+| `ColumnMenu` (`useDndSensors`) | `components/column-menu`      | A dropdown to show/hide and reorder (drag and drop) a table's columns.   |
+| `DescriptionList`              | `components/description-list` | A description list, with terms and descriptions.                         |
+| `FileList`                     | `components/file-list`        | Displays a list of files with name, size, and upload progress.           |
+| `GradientFrame`                | `components/gradient-frame`   | A visual laid on an offset, gradient-filled frame.                       |
+| `IconBubble`                   | `components/icon-bubble`      | An icon inside a round, tinted bubble.                                   |
+| `Kbd`                          | `components/kbd`              | Displays which key or combination of keys performs a given action.       |
+| `QrCode`                       | `components/qr-code`          | Generates a QR code from a string, rendered as inline SVG.               |
+| `RelativeTime`                 | `components/relative-time`    | Displays a live-updating time, defaulting to the local timezone.         |
+| `Sortable`                     | `components/sortable`         | A drag-to-reorder list built on native HTML5 drag events.                |
+| `Timeline`                     | `components/timeline`         | A vertical sequence of dated events, connected by a line.                |
+| `Tree`                         | `components/tree`             | A hierarchical, expandable/collapsible list of nodes.                    |
 
 ### Code & Content
 
