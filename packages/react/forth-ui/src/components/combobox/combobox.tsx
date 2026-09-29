@@ -18,7 +18,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/popover";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Button } from "../button";
+import { Button } from "../button/index.js";
 
 export interface ComboboxOption {
   label: string;

@@ -1,6 +1,6 @@
-import { AccordionMultiple } from "./accordion-multiple";
-import { AccordionSingle } from "./accordion-single";
-import type { AccordionProps, MultipleProps, SingleProps } from "./types";
+import { AccordionMultiple } from "./accordion-multiple.js";
+import { AccordionSingle } from "./accordion-single.js";
+import type { AccordionProps, MultipleProps, SingleProps } from "./types.js";
 
 /**
  * A vertically stacked set of interactive headings that each reveal a section of content.

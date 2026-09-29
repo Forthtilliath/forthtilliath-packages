@@ -15,7 +15,7 @@ import {
   FileListInfo,
   FileListItem,
   FileListName,
-} from "../file-list";
+} from "../file-list/index.js";
 
 export interface DropzoneProps {
   value?: File[];

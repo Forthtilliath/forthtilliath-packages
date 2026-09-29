@@ -12,20 +12,20 @@ import {
 } from "@forthtilliath/shadcn-ui/components/tooltip";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { Shape, Size } from "./constants";
-import { DEFAULT_BADGE_POSITION, STATUS_LABEL } from "./constants";
+import type { Shape, Size } from "./constants.js";
+import { DEFAULT_BADGE_POSITION, STATUS_LABEL } from "./constants.js";
 import type {
   BadgeVariants,
   FallbackVariants,
   StatusVariants,
-} from "./variants";
+} from "./variants.js";
 import {
   avatarVariants,
   badgeVariants,
   fallbackVariants,
   statusVariants,
   tooltipTriggerVariants,
-} from "./variants";
+} from "./variants.js";
 
 export type AvatarProps = Omit<
   React.ComponentProps<typeof AvatarPrimitive>,

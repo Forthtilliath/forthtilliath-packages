@@ -1,2 +1,5 @@
-export type { CheckboxGroupOption, CheckboxGroupProps } from "./checkbox-group";
-export { CheckboxGroup } from "./checkbox-group";
+export type {
+  CheckboxGroupOption,
+  CheckboxGroupProps,
+} from "./checkbox-group.js";
+export { CheckboxGroup } from "./checkbox-group.js";

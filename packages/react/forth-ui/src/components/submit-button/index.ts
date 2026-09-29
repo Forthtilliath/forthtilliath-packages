@@ -1,2 +1,2 @@
-export type { SubmitButtonProps } from "./submit-button";
-export { SubmitButton } from "./submit-button";
+export type { SubmitButtonProps } from "./submit-button.js";
+export { SubmitButton } from "./submit-button.js";

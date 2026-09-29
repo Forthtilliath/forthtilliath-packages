@@ -1,3 +1,3 @@
-export * from "./useDebouncedChange";
-export * from "./useEffectiveColorScheme";
-export * from "./useSubmitGuard";
+export * from "./useDebouncedChange.js";
+export * from "./useEffectiveColorScheme.js";
+export * from "./useSubmitGuard.js";

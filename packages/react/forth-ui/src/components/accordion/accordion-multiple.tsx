@@ -1,9 +1,9 @@
 import { Accordion as AccordionPrimitive } from "@forthtilliath/shadcn-ui/components/accordion";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Items } from "./accordion-items";
-import type { MultipleProps } from "./types";
-import { accordionRootVariants } from "./variants";
+import { Items } from "./accordion-items.js";
+import type { MultipleProps } from "./types.js";
+import { accordionRootVariants } from "./variants.js";
 
 export function AccordionMultiple({
   className,

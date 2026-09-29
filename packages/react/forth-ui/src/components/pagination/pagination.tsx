@@ -13,8 +13,8 @@ import {
 } from "@forthtilliath/shadcn-ui/components/pagination";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { PaginationRangeOptions } from "./pagination-range";
-import { getPaginationRange } from "./pagination-range";
+import type { PaginationRangeOptions } from "./pagination-range.js";
+import { getPaginationRange } from "./pagination-range.js";
 
 export type PaginationProps = Omit<PaginationRangeOptions, "page"> & {
   /** The current page, 1-indexed. */

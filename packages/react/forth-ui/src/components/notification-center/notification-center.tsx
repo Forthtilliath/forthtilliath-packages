@@ -10,8 +10,8 @@ import {
 } from "@forthtilliath/shadcn-ui/components/popover";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Badge } from "../badge";
-import { Button } from "../button";
+import { Badge } from "../badge/index.js";
+import { Button } from "../button/index.js";
 
 export interface NotificationItem {
   id: string;

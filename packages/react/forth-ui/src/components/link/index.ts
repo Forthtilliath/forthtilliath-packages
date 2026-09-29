@@ -1,6 +1,6 @@
-export type { LinkProps } from "./link";
-export { Link } from "./link";
-export type { LinkPreviewMetadata, LinkPreviewProps } from "./link-preview";
-export { LinkPreview } from "./link-preview";
-export type { LinkVariants } from "./variants";
-export { linkVariants } from "./variants";
+export type { LinkProps } from "./link.js";
+export { Link } from "./link.js";
+export type { LinkPreviewMetadata, LinkPreviewProps } from "./link-preview.js";
+export { LinkPreview } from "./link-preview.js";
+export type { LinkVariants } from "./variants.js";
+export { linkVariants } from "./variants.js";

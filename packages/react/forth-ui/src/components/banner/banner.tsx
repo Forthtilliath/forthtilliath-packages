@@ -5,8 +5,8 @@ import { X } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { BannerVariants } from "./variants";
-import { bannerVariants } from "./variants";
+import type { BannerVariants } from "./variants.js";
+import { bannerVariants } from "./variants.js";
 
 export type BannerProps = React.ComponentProps<"div"> &
   BannerVariants & {

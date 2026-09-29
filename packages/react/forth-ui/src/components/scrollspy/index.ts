@@ -1,2 +1,2 @@
-export type { UseScrollspyOptions } from "./use-scrollspy";
-export { useScrollspy } from "./use-scrollspy";
+export type { UseScrollspyOptions } from "./use-scrollspy.js";
+export { useScrollspy } from "./use-scrollspy.js";

@@ -1,2 +1,2 @@
-export type { ColorPickerProps } from "./color-picker";
-export { ColorPicker } from "./color-picker";
+export type { ColorPickerProps } from "./color-picker.js";
+export { ColorPicker } from "./color-picker.js";

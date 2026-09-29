@@ -5,12 +5,12 @@ import {
 } from "@forthtilliath/shadcn-ui/components/accordion";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { AccordionProps } from "./types";
+import type { AccordionProps } from "./types.js";
 import {
   accordionContentVariants,
   accordionItemVariants,
   accordionTriggerVariants,
-} from "./variants";
+} from "./variants.js";
 
 export function Items({
   hideChevron,

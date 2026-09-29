@@ -1,6 +1,6 @@
-export type { CollapsibleProps } from "./collapsible";
-export type { CollapsibleContentProps } from "./collapsible";
-export type { CollapsibleTriggerProps } from "./collapsible";
-export { Collapsible } from "./collapsible";
-export { CollapsibleContent } from "./collapsible";
-export { CollapsibleTrigger } from "./collapsible";
+export type { CollapsibleProps } from "./collapsible.js";
+export type { CollapsibleContentProps } from "./collapsible.js";
+export type { CollapsibleTriggerProps } from "./collapsible.js";
+export { Collapsible } from "./collapsible.js";
+export { CollapsibleContent } from "./collapsible.js";
+export { CollapsibleTrigger } from "./collapsible.js";

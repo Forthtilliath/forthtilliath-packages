@@ -1,9 +1,9 @@
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { AvatarProps } from "../avatar";
-import { Avatar } from "../avatar";
-import type { BadgeProps } from "../badge";
-import { Badge } from "../badge";
+import type { AvatarProps } from "../avatar/index.js";
+import { Avatar } from "../avatar/index.js";
+import type { BadgeProps } from "../badge/index.js";
+import { Badge } from "../badge/index.js";
 
 export type ChipProps = BadgeProps & {
   /**

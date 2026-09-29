@@ -7,10 +7,10 @@ import { useKeyListener } from "@forthtilliath/react-kit/useKeyListener";
 import { type ClassValue, cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import { type Prettify } from "@forthtilliath/ts-types/object";
 
-import { GridDebugContext } from "./context";
-import { GridItem } from "./grid-item";
-import type { GridVariants } from "./variants";
-import { gridVariants } from "./variants";
+import { GridDebugContext } from "./context.js";
+import { GridItem } from "./grid-item.js";
+import type { GridVariants } from "./variants.js";
+import { gridVariants } from "./variants.js";
 
 export type GridProps = Prettify<
   {

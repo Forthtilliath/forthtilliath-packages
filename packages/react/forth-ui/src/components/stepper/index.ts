@@ -1,2 +1,2 @@
-export type { StepperProps, StepperStep } from "./stepper";
-export { Stepper } from "./stepper";
+export type { StepperProps, StepperStep } from "./stepper.js";
+export { Stepper } from "./stepper.js";
