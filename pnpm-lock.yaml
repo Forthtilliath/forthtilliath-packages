@@ -162,6 +162,9 @@ importers:
       lucide-react:
         specifier: ^1.31.0
         version: 1.31.0(react@19.2.8)
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       playwright:
         specifier: ^1.62.1
         version: 1.62.1
@@ -186,6 +189,9 @@ importers:
 
   apps/shadweb:
     dependencies:
+      '@forthtilliath/forth-ui':
+        specifier: workspace:*
+        version: link:../../packages/react/forth-ui
       '@forthtilliath/shadcn-ui':
         specifier: workspace:*
         version: link:../../packages/react/shadcn-ui
@@ -211,6 +217,9 @@ importers:
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@tailwindcss/postcss':
+        specifier: 'catalog:'
+        version: 4.3.3
       '@types/node':
         specifier: 'catalog:'
         version: 26.2.0
@@ -226,6 +235,9 @@ importers:
       shadcn:
         specifier: ^4.16.2
         version: 4.16.2(typescript@5.9.3)
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 4.3.3
       tsx:
         specifier: ^4.23.12
         version: 4.23.12
@@ -235,6 +247,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@forthtilliath/forth-ui':
+        specifier: workspace:*
+        version: link:../../packages/react/forth-ui
       '@forthtilliath/react-kit':
         specifier: workspace:*
         version: link:../../packages/react-kit
@@ -278,6 +293,9 @@ importers:
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@tailwindcss/postcss':
+        specifier: 'catalog:'
+        version: 4.3.3
       '@types/node':
         specifier: 'catalog:'
         version: 26.2.0
@@ -290,6 +308,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.7.0(jiti@2.7.0)
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 4.3.3
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -682,6 +703,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.7.0(jiti@2.7.0)
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -13038,9 +13062,7 @@ snapshots:
       metro-runtime: 0.84.4
     transitivePeerDependencies:
       - '@babel/core'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.86.0': {}
 
