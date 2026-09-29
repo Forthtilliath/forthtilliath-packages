@@ -129,6 +129,8 @@ import { UpdateAvailableBanner } from "@forthtilliath/expo-release-updates-ui";
 }
 ```
 
+Built-in labels are French by default; pass `locale="en"` for English (e.g. from the app's language on a bilingual app). `labels` still overrides individual strings — `title`, `action`, `dismiss`, `dismissAccessibilityLabel` — whatever the locale.
+
 ## Scripts
 
 ```bash
