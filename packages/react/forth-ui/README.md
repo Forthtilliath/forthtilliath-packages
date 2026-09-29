@@ -328,24 +328,24 @@ Tailwind v4 expects any npm-distributed component library to be consumed.
 
 19 themes ship under
 `@forthtilliath/shadcn-ui/styles/themes/`, all rendered here with the same
-components. The first 11 are [tweakcn](https://tweakcn.com)-generated — most of
-them only change the colors:
+components (light and dark mode).
 
-| `default`                                   | `blue`                                | `bubblegum`                                     |
-| ------------------------------------------- | ------------------------------------- | ----------------------------------------------- |
-| ![default theme](./docs/themes/default.png) | ![blue theme](./docs/themes/blue.png) | ![bubblegum theme](./docs/themes/bubblegum.png) |
+The first 11 are [tweakcn](https://tweakcn.com)-generated — most of them only
+change the colors:
 
-| `claymorphism`                                        | `green`                                 | `orange`                                  |
-| ----------------------------------------------------- | --------------------------------------- | ----------------------------------------- |
-| ![claymorphism theme](./docs/themes/claymorphism.png) | ![green theme](./docs/themes/green.png) | ![orange theme](./docs/themes/orange.png) |
-
-| `red`                               | `rose`                                | `twitter`                                   |
-| ----------------------------------- | ------------------------------------- | ------------------------------------------- |
-| ![red theme](./docs/themes/red.png) | ![rose theme](./docs/themes/rose.png) | ![twitter theme](./docs/themes/twitter.png) |
-
-| `violet`                                  | `yellow`                                  |
-| ----------------------------------------- | ----------------------------------------- |
-| ![violet theme](./docs/themes/violet.png) | ![yellow theme](./docs/themes/yellow.png) |
+| Theme          | Style                                                          | Light                                                        | Dark                                                             |
+| -------------- | -------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------- |
+| `default`      | shadcn's neutral default: black on white, grey accents.        | ![default theme, light](./docs/themes/default.png)           | ![default theme, dark](./docs/themes/default-dark.png)           |
+| `blue`         | The default look with a blue primary.                          | ![blue theme, light](./docs/themes/blue.png)                 | ![blue theme, dark](./docs/themes/blue-dark.png)                 |
+| `bubblegum`    | Candy pink and pastels, Poppins, hard offset shadows.          | ![bubblegum theme, light](./docs/themes/bubblegum.png)       | ![bubblegum theme, dark](./docs/themes/bubblegum-dark.png)       |
+| `claymorphism` | Soft clay: warm greys and indigo, very round, pillowy shadows. | ![claymorphism theme, light](./docs/themes/claymorphism.png) | ![claymorphism theme, dark](./docs/themes/claymorphism-dark.png) |
+| `green`        | The default look with a green primary.                         | ![green theme, light](./docs/themes/green.png)               | ![green theme, dark](./docs/themes/green-dark.png)               |
+| `orange`       | The default look with an orange primary.                       | ![orange theme, light](./docs/themes/orange.png)             | ![orange theme, dark](./docs/themes/orange-dark.png)             |
+| `red`          | The default look with a red primary.                           | ![red theme, light](./docs/themes/red.png)                   | ![red theme, dark](./docs/themes/red-dark.png)                   |
+| `rose`         | The default look with a rose primary.                          | ![rose theme, light](./docs/themes/rose.png)                 | ![rose theme, dark](./docs/themes/rose-dark.png)                 |
+| `twitter`      | Twitter blue, Open Sans, very round corners.                   | ![twitter theme, light](./docs/themes/twitter.png)           | ![twitter theme, dark](./docs/themes/twitter-dark.png)           |
+| `violet`       | The default look with a violet primary.                        | ![violet theme, light](./docs/themes/violet.png)             | ![violet theme, dark](./docs/themes/violet-dark.png)             |
+| `yellow`       | The default look with a yellow primary.                        | ![yellow theme, light](./docs/themes/yellow.png)             | ![yellow theme, dark](./docs/themes/yellow-dark.png)             |
 
 The other 8 go further: besides fonts, radius and shadows, each
 adds **signature effects** — plain CSS rules on shadcn-ui's `data-slot`
