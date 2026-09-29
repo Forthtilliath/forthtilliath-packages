@@ -40,6 +40,6 @@
     "drizzle-orm": "^0.45.2",
     "eslint": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^4.1.10"
+    "vitest": "catalog:"
   }
 }
