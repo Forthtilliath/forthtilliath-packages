@@ -38,7 +38,13 @@ function InfiniteScrollExample() {
   }
 
   return (
-    <div className="h-80 w-72 overflow-y-auto rounded-lg border">
+    <div
+      role="region"
+      aria-label="Feed"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be focusable to be keyboard-scrollable
+      tabIndex={0}
+      className="h-80 w-72 overflow-y-auto rounded-lg border"
+    >
       <InfiniteScroll
         hasMore={count < maxItems}
         loading={loading}

@@ -16,7 +16,7 @@ const meta = {
   argTypes: {},
   render: (args) => (
     <Avatar {...args}>
-      <AvatarImage src="https://github.com/shadcn.png" />
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   ),
@@ -44,7 +44,7 @@ export const Fallback: Story = {
   },
   render: (args) => (
     <Avatar {...args}>
-      <AvatarImage src="https://githb.com/shadcn.png" />
+      <AvatarImage src="https://githb.com/shadcn.png" alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   ),
@@ -56,7 +56,7 @@ export const Rounded: Story = {
   },
   render: (args) => (
     <Avatar {...args}>
-      <AvatarImage src="https://github.cm/shadcn.png" />
+      <AvatarImage src="https://github.cm/shadcn.png" alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   ),

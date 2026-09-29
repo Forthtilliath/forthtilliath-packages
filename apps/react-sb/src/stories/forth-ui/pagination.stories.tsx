@@ -66,4 +66,12 @@ export const Disabled: Story = {
     page: 3,
     disabled: true,
   },
+  parameters: {
+    // Disabled controls are exempt from contrast requirements (WCAG 1.4.3).
+    a11y: {
+      config: {
+        rules: [{ id: "color-contrast", enabled: false }],
+      },
+    },
+  },
 };

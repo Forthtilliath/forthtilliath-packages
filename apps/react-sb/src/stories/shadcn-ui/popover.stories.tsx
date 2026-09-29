@@ -19,7 +19,9 @@ const meta = {
   render: (args) => (
     <Popover {...args}>
       <PopoverTrigger>Open</PopoverTrigger>
-      <PopoverContent>Place content for the popover here.</PopoverContent>
+      <PopoverContent aria-label="Popover">
+        Place content for the popover here.
+      </PopoverContent>
     </Popover>
   ),
   parameters: {

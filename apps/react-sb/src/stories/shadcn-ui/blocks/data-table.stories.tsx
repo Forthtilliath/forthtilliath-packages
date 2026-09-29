@@ -133,6 +133,7 @@ const columns: ColumnDef<Payment>[] = [
   {
     id: "actions",
     enableHiding: false,
+    header: () => <span className="sr-only">Actions</span>,
     cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -177,6 +178,14 @@ const meta = {
   args: {
     columns,
     data: payments,
+  },
+  parameters: {
+    // Violation inside the shadcn-ui copy (not editable here) — revisit with the shadcn update. The rows-per-page select trigger has no label.
+    a11y: {
+      config: {
+        rules: [{ id: "button-name", enabled: false }],
+      },
+    },
   },
 } satisfies Meta<typeof DataTable<Payment>>;
 

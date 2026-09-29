@@ -17,7 +17,7 @@ const meta = {
   },
   render: (args) => (
     <div className="flex items-center space-x-2">
-      <Switch {...args} />
+      <Switch aria-label="Airplane mode" {...args} />
       <Label htmlFor={args.id}>Airplane Mode</Label>
     </div>
   ),

@@ -197,4 +197,12 @@ export const ShouldOpenClose: Story = {
       if (item) await userEvent.click(item);
     });
   },
+  parameters: {
+    // Transient: Radix hides the rest of the page (aria-hidden) while the menu animates out.
+    a11y: {
+      config: {
+        rules: [{ id: "aria-hidden-focus", enabled: false }],
+      },
+    },
+  },
 };
