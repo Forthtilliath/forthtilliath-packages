@@ -14,7 +14,11 @@
       "dependsOn": ["^check-types"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      // CI=true turns coverage (and its thresholds) on in the vitest configs:
+      // part of the cache key, and passed through to the task.
+      "env": ["CI"],
+      "outputs": ["coverage/**"]
     },
     "coverage": {
       "dependsOn": ["^build"],
