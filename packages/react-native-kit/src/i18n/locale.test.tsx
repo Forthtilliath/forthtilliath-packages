@@ -2,7 +2,8 @@
 import { act, create } from "react-test-renderer";
 import { describe, expect, it } from "vitest";
 
-import { type KitLocale, KitLocaleProvider, useKitLocale } from "./locale.js";
+import { KitLocaleProvider } from "./KitLocaleProvider.js";
+import { type KitLocale, useKitLocale } from "./locale.js";
 
 // Renders `node` and returns the locale the probe resolved.
 function resolveLocale(

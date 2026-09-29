@@ -5,7 +5,7 @@ import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
 import { propsOf } from "../../__mocks__/testInstance.js";
-import { KitLocaleProvider } from "../../i18n/locale.js";
+import { KitLocaleProvider } from "../../i18n/KitLocaleProvider.js";
 
 import { UndoToast } from "./UndoToast.js";
 
