@@ -108,6 +108,21 @@ Throws with the route's `error` message when presigning fails, or
 `Upload failed (<status>)` when the `PUT` fails. Pass `signal` (an
 `AbortSignal`) to cancel both requests.
 
+For a progress bar, pass `onProgress` — the `PUT` then goes through
+`XMLHttpRequest` (`fetch` doesn't report upload progress); it ends on 100%
+once the upload succeeds:
+
+```ts
+await uploadViaPresignedUrl({
+  file,
+  key,
+  endpoint: "/api/r2/presign-upload",
+  onProgress: ({ loaded, total }) => {
+    setPercent(Math.round((loaded / total) * 100));
+  },
+});
+```
+
 ## Security
 
 - **The Content-Type is signed.** The presigned URL only accepts a `PUT`
