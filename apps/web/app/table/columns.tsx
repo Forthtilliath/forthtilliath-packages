@@ -3,6 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
+import { CopyMenuItem } from "@forthtilliath/forth-ui/components/copy-menu-item";
 import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import { Checkbox } from "@forthtilliath/shadcn-ui/components/checkbox";
 import {
@@ -14,7 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@forthtilliath/shadcn-ui/components/dropdown-menu";
 
-import { CopyMenuItem } from "./copy-menu-item";
 import type { Payment } from "./page";
 
 export const columns: ColumnDef<Payment>[] = [

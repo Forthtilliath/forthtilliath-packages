@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
+import { ModeToggle } from "@forthtilliath/forth-ui/components/mode-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,8 +11,6 @@ import {
 } from "@forthtilliath/shadcn-ui/components/breadcrumb";
 import { Separator } from "@forthtilliath/shadcn-ui/components/separator";
 import { SidebarTrigger } from "@forthtilliath/shadcn-ui/components/sidebar";
-
-import { ModeToggle } from "../mode-toggle";
 
 import { CommandMenu } from "./command-menu";
 import { navItems } from "./nav-items";
