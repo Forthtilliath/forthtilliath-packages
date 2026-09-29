@@ -1,2 +1,2 @@
-export type { BentoGridItemProps } from "./bento-grid";
-export { BentoGrid, BentoGridItem } from "./bento-grid";
+export type { BentoGridItemProps } from "./bento-grid.js";
+export { BentoGrid, BentoGridItem } from "./bento-grid.js";

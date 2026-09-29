@@ -4,8 +4,8 @@ import { Loader2Icon } from "lucide-react";
 import { Button as ButtonPrimitive } from "@forthtilliath/shadcn-ui/components/button";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { ButtonSizeVariants } from "./variants";
-import { buttonSizeVariants } from "./variants";
+import type { ButtonSizeVariants } from "./variants.js";
+import { buttonSizeVariants } from "./variants.js";
 
 export type ButtonProps = Omit<
   React.ComponentProps<typeof ButtonPrimitive>,

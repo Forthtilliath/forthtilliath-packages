@@ -9,7 +9,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../collapsible";
+} from "../collapsible/index.js";
 
 export interface TreeNode {
   label: React.ReactNode;

@@ -4,8 +4,8 @@ import { ArrowUpRightIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { LinkVariants } from "./variants";
-import { linkVariants } from "./variants";
+import type { LinkVariants } from "./variants.js";
+import { linkVariants } from "./variants.js";
 
 export type LinkProps = React.ComponentProps<"a"> &
   LinkVariants & {

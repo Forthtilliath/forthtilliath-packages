@@ -1,2 +1,2 @@
-export * from "./ThemeOptionList";
-export * from "./ThemeToggle";
+export * from "./ThemeOptionList.js";
+export * from "./ThemeToggle.js";

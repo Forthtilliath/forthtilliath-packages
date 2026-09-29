@@ -1,2 +1,2 @@
-export type { ReparentProps, ReparentTarget } from "./reparent";
-export { Reparent } from "./reparent";
+export type { ReparentProps, ReparentTarget } from "./reparent.js";
+export { Reparent } from "./reparent.js";

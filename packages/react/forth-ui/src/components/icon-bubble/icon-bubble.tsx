@@ -2,8 +2,8 @@ import type React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { IconBubbleVariants } from "./variants";
-import { ICON_BUBBLE_ICON_SIZES, iconBubbleVariants } from "./variants";
+import type { IconBubbleVariants } from "./variants.js";
+import { ICON_BUBBLE_ICON_SIZES, iconBubbleVariants } from "./variants.js";
 
 export type IconBubbleProps = Omit<React.ComponentProps<"span">, "children"> &
   IconBubbleVariants & {

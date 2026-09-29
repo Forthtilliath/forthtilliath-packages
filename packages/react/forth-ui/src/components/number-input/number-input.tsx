@@ -6,7 +6,7 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { Input } from "@forthtilliath/shadcn-ui/components/input";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Button } from "../button";
+import { Button } from "../button/index.js";
 
 export type NumberInputProps = Omit<
   React.ComponentProps<"input">,

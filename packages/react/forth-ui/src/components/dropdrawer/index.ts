@@ -1,2 +1,2 @@
-export type { DropdrawerItem, DropdrawerProps } from "./dropdrawer";
-export { Dropdrawer } from "./dropdrawer";
+export type { DropdrawerItem, DropdrawerProps } from "./dropdrawer.js";
+export { Dropdrawer } from "./dropdrawer.js";

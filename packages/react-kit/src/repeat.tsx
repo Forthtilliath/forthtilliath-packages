@@ -1,4 +1,4 @@
-import { SlotOrCallback } from "./slot-or-callback";
+import { SlotOrCallback } from "./slot-or-callback.js";
 
 export interface RepeatProps {
   children: React.ReactNode | ((index: number) => React.ReactNode);

@@ -1,2 +1,2 @@
-export type { ImageInputProps } from "./image-input";
-export { ImageInput } from "./image-input";
+export type { ImageInputProps } from "./image-input.js";
+export { ImageInput } from "./image-input.js";

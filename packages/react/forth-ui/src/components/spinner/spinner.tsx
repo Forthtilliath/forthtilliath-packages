@@ -3,8 +3,8 @@ import { Loader2Icon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { SpinnerSizeVariants } from "./variants";
-import { spinnerSizeVariants } from "./variants";
+import type { SpinnerSizeVariants } from "./variants.js";
+import { spinnerSizeVariants } from "./variants.js";
 
 export type SpinnerVariant = "default" | "ring" | "bars" | "ellipsis";
 

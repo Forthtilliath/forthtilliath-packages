@@ -2,5 +2,5 @@ export type {
   CommandPaletteGroup,
   CommandPaletteItem,
   CommandPaletteProps,
-} from "./command-palette";
-export { CommandPalette } from "./command-palette";
+} from "./command-palette.js";
+export { CommandPalette } from "./command-palette.js";

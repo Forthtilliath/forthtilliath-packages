@@ -2,8 +2,8 @@ import type { JSX } from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { AvatarProps } from "./avatar";
-import { Avatar } from "./avatar";
+import type { AvatarProps } from "./avatar.js";
+import { Avatar } from "./avatar.js";
 
 export type AvatarGroupProps = React.ComponentProps<"div"> & {
   avatars: AvatarProps[];

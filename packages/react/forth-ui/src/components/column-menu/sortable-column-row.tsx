@@ -6,9 +6,9 @@ import { GripVertical } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { ToggleSwitch } from "../toggle-switch";
+import { ToggleSwitch } from "../toggle-switch/index.js";
 
-import type { ColumnMenuColumn } from "./types";
+import type { ColumnMenuColumn } from "./types.js";
 
 export interface SortableColumnRowProps<K extends string> {
   column: ColumnMenuColumn<K>;

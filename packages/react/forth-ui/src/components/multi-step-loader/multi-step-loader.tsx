@@ -5,7 +5,7 @@ import { CheckIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Spinner } from "../spinner";
+import { Spinner } from "../spinner/index.js";
 
 export interface LoadingState {
   text: string;

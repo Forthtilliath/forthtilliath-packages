@@ -1,2 +1,2 @@
-export type { TagsInputProps } from "./tags-input";
-export { TagsInput } from "./tags-input";
+export type { TagsInputProps } from "./tags-input.js";
+export { TagsInput } from "./tags-input.js";

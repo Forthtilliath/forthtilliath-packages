@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Badge } from "../badge";
+import { Badge } from "../badge/index.js";
 
 export interface TagsInputProps {
   value?: string[];

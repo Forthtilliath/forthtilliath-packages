@@ -1,7 +1,7 @@
-export type { NavbarProps } from "./navbar";
-export { Navbar } from "./navbar";
+export type { NavbarProps } from "./navbar.js";
+export { Navbar } from "./navbar.js";
 export type {
   NavbarMobileMenuItem,
   NavbarMobileMenuProps,
-} from "./navbar-mobile-menu";
-export { NavbarMobileMenu } from "./navbar-mobile-menu";
+} from "./navbar-mobile-menu.js";
+export { NavbarMobileMenu } from "./navbar-mobile-menu.js";

@@ -5,12 +5,12 @@ import type React from "react";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import type { Prettify } from "@forthtilliath/ts-types/object";
 
-import { useGridDebugContext } from "./context";
+import { useGridDebugContext } from "./context.js";
 import {
   gridItemDebugVariants,
   type GridItemVariants,
   gridItemVariants,
-} from "./variants";
+} from "./variants.js";
 
 type Props = Prettify<
   GridItemVariants &

@@ -3,8 +3,8 @@ import type React from "react";
 import { Progress as ProgressPrimitive } from "@forthtilliath/shadcn-ui/components/progress";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { ProgressVariants } from "./variants";
-import { progressVariants } from "./variants";
+import type { ProgressVariants } from "./variants.js";
+import { progressVariants } from "./variants.js";
 
 export type ProgressProps = React.ComponentProps<typeof ProgressPrimitive> &
   ProgressVariants & {

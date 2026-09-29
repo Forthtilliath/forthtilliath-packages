@@ -1,2 +1,2 @@
-export type { QrCodeProps } from "./qr-code";
-export { QrCode } from "./qr-code";
+export type { QrCodeProps } from "./qr-code.js";
+export { QrCode } from "./qr-code.js";

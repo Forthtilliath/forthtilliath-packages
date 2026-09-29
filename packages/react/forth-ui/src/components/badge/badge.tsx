@@ -6,8 +6,8 @@ import { X } from "lucide-react";
 import { Badge as BadgePrimitive } from "@forthtilliath/shadcn-ui/components/badge";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { BadgeVariants } from "./variants";
-import { badgeVariants, dotVariants } from "./variants";
+import type { BadgeVariants } from "./variants.js";
+import { badgeVariants, dotVariants } from "./variants.js";
 
 export type BadgeProps = Omit<
   React.ComponentProps<typeof BadgePrimitive>,
