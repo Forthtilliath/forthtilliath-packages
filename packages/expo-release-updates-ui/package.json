@@ -47,6 +47,6 @@
     "react-native": "0.86.0",
     "react-test-renderer": "19.2.3",
     "typescript": "catalog:",
-    "vitest": "^4.1.10"
+    "vitest": "catalog:"
   }
 }

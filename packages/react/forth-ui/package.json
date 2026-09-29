@@ -51,7 +51,7 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@size-limit/file": "^11.2.0",
+    "@size-limit/file": "catalog:",
     "@tailwindcss/cli": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@turbo/gen": "catalog:",
@@ -63,7 +63,7 @@
     "eslint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "size-limit": "^11.2.0",
+    "size-limit": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   },
