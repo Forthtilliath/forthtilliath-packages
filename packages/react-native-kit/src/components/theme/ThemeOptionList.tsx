@@ -3,7 +3,9 @@ import { Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 
+import { defaultThemeLabels } from "./themeLabels.js";
 import type { ThemeToggleLabels } from "./ThemeToggle.js";
 
 export interface ThemeOptionListIcons {
@@ -27,17 +29,16 @@ export interface ThemeOptionListProps {
   value: ThemePreference;
   onChange: (preference: ThemePreference) => void;
   labels?: ThemeToggleLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   icons?: ThemeOptionListIcons;
   styles?: ThemeOptionListStyles;
 }
 
 const OPTIONS: ThemePreference[] = ["light", "dark", "system"];
-
-const defaultLabels: Required<ThemeToggleLabels> = {
-  light: "Clair",
-  dark: "Sombre",
-  system: "Système",
-};
 
 const defaultIcons: Required<ThemeOptionListIcons> = {
   light: "sunny-outline",
@@ -80,6 +81,7 @@ export function ThemeOptionList({
   value,
   onChange,
   labels,
+  locale,
   icons,
   styles,
 }: ThemeOptionListProps) {
@@ -93,7 +95,7 @@ export function ThemeOptionList({
     label: [defaultStyles.label, styles?.label],
     labelActive: [defaultStyles.labelActive, styles?.labelActive],
   };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultThemeLabels[useKitLocale(locale)], ...labels };
   const i = { ...defaultIcons, ...icons };
   const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
   const iconColorActive =
