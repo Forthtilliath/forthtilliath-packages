@@ -32,11 +32,11 @@ import {
   TableRow,
 } from "@forthtilliath/shadcn-ui/components/table";
 
-import { DataTablePagination } from "./data-table-ext/pagination.js";
+import { DataTablePagination } from "./data-table-ext/pagination";
 import {
   getTableConfig,
   type TableConfig,
-} from "./data-table-ext/utils/table-config.js";
+} from "./data-table-ext/utils/table-config";
 
 export interface Props<T> {
   columns: ColumnDef<T>[];
