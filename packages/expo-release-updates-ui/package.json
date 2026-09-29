@@ -31,7 +31,7 @@
     "./*": "./dist/*.js"
   },
   "dependencies": {
-    "@forthtilliath/expo-release-updates": "workspace:*"
+    "@forthtilliath/expo-release-updates": "workspace:^"
   },
   "peerDependencies": {
     "react": ">=19",
