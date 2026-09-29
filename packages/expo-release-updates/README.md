@@ -76,9 +76,13 @@ if (release && isUpdateAvailable(currentVersion, release.version)) {
 }
 ```
 
-### `fetchLatestRelease({ owner, repo, token? })`
+### `fetchLatestRelease({ owner, repo, token?, timeoutMs?, signal? })`
 
-Fetches the latest GitHub release and its `.apk` asset. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails. Pass `token` (a GitHub personal access token or `GITHUB_TOKEN`) for private repos, or to raise the API rate limit from 60 to 5000 requests/hour on public ones.
+Fetches the latest GitHub release and its `.apk` asset. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails. Pass `token` for private repos, or to raise the API rate limit from 60 to 5000 requests/hour on public ones.
+
+The request gives up after `timeoutMs` (default `15000`) instead of hanging on a bad network, and can be cancelled with `signal` (an `AbortSignal`) — both also apply to `fetchReleaseHistory`.
+
+> **Security — the token ships inside your app.** Anything bundled in an APK can be extracted from it, so treat the token as public: use a [fine-grained token](https://github.com/settings/personal-access-tokens) with **read-only "Contents" access to this one repository** and nothing else, never a classic token or one with write scopes. For a public repo, prefer no token at all.
 
 ```ts
 const release = await fetchLatestRelease({ owner: "acme", repo: "app" });
@@ -87,9 +91,9 @@ if (release && isUpdateAvailable(currentVersion, release.version)) {
 }
 ```
 
-### `fetchReleaseHistory({ owner, repo, limit?, token? })`
+### `fetchReleaseHistory({ owner, repo, limit?, token?, timeoutMs?, signal? })`
 
-Fetches the most recent releases (version, notes, publish date), most recent first. `limit` defaults to `10` — useful for a "release history" / "what's new" screen.
+Fetches the most recent published releases (version, notes, publish date), most recent first — draft releases, visible with a token, are left out. `limit` defaults to `10` (clamped to GitHub's 1–100) — useful for a "release history" / "what's new" screen.
 
 ```ts
 const history = await fetchReleaseHistory({
@@ -102,20 +106,25 @@ const history = await fetchReleaseHistory({
 
 ### `downloadAndInstallApk({ apkUrl, fileName, onProgress?, expectedMd5? })`
 
-Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there). Pass `expectedMd5` to verify the downloaded file's integrity before installing — a mismatch deletes the file and throws instead. GitHub Releases has no built-in signature check the way an app store does, so this is the standard safeguard against a corrupted or tampered download; publish the checksum alongside the release (e.g. in the release notes or a `.md5` asset).
+Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there). Pass `expectedMd5` to verify the downloaded file before installing — a mismatch deletes the file and throws instead. Publish the checksum alongside the release (e.g. in the release notes or a `.md5` asset) and read it yourself: `fetchLatestRelease` doesn't return it.
+
+What `expectedMd5` does and doesn't protect against:
+
+- ✅ a corrupted or truncated download;
+- ❌ a malicious release — whoever can publish the APK can publish its checksum too. The real safeguard there is Android itself: it refuses to install an update that isn't signed with the same key as the installed app. **Keep that signing key out of the repo and CI logs**, and restrict who can publish releases.
 
 ```ts
 await downloadAndInstallApk({
   apkUrl: release.apkUrl,
   fileName: "myapp-update.apk",
   onProgress: (fraction) => setProgress(fraction),
-  expectedMd5: release.apkMd5,
+  expectedMd5, // read from the release notes or a .md5 asset
 });
 ```
 
 ### `parseChangelogNotes(notes)`
 
-Parses a small subset of Markdown (`### heading`, `- item`, `**bold**`) commonly found in GitHub release notes into a list of typed blocks (`heading` / `item` / `text`, each with `bold`-aware segments), ready for a UI layer to render without a full Markdown dependency. Pair it with `@forthtilliath/react-native-kit`'s `ChangelogNotes` component to render the result directly.
+Parses a small subset of Markdown (`### heading`, `- item`, `**bold**`) commonly found in GitHub release notes into a list of typed blocks (`heading` / `item` / `text`, each with `bold`-aware segments), ready for a UI layer to render without a full Markdown dependency. Pair it with `@forthtilliath/expo-release-updates-ui`'s `ChangelogNotes` component to render the result directly.
 
 ```ts
 parseChangelogNotes("### Added\n- **Auto-backup**: saves every 5 minutes.");
