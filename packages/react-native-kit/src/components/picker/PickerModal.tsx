@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
 import type {
   PickerModalLabels,
   PickerModalStyles,
@@ -56,6 +58,11 @@ export interface PickerModalProps {
    */
   groupOrder?: string[];
   labels?: PickerModalLabels;
+  /**
+   * Language of the built-in labels and of voice search — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: PickerModalStyles;
 }
 
@@ -73,6 +80,7 @@ export function PickerModal({
   extraActions,
   groupOrder,
   labels,
+  locale,
   styles,
 }: PickerModalProps) {
   // Style fields are merged as arrays (default, then override) so a partial
@@ -112,7 +120,11 @@ export function PickerModal({
     }),
     [styles],
   );
-  const t = useMemo(() => ({ ...defaultLabels, ...labels }), [labels]);
+  const resolvedLocale = useKitLocale(locale);
+  const t = useMemo(
+    () => ({ ...defaultLabels[resolvedLocale], ...labels }),
+    [resolvedLocale, labels],
+  );
   const [query, setQuery] = useState(initialQuery ?? "");
   // Reset the search each time the modal (re-)opens — adjusted during render
   // rather than in an effect, since it only needs to happen once per
@@ -170,6 +182,7 @@ export function PickerModal({
           <VoiceSearchButton
             onResult={setQuery}
             accessibilityLabel={t.voiceSearchAccessibilityLabel}
+            locale={resolvedLocale}
           />
         </View>
         <SectionList

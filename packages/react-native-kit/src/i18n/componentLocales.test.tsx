@@ -6,6 +6,8 @@ import { describe, expect, it, vi } from "vitest";
 
 import { propsOf } from "../__mocks__/testInstance.js";
 import { PhotoPicker } from "../components/picker/PhotoPicker.js";
+import { PickerModal } from "../components/picker/PickerModal.js";
+import { VoiceSearchButton } from "../components/picker/VoiceSearchButton.js";
 import { AboutSettingsScreen } from "../components/settings/AboutSettingsScreen.js";
 import { ContactSettingsScreen } from "../components/settings/ContactSettingsScreen.js";
 import { PrivacySettingsScreen } from "../components/settings/PrivacySettingsScreen.js";
@@ -97,7 +99,42 @@ const cases: [
     "Ajouter une photo",
     "Add a photo",
   ],
+  [
+    "PickerModal",
+    (locale) => (
+      <PickerModal
+        visible
+        title="Pick"
+        items={[]}
+        onSelect={vi.fn()}
+        onClose={vi.fn()}
+        locale={locale}
+      />
+    ),
+    "Aucun résultat.",
+    "No results.",
+  ],
 ];
+
+it("PickerModal hands its locale down to voice search", () => {
+  let tree!: ReturnType<typeof create>;
+  act(() => {
+    tree = create(
+      <PickerModal
+        visible
+        title="Pick"
+        items={[]}
+        onSelect={vi.fn()}
+        onClose={vi.fn()}
+        locale="en"
+      />,
+    );
+  });
+  expect(
+    propsOf<{ locale?: string }>(tree.root.findByType(VoiceSearchButton))
+      .locale,
+  ).toBe("en");
+});
 
 describe.each(cases)("%s built-in labels", (_name, render, fr, en) => {
   it("are French by default", () => {
