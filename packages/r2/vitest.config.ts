@@ -5,6 +5,10 @@ export default defineConfig({
     // `fetch`, `Request`, `Response` and `File` are all Node globals — no DOM needed.
     environment: "node",
     coverage: {
+      // On in CI (GitHub Actions sets CI=true), so `test` also enforces the
+      // thresholds there instead of CI running every test twice. Locally,
+      // `test` stays fast and `coverage` opts in.
+      enabled: process.env.CI === "true",
       provider: "v8",
       reporter: ["text", "lcov"],
       exclude: ["**/*.test.ts", "**/index.ts"],
