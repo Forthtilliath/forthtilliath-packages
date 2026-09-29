@@ -61,4 +61,41 @@ describe("useSubmitGuard", () => {
       await firstCall;
     });
   });
+
+  it("ignores a second call made before any re-render (double tap)", async () => {
+    const { result } = renderHook(() => useSubmitGuard());
+    const { promise, resolve } = deferred();
+    const action = vi.fn(() => promise);
+
+    let firstCall!: Promise<void>;
+    act(() => {
+      // Both taps land on the same render, so they share the same `guard`.
+      const { guard } = result.current;
+      firstCall = guard(action);
+      void guard(action);
+    });
+
+    expect(action).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      resolve();
+      await firstCall;
+    });
+  });
+
+  it("accepts a new call once the previous action has failed", async () => {
+    const { result, rerender } = renderHook(() => useSubmitGuard());
+    const action = vi.fn(() => Promise.reject(new Error("boom")));
+
+    await act(async () => {
+      await result.current.guard(action).catch(() => undefined);
+    });
+    rerender();
+    await act(async () => {
+      await result.current.guard(action).catch(() => undefined);
+    });
+
+    expect(action).toHaveBeenCalledTimes(2);
+    expect(result.current.isSaving).toBe(false);
+  });
 });
