@@ -7,6 +7,8 @@ export interface UploadOptions {
   endpoint: string;
   /** Transformation applied before upload (e.g. image compression). */
   transform?: (file: File) => Promise<File>;
+  /** Aborts the presign request and the upload. */
+  signal?: AbortSignal;
 }
 
 /**
@@ -16,15 +18,17 @@ export interface UploadOptions {
  */
 export async function uploadViaPresignedUrl<
   R extends PresignResponse = PresignResponse,
->({ file, key, endpoint, transform }: UploadOptions): Promise<R> {
+>({ file, key, endpoint, transform, signal }: UploadOptions): Promise<R> {
   const body = transform ? await transform(file) : file;
   const contentType = body.type || "application/octet-stream";
-  const presignRequest: PresignRequest = { key, contentType };
+  // `size` lets a presign route enforce `maxSizeBytes`; ignored otherwise.
+  const presignRequest: PresignRequest = { key, contentType, size: body.size };
 
   const res = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(presignRequest),
+    signal,
   });
   if (!res.ok) {
     const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -36,6 +40,7 @@ export async function uploadViaPresignedUrl<
     method: "PUT",
     headers: { "Content-Type": contentType },
     body,
+    signal,
   });
   if (!upload.ok) throw new Error(`Upload failed (${upload.status})`);
 
