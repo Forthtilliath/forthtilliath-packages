@@ -42,9 +42,9 @@
     "@aws-sdk/s3-request-presigner": "^3.1070.0",
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^4.1.10"
+    "vitest": "catalog:"
   }
 }

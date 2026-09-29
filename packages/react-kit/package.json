@@ -36,16 +36,16 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@size-limit/file": "^11.2.0",
+    "@size-limit/file": "catalog:",
     "@testing-library/react": "^16.3.2",
     "@types/react": "catalog:",
     "eslint": "catalog:",
-    "jsdom": "^29.1.1",
+    "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "size-limit": "^11.2.0",
+    "size-limit": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^4.1.10"
+    "vitest": "catalog:"
   },
   "size-limit": [
     {
