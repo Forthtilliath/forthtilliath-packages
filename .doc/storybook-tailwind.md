@@ -6,23 +6,21 @@ essais antérieurs — ce fichier documente ce qui tourne aujourd'hui).
 ## CSS : build séparé, pas de plugin Vite Tailwind
 
 Storybook sert un CSS **précompilé**, pas du Tailwind live via un plugin
-Vite. `apps/react-sb/src/styles/globals.css` (source) importe
-`@forthtilliath/forth-ui/styles/globals.css`, qui lui-même importe
-`@forthtilliath/shadcn-ui/styles/globals-static.css` +
-`themes/twitter.css`. Le script `build:tw` (Tailwind CLI) compile ça vers
-`.storybook/globals.css`, chargé en `<link>` par
-[`preview-body.html`](../apps/react-sb/.storybook/preview-body.html) :
+Vite. `apps/react-sb/src/styles/globals.css` (source) importe **les
+sources** : `@forthtilliath/shadcn-ui/styles/globals-static.css` (Tailwind +
+`@theme`) + `themes/twitter.css`, les CSS de forth-ui dont les stories ont
+besoin (`shiki.css`, `marquee.css`, par chemin relatif) et les siens
+(`safelist.css`, `storybook.css`). Il n'importe **plus** le CSS publié de
+forth-ui (depuis la PR #124) : ce dernier n'a pas de `@theme`, donc le
+Tailwind de react-sb ne pouvait générer aucune couleur de thème et les
+stories shadcn en dépendaient. Le script `build:tw` (Tailwind CLI, one-shot)
+compile ça vers `.storybook/globals.css` (non versionné), chargé en `<link>`
+par [`preview-body.html`](../apps/react-sb/.storybook/preview-body.html) :
 
 ```bash
-pnpm run build:tw:once   # one-shot
-pnpm run dev:tw          # watch, à lancer en parallèle de `storybook dev`
+pnpm run build:tw   # one-shot (lancé par predev / pretest / prebuild-storybook)
+pnpm run dev:tw     # watch, à lancer en parallèle de `storybook dev`
 ```
-
-Piège de nommage existant : `build:tw` a déjà `--watch` intégré, et
-`dev:tw` fait `pnpm run build:tw --watch` — donc un double `--watch`
-redondant (inoffensif mais trompeur). `prebuild-storybook` lance
-`build:tw:once` (le vrai one-shot) automatiquement avant
-`storybook build`.
 
 ## Thème clair/sombre : `@storybook/addon-themes`
 
