@@ -4,14 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "pnpm run build:tw:once",
     "dev": "storybook dev -p 6006",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
     "preview": "vite preview",
     "dev:tw": "pnpm run build:tw --watch",
     "build:tw": "tailwindcss -i ./src/styles/globals.css -o ./.storybook/globals.css",
     "prebuild-storybook": "pnpm run build:tw",
     "build-storybook": "storybook build",
+    "pretest": "pnpm run build:tw:once",
     "test": "vitest run",
     "qa:screenshot": "node scripts/screenshot.mjs"
   },
@@ -48,10 +50,5 @@
     "vite": "^7.3.6",
     "vitest": "^3.2.7",
     "zod": "^4.4.3"
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
   }
 }
