@@ -3,6 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 
 export interface ThemeSettingsScreenEmojis {
   light?: string;
@@ -50,6 +51,11 @@ export interface ThemeSettingsScreenProps {
   emojis?: ThemeSettingsScreenEmojis;
   icons?: ThemeSettingsScreenIcons;
   labels?: ThemeSettingsScreenLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   /** Set to `false` to hide the hint above the list. Defaults to `true`. */
   showHint?: boolean;
   styles?: ThemeSettingsScreenStyles;
@@ -69,12 +75,20 @@ const defaultIcons: Required<ThemeSettingsScreenIcons> = {
   system: "phone-portrait-outline",
 };
 
-const defaultLabels: Required<ThemeSettingsScreenLabels> = {
-  light: "Clair",
-  dark: "Sombre",
-  system: "Système",
-  hint: "« Système » suit automatiquement le réglage clair/sombre de ton téléphone.",
-};
+const defaultLabels = {
+  fr: {
+    light: "Clair",
+    dark: "Sombre",
+    system: "Système",
+    hint: "« Système » suit automatiquement le réglage clair/sombre de ton téléphone.",
+  },
+  en: {
+    light: "Light",
+    dark: "Dark",
+    system: "System",
+    hint: "“System” automatically follows your phone's light/dark setting.",
+  },
+} satisfies Record<KitLocale, Required<ThemeSettingsScreenLabels>>;
 
 const defaultStyles = {
   container: { gap: 10 } satisfies ViewStyle,
@@ -122,6 +136,7 @@ export function ThemeSettingsScreen({
   emojis,
   icons,
   labels,
+  locale,
   showHint = true,
   styles,
 }: ThemeSettingsScreenProps) {
@@ -140,7 +155,7 @@ export function ThemeSettingsScreen({
   };
   const e = { ...defaultEmojis, ...emojis };
   const i = { ...defaultIcons, ...icons };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
   const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
   const iconColorActive =
     styles?.iconColorActive ?? defaultStyles.iconColorActive;
