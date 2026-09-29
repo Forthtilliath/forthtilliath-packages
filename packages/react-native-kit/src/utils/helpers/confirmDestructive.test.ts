@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { confirmDestructive } from "./confirmDestructive.js";
 
 describe("confirmDestructive", () => {
-  it("affiche une alerte avec le titre et les libellés par défaut", () => {
+  it("shows an alert with the title and the default french labels", () => {
     const spy = vi.spyOn(Alert, "alert");
     const onConfirm = vi.fn();
 
@@ -21,7 +21,7 @@ describe("confirmDestructive", () => {
     spy.mockRestore();
   });
 
-  it("appelle onConfirm quand le bouton destructif est pressé", () => {
+  it("calls onConfirm when the destructive button is pressed", () => {
     const spy = vi.spyOn(Alert, "alert");
     const onConfirm = vi.fn();
 
@@ -33,7 +33,7 @@ describe("confirmDestructive", () => {
     spy.mockRestore();
   });
 
-  it("accepte un message et des libellés personnalisés", () => {
+  it("accepts a custom message and labels", () => {
     const spy = vi.spyOn(Alert, "alert");
 
     confirmDestructive("Titre", vi.fn(), {
@@ -49,6 +49,26 @@ describe("confirmDestructive", () => {
         expect.objectContaining({ text: "Non" }),
         expect.objectContaining({ text: "Oui, archiver" }),
       ]),
+    );
+    spy.mockRestore();
+  });
+
+  it("uses english default labels with locale: 'en', still overridable", () => {
+    const spy = vi.spyOn(Alert, "alert");
+    const onConfirm = vi.fn();
+
+    confirmDestructive("Delete this item?", onConfirm, {
+      locale: "en",
+      confirmLabel: "Remove",
+    });
+
+    expect(spy).toHaveBeenCalledWith(
+      "Delete this item?",
+      "This can't be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Remove", style: "destructive", onPress: onConfirm },
+      ],
     );
     spy.mockRestore();
   });
