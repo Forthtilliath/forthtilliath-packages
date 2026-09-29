@@ -1,5 +1,7 @@
 import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
 
+import type { KitLocale } from "../../i18n/locale.js";
+
 export interface PickerModalStyles {
   container?: StyleProp<ViewStyle>;
   header?: StyleProp<ViewStyle>;
@@ -105,11 +107,21 @@ export const defaultStyles: Required<PickerModalStyles> = {
   placeholderTextColor: "#6b7280",
 };
 
-export const defaultLabels: Required<PickerModalLabels> = {
-  close: "Fermer",
-  searchPlaceholder: "Rechercher…",
-  searchAccessibilityLabel: "Rechercher",
-  voiceSearchAccessibilityLabel: "Dicter la recherche",
-  defaultEmptyMessage: "Aucun résultat.",
-  otherGroupLabel: "Autres",
-};
+export const defaultLabels = {
+  fr: {
+    close: "Fermer",
+    searchPlaceholder: "Rechercher…",
+    searchAccessibilityLabel: "Rechercher",
+    voiceSearchAccessibilityLabel: "Dicter la recherche",
+    defaultEmptyMessage: "Aucun résultat.",
+    otherGroupLabel: "Autres",
+  },
+  en: {
+    close: "Close",
+    searchPlaceholder: "Search…",
+    searchAccessibilityLabel: "Search",
+    voiceSearchAccessibilityLabel: "Dictate the search",
+    defaultEmptyMessage: "No results.",
+    otherGroupLabel: "Other",
+  },
+} satisfies Record<KitLocale, Required<PickerModalLabels>>;
