@@ -1,10 +1,10 @@
 import type { GridProps } from "@forthtilliath/forth-ui/components/grid";
 import { Grid } from "@forthtilliath/forth-ui/components/grid";
+import type { UnknownRecord } from "@forthtilliath/ts-types";
 import type {
   StoryComponent,
   StoryDecorator,
-  UnknownRecord,
-} from "@forthtilliath/ts-types";
+} from "@forthtilliath/ts-types/helpers";
 
 export function decoratorGroupStories<T extends UnknownRecord>(
   commonProps: Partial<T>,
