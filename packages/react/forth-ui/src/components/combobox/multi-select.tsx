@@ -170,6 +170,7 @@ export function MultiSelect({
       </PopoverTrigger>
       <PopoverContent
         id={listboxId}
+        aria-label={ariaLabel ?? placeholderText}
         className="w-(--radix-popover-trigger-width) p-0"
       >
         <Command>

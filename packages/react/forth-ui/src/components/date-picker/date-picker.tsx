@@ -84,7 +84,11 @@ export function DatePicker({
             : placeholderText}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent
+        aria-label={placeholderText}
+        className="w-auto p-0"
+        align="start"
+      >
         <Calendar
           mode="single"
           selected={selected}
