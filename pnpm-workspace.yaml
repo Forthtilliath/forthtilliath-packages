@@ -13,11 +13,10 @@ onlyBuiltDependencies:
 
 catalog:
   '@size-limit/file': ^11.2.0
-  # Ahead of tailwindcss/@tailwindcss/postcss on purpose: the published
-  # forth-ui CSS has been built with 4.3.3 (formerly an unpinned `npx`), so
-  # pinning the CLI there keeps that output unchanged. Align all three together.
+  # tailwindcss, @tailwindcss/postcss and @tailwindcss/cli: keep all three on
+  # the same version (the CLI builds the published forth-ui CSS).
   '@tailwindcss/cli': 4.3.3
-  '@tailwindcss/postcss': 4.1.12
+  '@tailwindcss/postcss': 4.3.3
   '@turbo/gen': ^2.10.9
   '@types/node': ^26.2.0
   '@types/react': ^19.2.18
@@ -28,6 +27,6 @@ catalog:
   react: ^19.2.8
   react-dom: ^19.2.8
   size-limit: ^11.2.0
-  tailwindcss: 4.1.12
+  tailwindcss: 4.3.3
   typescript: ^5.9.3
   vitest: ^4.1.10
