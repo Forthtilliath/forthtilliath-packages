@@ -81,7 +81,11 @@ export function NotificationCenter({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("w-80 p-0", className)} align="end">
+      <PopoverContent
+        aria-label={messages.notificationCenter.title}
+        className={cn("w-80 p-0", className)}
+        align="end"
+      >
         <div className="flex items-center justify-between border-b p-3">
           <p className="text-sm font-medium">
             {messages.notificationCenter.title}

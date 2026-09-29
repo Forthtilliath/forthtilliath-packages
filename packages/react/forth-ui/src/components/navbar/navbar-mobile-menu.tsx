@@ -7,6 +7,7 @@ import { Button } from "@forthtilliath/shadcn-ui/components/button";
 import {
   Sheet,
   SheetContent,
+  SheetTitle,
   SheetTrigger,
 } from "@forthtilliath/shadcn-ui/components/sheet";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
@@ -67,6 +68,7 @@ export function NavbarMobileMenu({
         </Button>
       </SheetTrigger>
       <SheetContent side="top">
+        <SheetTitle className="sr-only">{messages.navbar.menu}</SheetTitle>
         <nav className="flex flex-col gap-1 pt-8">
           {items.map((item) => (
             <a
