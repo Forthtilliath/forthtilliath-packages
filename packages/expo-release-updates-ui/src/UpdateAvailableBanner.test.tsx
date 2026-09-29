@@ -94,4 +94,24 @@ describe("UpdateAvailableBanner", () => {
     expect(texts).toContain("View");
     expect(texts).toContain("Close");
   });
+
+  it("renders its built-in labels in the given locale", () => {
+    const tree = renderTree(
+      <UpdateAvailableBanner
+        version="2.0.0"
+        notes=""
+        onPress={vi.fn()}
+        onDismiss={vi.fn()}
+        locale="en"
+        labels={{ action: "Update" }}
+      />,
+    );
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
+    expect(texts).toContain("Version 2.0.0 available");
+    expect(texts).toContain("Close");
+    // `labels` still wins over the locale's defaults.
+    expect(texts).toContain("Update");
+  });
 });
