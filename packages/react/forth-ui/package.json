@@ -17,7 +17,7 @@
   "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/react/forth-ui#readme",
   "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint . --max-warnings 0 && node scripts/check-css-sources.js",
     "check-types": "tsc --noEmit",
     "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
