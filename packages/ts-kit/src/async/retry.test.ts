@@ -42,7 +42,63 @@ describe("retry", () => {
     await assertion;
 
     expect(fn).toHaveBeenCalledTimes(3);
-    expect(onRetry).toHaveBeenCalledTimes(3);
+    // Only before an actual retry: not after the last, failed attempt.
+    expect(onRetry).toHaveBeenCalledTimes(2);
+    expect(onRetry).toHaveBeenLastCalledWith(expect.any(Error), 2);
+  });
+
+  it("rethrows right away when shouldRetry declines the error", async () => {
+    const fatal = new Error("404");
+    const fn = vi.fn().mockRejectedValue(fatal);
+    const shouldRetry = vi.fn(() => false);
+
+    await expect(retry(fn, { attempts: 5, shouldRetry })).rejects.toBe(fatal);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(shouldRetry).toHaveBeenCalledWith(fatal, 1);
+  });
+
+  it("caps each delay at maxDelayMs", async () => {
+    const fn = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("1"))
+      .mockRejectedValueOnce(new Error("2"))
+      .mockResolvedValueOnce("ok");
+
+    const promise = retry(fn, {
+      attempts: 3,
+      delayMs: 100,
+      backoffFactor: 10,
+      maxDelayMs: 150,
+    });
+    await vi.advanceTimersByTimeAsync(100);
+    expect(fn).toHaveBeenCalledTimes(2);
+    // Uncapped, the second delay would be 1000 ms.
+    await vi.advanceTimersByTimeAsync(150);
+    await expect(promise).resolves.toBe("ok");
+  });
+
+  it("stops waiting and rejects when the signal aborts", async () => {
+    const controller = new AbortController();
+    const fn = vi.fn().mockRejectedValue(new Error("fail"));
+
+    const promise = retry(fn, {
+      attempts: 5,
+      delayMs: 1000,
+      signal: controller.signal,
+    });
+    const assertion = expect(promise).rejects.toThrow("stop");
+    await vi.advanceTimersByTimeAsync(0);
+    controller.abort(new Error("stop"));
+    await assertion;
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it("doesn't call fn at all with an already-aborted signal", async () => {
+    const fn = vi.fn().mockResolvedValue("ok");
+    await expect(
+      retry(fn, { signal: AbortSignal.abort() }),
+    ).rejects.toMatchObject({ name: "AbortError" });
+    expect(fn).not.toHaveBeenCalled();
   });
 
   it("applies exponential backoff between attempts", async () => {
