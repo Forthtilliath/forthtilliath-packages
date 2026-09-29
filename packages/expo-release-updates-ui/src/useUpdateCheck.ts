@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export interface UpdateCheckRelease {
-  version: string;
-  notes: string;
-  apkUrl: string;
-}
+import { compareVersions as defaultCompareVersions } from "@forthtilliath/expo-release-updates/compareVersions";
+import type { LatestRelease } from "@forthtilliath/expo-release-updates/githubReleases";
+
+/** A release as returned by `fetchLatestRelease` (same shape). */
+export type UpdateCheckRelease = LatestRelease;
 
 export type UpdateCheckState =
   | { status: "idle" }
@@ -16,8 +16,11 @@ export interface UseUpdateCheckOptions {
   currentVersion: string;
   /** Fetches the latest available release, or `null` if there is none. */
   checkForUpdate: () => Promise<UpdateCheckRelease | null>;
-  /** Positive when `a` is newer than `b`, e.g. semver comparison. */
-  compareVersions: (a: string, b: string) => number;
+  /**
+   * Positive when `a` is newer than `b`. Defaults to
+   * `@forthtilliath/expo-release-updates`'s semver `compareVersions`.
+   */
+  compareVersions?: (a: string, b: string) => number;
   /** Read once on mount: when the last check ran, and which version (if any) the user already dismissed. */
   getLastCheck: () => {
     lastCheckedAt: number | null;
@@ -41,7 +44,7 @@ const DEFAULT_MIN_INTERVAL_MS = 12 * 60 * 60 * 1000;
 export function useUpdateCheck({
   currentVersion,
   checkForUpdate,
-  compareVersions,
+  compareVersions = defaultCompareVersions,
   getLastCheck,
   onChecked,
   minIntervalMs = DEFAULT_MIN_INTERVAL_MS,
