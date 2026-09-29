@@ -35,6 +35,15 @@ export interface ComboboxProps {
   emptyMessage?: string;
   disabled?: boolean;
   className?: string;
+  /** `id` of the trigger — set by `Field`, or for a `<label htmlFor>`. */
+  id?: string;
+  /**
+   * Accessible name of the trigger (a combobox takes no name from its text).
+   * Defaults to the placeholder, unless a `<label>` targets `id`.
+   */
+  ariaLabel?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `UiLocaleProvider`'s. Explicit text props still win.
@@ -65,6 +74,10 @@ export function Combobox({
   disabled = false,
   className,
   locale,
+  id,
+  ariaLabel,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
 }: ComboboxProps) {
   const messages = useUiMessages(locale);
   const emptyMessageText = emptyMessage ?? messages.emptyResults;
@@ -78,8 +91,14 @@ export function Combobox({
         <Button
           type="button"
           variant="outline"
+          id={id}
           role="combobox"
           aria-expanded={open}
+          aria-label={
+            ariaLabel ?? (id === undefined ? placeholderText : undefined)
+          }
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           disabled={disabled}
           className={cn("w-full justify-between font-normal", className)}
         >
