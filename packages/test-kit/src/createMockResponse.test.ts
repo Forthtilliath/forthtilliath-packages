@@ -30,6 +30,38 @@ describe("createMockResponse", () => {
     await expect(response.text()).resolves.toBe("plain text");
   });
 
+  it("is a real Response, with the full API", async () => {
+    const response = createMockResponse({ id: 1 });
+    expect(response).toBeInstanceOf(Response);
+    await expect(response.clone().json()).resolves.toEqual({ id: 1 });
+    expect((await response.blob()).size).toBe(8);
+  });
+
+  it("sets a JSON content-type for a non-string body, unless one is given", () => {
+    expect(createMockResponse({}).headers.get("content-type")).toBe(
+      "application/json",
+    );
+    expect(
+      createMockResponse(
+        {},
+        { headers: { "content-type": "text/csv" } },
+      ).headers.get("content-type"),
+    ).toBe("text/csv");
+    expect(createMockResponse("x").headers.get("content-type")).not.toBe(
+      "application/json",
+    );
+  });
+
+  it("has no body for a 204 status", async () => {
+    const response = createMockResponse({ ignored: true }, { status: 204 });
+    expect(response.status).toBe(204);
+    await expect(response.text()).resolves.toBe("");
+  });
+
+  it("follows the real ok rule for a 3xx status", () => {
+    expect(createMockResponse({}, { status: 302 }).ok).toBe(false);
+  });
+
   it("exposes the given headers via the Headers API", () => {
     const response = createMockResponse(
       {},
