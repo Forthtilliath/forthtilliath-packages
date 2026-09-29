@@ -19,6 +19,13 @@ export interface TagsInputProps {
   /** Maximum number of tags allowed. */
   max?: number;
   className?: string;
+  /** `id` of the text input, e.g. for a `<label htmlFor>`. */
+  id?: string;
+  /**
+   * Accessible name of the text input — needed once tags hide the
+   * placeholder, unless a `<label>` targets `id`. @default "Ajouter un tag"
+   */
+  ariaLabel?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `UiLocaleProvider`'s. Explicit text props still win.
@@ -47,6 +54,8 @@ export function TagsInput({
   disabled = false,
   max,
   className,
+  id,
+  ariaLabel,
   locale,
 }: TagsInputProps) {
   const messages = useUiMessages(locale);
@@ -115,6 +124,10 @@ export function TagsInput({
         </Badge>
       ))}
       <input
+        id={id}
+        aria-label={
+          id === undefined ? (ariaLabel ?? messages.tagsInput.label) : ariaLabel
+        }
         value={inputValue}
         onChange={(e) => {
           setInputValue(e.target.value);

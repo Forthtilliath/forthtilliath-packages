@@ -87,6 +87,7 @@ export function ColorPicker({
       </label>
       <Input
         value={textValue}
+        aria-label={messages.colorPicker.hex}
         disabled={disabled}
         onChange={(e) => {
           setTextValue(e.target.value);

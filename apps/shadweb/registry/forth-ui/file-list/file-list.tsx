@@ -169,7 +169,10 @@ export function FileListContent({
 
 export type FileListProgressProps = React.ComponentProps<typeof Progress>;
 
-/** Wraps shadcn-ui's `Progress` for the upload-progress row. */
+/**
+ * Wraps shadcn-ui's `Progress` for the upload-progress row. Give it an
+ * `aria-label` (e.g. "Uploading report.pdf"): a progress bar needs a name.
+ */
 export function FileListProgress(props: FileListProgressProps) {
   return <Progress data-slot="file-list-progress" {...props} />;
 }

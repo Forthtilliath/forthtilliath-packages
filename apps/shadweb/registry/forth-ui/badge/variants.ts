@@ -39,6 +39,10 @@ export const badgeVariants = cva(
       size: "default",
     },
     compoundVariants: [
+      // `outline`'s bg-transparent clears the shadcn Badge's own background
+      // on colored variants; default/secondary keep theirs.
+      { variant: "default", look: "outline", className: "bg-primary" },
+      { variant: "secondary", look: "outline", className: "bg-secondary" },
       // default/secondary ignore `look` — like Alert's neutral variant,
       // none of the reference sources show a "soft"/"outline" neutral
       // badge distinct from `outline` itself already being a variant
@@ -61,7 +65,7 @@ export const badgeVariants = cva(
       {
         variant: "success",
         look: "solid",
-        className: "bg-green-600 text-white border-transparent",
+        className: "bg-green-700 text-white border-transparent",
       },
       {
         variant: "success",
@@ -78,7 +82,7 @@ export const badgeVariants = cva(
       {
         variant: "warning",
         look: "solid",
-        className: "bg-amber-500 text-white border-transparent",
+        className: "bg-amber-500 text-amber-950 border-transparent",
       },
       {
         variant: "warning",
@@ -95,7 +99,7 @@ export const badgeVariants = cva(
       {
         variant: "info",
         look: "solid",
-        className: "bg-sky-600 text-white border-transparent",
+        className: "bg-sky-700 text-white border-transparent",
       },
       {
         variant: "info",
@@ -117,7 +121,8 @@ export const badgeVariants = cva(
       {
         variant: "destructive",
         look: "soft",
-        className: "bg-destructive/10 text-destructive border-transparent",
+        className:
+          "bg-red-50 text-red-700 border-transparent dark:bg-red-950 dark:text-red-300",
       },
       {
         variant: "destructive",
