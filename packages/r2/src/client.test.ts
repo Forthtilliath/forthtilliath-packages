@@ -44,6 +44,7 @@ describe("uploadViaPresignedUrl", () => {
     expect(JSON.parse(callInit(0).body as string)).toEqual({
       key: "docs/a.pdf",
       contentType: "application/pdf",
+      size: 1,
     });
     expect(fetchMock.mock.calls[1]?.[0]).toBe("https://r2.test/put");
     expect(callInit(1)).toMatchObject({ method: "PUT", body: file });
@@ -120,5 +121,36 @@ describe("uploadViaPresignedUrl", () => {
         endpoint: "/presign",
       }),
     ).rejects.toThrow("Upload failed (403)");
+  });
+
+  it("sends the transformed file's size", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ uploadUrl: "https://r2.test/put" }))
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    await uploadViaPresignedUrl({
+      file: new File(["x"], "a.png", { type: "image/png" }),
+      key: "k",
+      endpoint: "/presign",
+      transform: () =>
+        Promise.resolve(new File(["abcd"], "a.webp", { type: "image/webp" })),
+    });
+    expect(
+      (JSON.parse(callInit(0).body as string) as { size: number }).size,
+    ).toBe(4);
+  });
+
+  it("passes the abort signal to both requests", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ uploadUrl: "https://r2.test/put" }))
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const controller = new AbortController();
+    await uploadViaPresignedUrl({
+      file: new File(["x"], "a"),
+      key: "k",
+      endpoint: "/presign",
+      signal: controller.signal,
+    });
+    expect(callInit(0).signal).toBe(controller.signal);
+    expect(callInit(1).signal).toBe(controller.signal);
   });
 });
