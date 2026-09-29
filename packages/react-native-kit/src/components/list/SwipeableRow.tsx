@@ -5,6 +5,7 @@ import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeabl
 import { Ionicons } from "@expo/vector-icons";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 export interface SwipeableRowStyles {
   deleteAction?: StyleProp<ViewStyle>;
@@ -60,15 +61,8 @@ export function SwipeableRow({
   styles,
 }: SwipeableRowProps) {
   const resolvedLocale = useKitLocale(locale);
-  // Style fields are merged as arrays (default, then override) so a partial
-  // override (e.g. just backgroundColor) doesn't drop the default's
-  // width/borderRadius/marginBottom/gap too.
   const merged = {
-    deleteAction: [defaultStyles.deleteAction, styles?.deleteAction],
-    deleteActionText: [
-      defaultStyles.deleteActionText,
-      styles?.deleteActionText,
-    ],
+    ...mergeSlotStyles(defaultStyles, styles),
     deleteIconColor: styles?.deleteIconColor ?? defaultStyles.deleteIconColor,
   };
 

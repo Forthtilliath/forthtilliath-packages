@@ -2,6 +2,7 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 /**
  * Per-slot style overrides for {@link UndoToast}. Every field is optional and
@@ -154,11 +155,7 @@ export function UndoToast({
   const resolvedLocale = useKitLocale(locale);
   // Merge each slot as [default, override] so a partial override doesn't drop
   // the rest of that slot's default (positioning, shadow, flex…).
-  const merged = {
-    toast: [defaultStyles.toast, styles?.toast],
-    message: [defaultStyles.message, styles?.message],
-    action: [defaultStyles.action, styles?.action],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
 
   return (
     <View style={merged.toast}>

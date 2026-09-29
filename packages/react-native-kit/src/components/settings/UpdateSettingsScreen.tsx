@@ -8,6 +8,7 @@ import {
   type KitLocale,
   useKitLocale,
 } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 import type {
   UpdateSettingsScreenHistoryEntry,
@@ -79,35 +80,7 @@ export function UpdateSettingsScreen({
   const resolvedLocale = useKitLocale(locale);
   const dateLocale = customDateLocale ?? KIT_LOCALE_TAGS[resolvedLocale];
   const merged = {
-    container: [defaultStyles.container, styles?.container],
-    infoBox: [defaultStyles.infoBox, styles?.infoBox],
-    infoLabel: [defaultStyles.infoLabel, styles?.infoLabel],
-    infoValue: [defaultStyles.infoValue, styles?.infoValue],
-    helpText: [defaultStyles.helpText, styles?.helpText],
-    errorText: [defaultStyles.errorText, styles?.errorText],
-    button: [defaultStyles.button, styles?.button],
-    buttonDisabled: [defaultStyles.buttonDisabled, styles?.buttonDisabled],
-    buttonText: [defaultStyles.buttonText, styles?.buttonText],
-    updateAvailableBox: [
-      defaultStyles.updateAvailableBox,
-      styles?.updateAvailableBox,
-    ],
-    updateAvailableTitle: [
-      defaultStyles.updateAvailableTitle,
-      styles?.updateAvailableTitle,
-    ],
-    changelog: [defaultStyles.changelog, styles?.changelog],
-    changelogTitle: [defaultStyles.changelogTitle, styles?.changelogTitle],
-    changelogEntry: [defaultStyles.changelogEntry, styles?.changelogEntry],
-    changelogEntryHeader: [
-      defaultStyles.changelogEntryHeader,
-      styles?.changelogEntryHeader,
-    ],
-    changelogVersion: [
-      defaultStyles.changelogVersion,
-      styles?.changelogVersion,
-    ],
-    changelogDate: [defaultStyles.changelogDate, styles?.changelogDate],
+    ...mergeSlotStyles(defaultStyles, styles),
     notes: styles?.notes ?? defaultStyles.notes,
   };
   const activityIndicatorColor =
