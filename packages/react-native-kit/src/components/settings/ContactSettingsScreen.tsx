@@ -2,6 +2,8 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Linking, Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
 export interface ContactSettingsScreenAction {
   icon: keyof typeof Ionicons.glyphMap;
   label: string;
@@ -39,15 +41,28 @@ export interface ContactSettingsScreenProps {
   actions?: ContactSettingsScreenAction[];
   emailIcon?: keyof typeof Ionicons.glyphMap;
   labels?: ContactSettingsScreenLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: ContactSettingsScreenStyles;
 }
 
-const defaultLabels: Required<ContactSettingsScreenLabels> = {
-  hint: "Une question, un bug, une suggestion ?",
-  footer:
-    "Si tu remontes un bug, précise si possible ce que tu faisais et ce que tu attendais — ça aide à le reproduire.",
-  emailRowLabel: "Me contacter",
-};
+const defaultLabels = {
+  fr: {
+    hint: "Une question, un bug, une suggestion ?",
+    footer:
+      "Si tu remontes un bug, précise si possible ce que tu faisais et ce que tu attendais — ça aide à le reproduire.",
+    emailRowLabel: "Me contacter",
+  },
+  en: {
+    hint: "A question, a bug, a suggestion?",
+    footer:
+      "When reporting a bug, please describe what you were doing and what you expected — it helps reproduce it.",
+    emailRowLabel: "Contact me",
+  },
+} satisfies Record<KitLocale, Required<ContactSettingsScreenLabels>>;
 
 const defaultStyles: Required<
   Omit<ContactSettingsScreenStyles, "rowIconColor">
@@ -92,6 +107,7 @@ export function ContactSettingsScreen({
   actions,
   emailIcon = "mail-outline",
   labels,
+  locale,
   styles,
 }: ContactSettingsScreenProps) {
   const merged = {
@@ -103,7 +119,7 @@ export function ContactSettingsScreen({
     row: [defaultStyles.row, styles?.row],
     rowText: [defaultStyles.rowText, styles?.rowText],
   };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
   const rowIconColor = styles?.rowIconColor ?? defaultStyles.rowIconColor;
 
   function openEmail() {

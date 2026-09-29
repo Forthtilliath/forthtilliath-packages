@@ -1,6 +1,8 @@
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
 export interface PrivacySettingsScreenSection {
   title: string;
   paragraphs: string[];
@@ -21,30 +23,58 @@ export interface PrivacySettingsScreenProps {
    * to a server) — this fully replaces the default, it isn't merged with it.
    */
   sections?: PrivacySettingsScreenSection[];
+  /**
+   * Language of the default `sections` — French by default, or the nearest
+   * `KitLocaleProvider`'s. Ignored when `sections` is passed.
+   */
+  locale?: KitLocale;
   styles?: PrivacySettingsScreenStyles;
 }
 
-const defaultSections: PrivacySettingsScreenSection[] = [
-  {
-    title: "Aucune donnée envoyée nulle part",
-    paragraphs: [
-      "Cette application ne collecte aucune donnée, ne fait appel à aucun serveur, et ne contient aucun outil de suivi ni de publicité.",
-    ],
-  },
-  {
-    title: "Stockage local uniquement",
-    paragraphs: [
-      "Tout ce que tu saisis reste stocké uniquement sur cet appareil, dans le stockage local de l'application. Rien n'est envoyé ailleurs.",
-      "Ces données sont perdues si tu désinstalles l'application ou si tu effaces son stockage — pense à utiliser une sauvegarde régulière pour pouvoir les restaurer.",
-    ],
-  },
-  {
-    title: "Partage volontaire uniquement",
-    paragraphs: [
-      "La seule façon pour une donnée de quitter cet appareil, c'est quand tu choisis toi-même de la partager (export d'une sauvegarde...), via le sélecteur de partage natif du téléphone.",
-    ],
-  },
-];
+const defaultSections: Record<KitLocale, PrivacySettingsScreenSection[]> = {
+  fr: [
+    {
+      title: "Aucune donnée envoyée nulle part",
+      paragraphs: [
+        "Cette application ne collecte aucune donnée, ne fait appel à aucun serveur, et ne contient aucun outil de suivi ni de publicité.",
+      ],
+    },
+    {
+      title: "Stockage local uniquement",
+      paragraphs: [
+        "Tout ce que tu saisis reste stocké uniquement sur cet appareil, dans le stockage local de l'application. Rien n'est envoyé ailleurs.",
+        "Ces données sont perdues si tu désinstalles l'application ou si tu effaces son stockage — pense à utiliser une sauvegarde régulière pour pouvoir les restaurer.",
+      ],
+    },
+    {
+      title: "Partage volontaire uniquement",
+      paragraphs: [
+        "La seule façon pour une donnée de quitter cet appareil, c'est quand tu choisis toi-même de la partager (export d'une sauvegarde...), via le sélecteur de partage natif du téléphone.",
+      ],
+    },
+  ],
+  en: [
+    {
+      title: "No data sent anywhere",
+      paragraphs: [
+        "This app collects no data, calls no server, and contains no tracking or advertising tools.",
+      ],
+    },
+    {
+      title: "Local storage only",
+      paragraphs: [
+        "Everything you enter stays on this device only, in the app's local storage. Nothing is sent anywhere else.",
+        "This data is lost if you uninstall the app or clear its storage — remember to back it up regularly so you can restore it.",
+      ],
+    },
+    {
+      title: "Sharing only when you choose to",
+      paragraphs: [
+        "The only way for data to leave this device is when you choose to share it yourself (exporting a backup...), through the phone's native share sheet.",
+      ],
+    },
+  ],
+};
 
 const defaultStyles: Required<PrivacySettingsScreenStyles> = {
   container: {},
@@ -67,9 +97,12 @@ const defaultStyles: Required<PrivacySettingsScreenStyles> = {
 // copy as a default — override `sections` entirely for an app with different
 // data handling (e.g. one that does sync to a server).
 export function PrivacySettingsScreen({
-  sections = defaultSections,
+  sections: customSections,
+  locale,
   styles,
 }: PrivacySettingsScreenProps) {
+  const resolvedLocale = useKitLocale(locale);
+  const sections = customSections ?? defaultSections[resolvedLocale];
   const merged = {
     container: [defaultStyles.container, styles?.container],
     title: [defaultStyles.title, styles?.title],
