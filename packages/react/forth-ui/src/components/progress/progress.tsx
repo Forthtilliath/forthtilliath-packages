@@ -1,4 +1,5 @@
 import type React from "react";
+import { useId } from "react";
 
 import { Progress as ProgressPrimitive } from "@forthtilliath/shadcn-ui/components/progress";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
@@ -8,7 +9,10 @@ import { progressVariants } from "./variants.js";
 
 export type ProgressProps = React.ComponentProps<typeof ProgressPrimitive> &
   ProgressVariants & {
-    /** A label rendered above the bar, on the left. */
+    /**
+     * A label rendered above the bar, on the left — also the bar's
+     * accessible name. Without one, pass an `aria-label`.
+     */
     label?: React.ReactNode;
     /**
      * Shows the numeric `value` (rounded, with a `%` suffix) above the bar,
@@ -37,15 +41,17 @@ export function Progress({
   value,
   ...props
 }: ProgressProps) {
+  const labelId = useId();
+  const hasLabel = label !== undefined && label !== null;
+
   const bar = (
     <ProgressPrimitive
       className={cn(progressVariants({ variant, size }), className)}
       value={value}
+      aria-labelledby={hasLabel ? labelId : undefined}
       {...props}
     />
   );
-
-  const hasLabel = label !== undefined && label !== null;
 
   if (!hasLabel && !showValue) {
     return bar;
@@ -55,7 +61,7 @@ export function Progress({
     <div className="w-full space-y-1.5">
       {(hasLabel || showValue) && (
         <div className="flex items-center justify-between text-sm">
-          {hasLabel && <span>{label}</span>}
+          {hasLabel && <span id={labelId}>{label}</span>}
           {showValue && (
             <span className="text-muted-foreground tabular-nums">
               {Math.round(value ?? 0)}%
