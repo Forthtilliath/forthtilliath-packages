@@ -35,8 +35,14 @@ jobs:
 
       - run: pnpm run build
 
+      # Also enforces the coverage thresholds: CI=true turns coverage on in the
+      # vitest configs, so tests run once instead of again under `coverage`.
       - run: pnpm run test
 
-      - run: pnpm run coverage
-
       - run: pnpm run size
+
+      # Not part of `build` (turbo only runs each package's `build` script):
+      # without this step, a broken story or Storybook config would only
+      # surface on the next local `storybook build`.
+      - name: Build Storybook
+        run: pnpm --filter react-sb run build-storybook
