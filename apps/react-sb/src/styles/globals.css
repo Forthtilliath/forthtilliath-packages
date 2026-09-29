@@ -1,6 +1,12 @@
-@import "tailwindcss";
-
-@import "@forthtilliath/forth-ui/styles/globals.css";
+/* Built from sources — not from forth-ui's published CSS, which carries no
+   @theme: Tailwind needs shadcn-ui's to generate the theme-colored utilities
+   (bg-primary, bg-sidebar…) of every story. */
+@import "@forthtilliath/shadcn-ui/styles/globals-static.css";
+@import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
+@import "../../../../packages/react/forth-ui/src/styles/shiki.css";
+@import "../../../../packages/react/forth-ui/src/styles/marquee.css";
+@import "./safelist.css";
+@import "./storybook.css";
 
 /* Sources spécifiques à Storybook - incluent explicitement les stories */
 /* (chemins relatifs à ce fichier : apps/react-sb/src/styles/) */
