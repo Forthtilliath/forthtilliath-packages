@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Contrast, HelpCircle, Palette, Zap } from "lucide-react";
+import { expect } from "storybook/test";
 
 import { Accordion } from "@forthtilliath/forth-ui/components/accordion";
 
@@ -244,5 +245,20 @@ export const LeftCustomChevron: Story = {
     chevronAlignment: "left",
     customChevron: plusChevron,
     classNameTrigger: plusChevronTrigger,
+  },
+};
+
+export const ShouldExpandOneItem: Story = {
+  name: "when opening an item, should collapse the previously open one",
+  tags: ["!dev", "!autodocs"],
+  args: { defaultValue: "item-0" },
+  play: async ({ canvas, userEvent }) => {
+    const first = canvas.getByRole("button", { name: /Is it accessible/ });
+    const second = canvas.getByRole("button", { name: /Is it styled/ });
+    await expect(first).toHaveAttribute("aria-expanded", "true");
+
+    await userEvent.click(second);
+    await expect(second).toHaveAttribute("aria-expanded", "true");
+    await expect(first).toHaveAttribute("aria-expanded", "false");
   },
 };
