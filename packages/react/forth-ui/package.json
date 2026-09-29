@@ -25,7 +25,7 @@
     "dev:tw": "pnpm run build:tw --watch",
     "build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw",
     "build:ts": "tsc",
-    "build:tw": "npx @tailwindcss/cli -i ./src/styles/globals.css -o ./dist/globals.css",
+    "build:tw": "tailwindcss -i ./src/styles/globals.css -o ./dist/globals.css",
     "size": "size-limit"
   },
   "dependencies": {
@@ -52,6 +52,7 @@
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@size-limit/file": "^11.2.0",
+    "@tailwindcss/cli": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@turbo/gen": "catalog:",
     "@types/node": "catalog:",
