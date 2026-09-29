@@ -45,3 +45,6 @@ yarn-error.log*
 !CHANGELOG.md
 !/.changeset/*.md
 !/packages/**/*.md
+# Compiled from apps/react-sb/src/styles/globals.css by build:tw (run before
+# dev/test/build-storybook) — generated, not committed.
+apps/react-sb/.storybook/globals.css
