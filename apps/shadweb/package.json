@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
-    "registry:generate": "tsx scripts/generate-forth-ui-registry.ts",
+    "registry:generate": "tsx scripts/generate-forth-ui-registry.ts && prettier --write --log-level warn registry/forth-ui registry.json",
     "registry:build": "shadcn build",
     "registry:sync": "pnpm run registry:generate && pnpm run registry:build"
   },
