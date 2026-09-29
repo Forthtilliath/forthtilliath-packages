@@ -129,7 +129,7 @@
 
 /* Signature effects */
 
-:where([data-slot]):focus-visible {
+:where([data-slot="button"][class*="shadow-xs"]):focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
@@ -200,7 +200,7 @@ body {
   transform: rotate(1deg) scale(0.98);
 }
 
-:focus-visible {
+[data-slot="button"][class*="shadow-xs"]:focus-visible {
   outline: 2px dashed var(--ring);
   outline-offset: 3px;
 }
