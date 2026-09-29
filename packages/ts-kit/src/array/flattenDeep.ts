@@ -1,14 +1,15 @@
 /**
- * Recursively flattens a nested array.
+ * Recursively flattens a nested array, at any depth.
  *
- * @template T - The type of elements in the array.
- * @param {T[]} array - The array to flatten.
- * @return {T[]} The flattened array.
+ * @param array - The array to flatten (left untouched).
+ * @returns A new array with every nested element at the top level, typed as
+ *   the innermost element type (`number[][][]` → `number[]`).
+ * @example
+ * flattenDeep([1, [2, [3, [4]]]]); // => [1, 2, 3, 4]
  */
-export function flattenDeep<T>(array: T[]): T[] {
-  return array.reduce<T[]>(
-    (acc, val) =>
-      Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val),
-    [],
-  );
+export function flattenDeep<T extends readonly unknown[]>(
+  array: T,
+): FlatArray<T, 20>[] {
+  // 20 is the deepest level the built-in `FlatArray` type can unwind.
+  return array.flat(Infinity) as FlatArray<T, 20>[];
 }
