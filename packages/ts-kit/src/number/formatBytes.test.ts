@@ -25,4 +25,18 @@ describe("formatBytes", () => {
     expect(formatBytes(1234, 0)).toBe("1 KB");
     expect(formatBytes(1234, 3)).toBe("1.205 KB");
   });
+
+  it("keeps the integer part's zeros when decimals is 0", () => {
+    expect(formatBytes(100, 0)).toBe("100 B");
+    expect(formatBytes(10 * 1024, 0)).toBe("10 KB");
+  });
+
+  it("formats a fraction of a byte in bytes", () => {
+    expect(formatBytes(0.5)).toBe("0.5 B");
+    expect(formatBytes(-0.5)).toBe("-0.5 B");
+  });
+
+  it("formats negative sizes", () => {
+    expect(formatBytes(-1536)).toBe("-1.5 KB");
+  });
 });
