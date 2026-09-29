@@ -14,4 +14,12 @@ describe("isUpdateAvailable", () => {
   it("returns false when the latest version is older", () => {
     expect(isUpdateAvailable("2.0.0", "1.9.9")).toBe(false);
   });
+
+  it("offers the stable release to a pre-release install", () => {
+    expect(isUpdateAvailable("1.2.0-beta.1", "1.2.0")).toBe(true);
+  });
+
+  it("does not offer a pre-release of the installed stable version", () => {
+    expect(isUpdateAvailable("1.2.0", "1.2.0-beta.1")).toBe(false);
+  });
 });
