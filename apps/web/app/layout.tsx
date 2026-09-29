@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
 
+import {
+  ModeToggle,
+  ThemeProvider,
+} from "@forthtilliath/forth-ui/components/mode-toggle";
 import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-02";
 
 import "./globals.css";
@@ -43,14 +47,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    // next-themes sets the theme class on <html> before hydration.
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Navbar
-          logo={<h1>Logo</h1>}
-          items={items}
-          render={({ href, label }) => <Link href={href}>{label}</Link>}
-        />
-        <main className="container p-8">{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar
+            logo={<h1>Logo</h1>}
+            items={items}
+            render={({ href, label }) => <Link href={href}>{label}</Link>}
+          />
+          <main className="container p-8">{children}</main>
+          <ModeToggle className="fixed right-4 bottom-4" />
+        </ThemeProvider>
       </body>
     </html>
   );
