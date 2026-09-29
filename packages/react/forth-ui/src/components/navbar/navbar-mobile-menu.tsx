@@ -11,6 +11,8 @@ import {
 } from "@forthtilliath/shadcn-ui/components/sheet";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 export interface NavbarMobileMenuItem {
   label: React.ReactNode;
   href: string;
@@ -23,6 +25,11 @@ export interface NavbarMobileMenuProps {
   className?: string;
   /** Visible only below this breakpoint's prefix (Tailwind's `md` by default). @default "md" */
   hideFrom?: "sm" | "md" | "lg";
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -39,14 +46,16 @@ export function NavbarMobileMenu({
   footer,
   className,
   hideFrom = "md",
+  locale,
 }: NavbarMobileMenuProps) {
+  const messages = useUiMessages(locale);
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Toggle menu"
+          aria-label={messages.navbar.toggleMenu}
           className={cn(
             hideFrom === "sm" && "sm:hidden",
             hideFrom === "md" && "md:hidden",

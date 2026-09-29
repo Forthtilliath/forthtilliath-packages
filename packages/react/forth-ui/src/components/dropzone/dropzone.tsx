@@ -5,6 +5,7 @@ import { FileIcon, UploadIcon, XIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import {
   FileList,
   FileListAction,
@@ -28,6 +29,11 @@ export interface DropzoneProps {
   maxSize?: number;
   disabled?: boolean;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 function formatBytes(bytes: number) {
@@ -68,7 +74,9 @@ export function Dropzone({
   maxSize,
   disabled = false,
   className,
+  locale,
 }: DropzoneProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledValue, setUncontrolledValue] = React.useState(
     defaultValue ?? [],
   );
@@ -182,7 +190,7 @@ export function Dropzone({
                     onClick={() => {
                       removeFile(file);
                     }}
-                    aria-label="Remove file"
+                    aria-label={messages.dropzone.removeFile}
                   >
                     <XIcon />
                   </FileListAction>

@@ -15,6 +15,8 @@ import {
 import { buttonVariants } from "@forthtilliath/shadcn-ui/components/button";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 import type { ConfirmFn, ConfirmState } from "./confirm-context.js";
 import { ConfirmContext } from "./confirm-context.js";
 
@@ -33,9 +35,16 @@ import { ConfirmContext } from "./confirm-context.js";
  */
 export function ConfirmDialogProvider({
   children,
+  locale,
 }: {
   children: React.ReactNode;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }) {
+  const messages = useUiMessages(locale);
   const [state, setState] = React.useState<ConfirmState | null>(null);
 
   const confirm = React.useCallback<ConfirmFn>((options) => {
@@ -71,7 +80,7 @@ export function ConfirmDialogProvider({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>
-              {state?.cancelLabel ?? "Cancel"}
+              {state?.cancelLabel ?? messages.confirmDialog.cancel}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
@@ -82,7 +91,7 @@ export function ConfirmDialogProvider({
                   buttonVariants({ variant: "destructive" }),
               )}
             >
-              {state?.confirmLabel ?? "Continue"}
+              {state?.confirmLabel ?? messages.confirmDialog.confirm}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

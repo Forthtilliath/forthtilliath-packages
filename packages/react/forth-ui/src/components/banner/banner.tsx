@@ -5,6 +5,8 @@ import { X } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 import type { BannerVariants } from "./variants.js";
 import { bannerVariants } from "./variants.js";
 
@@ -35,6 +37,11 @@ export type BannerProps = React.ComponentProps<"div"> &
      * meaningful when `sticky` is also set.
      */
     hideOnScroll?: boolean;
+    /**
+     * Language of the built-in labels — French by default, or the nearest
+     * `UiLocaleProvider`'s. Explicit text props still win.
+     */
+    locale?: UiLocale;
   };
 
 const HIDE_ON_SCROLL_THRESHOLD = 40;
@@ -63,8 +70,10 @@ export function Banner({
   hideOnScroll = false,
   action,
   children,
+  locale,
   ...props
 }: BannerProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(true);
   const [scrolledPast, setScrolledPast] = React.useState(false);
   const isOpen = (open ?? uncontrolledOpen) && !scrolledPast;
@@ -107,7 +116,7 @@ export function Banner({
         <button
           type="button"
           onClick={handleDismiss}
-          aria-label="Dismiss"
+          aria-label={messages.dismiss}
           className="ml-1 shrink-0 rounded-sm opacity-70 transition-opacity outline-none hover:opacity-100 focus-visible:ring-2 focus-visible:ring-current"
         >
           <X className="size-4" />
