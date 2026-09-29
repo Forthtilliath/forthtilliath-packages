@@ -18,4 +18,14 @@ describe("escapeHtml", () => {
   it("escapes double quotes", () => {
     expect(escapeHtml('He said "hi"')).toBe("He said &quot;hi&quot;");
   });
+
+  it("escapes single quotes, for attributes quoted with '", () => {
+    expect(escapeHtml("' onerror='alert(1)")).toBe(
+      "&#39; onerror=&#39;alert(1)",
+    );
+  });
+
+  it("escapes & first, so entities aren't double-escaped", () => {
+    expect(escapeHtml("<'&'>")).toBe("&lt;&#39;&amp;&#39;&gt;");
+  });
 });
