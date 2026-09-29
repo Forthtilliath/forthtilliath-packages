@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
 
 import { flattenDeep } from "./flattenDeep.js";
 
@@ -27,6 +27,14 @@ describe("flattenDeep", () => {
 
   it("handles arrays containing empty nested arrays", () => {
     expect(flattenDeep([1, [], [2, []], 3])).toEqual([1, 2, 3]);
+  });
+
+  it("types the result as the innermost element type", () => {
+    const nested: number[][][] = [[[1]], [[2, 3]]];
+    expectTypeOf(flattenDeep(nested)).toEqualTypeOf<number[]>();
+    expectTypeOf(flattenDeep([1, ["a", [true]]] as const)).toEqualTypeOf<
+      (1 | "a" | true)[]
+    >();
   });
 
   it("does not mutate the original array", () => {
