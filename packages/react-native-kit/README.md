@@ -18,7 +18,7 @@ Or, from within this monorepo, as a workspace dependency:
 }
 ```
 
-`react` and `react-native` are peer dependencies — install them in the consuming app if not already present. `@expo/vector-icons`, `expo-image-picker`, `expo-speech-recognition`, and `react-native-gesture-handler` are also peer dependencies, needed only if you import the components that use them (`Thumbnail`/`PickerModal`/`SwipeableRow`, `PhotoPicker`, `VoiceSearchButton`/`PickerModal`, `SwipeableRow`, respectively).
+`react` and `react-native` are peer dependencies — install them in the consuming app if not already present. `@expo/vector-icons`, `expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler` and `react-native-reanimated` are also peer dependencies, needed only if you import the components that use them (`Thumbnail`/`PickerModal`/`SwipeableRow`, `PhotoPicker`, `VoiceSearchButton`/`PickerModal`, `SwipeableRow`, `SwipeableRow`, respectively).
 
 ## Usage
 
@@ -38,6 +38,23 @@ import { PhotoPicker, useSubmitGuard } from "@forthtilliath/react-native-kit";
 
 **Avoid the barrel under Jest (or any other CommonJS `require` consumer).** `export * from` re-exports are evaluated eagerly on `require()` — unlike Metro's ESM bundling, there's no tree-shaking to skip the unused ones. Requiring the barrel from _any_ file, even one that only wants a framework-agnostic util like `getMostRecentIds`, pulls in every component's module graph, including native-module imports (`expo-speech-recognition` via `VoiceSearchButton`/`PickerModal`) that don't exist in a Jest environment — this throws `Cannot find native module '...'` at require time, not just at runtime for an unrendered component. Deep imports only ever load the one module you asked for, so they don't have this problem in any environment.
 
+### Languages (`locale`)
+
+Every component with built-in copy (labels, hints, accessibility labels, default sections…) ships it in **French** (default) and **English**. Pick the language:
+
+- per component, with a `locale` prop: `<UndoToast locale="en" … />`;
+- or once for a whole tree — handy for a bilingual app — with `KitLocaleProvider`:
+
+```tsx
+import { KitLocaleProvider } from "@forthtilliath/react-native-kit/i18n/KitLocaleProvider";
+
+<KitLocaleProvider locale={userLanguage /* "fr" | "en" */}>
+  <App />
+</KitLocaleProvider>;
+```
+
+A component's own `locale` prop wins over the provider, and its `labels` prop still overrides individual strings on top of either. The locale also drives `VoiceSearchButton`'s speech-recognition language (`fr-FR` / `en-US`) and `UpdateSettingsScreen`'s date format, unless `lang` / `dateLocale` are passed. `confirmDestructive`, being a plain function, can't read the provider: pass it `{ locale }`.
+
 ### `<Thumbnail photoUri={...} placeholderIcon="..." />`
 
 List-row thumbnail: the photo if there is one, otherwise a placeholder icon.
@@ -54,7 +71,7 @@ import { Thumbnail } from "@forthtilliath/react-native-kit/components/list/Thumb
 
 ### `<SwipeableRow onDelete={...} deleteLabel="...">`
 
-Swipe a list row left to reveal a delete button, on top of a tap to edit it.
+Swipe a list row left to reveal a delete button, on top of a tap to edit it. Built on react-native-gesture-handler's `ReanimatedSwipeable`, so it needs `react-native-reanimated` installed. The text under the trash icon defaults to "Supprimer" ("Delete" in English), overridable with `deleteText`.
 
 ```tsx
 import { SwipeableRow } from "@forthtilliath/react-native-kit/components/list/SwipeableRow";
@@ -119,12 +136,13 @@ import { UndoToast } from "@forthtilliath/react-native-kit/components/list/UndoT
 }
 ```
 
-| Prop          | Type              | Default  | Notes                                                                               |
-| ------------- | ----------------- | -------- | ----------------------------------------------------------------------------------- |
-| `message`     | `string`          | —        | Past tense; single line, truncated with an ellipsis.                                |
-| `actionLabel` | `string`          | `"Undo"` | The tappable label on the right.                                                    |
-| `onAction`    | `() => void`      | —        | Reverse the change here. The host then hides the toast.                             |
-| `styles`      | `UndoToastStyles` | —        | Per-slot overrides (`toast` / `message` / `action`), each merged after its default. |
+| Prop          | Type              | Default                           | Notes                                                                               |
+| ------------- | ----------------- | --------------------------------- | ----------------------------------------------------------------------------------- |
+| `message`     | `string`          | —                                 | Past tense; single line, truncated with an ellipsis.                                |
+| `actionLabel` | `string`          | `"Annuler"` (`"Undo"` in English) | The tappable label on the right.                                                    |
+| `locale`      | `KitLocale`       | `"fr"`                            | Language of the default `actionLabel` (see [Languages](#languages-locale)).         |
+| `onAction`    | `() => void`      | —                                 | Reverse the change here. The host then hides the toast.                             |
+| `styles`      | `UndoToastStyles` | —                                 | Per-slot overrides (`toast` / `message` / `action`), each merged after its default. |
 
 Full pattern — commit for good after 5s, localized label, re-themed:
 
@@ -171,8 +189,10 @@ Microphone button to dictate a search instead of typing it. Safe to mount more t
 ```tsx
 import { VoiceSearchButton } from "@forthtilliath/react-native-kit/components/picker/VoiceSearchButton";
 
-<VoiceSearchButton onResult={setQuery} lang="en-US" />;
+<VoiceSearchButton onResult={setQuery} />;
 ```
+
+Recognizes French by default (`fr-FR`, or `en-US` with `locale="en"`); pass `lang` for any other BCP 47 language.
 
 ### `<PhotoPicker photoUri={...} onChange={...} savePhoto={...} photoLabel="..." />`
 
@@ -220,7 +240,7 @@ import {
 
 Groups results into sections via each item's `group` (e.g. food groups, ingredients vs recipes) — ignored while searching, where the best global matches are shown instead. Pass `filterItems` for custom ranking (e.g. `rankByNameMatch` from this same package's `utils/`) instead of the default case-insensitive substring match.
 
-For all 5 components above, styling and (where relevant) copy work the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults) and, for `PhotoPicker`/`PickerModal`, an optional `labels` prop for the built-in French copy.
+For all 5 components above, styling and (where relevant) copy work the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults) and, for `PhotoPicker`/`PickerModal`, an optional `labels` prop over the built-in French or English copy (see [Languages](#languages-locale)).
 
 ### `useSubmitGuard()`
 
@@ -257,15 +277,14 @@ useDebouncedChange([settingsData, itemsData], 5 * 60 * 1000, () => {
 
 ### `confirmDestructive(title, onConfirm, options?)`
 
-Generic destructive-action confirmation (title + message + Cancel/Confirm), for anything irreversible (delete, reset...). Ships with French defaults (`message`, `cancelLabel`, `confirmLabel` all overridable).
+Generic destructive-action confirmation (title + message + Cancel/Confirm), for anything irreversible (delete, reset...). Ships with French defaults, or English ones with `{ locale: "en" }` (`message`, `cancelLabel`, `confirmLabel` all overridable).
 
 ```ts
 import { confirmDestructive } from "@forthtilliath/react-native-kit/utils/helpers/confirmDestructive";
 
 confirmDestructive("Delete this item?", () => deleteItem(id), {
-  message: "This cannot be undone.",
-  cancelLabel: "Cancel",
-  confirmLabel: "Delete",
+  locale: "en",
+  confirmLabel: "Remove",
 });
 ```
 
@@ -568,11 +587,12 @@ import { PrivacySettingsScreen } from "@forthtilliath/react-native-kit/component
 />;
 ```
 
-For all 7 components above, styling works the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults), and where relevant an optional `labels` prop for the built-in French copy.
+For all 7 components above, styling works the same way as `ChangelogNotes`: an optional `styles` prop (all fields optional, neutral defaults), and where relevant an optional `labels` prop over the built-in French or English copy (see [Languages](#languages-locale)).
 
 ### Utils (`utils/helpers/`)
 
-`confirmDestructive` is the only remaining util here — it wraps React Native's `Alert`, so it isn't framework-agnostic (see its own section above).
+- `confirmDestructive` — wraps React Native's `Alert`, so it isn't framework-agnostic (see its own section above).
+- `mergeSlotStyles(defaultStyles, styles)` — merges a component's per-slot `styles` overrides onto its defaults as `[default, override]` style arrays, so overriding one property of a slot keeps the rest of its default. Every component of this package uses it; handy for your own components following the same `styles` convention.
 
 The framework-agnostic helpers that used to live here (`getPeriodStartMs`, `getMostRecentIds`, `nextInCycle`, `normalizeForSearch`, `rankByNameMatch`, `escapeCsvField`, `formatCsvNumber`, `escapeHtml`) moved to [`@forthtilliath/ts-kit`](../ts-kit#readme) — no React Native dependency on them, so they're usable from Node/web too. They're still re-exported from this package's root barrel for convenience:
 
@@ -600,4 +620,4 @@ Built to `dist/` (see the `exports` field in `package.json`), so run `pnpm run b
 
 ### Testing note
 
-`react-native`'s package entry uses Flow syntax that `@babel/parser`'s flow plugin can't parse (`as Cast` casts aren't supported there), so Vitest can never load the real package directly. Tests alias `react-native` to a minimal stub (`src/__mocks__/react-native.tsx`) instead — see that file for details. `react-native-gesture-handler` ships the same kind of Flow syntax, and `@expo/vector-icons` has its own unrelated ESM-resolution issue under Vite/Rollup — both are stubbed the same way (`src/__mocks__/react-native-gesture-handler.tsx`, `src/__mocks__/expo-vector-icons.tsx`). `expo-speech-recognition` and `expo-image-picker` wrap native modules unavailable under Vitest regardless, so they're mocked with plain spies (`src/__mocks__/expo-speech-recognition.tsx`, `src/__mocks__/expo-image-picker.ts`).
+`react-native`'s package entry uses Flow syntax that `@babel/parser`'s flow plugin can't parse (`as Cast` casts aren't supported there), so Vitest can never load the real package directly. Tests alias `react-native` to a minimal stub (`src/__mocks__/react-native.tsx`) instead — see that file for details. `react-native-gesture-handler` ships the same kind of Flow syntax, and `@expo/vector-icons` has its own unrelated ESM-resolution issue under Vite/Rollup — both are stubbed the same way (`src/__mocks__/react-native-gesture-handler.tsx`, `src/__mocks__/expo-vector-icons.tsx`). `react-native-gesture-handler/ReanimatedSwipeable` needs Reanimated's native runtime, so it gets its own stub too (`src/__mocks__/react-native-gesture-handler-reanimated-swipeable.tsx`). `expo-speech-recognition` and `expo-image-picker` wrap native modules unavailable under Vitest regardless, so they're mocked with plain spies (`src/__mocks__/expo-speech-recognition.tsx`, `src/__mocks__/expo-image-picker.ts`).
