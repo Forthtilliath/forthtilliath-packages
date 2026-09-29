@@ -2,6 +2,7 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 export interface AboutSettingsScreenSection {
   title: string;
@@ -92,15 +93,7 @@ export function AboutSettingsScreen({
   locale,
   styles,
 }: AboutSettingsScreenProps) {
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    appName: [defaultStyles.appName, styles?.appName],
-    version: [defaultStyles.version, styles?.version],
-    separator: [defaultStyles.separator, styles?.separator],
-    paragraph: [defaultStyles.paragraph, styles?.paragraph],
-    sectionTitle: [defaultStyles.sectionTitle, styles?.sectionTitle],
-    hint: [defaultStyles.hint, styles?.hint],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
   const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
   const paragraphs = Array.isArray(description) ? description : [description];
 

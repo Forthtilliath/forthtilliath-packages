@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 export interface ThemeSettingsScreenEmojis {
   light?: string;
@@ -140,19 +141,7 @@ export function ThemeSettingsScreen({
   showHint = true,
   styles,
 }: ThemeSettingsScreenProps) {
-  // Style fields are merged as arrays (default, then override) so a partial
-  // override only changes the properties it specifies instead of replacing
-  // the whole default style object.
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    hint: [defaultStyles.hint, styles?.hint],
-    row: [defaultStyles.row, styles?.row],
-    rowActive: [defaultStyles.rowActive, styles?.rowActive],
-    emoji: [defaultStyles.emoji, styles?.emoji],
-    label: [defaultStyles.label, styles?.label],
-    labelActive: [defaultStyles.labelActive, styles?.labelActive],
-    check: [defaultStyles.check, styles?.check],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
   const e = { ...defaultEmojis, ...emojis };
   const i = { ...defaultIcons, ...icons };
   const t = { ...defaultLabels[useKitLocale(locale)], ...labels };

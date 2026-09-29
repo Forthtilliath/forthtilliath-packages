@@ -2,6 +2,8 @@ import type { ImageStyle, StyleProp, ViewStyle } from "react-native";
 import { Image, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
+
 export interface ThumbnailStyles {
   thumbnail?: StyleProp<ImageStyle>;
   placeholder?: StyleProp<ViewStyle>;
@@ -36,13 +38,8 @@ export function Thumbnail({
   size = DEFAULT_SIZE,
   styles,
 }: ThumbnailProps) {
-  // Style fields are merged as arrays (default, then override) so a partial
-  // override (e.g. just backgroundColor) doesn't drop the default's
-  // borderRadius, or the placeholder's alignItems/justifyContent that center
-  // the icon.
   const merged = {
-    thumbnail: [defaultStyles.thumbnail, styles?.thumbnail],
-    placeholder: [defaultStyles.placeholder, styles?.placeholder],
+    ...mergeSlotStyles(defaultStyles, styles),
     iconColor: styles?.iconColor ?? defaultStyles.iconColor,
   };
   const dimensions = { width: size, height: size };

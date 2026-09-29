@@ -4,8 +4,8 @@
  * a slot (say `button.backgroundColor`) keeps the rest of that slot's default
  * (padding, radius…) instead of replacing it wholesale.
  *
- * Only the slots present in `defaults` are merged; non-style fields of the
- * overrides (icon colors…) are left for the caller to resolve.
+ * Every key of `defaults` is paired this way, including non-style fields
+ * (icon colors…), which the caller resolves itself and simply ignores here.
  *
  * @param defaults - The default style of each slot.
  * @param overrides - The caller's `styles` prop, if any.
@@ -15,7 +15,7 @@
  * <View style={merged.container} />
  */
 export function mergeSlotStyles<
-  D extends Record<string, object>,
+  D extends Record<string, unknown>,
   O extends object,
 >(
   defaults: D,

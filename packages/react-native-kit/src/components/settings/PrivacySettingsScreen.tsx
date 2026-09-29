@@ -2,6 +2,7 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 export interface PrivacySettingsScreenSection {
   title: string;
@@ -103,12 +104,7 @@ export function PrivacySettingsScreen({
 }: PrivacySettingsScreenProps) {
   const resolvedLocale = useKitLocale(locale);
   const sections = customSections ?? defaultSections[resolvedLocale];
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    title: [defaultStyles.title, styles?.title],
-    paragraph: [defaultStyles.paragraph, styles?.paragraph],
-    separator: [defaultStyles.separator, styles?.separator],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
 
   return (
     <View style={merged.container}>

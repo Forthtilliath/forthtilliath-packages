@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 export interface PhotoPickerStyles {
   photoPicker?: StyleProp<ViewStyle>;
@@ -122,21 +123,8 @@ export function PhotoPicker({
   locale,
   styles,
 }: PhotoPickerProps) {
-  // Style fields are merged as arrays (default, then override) so a partial
-  // override only changes the properties it specifies instead of replacing
-  // the whole default style object.
   const mergedStyles = {
-    photoPicker: [defaultStyles.photoPicker, styles?.photoPicker],
-    photoPreview: [defaultStyles.photoPreview, styles?.photoPreview],
-    photoPlaceholder: [
-      defaultStyles.photoPlaceholder,
-      styles?.photoPlaceholder,
-    ],
-    photoPlaceholderText: [
-      defaultStyles.photoPlaceholderText,
-      styles?.photoPlaceholderText,
-    ],
-    clearLink: [defaultStyles.clearLink, styles?.clearLink],
+    ...mergeSlotStyles(defaultStyles, styles),
     iconColor: styles?.iconColor ?? defaultStyles.iconColor,
   };
   const t = { ...defaultLabels[useKitLocale(locale)], ...labels };

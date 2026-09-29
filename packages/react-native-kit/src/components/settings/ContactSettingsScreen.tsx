@@ -3,6 +3,7 @@ import { Linking, Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 export interface ContactSettingsScreenAction {
   icon: keyof typeof Ionicons.glyphMap;
@@ -110,15 +111,7 @@ export function ContactSettingsScreen({
   locale,
   styles,
 }: ContactSettingsScreenProps) {
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    hint: [defaultStyles.hint, styles?.hint],
-    emailButton: [defaultStyles.emailButton, styles?.emailButton],
-    emailButtonText: [defaultStyles.emailButtonText, styles?.emailButtonText],
-    separator: [defaultStyles.separator, styles?.separator],
-    row: [defaultStyles.row, styles?.row],
-    rowText: [defaultStyles.rowText, styles?.rowText],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
   const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
   const rowIconColor = styles?.rowIconColor ?? defaultStyles.rowIconColor;
 
