@@ -12,6 +12,10 @@ onlyBuiltDependencies:
   - lefthook
 
 catalog:
+  # Ahead of tailwindcss/@tailwindcss/postcss on purpose: the published
+  # forth-ui CSS has been built with 4.3.3 (formerly an unpinned `npx`), so
+  # pinning the CLI there keeps that output unchanged. Align all three together.
+  '@tailwindcss/cli': 4.3.3
   '@tailwindcss/postcss': 4.1.12
   '@turbo/gen': ^2.10.9
   '@types/node': ^26.2.0
