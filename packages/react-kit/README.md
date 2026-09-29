@@ -209,6 +209,12 @@ render function receiving the current index:
 Accepts `children` as either a plain React node or a function-as-children
 render prop, and normalizes both into a rendered node — used internally by
 components that want to support both patterns without duplicating logic.
+A render function is called with `args`, which is required as soon as the
+function declares parameters:
+
+```tsx
+<SlotOrCallback args={[user]}>{(u) => <p>Hello {u.name}</p>}</SlotOrCallback>
+```
 
 ## Scripts
 
