@@ -34,11 +34,11 @@ export {
 } from "@forthtilliath/ts-kit/array/getMostRecentIds";
 export { nextInCycle } from "@forthtilliath/ts-kit/array/nextInCycle";
 export { rankByNameMatch } from "@forthtilliath/ts-kit/array/rankByNameMatch";
+export { escapeCsvField } from "@forthtilliath/ts-kit/csv/escapeCsvField";
+export { formatCsvNumber } from "@forthtilliath/ts-kit/csv/formatCsvNumber";
 export {
   getPeriodStartMs,
   type PeriodFilter,
 } from "@forthtilliath/ts-kit/date/getPeriodStartMs";
-export { formatCsvNumber } from "@forthtilliath/ts-kit/number/formatCsvNumber";
-export { escapeCsvField } from "@forthtilliath/ts-kit/string/escapeCsvField";
 export { escapeHtml } from "@forthtilliath/ts-kit/string/escapeHtml";
 export { normalizeForSearch } from "@forthtilliath/ts-kit/string/normalizeForSearch";
