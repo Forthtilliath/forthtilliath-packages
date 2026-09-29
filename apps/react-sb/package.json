@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "pnpm run build:tw:once",
+    "predev": "pnpm run build:tw",
     "dev": "storybook dev -p 6006",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
@@ -13,7 +13,7 @@
     "build:tw": "tailwindcss -i ./src/styles/globals.css -o ./.storybook/globals.css",
     "prebuild-storybook": "pnpm run build:tw",
     "build-storybook": "storybook build",
-    "pretest": "pnpm run build:tw:once",
+    "pretest": "pnpm run build:tw",
     "test": "vitest run",
     "qa:screenshot": "node scripts/screenshot.mjs"
   },
