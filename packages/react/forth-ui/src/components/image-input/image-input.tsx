@@ -5,6 +5,8 @@ import { ImageIcon, XIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 export interface ImageInputProps {
   /** An existing image URL to preview (e.g. editing something that already has one). */
   value?: string | null;
@@ -13,6 +15,11 @@ export interface ImageInputProps {
   className?: string;
   /** @default "16/9" */
   aspectRatio?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -30,7 +37,9 @@ export function ImageInput({
   disabled = false,
   className,
   aspectRatio = "16/9",
+  locale,
 }: ImageInputProps) {
+  const messages = useUiMessages(locale);
   const [file, setFile] = React.useState<File | null>(null);
   const [objectUrl, setObjectUrl] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -74,7 +83,7 @@ export function ImageInput({
             onClick={() => {
               handleFile(null);
             }}
-            aria-label="Remove image"
+            aria-label={messages.imageInput.remove}
             className="bg-background/80 text-foreground hover:bg-background absolute top-2 right-2 rounded-full p-1 shadow-xs"
           >
             <XIcon className="size-4" />

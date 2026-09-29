@@ -5,6 +5,8 @@ import { StarIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 export interface RatingProps {
   value?: number;
   defaultValue?: number;
@@ -14,6 +16,11 @@ export interface RatingProps {
   readOnly?: boolean;
   size?: "sm" | "default" | "lg";
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 const SIZE_CLASSES: Record<NonNullable<RatingProps["size"]>, string> = {
@@ -41,7 +48,9 @@ export function Rating({
   readOnly = false,
   size = "default",
   className,
+  locale,
 }: RatingProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState(defaultValue);
   const [hoverValue, setHoverValue] = React.useState<number | null>(null);
@@ -78,7 +87,7 @@ export function Rating({
           type="button"
           role="radio"
           aria-checked={current === starValue}
-          aria-label={`${starValue.toString()} star${starValue > 1 ? "s" : ""}`}
+          aria-label={messages.rating.stars(starValue)}
           disabled={disabled}
           tabIndex={readOnly ? -1 : 0}
           onMouseEnter={() => {

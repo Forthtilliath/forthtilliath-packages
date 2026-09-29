@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 
 import {
@@ -12,8 +14,10 @@ import {
 } from "@forthtilliath/shadcn-ui/components/tooltip";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 import type { Shape, Size } from "./constants.js";
-import { DEFAULT_BADGE_POSITION, STATUS_LABEL } from "./constants.js";
+import { DEFAULT_BADGE_POSITION } from "./constants.js";
 import type {
   BadgeVariants,
   FallbackVariants,
@@ -129,6 +133,11 @@ export type AvatarProps = Omit<
       string
     >
   >;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 };
 
 /**
@@ -159,8 +168,10 @@ export function Avatar({
   badgePosition = DEFAULT_BADGE_POSITION,
   className,
   renderTooltip,
+  locale,
   ...props
 }: AvatarProps) {
+  const messages = useUiMessages(locale);
   const avatar = (
     <div className="relative">
       <AvatarPrimitive
@@ -188,7 +199,7 @@ export function Avatar({
             className?.status,
           )}
         >
-          <span className="sr-only">{STATUS_LABEL[status]}</span>
+          <span className="sr-only">{messages.avatar[status]}</span>
         </div>
       )}
       {badge !== undefined && (

@@ -1,7 +1,11 @@
+"use client";
+
 import type React from "react";
 import { create } from "qrcode";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
+
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
 export interface QrCodeProps extends Omit<
   React.SVGProps<SVGSVGElement>,
@@ -19,6 +23,11 @@ export interface QrCodeProps extends Omit<
   foreground?: string;
   /** @default "transparent" */
   background?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -38,8 +47,10 @@ export function QrCode({
   foreground = "currentColor",
   background = "transparent",
   className,
+  locale,
   ...props
 }: QrCodeProps) {
+  const messages = useUiMessages(locale);
   const { modules } = create(value, { errorCorrectionLevel: robustness });
   const size = modules.size;
 
@@ -64,7 +75,7 @@ export function QrCode({
     <svg
       viewBox={`0 0 ${size.toString()} ${size.toString()}`}
       role="img"
-      aria-label={`QR code encoding: ${value}`}
+      aria-label={messages.qrCode.label(value)}
       className={cn("size-32", className)}
       {...props}
     >

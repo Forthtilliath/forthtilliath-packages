@@ -18,6 +18,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/popover";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import { Button } from "../button/index.js";
 
 export interface ComboboxOption {
@@ -34,6 +35,11 @@ export interface ComboboxProps {
   emptyMessage?: string;
   disabled?: boolean;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -54,11 +60,15 @@ export function Combobox({
   options,
   value,
   onValueChange,
-  placeholder = "Select…",
-  emptyMessage = "No results found.",
+  placeholder,
+  emptyMessage,
   disabled = false,
   className,
+  locale,
 }: ComboboxProps) {
+  const messages = useUiMessages(locale);
+  const emptyMessageText = emptyMessage ?? messages.emptyResults;
+  const placeholderText = placeholder ?? messages.combobox.placeholder;
   const [open, setOpen] = React.useState(false);
   const selected = options.find((option) => option.value === value);
 
@@ -73,15 +83,15 @@ export function Combobox({
           disabled={disabled}
           className={cn("w-full justify-between font-normal", className)}
         >
-          {selected?.label ?? placeholder}
+          {selected?.label ?? placeholderText}
           <ChevronsUpDownIcon className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
         <Command>
-          <CommandInput placeholder={placeholder} />
+          <CommandInput placeholder={placeholderText} />
           <CommandList>
-            <CommandEmpty>{emptyMessage}</CommandEmpty>
+            <CommandEmpty>{emptyMessageText}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
