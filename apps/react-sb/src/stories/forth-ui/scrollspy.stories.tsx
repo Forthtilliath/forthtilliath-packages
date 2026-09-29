@@ -40,6 +40,10 @@ function ScrollspyExample() {
       </nav>
       <div
         ref={containerRef}
+        role="region"
+        aria-label="Sections"
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be focusable to be keyboard-scrollable
+        tabIndex={0}
         className="h-72 w-72 overflow-y-auto rounded-lg border"
       >
         {SECTIONS.map((id) => (

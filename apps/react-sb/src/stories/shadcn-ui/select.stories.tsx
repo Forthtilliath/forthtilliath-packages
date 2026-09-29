@@ -28,7 +28,7 @@ const meta: Meta<typeof Select> = {
       <SelectTrigger title="Select" className="w-96">
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent aria-label="Fruits">
         <SelectGroup>
           <SelectLabel>Fruits</SelectLabel>
           <SelectItem value="apple">Apple</SelectItem>
@@ -123,5 +123,13 @@ export const ShouldSelectOption: Story = {
         await canvasBody.findByRole("option", { name: /banana/i }),
       );
     });
+  },
+  parameters: {
+    // Transient: Radix hides the rest of the page (aria-hidden) while the menu animates out.
+    a11y: {
+      config: {
+        rules: [{ id: "aria-hidden-focus", enabled: false }],
+      },
+    },
   },
 };

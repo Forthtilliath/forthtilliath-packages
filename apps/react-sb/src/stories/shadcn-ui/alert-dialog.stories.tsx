@@ -24,7 +24,7 @@ const meta = {
   argTypes: {},
   render: (args) => (
     <AlertDialog {...args}>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
         <Button variant="outline">Show Dialog</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

@@ -10,6 +10,7 @@ const meta = {
   component: NumberInput,
   args: {
     defaultValue: 1,
+    "aria-label": "Quantity",
   },
 } satisfies Meta<typeof NumberInput>;
 

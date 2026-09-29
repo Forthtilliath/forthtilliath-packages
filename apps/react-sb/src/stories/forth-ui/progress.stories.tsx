@@ -41,7 +41,10 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  // Without a visible `label`, a progress bar needs an accessible name.
+  args: { "aria-label": "Progress" },
+};
 
 /**
  * Every color variant, at the same value.
@@ -59,7 +62,12 @@ export const Colors: Story = {
           "destructive",
         ] as const
       ).map((variant) => (
-        <Progress key={variant} {...args} variant={variant} />
+        <Progress
+          key={variant}
+          {...args}
+          variant={variant}
+          aria-label={`${variant} progress`}
+        />
       ))}
     </Grid>
   ),
