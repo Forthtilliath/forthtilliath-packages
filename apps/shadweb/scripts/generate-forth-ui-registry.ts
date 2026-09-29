@@ -20,26 +20,13 @@
  *     recorded into the item's own `dependencies`/`devDependencies` listed in
  *     `forth-ui-registry/components.json` (with each item's title and description).
  *
- * `grid` is deliberately excluded: it imports `@forthtilliath/react-kit/useKeyListener`
- * (a real runtime hook) and `@forthtilliath/ts-types/object` (a type-only utility) — both
- * external npm packages. Registry-izing it needs those inlined as
- * `registry:hook`/local-type files first; not done yet, see UPGRADE.md.
+ * Other `@forthtilliath/*` packages a component imports (e.g. `grid`'s
+ * `@forthtilliath/react-kit/useKeyListener`) are published on npm: they stay
+ * bare specifiers, listed as the item's npm `dependencies` like any other.
  *
- * KNOWN LIMITATION — `accordion`: this monorepo's vendored
- * `packages/react/shadcn-ui/src/components/accordion.tsx` has a local
- * customization (`hideChevron`/`customChevron` on `AccordionTrigger`) not
- * present in the official upstream shadcn `accordion` registry item.
- * `accordion-items.tsx` uses those props directly against the *official*
- * `AccordionTrigger` once installed via a registry consumer (the bare
- * `registryDependencies: ["accordion"]` this script auto-detects always
- * resolves to upstream, never to this repo's fork) — so a registry
- * consumer gets a type error on those two props specifically. Every other
- * prop/behavior works. Verified against both Base UI and Radix base
- * libraries — not a base-library mismatch, a genuine vendored-primitive
- * divergence. Not fixed here; needs either bundling the customized
- * AccordionTrigger as one of forth-ui's own registry files (like the
- * cross-component-dependency case) or dropping reliance on the two props
- * in `accordion-items.tsx`.
+ * `accordion` builds its trigger on the Radix primitive itself
+ * (`accordion-trigger.tsx`) instead of using props only this repo's shadcn
+ * copy has, so it works with the upstream shadcn `accordion` item.
  *
  * Run: `pnpm run registry:generate` (from apps/shadweb).
  */
@@ -80,7 +67,6 @@ interface NpmDeps {
  * One entry per `packages/react/forth-ui/src/components/<name>` folder —
  * one registry item per folder (not per exported symbol), matching the
  * existing `exports: "./components/*"` / `index.ts`-per-folder convention.
- * `grid` is intentionally omitted (see file header).
  */
 const COMPONENTS = JSON.parse(
   readFileSync(join(scriptDir, "forth-ui-registry/components.json"), "utf8"),
