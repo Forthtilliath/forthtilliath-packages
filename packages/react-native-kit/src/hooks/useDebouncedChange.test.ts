@@ -15,7 +15,7 @@ describe("useDebouncedChange", () => {
     vi.useRealTimers();
   });
 
-  it("ne déclenche rien tant qu'une valeur vaut undefined", () => {
+  it("doesn't fire while a value is undefined", () => {
     const callback = vi.fn();
     const values: unknown[] = [undefined, undefined];
     renderHook(() => {
@@ -26,7 +26,7 @@ describe("useDebouncedChange", () => {
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it("ne déclenche rien au premier rendu une fois les valeurs définies", () => {
+  it("doesn't fire on the first render once all values are defined", () => {
     const callback = vi.fn();
     const values: unknown[] = [1, 2];
     renderHook(() => {
@@ -37,7 +37,7 @@ describe("useDebouncedChange", () => {
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it("déclenche callback delayMs après un changement", () => {
+  it("fires callback delayMs after a change", () => {
     const callback = vi.fn();
     let values: unknown[] = [1, 2];
     const { rerender } = renderHook(() => {
@@ -54,7 +54,7 @@ describe("useDebouncedChange", () => {
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
-  it("repousse le déclenchement si un nouveau changement survient avant delayMs", () => {
+  it("restarts the delay when a new change comes in before delayMs", () => {
     const callback = vi.fn();
     let values: unknown[] = [1, 2];
     const { rerender } = renderHook(() => {
