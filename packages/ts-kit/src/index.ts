@@ -9,6 +9,7 @@ export * from "./classes/index.js";
 export * from "./csv/index.js";
 export * from "./date/index.js";
 export * from "./files/index.js";
+export * from "./function/index.js";
 export * from "./id/index.js";
 export * from "./image/index.js";
 export * from "./markdown/index.js";
