@@ -32,8 +32,8 @@ export function Repeat({ count = 1, children }: RepeatProps) {
   return (
     <>
       {Array.from({ length: count }, (_, index) => (
-        <SlotOrCallback key={index}>
-          {typeof children === "function" ? children(index) : children}
+        <SlotOrCallback key={index} args={[index]}>
+          {children}
         </SlotOrCallback>
       ))}
     </>
