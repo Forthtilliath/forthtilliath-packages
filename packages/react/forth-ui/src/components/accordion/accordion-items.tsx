@@ -1,10 +1,10 @@
 import {
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
 } from "@forthtilliath/shadcn-ui/components/accordion";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { AccordionTrigger } from "./accordion-trigger.js";
 import type { AccordionProps } from "./types.js";
 import {
   accordionContentVariants,
