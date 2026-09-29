@@ -1,19 +1,21 @@
+import type { Prettify } from "./prettify.js";
 import type { UnknownRecord } from "./unknown-record.js";
 
 /**
- * Prettify type by removing any intersection types.
- * Merges multiple types into a single type by intersecting them.
+ * Merges two object types into a single flat object type, `S`'s properties
+ * taking priority over `F`'s (like `{ ...f, ...s }` at runtime). Optional and
+ * readonly modifiers are kept.
+ *
+ * Unlike a plain `F & S`, a property both types declare with incompatible
+ * types resolves to `S`'s type instead of `never`.
  *
  * @example
- * type A = Merge<{ foo: string } & { bar: number }>;
- * // A is { foo: string; bar: number; }
+ * type A = Merge<{ id: number; name: string }, { name: string[] }>;
+ * // A is { id: number; name: string[] }
  *
- * @template T - The type to be merged. Generally, an intersection of object types.
+ * @template F - The base object type.
+ * @template S - The object type whose properties override `F`'s.
  */
-export type Merge<F extends UnknownRecord, S extends UnknownRecord> = {
-  [K in keyof (F & S)]: K extends keyof S
-    ? S[K]
-    : K extends keyof F
-      ? F[K]
-      : never;
-};
+export type Merge<F extends UnknownRecord, S extends UnknownRecord> = Prettify<
+  Omit<F, keyof S> & S
+>;
