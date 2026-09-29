@@ -1,0 +1,189 @@
+/*
+ * pixel — 8-bit: notched pixel frames, pixel type, checkerboard — Game Boy greens (light), PICO-8 night (dark).
+ *
+ * Tokens plus signature effects: plain CSS rules on shadcn's data-slot
+ * attributes, active only while this theme is imported. Fonts fall back to
+ * system stacks; for the full look, load Pixelify Sans, Press Start 2P, VT323
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.83 0.13 120);
+  --foreground: oklch(0.3 0.07 145);
+  --card: oklch(0.88 0.1 120);
+  --card-foreground: oklch(0.3 0.07 145);
+  --popover: oklch(0.88 0.1 120);
+  --popover-foreground: oklch(0.3 0.07 145);
+  --primary: oklch(0.3 0.07 145);
+  --primary-foreground: oklch(0.88 0.1 120);
+  --secondary: oklch(0.45 0.09 145);
+  --secondary-foreground: oklch(0.93 0.07 120);
+  --muted: oklch(0.78 0.14 122);
+  --muted-foreground: oklch(0.3 0.07 145);
+  --accent: oklch(0.7 0.16 122);
+  --accent-foreground: oklch(0.25 0.06 145);
+  --destructive: oklch(0.42 0.12 30);
+  --destructive-foreground: oklch(0.93 0.07 120);
+  --border: oklch(0.3 0.07 145);
+  --input: oklch(0.3 0.07 145);
+  --ring: oklch(0.3 0.07 145);
+  --chart-1: oklch(0.3 0.07 145);
+  --chart-2: oklch(0.45 0.09 145);
+  --chart-3: oklch(0.62 0.15 125);
+  --chart-4: oklch(0.42 0.12 30);
+  --chart-5: oklch(0.55 0.1 180);
+  --sidebar: oklch(0.88 0.1 120);
+  --sidebar-foreground: oklch(0.3 0.07 145);
+  --sidebar-primary: oklch(0.3 0.07 145);
+  --sidebar-primary-foreground: oklch(0.88 0.1 120);
+  --sidebar-accent: oklch(0.7 0.16 122);
+  --sidebar-accent-foreground: oklch(0.25 0.06 145);
+  --sidebar-border: oklch(0.3 0.07 145);
+  --sidebar-ring: oklch(0.3 0.07 145);
+  --font-sans:
+    "Pixelify Sans", "Silkscreen", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif:
+    "Pixelify Sans", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-mono:
+    "VT323", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  --font-display:
+    "Press Start 2P", "Silkscreen", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --radius: 0rem;
+  --shadow-2xs: 2px 2px 0px 0px oklch(0.3 0.07 145);
+  --shadow-xs: 2px 2px 0px 0px oklch(0.3 0.07 145);
+  --shadow-sm: 4px 4px 0px 0px oklch(0.3 0.07 145);
+  --shadow: 4px 4px 0px 0px oklch(0.3 0.07 145);
+  --shadow-md: 4px 4px 0px 0px oklch(0.3 0.07 145);
+  --shadow-lg: 8px 8px 0px 0px oklch(0.3 0.07 145);
+  --shadow-xl: 8px 8px 0px 0px oklch(0.3 0.07 145);
+  --shadow-2xl: 12px 12px 0px 0px oklch(0.3 0.07 145);
+  --pixel-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' fill='%230f380f'%3E%3Cpath d='M2 0h2v2H2zM0 2h2v2H0zM4 2h2v2H4zM2 4h2v2H2z'/%3E%3C/svg%3E");
+}
+
+.dark {
+  --background: oklch(0.2 0.035 270);
+  --foreground: oklch(0.96 0.005 90);
+  --card: oklch(0.26 0.045 270);
+  --card-foreground: oklch(0.96 0.005 90);
+  --popover: oklch(0.26 0.045 270);
+  --popover-foreground: oklch(0.96 0.005 90);
+  --primary: oklch(0.9 0.17 100);
+  --primary-foreground: oklch(0.2 0.035 270);
+  --secondary: oklch(0.72 0.13 240);
+  --secondary-foreground: oklch(0.2 0.035 270);
+  --muted: oklch(0.3 0.045 270);
+  --muted-foreground: oklch(0.8 0.02 270);
+  --accent: oklch(0.77 0.15 350);
+  --accent-foreground: oklch(0.2 0.035 270);
+  --destructive: oklch(0.66 0.22 25);
+  --destructive-foreground: oklch(0.2 0.035 270);
+  --border: oklch(0.96 0.005 90);
+  --input: oklch(0.96 0.005 90);
+  --ring: oklch(0.9 0.17 100);
+  --chart-1: oklch(0.9 0.17 100);
+  --chart-2: oklch(0.72 0.13 240);
+  --chart-3: oklch(0.77 0.15 350);
+  --chart-4: oklch(0.75 0.2 145);
+  --chart-5: oklch(0.7 0.17 50);
+  --sidebar: oklch(0.26 0.045 270);
+  --sidebar-foreground: oklch(0.96 0.005 90);
+  --sidebar-primary: oklch(0.9 0.17 100);
+  --sidebar-primary-foreground: oklch(0.2 0.035 270);
+  --sidebar-accent: oklch(0.77 0.15 350);
+  --sidebar-accent-foreground: oklch(0.2 0.035 270);
+  --sidebar-border: oklch(0.96 0.005 90);
+  --sidebar-ring: oklch(0.9 0.17 100);
+  --font-sans:
+    "Pixelify Sans", "Silkscreen", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif:
+    "Pixelify Sans", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-mono:
+    "VT323", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  --font-display:
+    "Press Start 2P", "Silkscreen", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --radius: 0rem;
+  --shadow-2xs: 2px 2px 0px 0px oklch(0.08 0.02 270);
+  --shadow-xs: 2px 2px 0px 0px oklch(0.08 0.02 270);
+  --shadow-sm: 4px 4px 0px 0px oklch(0.08 0.02 270);
+  --shadow: 4px 4px 0px 0px oklch(0.08 0.02 270);
+  --shadow-md: 4px 4px 0px 0px oklch(0.08 0.02 270);
+  --shadow-lg: 8px 8px 0px 0px oklch(0.08 0.02 270);
+  --shadow-xl: 8px 8px 0px 0px oklch(0.08 0.02 270);
+  --shadow-2xl: 12px 12px 0px 0px oklch(0.08 0.02 270);
+  --pixel-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' fill='%23f4f4f4'%3E%3Cpath d='M2 0h2v2H2zM0 2h2v2H0zM4 2h2v2H4zM2 4h2v2H2z'/%3E%3C/svg%3E");
+}
+
+/* Signature effects */
+
+:where([data-slot]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+body {
+  background-image: conic-gradient(
+    color-mix(in oklab, var(--foreground) 6%, transparent) 25%,
+    transparent 0 50%,
+    color-mix(in oklab, var(--foreground) 6%, transparent) 0 75%,
+    transparent 0
+  );
+  background-size: 16px 16px;
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"],
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-otp-slot"],
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  border: 4px solid transparent;
+  border-image: var(--pixel-frame) 2 / 4px stretch;
+  border-radius: 0;
+  background-clip: padding-box;
+  image-rendering: pixelated;
+}
+
+[data-slot="card-title"],
+[data-slot="dialog-title"],
+[data-slot="alert-dialog-title"],
+[data-slot="sheet-title"],
+[data-slot="drawer-title"] {
+  font-family: var(--font-display);
+  font-size: 0.8em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+[data-slot="button"][class*="shadow-xs"] {
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+  transition: none;
+}
+
+[data-slot="button"][class*="shadow-xs"]:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 #0000;
+}
+
+[data-slot] {
+  transition-timing-function: steps(3, end);
+}

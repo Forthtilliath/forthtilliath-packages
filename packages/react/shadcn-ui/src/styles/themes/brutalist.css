@@ -1,7 +1,9 @@
 /*
- * brutalist — Neo-brutalism: bold yellow, black outlines, hard offset shadows, square corners.
+ * brutalist — Neo-brutalism: thick black outlines, hard offset shadows, buttons that press in, dotted paper.
  *
- * Fonts fall back to system stacks; for the full look, load Space Grotesk, Space Mono
+ * Tokens plus signature effects: plain CSS rules on shadcn's data-slot
+ * attributes, active only while this theme is imported. Fonts fall back to
+ * system stacks; for the full look, load Space Grotesk, Space Mono
  * (e.g. from Google Fonts, or next/font).
  */
 
@@ -46,14 +48,14 @@
     "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
   --radius: 0rem;
-  --shadow-2xs: 1px 1px 0px 0px hsl(0 0% 10% / 1);
-  --shadow-xs: 2px 2px 0px 0px hsl(0 0% 10% / 1);
-  --shadow-sm: 2px 2px 0px 0px hsl(0 0% 10% / 1);
-  --shadow: 3px 3px 0px 0px hsl(0 0% 10% / 1);
-  --shadow-md: 4px 4px 0px 0px hsl(0 0% 10% / 1);
-  --shadow-lg: 6px 6px 0px 0px hsl(0 0% 10% / 1);
-  --shadow-xl: 8px 8px 0px 0px hsl(0 0% 10% / 1);
-  --shadow-2xl: 12px 12px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-2xs: 1px 1px 0px 0px oklch(0.15 0 0);
+  --shadow-xs: 2px 2px 0px 0px oklch(0.15 0 0);
+  --shadow-sm: 2px 2px 0px 0px oklch(0.15 0 0);
+  --shadow: 3px 3px 0px 0px oklch(0.15 0 0);
+  --shadow-md: 4px 4px 0px 0px oklch(0.15 0 0);
+  --shadow-lg: 6px 6px 0px 0px oklch(0.15 0 0);
+  --shadow-xl: 8px 8px 0px 0px oklch(0.15 0 0);
+  --shadow-2xl: 12px 12px 0px 0px oklch(0.15 0 0);
 }
 
 .dark {
@@ -97,12 +99,95 @@
     "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
   --radius: 0rem;
-  --shadow-2xs: 1px 1px 0px 0px hsl(50 96% 60% / 1);
-  --shadow-xs: 2px 2px 0px 0px hsl(50 96% 60% / 1);
-  --shadow-sm: 2px 2px 0px 0px hsl(50 96% 60% / 1);
-  --shadow: 3px 3px 0px 0px hsl(50 96% 60% / 1);
-  --shadow-md: 4px 4px 0px 0px hsl(50 96% 60% / 1);
-  --shadow-lg: 6px 6px 0px 0px hsl(50 96% 60% / 1);
-  --shadow-xl: 8px 8px 0px 0px hsl(50 96% 60% / 1);
-  --shadow-2xl: 12px 12px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-2xs: 1px 1px 0px 0px oklch(0.87 0.17 95);
+  --shadow-xs: 2px 2px 0px 0px oklch(0.87 0.17 95);
+  --shadow-sm: 2px 2px 0px 0px oklch(0.87 0.17 95);
+  --shadow: 3px 3px 0px 0px oklch(0.87 0.17 95);
+  --shadow-md: 4px 4px 0px 0px oklch(0.87 0.17 95);
+  --shadow-lg: 6px 6px 0px 0px oklch(0.87 0.17 95);
+  --shadow-xl: 8px 8px 0px 0px oklch(0.87 0.17 95);
+  --shadow-2xl: 12px 12px 0px 0px oklch(0.87 0.17 95);
+}
+
+/* Signature effects */
+
+:where([data-slot]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+body {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 14%, transparent) 1px,
+    transparent 1.5px
+  );
+  background-size: 18px 18px;
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"],
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-otp-slot"],
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  border: 2px solid var(--border);
+  border-radius: 0;
+}
+
+[data-slot="card"] {
+  border-width: 3px;
+  box-shadow: var(--shadow-lg);
+}
+
+[data-slot="card-title"],
+[data-slot="dialog-title"],
+[data-slot="alert-dialog-title"],
+[data-slot="sheet-title"],
+[data-slot="drawer-title"] {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+[data-slot="button"][class*="shadow-xs"] {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-md);
+  transition:
+    transform 80ms ease-out,
+    box-shadow 80ms ease-out;
+}
+
+[data-slot="button"][class*="shadow-xs"]:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Pressed: the button sinks into its own shadow. */
+[data-slot="button"][class*="shadow-xs"]:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 #0000;
+}
+
+[data-slot="button"][class*="shadow-xs"]:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="button"][class*="shadow-xs"] {
+    transition: none;
+  }
 }

@@ -1,0 +1,204 @@
+/*
+ * newspaper — Newspaper: newsprint and ink, Didone headlines over double rules, halftone dots, small caps.
+ *
+ * Tokens plus signature effects: plain CSS rules on shadcn's data-slot
+ * attributes, active only while this theme is imported. Fonts fall back to
+ * system stacks; for the full look, load Libre Baskerville, Playfair Display, Courier Prime
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.94 0.012 90);
+  --foreground: oklch(0.18 0.005 90);
+  --card: oklch(0.96 0.01 90);
+  --card-foreground: oklch(0.18 0.005 90);
+  --popover: oklch(0.96 0.01 90);
+  --popover-foreground: oklch(0.18 0.005 90);
+  --primary: oklch(0.18 0.005 90);
+  --primary-foreground: oklch(0.96 0.01 90);
+  --secondary: oklch(0.88 0.012 90);
+  --secondary-foreground: oklch(0.18 0.005 90);
+  --muted: oklch(0.9 0.012 90);
+  --muted-foreground: oklch(0.4 0.01 90);
+  --accent: oklch(0.5 0.2 27);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.48 0.19 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.18 0.005 90);
+  --input: oklch(0.18 0.005 90);
+  --ring: oklch(0.18 0.005 90);
+  --chart-1: oklch(0.18 0.005 90);
+  --chart-2: oklch(0.5 0.2 27);
+  --chart-3: oklch(0.45 0.01 90);
+  --chart-4: oklch(0.65 0.01 90);
+  --chart-5: oklch(0.35 0.08 250);
+  --sidebar: oklch(0.96 0.01 90);
+  --sidebar-foreground: oklch(0.18 0.005 90);
+  --sidebar-primary: oklch(0.18 0.005 90);
+  --sidebar-primary-foreground: oklch(0.96 0.01 90);
+  --sidebar-accent: oklch(0.5 0.2 27);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.18 0.005 90);
+  --sidebar-ring: oklch(0.18 0.005 90);
+  --font-sans:
+    "Libre Baskerville", "Old Standard TT", ui-serif, Georgia, Cambria,
+    "Times New Roman", serif;
+  --font-serif:
+    "Libre Baskerville", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "Courier Prime", "Courier New", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-display:
+    "Playfair Display", "Bodoni Moda", Didot, "Bodoni 72", ui-serif, Georgia,
+    Cambria, "Times New Roman", serif;
+  --radius: 0rem;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+}
+
+.dark {
+  --background: oklch(0.17 0.005 90);
+  --foreground: oklch(0.92 0.01 90);
+  --card: oklch(0.2 0.006 90);
+  --card-foreground: oklch(0.92 0.01 90);
+  --popover: oklch(0.2 0.006 90);
+  --popover-foreground: oklch(0.92 0.01 90);
+  --primary: oklch(0.92 0.01 90);
+  --primary-foreground: oklch(0.17 0.005 90);
+  --secondary: oklch(0.28 0.008 90);
+  --secondary-foreground: oklch(0.92 0.01 90);
+  --muted: oklch(0.25 0.008 90);
+  --muted-foreground: oklch(0.74 0.01 90);
+  --accent: oklch(0.7 0.17 27);
+  --accent-foreground: oklch(0.17 0.005 90);
+  --destructive: oklch(0.68 0.18 27);
+  --destructive-foreground: oklch(0.17 0.005 90);
+  --border: oklch(0.92 0.01 90);
+  --input: oklch(0.92 0.01 90);
+  --ring: oklch(0.92 0.01 90);
+  --chart-1: oklch(0.92 0.01 90);
+  --chart-2: oklch(0.7 0.17 27);
+  --chart-3: oklch(0.7 0.01 90);
+  --chart-4: oklch(0.5 0.01 90);
+  --chart-5: oklch(0.7 0.08 250);
+  --sidebar: oklch(0.2 0.006 90);
+  --sidebar-foreground: oklch(0.92 0.01 90);
+  --sidebar-primary: oklch(0.92 0.01 90);
+  --sidebar-primary-foreground: oklch(0.17 0.005 90);
+  --sidebar-accent: oklch(0.7 0.17 27);
+  --sidebar-accent-foreground: oklch(0.17 0.005 90);
+  --sidebar-border: oklch(0.92 0.01 90);
+  --sidebar-ring: oklch(0.92 0.01 90);
+  --font-sans:
+    "Libre Baskerville", "Old Standard TT", ui-serif, Georgia, Cambria,
+    "Times New Roman", serif;
+  --font-serif:
+    "Libre Baskerville", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "Courier Prime", "Courier New", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-display:
+    "Playfair Display", "Bodoni Moda", Didot, "Bodoni 72", ui-serif, Georgia,
+    Cambria, "Times New Roman", serif;
+  --radius: 0rem;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+}
+
+/* Signature effects */
+
+:where([data-slot]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+body {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 11%, transparent) 0.7px,
+    transparent 1px
+  );
+  background-size: 5px 5px;
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"],
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-otp-slot"],
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  border-radius: 0;
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"] {
+  border: 1px solid var(--border);
+}
+
+[data-slot="card"] {
+  border-top: 6px double var(--border);
+}
+
+[data-slot="card-title"],
+[data-slot="dialog-title"],
+[data-slot="alert-dialog-title"],
+[data-slot="sheet-title"],
+[data-slot="drawer-title"] {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.4em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+[data-slot="card-description"] {
+  font-style: italic;
+}
+
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+[data-slot="button"][class*="shadow-xs"] {
+  border: 1px solid var(--foreground);
+}
+
+[data-slot="separator"][data-orientation="horizontal"] {
+  height: 0;
+  background: none;
+  border-top: 3px double var(--border);
+}

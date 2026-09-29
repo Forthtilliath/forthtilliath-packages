@@ -1,0 +1,220 @@
+/*
+ * memphis — Memphis pop: confetti pattern, asymmetric corners, squiggly underlined titles, colored hard shadows.
+ *
+ * Tokens plus signature effects: plain CSS rules on shadcn's data-slot
+ * attributes, active only while this theme is imported. Fonts fall back to
+ * system stacks; for the full look, load Rubik
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.97 0.02 90);
+  --foreground: oklch(0.2 0.02 280);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.02 280);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.02 280);
+  --primary: oklch(0.56 0.23 350);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.78 0.12 185);
+  --secondary-foreground: oklch(0.2 0.02 280);
+  --muted: oklch(0.94 0.03 90);
+  --muted-foreground: oklch(0.42 0.03 280);
+  --accent: oklch(0.9 0.16 95);
+  --accent-foreground: oklch(0.2 0.02 280);
+  --destructive: oklch(0.53 0.21 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.2 0.02 280);
+  --input: oklch(0.2 0.02 280);
+  --ring: oklch(0.56 0.23 350);
+  --chart-1: oklch(0.56 0.23 350);
+  --chart-2: oklch(0.78 0.12 185);
+  --chart-3: oklch(0.9 0.16 95);
+  --chart-4: oklch(0.55 0.2 295);
+  --chart-5: oklch(0.7 0.18 40);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.2 0.02 280);
+  --sidebar-primary: oklch(0.56 0.23 350);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9 0.16 95);
+  --sidebar-accent-foreground: oklch(0.2 0.02 280);
+  --sidebar-border: oklch(0.2 0.02 280);
+  --sidebar-ring: oklch(0.56 0.23 350);
+  --font-sans:
+    "Rubik", "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-display:
+    "Rubik", "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --radius: 1rem;
+  --shadow-2xs: 2px 2px 0px 0px oklch(0.78 0.12 185);
+  --shadow-xs: 2px 2px 0px 0px oklch(0.78 0.12 185);
+  --shadow-sm: 3px 3px 0px 0px oklch(0.78 0.12 185);
+  --shadow: 4px 4px 0px 0px oklch(0.78 0.12 185);
+  --shadow-md: 5px 5px 0px 0px oklch(0.78 0.12 185);
+  --shadow-lg: 6px 6px 0px 0px oklch(0.78 0.12 185);
+  --shadow-xl: 8px 8px 0px 0px oklch(0.78 0.12 185);
+  --shadow-2xl: 12px 12px 0px 0px oklch(0.78 0.12 185);
+  --memphis-a: oklch(0.62 0.23 350 / 0.45);
+  --memphis-b: oklch(0.78 0.12 185 / 0.55);
+  --memphis-c: oklch(0.2 0.02 280 / 0.07);
+}
+
+.dark {
+  --background: oklch(0.22 0.05 285);
+  --foreground: oklch(0.97 0.02 90);
+  --card: oklch(0.27 0.06 285);
+  --card-foreground: oklch(0.97 0.02 90);
+  --popover: oklch(0.27 0.06 285);
+  --popover-foreground: oklch(0.97 0.02 90);
+  --primary: oklch(0.75 0.19 350);
+  --primary-foreground: oklch(0.2 0.04 285);
+  --secondary: oklch(0.8 0.12 185);
+  --secondary-foreground: oklch(0.2 0.04 285);
+  --muted: oklch(0.3 0.06 285);
+  --muted-foreground: oklch(0.8 0.03 90);
+  --accent: oklch(0.9 0.16 95);
+  --accent-foreground: oklch(0.2 0.04 285);
+  --destructive: oklch(0.7 0.2 27);
+  --destructive-foreground: oklch(0.2 0.04 285);
+  --border: oklch(0.97 0.02 90);
+  --input: oklch(0.97 0.02 90);
+  --ring: oklch(0.75 0.19 350);
+  --chart-1: oklch(0.75 0.19 350);
+  --chart-2: oklch(0.8 0.12 185);
+  --chart-3: oklch(0.9 0.16 95);
+  --chart-4: oklch(0.7 0.18 295);
+  --chart-5: oklch(0.75 0.17 40);
+  --sidebar: oklch(0.27 0.06 285);
+  --sidebar-foreground: oklch(0.97 0.02 90);
+  --sidebar-primary: oklch(0.75 0.19 350);
+  --sidebar-primary-foreground: oklch(0.2 0.04 285);
+  --sidebar-accent: oklch(0.9 0.16 95);
+  --sidebar-accent-foreground: oklch(0.2 0.04 285);
+  --sidebar-border: oklch(0.97 0.02 90);
+  --sidebar-ring: oklch(0.75 0.19 350);
+  --font-sans:
+    "Rubik", "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-display:
+    "Rubik", "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --radius: 1rem;
+  --shadow-2xs: 2px 2px 0px 0px oklch(0.75 0.19 350);
+  --shadow-xs: 2px 2px 0px 0px oklch(0.75 0.19 350);
+  --shadow-sm: 3px 3px 0px 0px oklch(0.75 0.19 350);
+  --shadow: 4px 4px 0px 0px oklch(0.75 0.19 350);
+  --shadow-md: 5px 5px 0px 0px oklch(0.75 0.19 350);
+  --shadow-lg: 6px 6px 0px 0px oklch(0.75 0.19 350);
+  --shadow-xl: 8px 8px 0px 0px oklch(0.75 0.19 350);
+  --shadow-2xl: 12px 12px 0px 0px oklch(0.75 0.19 350);
+  --memphis-a: oklch(0.75 0.19 350 / 0.45);
+  --memphis-b: oklch(0.8 0.12 185 / 0.4);
+  --memphis-c: oklch(0.97 0.02 90 / 0.06);
+}
+
+/* Signature effects */
+
+:where([data-slot]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Confetti: dots, rings and dashes. */
+body {
+  background-image:
+    radial-gradient(circle at 20% 30%, var(--memphis-a) 3px, transparent 3.5px),
+    radial-gradient(
+      circle at 70% 75%,
+      transparent 4px,
+      var(--memphis-b) 4.5px 6px,
+      transparent 6.5px
+    ),
+    linear-gradient(
+      45deg,
+      transparent 48%,
+      var(--memphis-c) 48% 52%,
+      transparent 52%
+    );
+  background-size:
+    64px 64px,
+    96px 96px,
+    52px 52px;
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"],
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-otp-slot"],
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  border: 2px solid var(--border);
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"] {
+  border-radius: 1.75rem 0.25rem 1.75rem 0.25rem;
+  box-shadow: var(--shadow-lg);
+}
+
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+[data-slot="button"][class*="shadow-xs"] {
+  box-shadow: var(--shadow-sm);
+  transition: transform 100ms ease;
+}
+
+[data-slot="button"][class*="shadow-xs"]:hover {
+  transform: translateY(-2px) rotate(-1deg);
+}
+
+[data-slot="badge"] {
+  transform: rotate(-2deg);
+}
+
+[data-slot="card-title"],
+[data-slot="dialog-title"],
+[data-slot="alert-dialog-title"],
+[data-slot="sheet-title"],
+[data-slot="drawer-title"] {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-decoration: underline wavy var(--primary) 2px;
+  text-underline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="button"][class*="shadow-xs"] {
+    transition: none;
+  }
+}
