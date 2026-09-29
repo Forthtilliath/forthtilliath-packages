@@ -16,7 +16,7 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
-    "clean": "rm -rf dist",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
     "dev:ts": "tsc --watch",
     "dev:tw": "pnpm run build:tw --watch",
