@@ -1,0 +1,108 @@
+/*
+ * brutalist — Neo-brutalism: bold yellow, black outlines, hard offset shadows, square corners.
+ *
+ * Fonts fall back to system stacks; for the full look, load Space Grotesk, Space Mono
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.97 0.03 95);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  --primary: oklch(0.15 0 0);
+  --primary-foreground: oklch(0.87 0.17 95);
+  --secondary: oklch(0.87 0.17 95);
+  --secondary-foreground: oklch(0.15 0 0);
+  --muted: oklch(0.93 0.03 95);
+  --muted-foreground: oklch(0.38 0 0);
+  --accent: oklch(0.82 0.12 350);
+  --accent-foreground: oklch(0.15 0 0);
+  --destructive: oklch(0.55 0.21 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.15 0 0);
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.15 0 0);
+  --chart-1: oklch(0.87 0.17 95);
+  --chart-2: oklch(0.15 0 0);
+  --chart-3: oklch(0.82 0.12 350);
+  --chart-4: oklch(0.8 0.16 145);
+  --chart-5: oklch(0.7 0.18 40);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.15 0 0);
+  --sidebar-primary: oklch(0.15 0 0);
+  --sidebar-primary-foreground: oklch(0.87 0.17 95);
+  --sidebar-accent: oklch(0.82 0.12 350);
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+  --sidebar-border: oklch(0.15 0 0);
+  --sidebar-ring: oklch(0.15 0 0);
+  --font-sans:
+    "Space Grotesk", "Archivo", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 0rem;
+  --shadow-2xs: 1px 1px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-xs: 2px 2px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-sm: 2px 2px 0px 0px hsl(0 0% 10% / 1);
+  --shadow: 3px 3px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-md: 4px 4px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-lg: 6px 6px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-xl: 8px 8px 0px 0px hsl(0 0% 10% / 1);
+  --shadow-2xl: 12px 12px 0px 0px hsl(0 0% 10% / 1);
+}
+
+.dark {
+  --background: oklch(0.2 0.01 95);
+  --foreground: oklch(0.96 0.02 95);
+  --card: oklch(0.26 0.012 95);
+  --card-foreground: oklch(0.96 0.02 95);
+  --popover: oklch(0.26 0.012 95);
+  --popover-foreground: oklch(0.96 0.02 95);
+  --primary: oklch(0.87 0.17 95);
+  --primary-foreground: oklch(0.15 0 0);
+  --secondary: oklch(0.75 0.1 230);
+  --secondary-foreground: oklch(0.15 0 0);
+  --muted: oklch(0.28 0.01 95);
+  --muted-foreground: oklch(0.78 0.02 95);
+  --accent: oklch(0.78 0.12 350);
+  --accent-foreground: oklch(0.15 0 0);
+  --destructive: oklch(0.66 0.21 27);
+  --destructive-foreground: oklch(0.15 0 0);
+  --border: oklch(0.96 0.02 95);
+  --input: oklch(0.96 0.02 95);
+  --ring: oklch(0.87 0.17 95);
+  --chart-1: oklch(0.87 0.17 95);
+  --chart-2: oklch(0.75 0.1 230);
+  --chart-3: oklch(0.78 0.12 350);
+  --chart-4: oklch(0.78 0.16 145);
+  --chart-5: oklch(0.72 0.17 40);
+  --sidebar: oklch(0.26 0.012 95);
+  --sidebar-foreground: oklch(0.96 0.02 95);
+  --sidebar-primary: oklch(0.87 0.17 95);
+  --sidebar-primary-foreground: oklch(0.15 0 0);
+  --sidebar-accent: oklch(0.78 0.12 350);
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+  --sidebar-border: oklch(0.96 0.02 95);
+  --sidebar-ring: oklch(0.87 0.17 95);
+  --font-sans:
+    "Space Grotesk", "Archivo", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 0rem;
+  --shadow-2xs: 1px 1px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-xs: 2px 2px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-sm: 2px 2px 0px 0px hsl(50 96% 60% / 1);
+  --shadow: 3px 3px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-md: 4px 4px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-lg: 6px 6px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-xl: 8px 8px 0px 0px hsl(50 96% 60% / 1);
+  --shadow-2xl: 12px 12px 0px 0px hsl(50 96% 60% / 1);
+}

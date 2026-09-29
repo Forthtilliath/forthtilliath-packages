@@ -1,0 +1,106 @@
+/*
+ * forest — Forest: moss, linen and terracotta, warm soft shadows, rounded type.
+ *
+ * Fonts fall back to system stacks; for the full look, load Nunito, Lora
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.97 0.013 110);
+  --foreground: oklch(0.26 0.035 140);
+  --card: oklch(0.99 0.008 110);
+  --card-foreground: oklch(0.26 0.035 140);
+  --popover: oklch(0.99 0.008 110);
+  --popover-foreground: oklch(0.26 0.035 140);
+  --primary: oklch(0.45 0.09 145);
+  --primary-foreground: oklch(0.98 0.01 110);
+  --secondary: oklch(0.9 0.045 125);
+  --secondary-foreground: oklch(0.3 0.05 140);
+  --muted: oklch(0.93 0.02 110);
+  --muted-foreground: oklch(0.46 0.035 130);
+  --accent: oklch(0.83 0.09 55);
+  --accent-foreground: oklch(0.3 0.06 45);
+  --destructive: oklch(0.52 0.17 30);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.87 0.025 115);
+  --input: oklch(0.87 0.025 115);
+  --ring: oklch(0.45 0.09 145);
+  --chart-1: oklch(0.45 0.09 145);
+  --chart-2: oklch(0.62 0.13 50);
+  --chart-3: oklch(0.7 0.1 95);
+  --chart-4: oklch(0.55 0.06 200);
+  --chart-5: oklch(0.38 0.06 145);
+  --sidebar: oklch(0.99 0.008 110);
+  --sidebar-foreground: oklch(0.26 0.035 140);
+  --sidebar-primary: oklch(0.45 0.09 145);
+  --sidebar-primary-foreground: oklch(0.98 0.01 110);
+  --sidebar-accent: oklch(0.83 0.09 55);
+  --sidebar-accent-foreground: oklch(0.3 0.06 45);
+  --sidebar-border: oklch(0.87 0.025 115);
+  --sidebar-ring: oklch(0.45 0.09 145);
+  --font-sans:
+    "Nunito", "Varela Round", ui-rounded, ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0.875rem;
+  --shadow-2xs: 0 1px 4px -2px hsl(90 25% 25% / 0.08);
+  --shadow-xs: 0 2px 7px -2px hsl(90 25% 25% / 0.1);
+  --shadow-sm: 0 3px 10px -2px hsl(90 25% 25% / 0.12);
+  --shadow: 0 4px 13px -2px hsl(90 25% 25% / 0.14);
+  --shadow-md: 0 5px 16px -2px hsl(90 25% 25% / 0.16);
+  --shadow-lg: 0 6px 19px -2px hsl(90 25% 25% / 0.18);
+  --shadow-xl: 0 7px 22px -2px hsl(90 25% 25% / 0.2);
+  --shadow-2xl: 0 8px 25px -2px hsl(90 25% 25% / 0.22);
+}
+
+.dark {
+  --background: oklch(0.21 0.02 145);
+  --foreground: oklch(0.93 0.02 110);
+  --card: oklch(0.25 0.025 145);
+  --card-foreground: oklch(0.93 0.02 110);
+  --popover: oklch(0.25 0.025 145);
+  --popover-foreground: oklch(0.93 0.02 110);
+  --primary: oklch(0.76 0.12 140);
+  --primary-foreground: oklch(0.21 0.02 145);
+  --secondary: oklch(0.31 0.03 140);
+  --secondary-foreground: oklch(0.93 0.02 110);
+  --muted: oklch(0.28 0.025 145);
+  --muted-foreground: oklch(0.75 0.03 120);
+  --accent: oklch(0.7 0.12 50);
+  --accent-foreground: oklch(0.21 0.02 145);
+  --destructive: oklch(0.66 0.17 30);
+  --destructive-foreground: oklch(0.21 0.02 145);
+  --border: oklch(0.34 0.03 145);
+  --input: oklch(0.34 0.03 145);
+  --ring: oklch(0.76 0.12 140);
+  --chart-1: oklch(0.76 0.12 140);
+  --chart-2: oklch(0.7 0.12 50);
+  --chart-3: oklch(0.8 0.1 95);
+  --chart-4: oklch(0.7 0.06 200);
+  --chart-5: oklch(0.6 0.1 145);
+  --sidebar: oklch(0.25 0.025 145);
+  --sidebar-foreground: oklch(0.93 0.02 110);
+  --sidebar-primary: oklch(0.76 0.12 140);
+  --sidebar-primary-foreground: oklch(0.21 0.02 145);
+  --sidebar-accent: oklch(0.7 0.12 50);
+  --sidebar-accent-foreground: oklch(0.21 0.02 145);
+  --sidebar-border: oklch(0.34 0.03 145);
+  --sidebar-ring: oklch(0.76 0.12 140);
+  --font-sans:
+    "Nunito", "Varela Round", ui-rounded, ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0.875rem;
+  --shadow-2xs: 0 1px 4px -2px hsl(0 0% 0% / 0.25);
+  --shadow-xs: 0 2px 7px -2px hsl(0 0% 0% / 0.28);
+  --shadow-sm: 0 3px 10px -2px hsl(0 0% 0% / 0.31);
+  --shadow: 0 4px 13px -2px hsl(0 0% 0% / 0.34);
+  --shadow-md: 0 5px 16px -2px hsl(0 0% 0% / 0.37);
+  --shadow-lg: 0 6px 19px -2px hsl(0 0% 0% / 0.4);
+  --shadow-xl: 0 7px 22px -2px hsl(0 0% 0% / 0.43);
+  --shadow-2xl: 0 8px 25px -2px hsl(0 0% 0% / 0.46);
+}

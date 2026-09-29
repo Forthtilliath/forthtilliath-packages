@@ -1,0 +1,106 @@
+/*
+ * nordic — Nordic: cool greys, frost blue, completely flat (no shadows), quiet type.
+ *
+ * Fonts fall back to system stacks; for the full look, load Inter, JetBrains Mono
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.985 0.003 240);
+  --foreground: oklch(0.28 0.022 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.28 0.022 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.28 0.022 250);
+  --primary: oklch(0.46 0.065 245);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.94 0.008 240);
+  --secondary-foreground: oklch(0.34 0.022 250);
+  --muted: oklch(0.955 0.006 240);
+  --muted-foreground: oklch(0.5 0.02 250);
+  --accent: oklch(0.93 0.022 205);
+  --accent-foreground: oklch(0.3 0.03 220);
+  --destructive: oklch(0.55 0.15 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.91 0.008 240);
+  --input: oklch(0.91 0.008 240);
+  --ring: oklch(0.46 0.065 245);
+  --chart-1: oklch(0.46 0.065 245);
+  --chart-2: oklch(0.65 0.06 205);
+  --chart-3: oklch(0.7 0.08 150);
+  --chart-4: oklch(0.75 0.1 80);
+  --chart-5: oklch(0.6 0.1 25);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.28 0.022 250);
+  --sidebar-primary: oklch(0.46 0.065 245);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.022 205);
+  --sidebar-accent-foreground: oklch(0.3 0.03 220);
+  --sidebar-border: oklch(0.91 0.008 240);
+  --sidebar-ring: oklch(0.46 0.065 245);
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 0.5rem;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+}
+
+.dark {
+  --background: oklch(0.25 0.016 250);
+  --foreground: oklch(0.93 0.01 240);
+  --card: oklch(0.29 0.019 250);
+  --card-foreground: oklch(0.93 0.01 240);
+  --popover: oklch(0.29 0.019 250);
+  --popover-foreground: oklch(0.93 0.01 240);
+  --primary: oklch(0.79 0.08 220);
+  --primary-foreground: oklch(0.25 0.016 250);
+  --secondary: oklch(0.34 0.021 250);
+  --secondary-foreground: oklch(0.93 0.01 240);
+  --muted: oklch(0.31 0.019 250);
+  --muted-foreground: oklch(0.76 0.02 240);
+  --accent: oklch(0.39 0.03 220);
+  --accent-foreground: oklch(0.93 0.01 240);
+  --destructive: oklch(0.69 0.14 25);
+  --destructive-foreground: oklch(0.25 0.016 250);
+  --border: oklch(0.37 0.021 250);
+  --input: oklch(0.37 0.021 250);
+  --ring: oklch(0.79 0.08 220);
+  --chart-1: oklch(0.79 0.08 220);
+  --chart-2: oklch(0.8 0.06 190);
+  --chart-3: oklch(0.8 0.08 150);
+  --chart-4: oklch(0.85 0.1 85);
+  --chart-5: oklch(0.72 0.12 25);
+  --sidebar: oklch(0.29 0.019 250);
+  --sidebar-foreground: oklch(0.93 0.01 240);
+  --sidebar-primary: oklch(0.79 0.08 220);
+  --sidebar-primary-foreground: oklch(0.25 0.016 250);
+  --sidebar-accent: oklch(0.39 0.03 220);
+  --sidebar-accent-foreground: oklch(0.93 0.01 240);
+  --sidebar-border: oklch(0.37 0.021 250);
+  --sidebar-ring: oklch(0.79 0.08 220);
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 0.5rem;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+}
