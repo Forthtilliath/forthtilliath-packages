@@ -4,7 +4,12 @@ import type * as React from "react";
 import { MenuIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 import {
@@ -66,6 +71,7 @@ export function NavbarMobileMenu({
         </Button>
       </SheetTrigger>
       <SheetContent side="top">
+        <SheetTitle className="sr-only">{messages.navbar.menu}</SheetTitle>
         <nav className="flex flex-col gap-1 pt-8">
           {items.map((item) => (
             <a

@@ -18,7 +18,7 @@ export interface UiMessages {
   /** Combobox, MultiSelect and CommandPalette. */
   emptyResults: string;
   imageInput: { remove: string };
-  navbar: { toggleMenu: string };
+  navbar: { toggleMenu: string; menu: string };
   notificationCenter: { title: string; empty: string };
   numberInput: { decrement: string; increment: string };
   pagination: {
@@ -58,7 +58,7 @@ export const UI_MESSAGES: Record<UiLocale, UiMessages> = {
     dropzone: { removeFile: "Retirer le fichier" },
     emptyResults: "Aucun résultat.",
     imageInput: { remove: "Supprimer l'image" },
-    navbar: { toggleMenu: "Afficher ou masquer le menu" },
+    navbar: { toggleMenu: "Afficher ou masquer le menu", menu: "Menu" },
     notificationCenter: {
       title: "Notifications",
       empty: "Aucune notification",
@@ -103,7 +103,7 @@ export const UI_MESSAGES: Record<UiLocale, UiMessages> = {
     dropzone: { removeFile: "Remove file" },
     emptyResults: "No results found.",
     imageInput: { remove: "Remove image" },
-    navbar: { toggleMenu: "Toggle menu" },
+    navbar: { toggleMenu: "Toggle menu", menu: "Menu" },
     notificationCenter: { title: "Notifications", empty: "No notifications" },
     numberInput: { decrement: "Decrement", increment: "Increment" },
     pagination: {

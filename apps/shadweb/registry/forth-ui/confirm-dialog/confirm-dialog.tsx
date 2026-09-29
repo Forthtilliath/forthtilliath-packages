@@ -49,23 +49,27 @@ export function ConfirmDialogProvider({
 }) {
   const messages = useUiMessages(locale);
   const [state, setState] = React.useState<ConfirmState | null>(null);
+  // Kept apart from `state`, so the last options stay rendered while the
+  // dialog animates out (clearing them left an empty, unnamed dialog).
+  const [open, setOpen] = React.useState(false);
 
   const confirm = React.useCallback<ConfirmFn>((options) => {
     return new Promise((resolve) => {
       setState({ ...options, resolve });
+      setOpen(true);
     });
   }, []);
 
   function settle(confirmed: boolean) {
     state?.resolve(confirmed);
-    setState(null);
+    setOpen(false);
   }
 
   return (
     <ConfirmContext value={confirm}>
       {children}
       <AlertDialog
-        open={state !== null}
+        open={open}
         onOpenChange={(open) => {
           if (!open) {
             settle(false);
