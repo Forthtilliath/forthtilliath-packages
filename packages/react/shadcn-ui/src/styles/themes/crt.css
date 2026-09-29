@@ -1,0 +1,238 @@
+/*
+ * crt — CRT monitor: amber phosphor, scanlines and vignette, glowing text, blinking cursor.
+ *
+ * Tokens plus signature effects: plain CSS rules on shadcn's data-slot
+ * attributes, active only while this theme is imported. Fonts fall back to
+ * system stacks; for the full look, load IBM Plex Mono
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.96 0.025 85);
+  --foreground: oklch(0.3 0.06 60);
+  --card: oklch(0.98 0.015 85);
+  --card-foreground: oklch(0.3 0.06 60);
+  --popover: oklch(0.98 0.015 85);
+  --popover-foreground: oklch(0.3 0.06 60);
+  --primary: oklch(0.48 0.12 60);
+  --primary-foreground: oklch(0.98 0.015 85);
+  --secondary: oklch(0.91 0.04 80);
+  --secondary-foreground: oklch(0.3 0.06 60);
+  --muted: oklch(0.92 0.03 85);
+  --muted-foreground: oklch(0.44 0.07 60);
+  --accent: oklch(0.88 0.09 85);
+  --accent-foreground: oklch(0.3 0.06 60);
+  --destructive: oklch(0.5 0.19 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.72 0.07 70);
+  --input: oklch(0.72 0.07 70);
+  --ring: oklch(0.48 0.12 60);
+  --chart-1: oklch(0.48 0.12 60);
+  --chart-2: oklch(0.62 0.14 75);
+  --chart-3: oklch(0.4 0.08 60);
+  --chart-4: oklch(0.5 0.19 27);
+  --chart-5: oklch(0.7 0.12 85);
+  --sidebar: oklch(0.98 0.015 85);
+  --sidebar-foreground: oklch(0.3 0.06 60);
+  --sidebar-primary: oklch(0.48 0.12 60);
+  --sidebar-primary-foreground: oklch(0.98 0.015 85);
+  --sidebar-accent: oklch(0.88 0.09 85);
+  --sidebar-accent-foreground: oklch(0.3 0.06 60);
+  --sidebar-border: oklch(0.72 0.07 70);
+  --sidebar-ring: oklch(0.48 0.12 60);
+  --font-sans:
+    "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-mono:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 0rem;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+  --crt-scanline: oklch(0.3 0.06 60 / 0.06);
+  --crt-glow: 0 0 #0000;
+}
+
+.dark {
+  --background: oklch(0.15 0.018 60);
+  --foreground: oklch(0.84 0.16 72);
+  --card: oklch(0.19 0.025 60);
+  --card-foreground: oklch(0.84 0.16 72);
+  --popover: oklch(0.19 0.025 60);
+  --popover-foreground: oklch(0.84 0.16 72);
+  --primary: oklch(0.84 0.16 72);
+  --primary-foreground: oklch(0.15 0.018 60);
+  --secondary: oklch(0.27 0.045 60);
+  --secondary-foreground: oklch(0.84 0.16 72);
+  --muted: oklch(0.23 0.035 60);
+  --muted-foreground: oklch(0.72 0.13 70);
+  --accent: oklch(0.91 0.13 88);
+  --accent-foreground: oklch(0.15 0.018 60);
+  --destructive: oklch(0.7 0.19 30);
+  --destructive-foreground: oklch(0.15 0.018 60);
+  --border: oklch(0.42 0.08 70);
+  --input: oklch(0.42 0.08 70);
+  --ring: oklch(0.84 0.16 72);
+  --chart-1: oklch(0.84 0.16 72);
+  --chart-2: oklch(0.91 0.13 88);
+  --chart-3: oklch(0.65 0.12 65);
+  --chart-4: oklch(0.7 0.19 30);
+  --chart-5: oklch(0.55 0.1 70);
+  --sidebar: oklch(0.19 0.025 60);
+  --sidebar-foreground: oklch(0.84 0.16 72);
+  --sidebar-primary: oklch(0.84 0.16 72);
+  --sidebar-primary-foreground: oklch(0.15 0.018 60);
+  --sidebar-accent: oklch(0.91 0.13 88);
+  --sidebar-accent-foreground: oklch(0.15 0.018 60);
+  --sidebar-border: oklch(0.42 0.08 70);
+  --sidebar-ring: oklch(0.84 0.16 72);
+  --font-sans:
+    "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-mono:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 0rem;
+  --shadow-2xs: 0 0 4px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow-xs: 0 0 7px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow-sm: 0 0 10px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow: 0 0 13px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow-md: 0 0 16px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow-lg: 0 0 19px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow-xl: 0 0 22px 0 oklch(0.84 0.16 72 / 0.22);
+  --shadow-2xl: 0 0 25px 0 oklch(0.84 0.16 72 / 0.22);
+  --crt-scanline: oklch(0 0 0 / 0.28);
+  --crt-glow: 0 0 6px color-mix(in oklab, currentColor 55%, transparent);
+}
+
+/* Signature effects */
+
+:where([data-slot]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+body {
+  text-shadow: var(--crt-glow);
+  background-image: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    oklch(0 0 0 / 0.35)
+  );
+  background-attachment: fixed;
+}
+
+/* Scanlines over the whole screen, click-through. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    var(--crt-scanline) 2px 3px
+  );
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="dialog-content"],
+[data-slot="alert-dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="drawer-content"],
+[data-slot="popover-content"],
+[data-slot="hover-card-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"],
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-otp-slot"],
+[data-slot="button"][class*="shadow-xs"],
+[data-slot="badge"] {
+  border-radius: 0;
+}
+
+[data-slot="button"][class*="shadow-xs"] {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+[data-slot="button"]:is(
+    [class*="bg-primary"],
+    [class*="bg-destructive"],
+    [class*="bg-secondary"]
+  )::before {
+  content: "[" / "";
+}
+
+[data-slot="button"]:is(
+    [class*="bg-primary"],
+    [class*="bg-destructive"],
+    [class*="bg-secondary"]
+  )::after {
+  content: "]" / "";
+}
+
+[data-slot="card-title"],
+[data-slot="dialog-title"],
+[data-slot="alert-dialog-title"],
+[data-slot="sheet-title"],
+[data-slot="drawer-title"] {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+[data-slot="card-title"],
+[data-slot="dialog-title"],
+[data-slot="alert-dialog-title"],
+[data-slot="sheet-title"],
+[data-slot="drawer-title"]::after {
+  content: "_" / "";
+  animation: crt-blink 1s steps(1) infinite;
+}
+
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-otp-slot"] {
+  caret-color: var(--primary);
+  caret-shape: block;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  text-shadow: none;
+}
+
+@keyframes crt-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="card-title"]::after,
+  [data-slot="dialog-title"]::after,
+  [data-slot="alert-dialog-title"]::after,
+  [data-slot="sheet-title"]::after,
+  [data-slot="drawer-title"]::after {
+    animation: none;
+  }
+}
