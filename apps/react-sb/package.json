@@ -28,6 +28,7 @@
     "@forthtilliath/shadcn-ui": "workspace:*",
     "@forthtilliath/ts-types": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
+    "@storybook/addon-a11y": "10.6.0",
     "@storybook/addon-docs": "10.6.0",
     "@storybook/addon-themes": "10.6.0",
     "@storybook/addon-vitest": "10.6.0",
