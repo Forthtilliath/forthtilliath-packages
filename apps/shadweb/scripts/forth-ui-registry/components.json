@@ -82,6 +82,11 @@
     "title": "ConfirmDialog",
     "description": "Provides useConfirm, an imperative `await confirm({...})` alternative to hand-wiring an AlertDialog."
   },
+  "copy-menu-item": {
+    "title": "CopyMenuItem",
+    "description": "A DropdownMenuItem that copies a value and briefly shows a checkmark.",
+    "dependencies": ["lucide-react", "@forthtilliath/react-kit"]
+  },
   "count-animation": {
     "title": "CountAnimation",
     "description": "Animates a number counting up (or down) to a value whenever it changes."
@@ -162,6 +167,11 @@
   "marquee": {
     "title": "Marquee",
     "description": "Infinitely scrolls its children (a logo wall, a ticker)."
+  },
+  "mode-toggle": {
+    "title": "ModeToggle",
+    "description": "A light / dark / system theme switcher, plus its next-themes ThemeProvider.",
+    "dependencies": ["lucide-react", "next-themes"]
   },
   "multi-step-loader": {
     "title": "MultiStepLoader",
@@ -272,6 +282,10 @@
   "tags-input": {
     "title": "TagsInput",
     "description": "A flexible input for adding/removing multiple tags."
+  },
+  "theme-image": {
+    "title": "ThemeImage",
+    "description": "An image with a light and a dark version, switched by the dark variant."
   },
   "timeline": {
     "title": "Timeline",
