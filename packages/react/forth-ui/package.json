@@ -72,6 +72,7 @@
   ],
   "exports": {
     "./components/*": "./dist/components/*/index.js",
+    "./locale": "./dist/locale/index.js",
     "./styles/globals.css": "./dist/globals.css"
   },
   "size-limit": [
