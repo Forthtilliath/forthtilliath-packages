@@ -6,6 +6,10 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
 import { Button } from "@/components/forth-ui/button";
 
 export type NumberInputProps = Omit<
@@ -18,6 +22,11 @@ export type NumberInputProps = Omit<
   min?: number;
   max?: number;
   step?: number;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 };
 
 /**
@@ -40,8 +49,10 @@ export function NumberInput({
   max = Infinity,
   step = 1,
   disabled = false,
+  locale,
   ...props
 }: NumberInputProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState(defaultValue);
   const current = value ?? uncontrolledValue;
@@ -65,7 +76,7 @@ export function NumberInput({
         onClick={() => {
           commit(current - step);
         }}
-        aria-label="Decrement"
+        aria-label={messages.numberInput.decrement}
         className="rounded-r-none"
       >
         <MinusIcon />
@@ -95,7 +106,7 @@ export function NumberInput({
         onClick={() => {
           commit(current + step);
         }}
-        aria-label="Increment"
+        aria-label={messages.numberInput.increment}
         className="rounded-l-none"
       >
         <PlusIcon />

@@ -71,7 +71,7 @@
         }
       ],
       "dependencies": ["class-variance-authority"],
-      "registryDependencies": ["alert"]
+      "registryDependencies": ["alert", "@forth-ui/locale"]
     },
     {
       "name": "avatar",
@@ -106,7 +106,7 @@
         }
       ],
       "dependencies": ["class-variance-authority"],
-      "registryDependencies": ["avatar", "tooltip"]
+      "registryDependencies": ["avatar", "tooltip", "@forth-ui/locale"]
     },
     {
       "name": "badge",
@@ -131,7 +131,7 @@
         }
       ],
       "dependencies": ["class-variance-authority", "lucide-react"],
-      "registryDependencies": ["badge"]
+      "registryDependencies": ["badge", "@forth-ui/locale"]
     },
     {
       "name": "banner",
@@ -155,7 +155,8 @@
           "target": "@components/forth-ui/banner/variants.ts"
         }
       ],
-      "dependencies": ["class-variance-authority", "lucide-react"]
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "registryDependencies": ["@forth-ui/locale"]
     },
     {
       "name": "bento-grid",
@@ -192,7 +193,11 @@
           "target": "@components/forth-ui/breadcrumb/index.ts"
         }
       ],
-      "registryDependencies": ["breadcrumb", "dropdown-menu"]
+      "registryDependencies": [
+        "breadcrumb",
+        "dropdown-menu",
+        "@forth-ui/locale"
+      ]
     },
     {
       "name": "button",
@@ -280,7 +285,7 @@
         }
       ],
       "dependencies": ["lucide-react", "shiki"],
-      "registryDependencies": ["badge", "button"]
+      "registryDependencies": ["badge", "button", "@forth-ui/locale"]
     },
     {
       "name": "collapsible",
@@ -319,7 +324,7 @@
           "target": "@components/forth-ui/color-picker/index.ts"
         }
       ],
-      "registryDependencies": ["input"]
+      "registryDependencies": ["input", "@forth-ui/locale"]
     },
     {
       "name": "column-menu",
@@ -389,7 +394,8 @@
         "command",
         "popover",
         "@forth-ui/badge",
-        "@forth-ui/button"
+        "@forth-ui/button",
+        "@forth-ui/locale"
       ]
     },
     {
@@ -409,7 +415,7 @@
           "target": "@components/forth-ui/command-palette/index.ts"
         }
       ],
-      "registryDependencies": ["command"]
+      "registryDependencies": ["command", "@forth-ui/locale"]
     },
     {
       "name": "confirm-dialog",
@@ -438,7 +444,7 @@
           "target": "@components/forth-ui/confirm-dialog/use-confirm.ts"
         }
       ],
-      "registryDependencies": ["alert-dialog", "button"]
+      "registryDependencies": ["alert-dialog", "button", "@forth-ui/locale"]
     },
     {
       "name": "count-animation",
@@ -476,7 +482,12 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["calendar", "popover", "@forth-ui/button"]
+      "registryDependencies": [
+        "calendar",
+        "popover",
+        "@forth-ui/button",
+        "@forth-ui/locale"
+      ]
     },
     {
       "name": "description-list",
@@ -533,7 +544,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["@forth-ui/file-list"]
+      "registryDependencies": ["@forth-ui/file-list", "@forth-ui/locale"]
     },
     {
       "name": "field",
@@ -631,7 +642,8 @@
           "target": "@components/forth-ui/image-input/index.ts"
         }
       ],
-      "dependencies": ["lucide-react"]
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@forth-ui/locale"]
     },
     {
       "name": "infinite-scroll",
@@ -705,6 +717,34 @@
       "registryDependencies": ["hover-card"]
     },
     {
+      "name": "locale",
+      "type": "registry:component",
+      "title": "UiLocale",
+      "description": "The French/English built-in labels shared by the components, plus UiLocaleProvider.",
+      "files": [
+        {
+          "path": "registry/forth-ui/locale/UiLocaleProvider.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/locale/UiLocaleProvider.tsx"
+        },
+        {
+          "path": "registry/forth-ui/locale/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/locale/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/locale/locale.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/locale/locale.ts"
+        },
+        {
+          "path": "registry/forth-ui/locale/messages.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/locale/messages.ts"
+        }
+      ]
+    },
+    {
       "name": "marquee",
       "type": "registry:component",
       "title": "Marquee",
@@ -765,7 +805,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "sheet"]
+      "registryDependencies": ["button", "sheet", "@forth-ui/locale"]
     },
     {
       "name": "notification-center",
@@ -785,7 +825,12 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["popover", "@forth-ui/badge", "@forth-ui/button"]
+      "registryDependencies": [
+        "popover",
+        "@forth-ui/badge",
+        "@forth-ui/button",
+        "@forth-ui/locale"
+      ]
     },
     {
       "name": "number-input",
@@ -805,7 +850,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input", "@forth-ui/button"]
+      "registryDependencies": ["input", "@forth-ui/button", "@forth-ui/locale"]
     },
     {
       "name": "pagination",
@@ -830,7 +875,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["pagination"]
+      "registryDependencies": ["pagination", "@forth-ui/locale"]
     },
     {
       "name": "password-input",
@@ -855,7 +900,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["input"]
+      "registryDependencies": ["input", "@forth-ui/locale"]
     },
     {
       "name": "progress",
@@ -900,7 +945,8 @@
         }
       ],
       "dependencies": ["qrcode"],
-      "devDependencies": ["@types/qrcode"]
+      "devDependencies": ["@types/qrcode"],
+      "registryDependencies": ["@forth-ui/locale"]
     },
     {
       "name": "radio",
@@ -938,7 +984,8 @@
           "target": "@components/forth-ui/rating/rating.tsx"
         }
       ],
-      "dependencies": ["lucide-react"]
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@forth-ui/locale"]
     },
     {
       "name": "relative-time",
@@ -1085,7 +1132,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["button", "tabs"]
+      "registryDependencies": ["button", "tabs", "@forth-ui/locale"]
     },
     {
       "name": "sortable",
@@ -1145,7 +1192,8 @@
           "target": "@components/forth-ui/spinner/variants.ts"
         }
       ],
-      "dependencies": ["class-variance-authority", "lucide-react"]
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "registryDependencies": ["@forth-ui/locale"]
     },
     {
       "name": "stepper",
@@ -1202,7 +1250,7 @@
           "target": "@components/forth-ui/tags-input/tags-input.tsx"
         }
       ],
-      "registryDependencies": ["@forth-ui/badge"]
+      "registryDependencies": ["@forth-ui/badge", "@forth-ui/locale"]
     },
     {
       "name": "timeline",

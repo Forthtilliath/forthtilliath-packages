@@ -5,6 +5,11 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 export interface ColorPickerProps {
   value?: string;
   defaultValue?: string;
@@ -13,6 +18,11 @@ export interface ColorPickerProps {
   className?: string;
   /** Accessible name for the color swatch, which otherwise has no visible text. */
   ariaLabel?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 const HEX_PATTERN = /^#[0-9a-f]{6}$/i;
@@ -37,8 +47,10 @@ export function ColorPicker({
   onValueChange,
   disabled = false,
   className,
-  ariaLabel = "Choose color",
+  ariaLabel,
+  locale,
 }: ColorPickerProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState(defaultValue);
   const [textValue, setTextValue] = React.useState(defaultValue);
@@ -56,7 +68,7 @@ export function ColorPicker({
       className={cn("flex items-center gap-2", className)}
     >
       <label
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? messages.colorPicker.choose}
         className={cn(
           "border-input size-9 shrink-0 overflow-hidden rounded-md border shadow-xs",
           disabled && "pointer-events-none opacity-50",

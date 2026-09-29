@@ -11,6 +11,10 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
 import { Button } from "@/components/forth-ui/button";
 
 export interface DatePickerProps {
@@ -22,6 +26,11 @@ export interface DatePickerProps {
   className?: string;
   /** Passed through to `Date.prototype.toLocaleDateString`. */
   formatOptions?: Intl.DateTimeFormatOptions;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 const DEFAULT_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
@@ -46,11 +55,14 @@ export function DatePicker({
   value,
   defaultValue,
   onValueChange,
-  placeholder = "Pick a date",
+  placeholder,
   disabled = false,
   className,
   formatOptions = DEFAULT_FORMAT_OPTIONS,
+  locale,
 }: DatePickerProps) {
+  const messages = useUiMessages(locale);
+  const placeholderText = placeholder ?? messages.datePicker.placeholder;
   const [open, setOpen] = React.useState(false);
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState(defaultValue);
@@ -72,7 +84,7 @@ export function DatePicker({
           <CalendarIcon />
           {selected !== undefined
             ? selected.toLocaleDateString(undefined, formatOptions)
-            : placeholder}
+            : placeholderText}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

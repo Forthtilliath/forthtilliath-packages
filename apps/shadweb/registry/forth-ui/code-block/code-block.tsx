@@ -9,6 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 export interface CodeBlockProps {
   code: string;
   language?: BundledLanguage | SpecialLanguage;
@@ -20,6 +25,11 @@ export interface CodeBlockProps {
   theme?: { light: BundledTheme; dark: BundledTheme };
   showLineNumbers?: boolean;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 const DEFAULT_THEME = { light: "github-light", dark: "github-dark" } as const;
@@ -44,7 +54,9 @@ export function CodeBlock({
   theme = DEFAULT_THEME,
   showLineNumbers = false,
   className,
+  locale,
 }: CodeBlockProps) {
+  const messages = useUiMessages(locale);
   const [html, setHtml] = React.useState<string | null>(null);
   const [copied, setCopied] = React.useState(false);
 
@@ -99,7 +111,9 @@ export function CodeBlock({
           variant="ghost"
           size="icon"
           onClick={handleCopy}
-          aria-label={copied ? "Copied" : "Copy code"}
+          aria-label={
+            copied ? messages.codeBlock.copied : messages.codeBlock.copy
+          }
           className="absolute top-2 right-2 size-7 opacity-0 transition-opacity group-hover:opacity-100"
         >
           {copied ? <CheckIcon /> : <CopyIcon />}

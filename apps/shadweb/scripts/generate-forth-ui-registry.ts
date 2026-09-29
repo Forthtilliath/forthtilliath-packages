@@ -13,6 +13,8 @@
  *   @forthtilliath/shadcn-ui/hooks/X       -> @/hooks/X
  *   ../other-forth-ui-component            -> @/components/forth-ui/other-forth-ui-component
  *                                              (+ namespaced registryDependency "@forth-ui/other-forth-ui-component")
+ *   ../../locale/X                         -> @/components/forth-ui/locale/X
+ *                                              (+ namespaced registryDependency "@forth-ui/locale")
  *   ./same-folder-sibling                  -> left untouched (lands in the same target subfolder)
  *   bare npm specifiers (qrcode, lucide-react, class-variance-authority, ...) -> left untouched,
  *     recorded into the item's own `dependencies`/`devDependencies` via COMPONENT_NPM_DEPS below.
@@ -67,6 +69,8 @@ interface RegistryItemMeta {
 interface NpmDeps {
   dependencies?: string[];
   devDependencies?: string[];
+  /** Source folder, relative to forth-ui's `src/components`. @default name */
+  source?: string;
 }
 
 /**
@@ -231,6 +235,12 @@ const COMPONENTS: Record<string, RegistryItemMeta & NpmDeps> = {
     description:
       "Displays which key or combination of keys performs a given action.",
   },
+  locale: {
+    title: "UiLocale",
+    description:
+      "The French/English built-in labels shared by the components, plus UiLocaleProvider.",
+    source: "../locale",
+  },
   link: {
     title: "Link",
     description:
@@ -393,6 +403,7 @@ const SHADCN_UTILS_IMPORT_RE =
   /from\s+(["'])@forthtilliath\/shadcn-ui\/lib\/utils\1/g;
 const SHADCN_HOOKS_IMPORT_RE =
   /from\s+(["'])@forthtilliath\/shadcn-ui\/hooks\/([a-z0-9-]+)\1/g;
+const LOCALE_IMPORT_RE = /from\s+(["'])\.\.\/\.\.\/locale\/([a-zA-Z]+)\1/g;
 const SIBLING_IMPORT_RE = /from\s+(["'])\.\.\/([a-z0-9-]+)\1/g;
 // forth-ui is published as plain ESM, so its relative imports carry the
 // NodeNext-style `.js` extension (`./variants.js`, `../button/index.js`).
@@ -431,6 +442,13 @@ function transformSource(source: string): TransformResult {
     },
   );
   content = content.replace(
+    LOCALE_IMPORT_RE,
+    (_match, quote: string, file: string) => {
+      forthUiDeps.add("locale");
+      return `from ${quote}@/components/forth-ui/locale/${file}${quote}`;
+    },
+  );
+  content = content.replace(
     SIBLING_IMPORT_RE,
     (_match, quote: string, name: string) => {
       forthUiDeps.add(name);
@@ -462,7 +480,7 @@ function generateComponent(
   name: string,
   meta: RegistryItemMeta & NpmDeps,
 ): RegistryItem {
-  const srcDir = join(FORTH_UI_SRC, name);
+  const srcDir = join(FORTH_UI_SRC, meta.source ?? name);
   const outDir = join(REGISTRY_OUT, name);
   mkdirSync(outDir, { recursive: true });
 
