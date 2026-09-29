@@ -3,6 +3,7 @@ import { Pressable, Text, View } from "react-native";
 
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 import { defaultThemeLabels } from "./themeLabels.js";
 
@@ -58,19 +59,7 @@ export function ThemeToggle({
   locale,
   styles,
 }: ThemeToggleProps) {
-  // Style fields are merged as arrays (default, then override) so a partial
-  // override only changes the properties it specifies instead of replacing
-  // the whole default style object.
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    option: [defaultStyles.option, styles?.option],
-    optionActive: [defaultStyles.optionActive, styles?.optionActive],
-    optionText: [defaultStyles.optionText, styles?.optionText],
-    optionTextActive: [
-      defaultStyles.optionTextActive,
-      styles?.optionTextActive,
-    ],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
   const t = { ...defaultThemeLabels[useKitLocale(locale)], ...labels };
 
   return (

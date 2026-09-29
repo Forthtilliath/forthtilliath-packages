@@ -2,6 +2,8 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
+
 /**
  * Well-known settings sections this package itself ships a screen for
  * (`BackupSettingsScreen`, `ThemeSettingsScreen`, etc.) — matching `key`
@@ -136,15 +138,7 @@ export function SettingsMenu({
   showHints = true,
   styles,
 }: SettingsMenuProps) {
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    groupTitle: [defaultStyles.groupTitle, styles?.groupTitle],
-    row: [defaultStyles.row, styles?.row],
-    titleColumn: [defaultStyles.titleColumn, styles?.titleColumn],
-    emoji: [defaultStyles.emoji, styles?.emoji],
-    title: [defaultStyles.title, styles?.title],
-    hint: [defaultStyles.hint, styles?.hint],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
   const chevronColor = styles?.chevronColor ?? defaultStyles.chevronColor;
   const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
 

@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 import { defaultThemeLabels } from "./themeLabels.js";
 import type { ThemeToggleLabels } from "./ThemeToggle.js";
@@ -85,16 +86,7 @@ export function ThemeOptionList({
   icons,
   styles,
 }: ThemeOptionListProps) {
-  // Style fields are merged as arrays (default, then override) so a partial
-  // override only changes the properties it specifies instead of replacing
-  // the whole default style object.
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    row: [defaultStyles.row, styles?.row],
-    rowActive: [defaultStyles.rowActive, styles?.rowActive],
-    label: [defaultStyles.label, styles?.label],
-    labelActive: [defaultStyles.labelActive, styles?.labelActive],
-  };
+  const merged = mergeSlotStyles(defaultStyles, styles);
   const t = { ...defaultThemeLabels[useKitLocale(locale)], ...labels };
   const i = { ...defaultIcons, ...icons };
   const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
