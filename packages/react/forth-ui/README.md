@@ -61,6 +61,12 @@ Import the compiled stylesheet once, alongside your component imports:
 import "@forthtilliath/forth-ui/styles/globals.css";
 ```
 
+It covers forth-ui's components and the shadcn-ui ones they're built on
+(Dialog, Popover…) — not every shadcn-ui component. If your app also uses
+others directly (Sidebar, Table…), or has its own Tailwind build anyway,
+use the [Theming](#theming) setup instead: your Tailwind then scans both
+packages.
+
 ### As a workspace package (this monorepo)
 
 Within this monorepo, `forth-ui` is consumed the same way, just via the
