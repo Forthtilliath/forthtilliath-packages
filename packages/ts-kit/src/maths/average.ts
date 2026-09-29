@@ -1,11 +1,5 @@
-import { sum } from "./sum.js";
+// `maths/` duplicated `number/`: `avg` moved there. Re-exported so the
+// `@forthtilliath/ts-kit/maths/average` deep import keeps working.
 
-/**
- * Calculates the average of all numbers in an array.
- *
- * @param {number[]} arr - The array of numbers to average.
- * @return {number} The average of all numbers in the array.
- */
-export function avg(arr: number[]): number {
-  return sum(arr) / arr.length;
-}
+/** @deprecated Import from `@forthtilliath/ts-kit/number/average` instead. */
+export { avg } from "../number/average.js";

@@ -13,7 +13,6 @@ export * from "./function/index.js";
 export * from "./id/index.js";
 export * from "./image/index.js";
 export * from "./markdown/index.js";
-export * from "./maths/index.js";
 export * from "./number/index.js";
 export * from "./object/index.js";
 export * from "./string/index.js";

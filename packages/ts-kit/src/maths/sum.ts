@@ -1,9 +1,5 @@
-/**
- * Calculates the sum of all numbers in an array.
- *
- * @param {number[]} arr - The array of numbers to sum.
- * @return {number} The sum of all numbers in the array.
- */
-export function sum(arr: number[]): number {
-  return arr.reduce((total, n) => total + n, 0);
-}
+// `maths/` duplicated `number/`: `sum` moved there. Re-exported so the
+// `@forthtilliath/ts-kit/maths/sum` deep import keeps working.
+
+/** @deprecated Import from `@forthtilliath/ts-kit/number/sum` instead. */
+export { sum } from "../number/sum.js";
