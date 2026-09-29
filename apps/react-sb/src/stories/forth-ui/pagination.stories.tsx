@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import { Pagination } from "@forthtilliath/forth-ui/components/pagination";
 
@@ -73,5 +74,28 @@ export const Disabled: Story = {
         rules: [{ id: "color-contrast", enabled: false }],
       },
     },
+  },
+};
+
+export const ShouldNavigate: Story = {
+  name: "when clicking next then previous, should move the current page",
+  tags: ["!dev", "!autodocs"],
+  render: (args) => <ControlledPagination {...args} />,
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole("link", { name: "Go to next page" }),
+    );
+    await expect(canvas.getByRole("link", { name: "2" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+
+    await userEvent.click(
+      canvas.getByRole("link", { name: "Go to previous page" }),
+    );
+    await expect(canvas.getByRole("link", { name: "1" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
   },
 };

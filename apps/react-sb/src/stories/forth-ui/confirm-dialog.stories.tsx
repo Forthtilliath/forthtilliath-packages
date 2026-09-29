@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 
 import { Button } from "@forthtilliath/forth-ui/components/button";
 import {
@@ -64,4 +65,34 @@ export const Default: Story = {
       <DeleteButton />
     </ConfirmDialogProvider>
   ),
+};
+
+export const ShouldResolveTheConfirmation: Story = {
+  name: "when confirming or cancelling, should resolve with the choice",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <ConfirmDialogProvider>
+      <DeleteButton />
+    </ConfirmDialogProvider>
+  ),
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByRole("button", { name: "Delete item" }));
+    const dialog = await body.findByRole("alertdialog");
+    await userEvent.click(
+      within(dialog).getByRole("button", { name: "Delete" }),
+    );
+    await expect(await canvas.findByText("Confirmed")).toBeInTheDocument();
+
+    // Radix keeps the page aria-hidden until the dialog has animated out.
+    await userEvent.click(
+      await canvas.findByRole("button", { name: "Delete item" }),
+    );
+    const again = await body.findByRole("alertdialog");
+    await userEvent.click(
+      within(again).getByRole("button", { name: "Cancel" }),
+    );
+    await expect(await canvas.findByText("Cancelled")).toBeInTheDocument();
+  },
 };

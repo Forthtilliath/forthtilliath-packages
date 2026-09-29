@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, within } from "storybook/test";
 
 import { MultiSelect } from "@forthtilliath/forth-ui/components/combobox";
 
@@ -40,5 +41,30 @@ export const Default: Story = {};
 export const Empty: Story = {
   args: {
     defaultValue: [],
+  },
+};
+
+export const ShouldToggleOptions: Story = {
+  name: "when toggling options, should add and remove their badges",
+  tags: ["!dev", "!autodocs"],
+  args: { onValueChange: fn() },
+  play: async ({ args, canvas, canvasElement, userEvent }) => {
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole("combobox"));
+
+    await userEvent.click(
+      await body.findByRole("option", { name: /Documentation/ }),
+    );
+    await expect(args.onValueChange).toHaveBeenLastCalledWith([
+      "bug",
+      "feature",
+      "docs",
+    ]);
+
+    await userEvent.click(body.getByRole("option", { name: /Bug/ }));
+    await expect(args.onValueChange).toHaveBeenLastCalledWith([
+      "feature",
+      "docs",
+    ]);
   },
 };
