@@ -5,6 +5,11 @@ import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 import type { AlertVariants } from "./variants";
 import { alertVariants } from "./variants";
 
@@ -29,6 +34,11 @@ export type AlertProps = React.ComponentProps<"div"> &
      * close button when `dismissible` is also set.
      */
     action?: React.ReactNode;
+    /**
+     * Language of the built-in labels — French by default, or the nearest
+     * `UiLocaleProvider`'s. Explicit text props still win.
+     */
+    locale?: UiLocale;
   };
 
 /**
@@ -54,8 +64,10 @@ export function Alert({
   onOpenChange,
   action,
   children,
+  locale,
   ...props
 }: AlertProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(true);
   const isOpen = open ?? uncontrolledOpen;
   const hasActions = Boolean(action) || dismissible;
@@ -91,7 +103,7 @@ export function Alert({
             <button
               type="button"
               onClick={handleDismiss}
-              aria-label="Dismiss"
+              aria-label={messages.dismiss}
               className="rounded-sm opacity-70 transition-opacity outline-none hover:opacity-100 focus-visible:ring-2 focus-visible:ring-current"
             >
               <X className="size-3.5" />

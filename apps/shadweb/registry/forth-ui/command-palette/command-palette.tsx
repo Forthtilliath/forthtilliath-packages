@@ -12,6 +12,11 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 export interface CommandPaletteItem {
   label: React.ReactNode;
   value: string;
@@ -33,6 +38,11 @@ export interface CommandPaletteProps {
   emptyMessage?: string;
   /** Key that toggles the palette alongside Cmd/Ctrl. @default "k" */
   shortcutKey?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -53,10 +63,14 @@ export function CommandPalette({
   groups,
   open,
   onOpenChange,
-  placeholder = "Type a command or search…",
-  emptyMessage = "No results found.",
+  placeholder,
+  emptyMessage,
   shortcutKey = "k",
+  locale,
 }: CommandPaletteProps) {
+  const messages = useUiMessages(locale);
+  const emptyMessageText = emptyMessage ?? messages.emptyResults;
+  const placeholderText = placeholder ?? messages.commandPalette.placeholder;
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
   const isOpen = open ?? uncontrolledOpen;
 
@@ -87,11 +101,11 @@ export function CommandPalette({
       open={isOpen}
       onOpenChange={setOpen}
       title="Command Palette"
-      description={placeholder}
+      description={placeholderText}
     >
-      <CommandInput placeholder={placeholder} />
+      <CommandInput placeholder={placeholderText} />
       <CommandList>
-        <CommandEmpty>{emptyMessage}</CommandEmpty>
+        <CommandEmpty>{emptyMessageText}</CommandEmpty>
         {groups.map((group, index) => (
           // eslint-disable-next-line @eslint-react/no-array-index-key -- `heading` is optional and not guaranteed unique
           <CommandGroup key={group.heading ?? index} heading={group.heading}>

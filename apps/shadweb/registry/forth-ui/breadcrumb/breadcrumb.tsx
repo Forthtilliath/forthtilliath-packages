@@ -17,6 +17,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 export interface BreadcrumbEntry {
   label: React.ReactNode;
   href?: string;
@@ -32,6 +37,11 @@ export interface BreadcrumbProps {
    */
   maxItems?: number;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 function EntryLink({ item }: { item: BreadcrumbEntry }) {
@@ -54,7 +64,13 @@ function EntryLink({ item }: { item: BreadcrumbEntry }) {
  * @author Forth
  * @copyright 2026 Forth
  */
-export function Breadcrumb({ items, maxItems, className }: BreadcrumbProps) {
+export function Breadcrumb({
+  items,
+  maxItems,
+  className,
+  locale,
+}: BreadcrumbProps) {
+  const messages = useUiMessages(locale);
   const shouldCollapse = maxItems !== undefined && items.length > maxItems;
   const firstItem = items[0];
   const lastItem = items.at(-1);
@@ -86,7 +102,7 @@ export function Breadcrumb({ items, maxItems, className }: BreadcrumbProps) {
               <DropdownMenu>
                 <DropdownMenuTrigger
                   className="hover:text-foreground flex items-center transition-colors"
-                  aria-label="Show hidden breadcrumb items"
+                  aria-label={messages.breadcrumb.showHidden}
                 >
                   &hellip;
                 </DropdownMenuTrigger>
