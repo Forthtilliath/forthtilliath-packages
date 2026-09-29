@@ -2,6 +2,9 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
+import { defaultThemeLabels } from "./themeLabels.js";
 
 export interface ThemeToggleStyles {
   container?: StyleProp<ViewStyle>;
@@ -21,6 +24,11 @@ export interface ThemeToggleProps {
   value: ThemePreference;
   onChange: (preference: ThemePreference) => void;
   labels?: ThemeToggleLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: ThemeToggleStyles;
 }
 
@@ -42,17 +50,12 @@ const defaultStyles: Required<ThemeToggleStyles> = {
   optionTextActive: { color: "#ffffff" },
 };
 
-const defaultLabels: Required<ThemeToggleLabels> = {
-  light: "Clair",
-  dark: "Sombre",
-  system: "Système",
-};
-
 // 3-way segmented control for a light/dark/system theme preference.
 export function ThemeToggle({
   value,
   onChange,
   labels,
+  locale,
   styles,
 }: ThemeToggleProps) {
   // Style fields are merged as arrays (default, then override) so a partial
@@ -68,7 +71,7 @@ export function ThemeToggle({
       styles?.optionTextActive,
     ],
   };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultThemeLabels[useKitLocale(locale)], ...labels };
 
   return (
     <View style={merged.container}>
