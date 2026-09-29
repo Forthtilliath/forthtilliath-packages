@@ -1,3 +1,4 @@
+import type { ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   Calendar,
@@ -80,61 +81,48 @@ export default meta;
 type Story = StoryObj<typeof Sidebar>;
 
 const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
+  { title: "Home", url: "#", icon: Home },
+  { title: "Inbox", url: "#", icon: Inbox },
+  { title: "Calendar", url: "#", icon: Calendar },
+  { title: "Search", url: "#", icon: Search },
+  { title: "Settings", url: "#", icon: Settings },
 ];
 
-/**
- * A simple sidebar with a group of menu items.
- */
-export const Simple: Story = {
-  render: (args) => (
+/** A sidebar holding a single "Application" menu group. */
+function AppSidebar({ children, ...args }: ComponentProps<typeof Sidebar>) {
+  return (
     <Sidebar {...args}>
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu>{children}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
+  );
+}
+
+/**
+ * A simple sidebar with a group of menu items.
+ */
+export const Simple: Story = {
+  render: (args) => (
+    <AppSidebar {...args}>
+      {items.map((item) => (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild>
+            <a href={item.url}>
+              <item.icon />
+              <span>{item.title}</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </AppSidebar>
   ),
 };
 
@@ -184,29 +172,18 @@ export const Footer: Story = {
  */
 export const OutlineLargeMenuButton: Story = {
   render: (args) => (
-    <Sidebar {...args}>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild variant="outline" size="lg">
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter />
-    </Sidebar>
+    <AppSidebar {...args}>
+      {items.map((item) => (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild variant="outline" size="lg">
+            <a href={item.url}>
+              <item.icon />
+              <span>{item.title}</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </AppSidebar>
   ),
 };
 
@@ -216,29 +193,18 @@ export const OutlineLargeMenuButton: Story = {
  */
 export const ActiveMenuButton: Story = {
   render: (args) => (
-    <Sidebar {...args}>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item, index) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={index === 1}>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter />
-    </Sidebar>
+    <AppSidebar {...args}>
+      {items.map((item, index) => (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild isActive={index === 1}>
+            <a href={item.url}>
+              <item.icon />
+              <span>{item.title}</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </AppSidebar>
   ),
 };
 
@@ -248,24 +214,13 @@ export const ActiveMenuButton: Story = {
  */
 export const Loading: Story = {
   render: (args) => (
-    <Sidebar {...args}>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {Array.from({ length: 5 }, (_, index) => (
-                <SidebarMenuItem key={index}>
-                  <SidebarMenuSkeleton showIcon />
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter />
-    </Sidebar>
+    <AppSidebar {...args}>
+      {Array.from({ length: 5 }, (_, index) => (
+        <SidebarMenuItem key={index}>
+          <SidebarMenuSkeleton showIcon />
+        </SidebarMenuItem>
+      ))}
+    </AppSidebar>
   ),
 };
 
@@ -275,44 +230,33 @@ export const Loading: Story = {
  */
 export const NestedSubmenu: Story = {
   render: (args) => (
-    <Sidebar {...args}>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="#">
-                    <Settings />
-                    <span>Settings</span>
-                  </a>
-                </SidebarMenuButton>
-                <SidebarMenuSub>
-                  <SidebarMenuSubItem>
-                    <SidebarMenuSubButton asChild>
-                      <a href="#">Profile</a>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                  <SidebarMenuSubItem>
-                    <SidebarMenuSubButton asChild isActive>
-                      <a href="#">Notifications</a>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                  <SidebarMenuSubItem>
-                    <SidebarMenuSubButton asChild>
-                      <a href="#">Billing</a>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                </SidebarMenuSub>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter />
-    </Sidebar>
+    <AppSidebar {...args}>
+      <SidebarMenuItem>
+        <SidebarMenuButton asChild>
+          <a href="#">
+            <Settings />
+            <span>Settings</span>
+          </a>
+        </SidebarMenuButton>
+        <SidebarMenuSub>
+          <SidebarMenuSubItem>
+            <SidebarMenuSubButton asChild>
+              <a href="#">Profile</a>
+            </SidebarMenuSubButton>
+          </SidebarMenuSubItem>
+          <SidebarMenuSubItem>
+            <SidebarMenuSubButton asChild isActive>
+              <a href="#">Notifications</a>
+            </SidebarMenuSubButton>
+          </SidebarMenuSubItem>
+          <SidebarMenuSubItem>
+            <SidebarMenuSubButton asChild>
+              <a href="#">Billing</a>
+            </SidebarMenuSubButton>
+          </SidebarMenuSubItem>
+        </SidebarMenuSub>
+      </SidebarMenuItem>
+    </AppSidebar>
   ),
 };
 
