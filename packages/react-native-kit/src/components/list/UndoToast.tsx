@@ -1,6 +1,8 @@
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
 /**
  * Per-slot style overrides for {@link UndoToast}. Every field is optional and
  * is **merged after** the matching default (as a style array), so overriding
@@ -12,7 +14,7 @@ export interface UndoToastStyles {
   toast?: StyleProp<ViewStyle>;
   /** The message text on the left. Truncated to a single line. */
   message?: StyleProp<TextStyle>;
-  /** The action label on the right (the tappable "Undo"). */
+  /** The action label on the right (the tappable "Annuler" / "Undo"). */
   action?: StyleProp<TextStyle>;
 }
 
@@ -26,9 +28,14 @@ export interface UndoToastProps {
   /**
    * Label of the action button.
    *
-   * @defaultValue "Undo"
+   * @defaultValue "Annuler" (`"Undo"` with `locale="en"`)
    */
   actionLabel?: string;
+  /**
+   * Language of the default `actionLabel` — French by default, or the
+   * nearest `KitLocaleProvider`'s.
+   */
+  locale?: KitLocale;
   /**
    * Called when the action button is tapped. Wire this to your reverse-the-
    * change logic (restore the row, re-insert the item…). The host is
@@ -38,6 +45,11 @@ export interface UndoToastProps {
   /** Per-slot style overrides — see {@link UndoToastStyles}. */
   styles?: UndoToastStyles;
 }
+
+const defaultActionLabels: Record<KitLocale, string> = {
+  fr: "Annuler",
+  en: "Undo",
+};
 
 const defaultStyles = {
   toast: {
@@ -74,7 +86,7 @@ const defaultStyles = {
 /**
  * A bottom-of-screen snackbar for **undoing an action that already
  * happened** — the counterpart to a delete that runs immediately with no
- * confirmation dialog (for instance a {@link SwipeToDeleteRow} swipe).
+ * confirmation dialog (for instance a {@link SwipeableRow} swipe).
  *
  * `UndoToast` is presentational only: it does not time itself out, animate
  * in/out, or stack. The host owns that — typically a piece of state holding
@@ -134,10 +146,12 @@ const defaultStyles = {
  */
 export function UndoToast({
   message,
-  actionLabel = "Undo",
+  actionLabel,
+  locale,
   onAction,
   styles,
 }: UndoToastProps) {
+  const resolvedLocale = useKitLocale(locale);
   // Merge each slot as [default, override] so a partial override doesn't drop
   // the rest of that slot's default (positioning, shadow, flex…).
   const merged = {
@@ -152,7 +166,9 @@ export function UndoToast({
         {message}
       </Text>
       <Pressable onPress={onAction} hitSlop={8} accessibilityRole="button">
-        <Text style={merged.action}>{actionLabel}</Text>
+        <Text style={merged.action}>
+          {actionLabel ?? defaultActionLabels[resolvedLocale]}
+        </Text>
       </Pressable>
     </View>
   );
