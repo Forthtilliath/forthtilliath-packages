@@ -104,4 +104,67 @@ describe("useKeyListener", () => {
     expect(firstCallback).not.toHaveBeenCalled();
     expect(secondCallback).toHaveBeenCalledTimes(1);
   });
+
+  it("doesn't fire on a combination with an unrequested ctrl, alt or meta", () => {
+    const onKeyDown = vi.fn();
+    renderHook(() => {
+      useKeyListener({ key: "s" }, onKeyDown);
+    });
+
+    dispatchKeyDown({ key: "s", ctrlKey: true });
+    dispatchKeyDown({ key: "s", altKey: true });
+    dispatchKeyDown({ key: "s", metaKey: true });
+    expect(onKeyDown).not.toHaveBeenCalled();
+
+    dispatchKeyDown({ key: "s" });
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
+  });
+
+  it("ignores shift unless it's specified", () => {
+    const onKeyDown = vi.fn();
+    renderHook(() => {
+      useKeyListener({ key: "?" }, onKeyDown);
+    });
+
+    // "?" needs Shift on most layouts.
+    dispatchKeyDown({ key: "?", shiftKey: true });
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects shift when shift: false is specified", () => {
+    const onKeyDown = vi.fn();
+    renderHook(() => {
+      useKeyListener({ key: "Tab", shift: false }, onKeyDown);
+    });
+
+    dispatchKeyDown({ key: "Tab", shiftKey: true });
+    expect(onKeyDown).not.toHaveBeenCalled();
+  });
+
+  it("passes the event to the callback", () => {
+    const onKeyDown = vi.fn();
+    renderHook(() => {
+      useKeyListener({ key: "Enter" }, onKeyDown);
+    });
+
+    dispatchKeyDown({ key: "Enter" });
+    expect(onKeyDown).toHaveBeenCalledWith(expect.any(KeyboardEvent));
+  });
+
+  it("doesn't re-attach the listener when only an inline callback changes", () => {
+    const addSpy = vi.spyOn(window, "addEventListener");
+    const { rerender } = renderHook(() => {
+      useKeyListener({ key: "Enter" }, () => undefined);
+    });
+    const callsAfterMount = addSpy.mock.calls.filter(
+      ([type]) => type === "keydown",
+    ).length;
+
+    rerender();
+    rerender();
+
+    expect(
+      addSpy.mock.calls.filter(([type]) => type === "keydown"),
+    ).toHaveLength(callsAfterMount);
+  });
 });
