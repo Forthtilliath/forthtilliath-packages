@@ -1,6 +1,12 @@
 import { File, Paths } from "expo-file-system";
 import * as IntentLauncher from "expo-intent-launcher";
 
+/**
+ * Android's `Intent.FLAG_GRANT_READ_URI_PERMISSION`: lets the package
+ * installer read the APK through its `content://` URI.
+ */
+const FLAG_GRANT_READ_URI_PERMISSION = 1;
+
 export interface DownloadAndInstallApkOptions {
   apkUrl: string;
   /** Temp filename in the cache directory, e.g. "myapp-update.apk". */
@@ -9,9 +15,10 @@ export interface DownloadAndInstallApkOptions {
   /**
    * MD5 checksum the downloaded file is expected to match (case-insensitive),
    * e.g. one published alongside the release. When set, a mismatch deletes
-   * the file and rejects instead of installing it — standard integrity check
-   * before running a sideloaded binary, since GitHub Releases has no
-   * built-in signature verification the way an app store does.
+   * the file and rejects instead of installing it. This catches a corrupted
+   * or truncated download — not a malicious release: whoever can publish the
+   * APK can publish its checksum too. Android's own check that an update is
+   * signed with the same key as the installed app is what guards against that.
    */
   expectedMd5?: string;
 }
@@ -53,7 +60,7 @@ export async function downloadAndInstallApk({
 
   await IntentLauncher.startActivityAsync("android.intent.action.VIEW", {
     data: file.contentUri,
-    flags: 1,
+    flags: FLAG_GRANT_READ_URI_PERMISSION,
     type: "application/vnd.android.package-archive",
   });
 }
