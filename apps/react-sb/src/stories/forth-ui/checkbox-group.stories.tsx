@@ -17,6 +17,14 @@ const meta = {
     ],
     defaultValue: ["bug"],
   },
+  parameters: {
+    // Disabled controls are exempt from contrast requirements (WCAG 1.4.3). ("Won't fix" option).
+    a11y: {
+      config: {
+        rules: [{ id: "color-contrast", enabled: false }],
+      },
+    },
+  },
 } satisfies Meta<typeof CheckboxGroup>;
 
 export default meta;

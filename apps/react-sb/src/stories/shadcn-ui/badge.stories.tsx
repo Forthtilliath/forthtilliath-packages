@@ -76,7 +76,7 @@ export const AsChild: Story = {
 export const WithIcon: Story = {
   args: {
     variant: "secondary",
-    className: "bg-blue-500 text-white dark:bg-blue-600",
+    className: "bg-blue-600 text-white",
     children: (
       <>
         <BadgeCheckIcon />

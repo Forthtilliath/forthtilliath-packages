@@ -78,7 +78,7 @@ export const DimmedWhenOff: Story = {
       label="Active"
       className={{
         label:
-          "text-foreground/40 group-data-[state=checked]/toggle-switch:text-foreground text-xs",
+          "text-muted-foreground group-data-[state=checked]/toggle-switch:text-foreground text-xs",
       }}
     />
   ),

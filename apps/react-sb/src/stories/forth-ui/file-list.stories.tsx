@@ -58,7 +58,7 @@ export const Default: Story = {
           </FileListActions>
         </FileListHeader>
         <FileListContent>
-          <FileListProgress value={45} />
+          <FileListProgress value={45} aria-label="Upload progress" />
         </FileListContent>
       </FileListItem>
 
