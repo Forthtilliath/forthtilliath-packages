@@ -1,6 +1,6 @@
 /* Tailwind entry point. forth-ui ships pre-built: scan its compiled
    components too, or their classes aren't generated (see its README). */
 @import "@forthtilliath/shadcn-ui/styles/globals.css";
-@import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
+@import "@forthtilliath/shadcn-ui/styles/themes/violet.css";
 
 @source "../node_modules/@forthtilliath/forth-ui/dist/**/*.js";
