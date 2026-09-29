@@ -75,10 +75,13 @@ Larger, composed patterns built from the primitives above: `accordion`,
 
 ### Themes (`src/styles/themes/`)
 
-`globals.css` imports `themes/default.css`. Ten additional
-[tweakcn](https://tweakcn.com)-generated theme files are available to swap
-in instead: `blue`, `bubblegum`, `claymorphism`, `green`, `orange`, `red`,
-`rose`, `twitter`, `violet`, `yellow`. `globals-static.css` is a
+`globals.css` imports `themes/default.css`. Sixteen additional theme files
+are available to swap in instead: ten
+[tweakcn](https://tweakcn.com)-generated ones (`blue`, `bubblegum`,
+`claymorphism`, `green`, `orange`, `red`, `rose`, `twitter`, `violet`,
+`yellow`) and six with their own fonts, radius and shadows (`brutalist`,
+`terminal`, `editorial`, `aurora`, `nordic`, `forest`) — see forth-ui's
+README for a gallery. `globals-static.css` is a
 non-`@theme inline` variant for tooling that doesn't support Tailwind v4's
 CSS-first theming.
 
