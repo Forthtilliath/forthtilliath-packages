@@ -65,6 +65,25 @@ export function Rating({
     onValueChange?.(next);
   }
 
+  // WAI-ARIA radio group: arrows move (and select) between stars, Home/End
+  // jump to the first/last one.
+  function handleKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
+    const target = {
+      ArrowRight: current + 1,
+      ArrowUp: current + 1,
+      ArrowLeft: current - 1,
+      ArrowDown: current - 1,
+      Home: 1,
+      End: max,
+    }[e.key];
+    if (target === undefined || readOnly) return;
+    e.preventDefault();
+    const next = Math.min(max, Math.max(1, target));
+    commit(next);
+    const stars = e.currentTarget.parentElement?.querySelectorAll("button");
+    stars?.[next - 1]?.focus();
+  }
+
   return (
     <div
       role="radiogroup"
@@ -92,7 +111,10 @@ export function Rating({
           aria-checked={current === starValue}
           aria-label={messages.rating.stars(starValue)}
           disabled={disabled}
-          tabIndex={readOnly ? -1 : 0}
+          tabIndex={
+            !readOnly && starValue === (current >= 1 ? current : 1) ? 0 : -1
+          }
+          onKeyDown={handleKeyDown}
           onMouseEnter={() => {
             setHoverValue(starValue);
           }}

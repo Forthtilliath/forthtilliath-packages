@@ -109,7 +109,10 @@ export function Combobox({
           <ChevronsUpDownIcon className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
+      <PopoverContent
+        aria-label={ariaLabel ?? placeholderText}
+        className="w-(--radix-popover-trigger-width) p-0"
+      >
         <Command>
           <CommandInput placeholder={placeholderText} />
           <CommandList>
