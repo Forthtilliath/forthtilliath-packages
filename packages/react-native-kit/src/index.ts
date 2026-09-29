@@ -22,6 +22,7 @@ export * from "./components/theme/ThemeToggle.js";
 export * from "./hooks/useDebouncedChange.js";
 export * from "./hooks/useEffectiveColorScheme.js";
 export * from "./hooks/useSubmitGuard.js";
+export * from "./i18n/KitLocaleProvider.js";
 export * from "./i18n/locale.js";
 export * from "./utils/helpers/confirmDestructive.js";
 // Framework-agnostic — actually implemented (and tested/documented) in
