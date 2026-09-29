@@ -2,6 +2,8 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 import type { ChangelogNotesStyles } from "@forthtilliath/expo-release-updates-ui";
 
+import type { KitLocale } from "../../i18n/locale.js";
+
 export interface UpdateSettingsScreenRelease {
   version: string;
   notes: string;
@@ -50,21 +52,38 @@ export interface UpdateSettingsScreenStyles {
   notes?: ChangelogNotesStyles;
 }
 
-export const defaultLabels: Required<UpdateSettingsScreenLabels> = {
-  installedVersionLabel: "Version installée",
-  checkButton: "Rechercher une mise à jour",
-  upToDate: "Tu as déjà la dernière version.",
-  checkError: "Impossible de vérifier les mises à jour.",
-  downloadError: "Le téléchargement a échoué.",
-  availableTitle: (version) => `Version ${version} disponible`,
-  installButton: () => "Télécharger et installer",
-  installButtonAccessibilityLabel: (version) =>
-    `Télécharger et installer la version ${version}`,
-  downloadingLabel: (percent) => `Téléchargement… ${String(percent)}%`,
-  downloadingHint:
-    "Ton téléphone va ensuite te demander confirmation pour installer la mise à jour.",
-  historyTitle: "Historique des versions",
-};
+export const defaultLabels = {
+  fr: {
+    installedVersionLabel: "Version installée",
+    checkButton: "Rechercher une mise à jour",
+    upToDate: "Tu as déjà la dernière version.",
+    checkError: "Impossible de vérifier les mises à jour.",
+    downloadError: "Le téléchargement a échoué.",
+    availableTitle: (version: string) => `Version ${version} disponible`,
+    installButton: () => "Télécharger et installer",
+    installButtonAccessibilityLabel: (version: string) =>
+      `Télécharger et installer la version ${version}`,
+    downloadingLabel: (percent: number) =>
+      `Téléchargement… ${String(percent)}%`,
+    downloadingHint:
+      "Ton téléphone va ensuite te demander confirmation pour installer la mise à jour.",
+    historyTitle: "Historique des versions",
+  },
+  en: {
+    installedVersionLabel: "Installed version",
+    checkButton: "Check for updates",
+    upToDate: "You already have the latest version.",
+    checkError: "Couldn't check for updates.",
+    downloadError: "The download failed.",
+    availableTitle: (version: string) => `Version ${version} available`,
+    installButton: () => "Download and install",
+    installButtonAccessibilityLabel: (version: string) =>
+      `Download and install version ${version}`,
+    downloadingLabel: (percent: number) => `Downloading… ${String(percent)}%`,
+    downloadingHint: "Your phone will then ask you to confirm the install.",
+    historyTitle: "Version history",
+  },
+} satisfies Record<KitLocale, Required<UpdateSettingsScreenLabels>>;
 
 export const defaultStyles: Required<
   Omit<UpdateSettingsScreenStyles, "activityIndicatorColor" | "notes">

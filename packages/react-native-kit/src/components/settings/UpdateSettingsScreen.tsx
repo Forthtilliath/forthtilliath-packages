@@ -3,6 +3,12 @@ import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 import { ChangelogNotes } from "@forthtilliath/expo-release-updates-ui";
 
+import {
+  KIT_LOCALE_TAGS,
+  type KitLocale,
+  useKitLocale,
+} from "../../i18n/locale.js";
+
 import type {
   UpdateSettingsScreenHistoryEntry,
   UpdateSettingsScreenLabels,
@@ -39,9 +45,17 @@ export interface UpdateSettingsScreenProps {
   ) => Promise<void>;
   /** Omit to not show a version history section at all. */
   fetchReleaseHistory?: () => Promise<UpdateSettingsScreenHistoryEntry[]>;
-  /** Locale for formatting each history entry's date. Defaults to `"fr-FR"`. */
+  /**
+   * Locale for formatting each history entry's date. Defaults to the
+   * locale's (`"fr-FR"`, or `"en-US"` with `locale="en"`).
+   */
   dateLocale?: string;
   labels?: UpdateSettingsScreenLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: UpdateSettingsScreenStyles;
 }
 
@@ -57,10 +71,13 @@ export function UpdateSettingsScreen({
   compareVersions,
   downloadAndInstallApk,
   fetchReleaseHistory,
-  dateLocale = "fr-FR",
+  dateLocale: customDateLocale,
   labels,
+  locale,
   styles,
 }: UpdateSettingsScreenProps) {
+  const resolvedLocale = useKitLocale(locale);
+  const dateLocale = customDateLocale ?? KIT_LOCALE_TAGS[resolvedLocale];
   const merged = {
     container: [defaultStyles.container, styles?.container],
     infoBox: [defaultStyles.infoBox, styles?.infoBox],
@@ -95,7 +112,7 @@ export function UpdateSettingsScreen({
   };
   const activityIndicatorColor =
     styles?.activityIndicatorColor ?? defaultStyles.activityIndicatorColor;
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultLabels[resolvedLocale], ...labels };
 
   const [updateState, setUpdateState] = useState<UpdateState>({
     status: "idle",
