@@ -10,6 +10,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/popover";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import { Badge } from "../badge/index.js";
 import { Button } from "../button/index.js";
 
@@ -27,6 +28,11 @@ export interface NotificationCenterProps {
   onMarkAllRead?: () => void;
   emptyMessage?: string;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -44,9 +50,12 @@ export function NotificationCenter({
   notifications,
   onNotificationClick,
   onMarkAllRead,
-  emptyMessage = "No notifications",
+  emptyMessage,
   className,
+  locale,
 }: NotificationCenterProps) {
+  const messages = useUiMessages(locale);
+  const emptyMessageText = emptyMessage ?? messages.notificationCenter.empty;
   const unreadCount = notifications.filter(
     (notification) => notification.read !== true,
   ).length;
@@ -58,7 +67,7 @@ export function NotificationCenter({
           variant="ghost"
           size="icon"
           className="relative"
-          aria-label="Notifications"
+          aria-label={messages.notificationCenter.title}
         >
           <BellIcon />
           {unreadCount > 0 && (
@@ -74,7 +83,9 @@ export function NotificationCenter({
       </PopoverTrigger>
       <PopoverContent className={cn("w-80 p-0", className)} align="end">
         <div className="flex items-center justify-between border-b p-3">
-          <p className="text-sm font-medium">Notifications</p>
+          <p className="text-sm font-medium">
+            {messages.notificationCenter.title}
+          </p>
           {unreadCount > 0 && onMarkAllRead !== undefined && (
             <button
               type="button"
@@ -88,7 +99,7 @@ export function NotificationCenter({
         <div className="max-h-80 overflow-y-auto">
           {notifications.length === 0 ? (
             <p className="text-muted-foreground p-6 text-center text-sm">
-              {emptyMessage}
+              {emptyMessageText}
             </p>
           ) : (
             notifications.map((notification) => (

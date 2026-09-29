@@ -12,6 +12,8 @@ import {
 } from "@forthtilliath/shadcn-ui/components/tabs";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
+
 export interface SnippetItem {
   value: string;
   label: React.ReactNode;
@@ -23,6 +25,11 @@ export interface SnippetProps {
   /** @default items[0]?.value */
   defaultValue?: string;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 const COPY_FEEDBACK_MS = 2000;
@@ -38,7 +45,13 @@ const COPY_FEEDBACK_MS = 2000;
  * @author Forth
  * @copyright 2026 Forth
  */
-export function Snippet({ items, defaultValue, className }: SnippetProps) {
+export function Snippet({
+  items,
+  defaultValue,
+  className,
+  locale,
+}: SnippetProps) {
+  const messages = useUiMessages(locale);
   const [copiedValue, setCopiedValue] = React.useState<string | null>(null);
 
   function handleCopy(item: SnippetItem) {
@@ -84,7 +97,11 @@ export function Snippet({ items, defaultValue, className }: SnippetProps) {
             onClick={() => {
               handleCopy(item);
             }}
-            aria-label={copiedValue === item.value ? "Copied" : "Copy"}
+            aria-label={
+              copiedValue === item.value
+                ? messages.snippet.copied
+                : messages.snippet.copy
+            }
             className="absolute top-2 right-2 size-7"
           >
             {copiedValue === item.value ? <CheckIcon /> : <CopyIcon />}

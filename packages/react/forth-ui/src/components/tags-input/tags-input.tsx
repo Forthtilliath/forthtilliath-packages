@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import { Badge } from "../badge/index.js";
 
 export interface TagsInputProps {
@@ -15,6 +16,11 @@ export interface TagsInputProps {
   /** Maximum number of tags allowed. */
   max?: number;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -34,11 +40,14 @@ export function TagsInput({
   value,
   defaultValue,
   onValueChange,
-  placeholder = "Add tag…",
+  placeholder,
   disabled = false,
   max,
   className,
+  locale,
 }: TagsInputProps) {
+  const messages = useUiMessages(locale);
+  const placeholderText = placeholder ?? messages.tagsInput.placeholder;
   const [uncontrolledValue, setUncontrolledValue] = React.useState(
     defaultValue ?? [],
   );
@@ -111,7 +120,7 @@ export function TagsInput({
         onBlur={() => {
           addTag(inputValue);
         }}
-        placeholder={tags.length === 0 ? placeholder : undefined}
+        placeholder={tags.length === 0 ? placeholderText : undefined}
         disabled={disabled}
         className="placeholder:text-muted-foreground min-w-24 flex-1 bg-transparent text-sm outline-none disabled:cursor-not-allowed"
       />

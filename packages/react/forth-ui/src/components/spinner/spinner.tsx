@@ -1,7 +1,11 @@
+"use client";
+
 import type React from "react";
 import { Loader2Icon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
+
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
 import type { SpinnerSizeVariants } from "./variants.js";
 import { spinnerSizeVariants } from "./variants.js";
@@ -14,6 +18,11 @@ export type SpinnerProps = React.ComponentProps<"span"> &
      * @default "default"
      */
     variant?: SpinnerVariant;
+    /**
+     * Language of the default `aria-label` — French by default, or the
+     * nearest `UiLocaleProvider`'s. An `aria-label` prop still wins.
+     */
+    locale?: UiLocale;
   };
 
 /**
@@ -31,12 +40,14 @@ export function Spinner({
   variant = "default",
   size,
   className,
+  locale,
   ...props
 }: SpinnerProps) {
+  const messages = useUiMessages(locale);
   const sizeClass = spinnerSizeVariants({ size });
 
   return (
-    <span role="status" aria-label="Loading" {...props}>
+    <span role="status" aria-label={messages.spinner.loading} {...props}>
       {variant === "ring" && (
         <span
           className={cn(

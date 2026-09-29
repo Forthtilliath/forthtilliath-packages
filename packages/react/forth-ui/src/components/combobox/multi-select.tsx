@@ -19,6 +19,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/popover";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import { Badge } from "../badge/index.js";
 
 import type { ComboboxOption } from "./combobox.js";
@@ -34,6 +35,11 @@ export interface MultiSelectProps {
   emptyMessage?: string;
   disabled?: boolean;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }
 
 /**
@@ -56,11 +62,15 @@ export function MultiSelect({
   value,
   defaultValue,
   onValueChange,
-  placeholder = "Select…",
-  emptyMessage = "No results found.",
+  placeholder,
+  emptyMessage,
   disabled = false,
   className,
+  locale,
 }: MultiSelectProps) {
+  const messages = useUiMessages(locale);
+  const emptyMessageText = emptyMessage ?? messages.emptyResults;
+  const placeholderText = placeholder ?? messages.combobox.placeholder;
   const listboxId = React.useId();
   const [open, setOpen] = React.useState(false);
   const [uncontrolledValue, setUncontrolledValue] = React.useState(
@@ -134,7 +144,7 @@ export function MultiSelect({
               ))
             ) : (
               <span className="text-muted-foreground font-normal">
-                {placeholder}
+                {placeholderText}
               </span>
             )}
           </span>
@@ -146,9 +156,9 @@ export function MultiSelect({
         className="w-(--radix-popover-trigger-width) p-0"
       >
         <Command>
-          <CommandInput placeholder={placeholder} />
+          <CommandInput placeholder={placeholderText} />
           <CommandList>
-            <CommandEmpty>{emptyMessage}</CommandEmpty>
+            <CommandEmpty>{emptyMessageText}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
