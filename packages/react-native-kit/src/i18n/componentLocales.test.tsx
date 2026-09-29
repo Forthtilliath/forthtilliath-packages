@@ -5,6 +5,9 @@ import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
 import { propsOf } from "../__mocks__/testInstance.js";
+import { AboutSettingsScreen } from "../components/settings/AboutSettingsScreen.js";
+import { ContactSettingsScreen } from "../components/settings/ContactSettingsScreen.js";
+import { PrivacySettingsScreen } from "../components/settings/PrivacySettingsScreen.js";
 import { ThemeSettingsScreen } from "../components/settings/ThemeSettingsScreen.js";
 import { ThemeOptionList } from "../components/theme/ThemeOptionList.js";
 import { ThemeToggle } from "../components/theme/ThemeToggle.js";
@@ -52,6 +55,32 @@ const cases: [
     ),
     "Système",
     "System",
+  ],
+  [
+    "AboutSettingsScreen",
+    (locale) => (
+      <AboutSettingsScreen
+        appName="App"
+        version="1.0.0"
+        description="x"
+        developerName="Ada"
+        locale={locale}
+      />
+    ),
+    "Développée par Ada.",
+    "Developed by Ada.",
+  ],
+  [
+    "ContactSettingsScreen",
+    (locale) => <ContactSettingsScreen email="a@b.c" locale={locale} />,
+    "Une question, un bug, une suggestion ?",
+    "A question, a bug, a suggestion?",
+  ],
+  [
+    "PrivacySettingsScreen",
+    (locale) => <PrivacySettingsScreen locale={locale} />,
+    "Stockage local uniquement",
+    "Local storage only",
   ],
 ];
 

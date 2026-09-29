@@ -1,6 +1,8 @@
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
 export interface AboutSettingsScreenSection {
   title: string;
   paragraphs: string[];
@@ -31,13 +33,24 @@ export interface AboutSettingsScreenProps {
   /** Omit to not show a "developed by" credit line at all. */
   developerName?: string;
   labels?: AboutSettingsScreenLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: AboutSettingsScreenStyles;
 }
 
-const defaultLabels: Required<AboutSettingsScreenLabels> = {
-  version: (version) => `Version ${version}`,
-  developedBy: (name) => `Développée par ${name}.`,
-};
+const defaultLabels = {
+  fr: {
+    version: (version: string) => `Version ${version}`,
+    developedBy: (name: string) => `Développée par ${name}.`,
+  },
+  en: {
+    version: (version: string) => `Version ${version}`,
+    developedBy: (name: string) => `Developed by ${name}.`,
+  },
+} satisfies Record<KitLocale, Required<AboutSettingsScreenLabels>>;
 
 const defaultStyles: Required<AboutSettingsScreenStyles> = {
   container: {},
@@ -76,6 +89,7 @@ export function AboutSettingsScreen({
   sections,
   developerName,
   labels,
+  locale,
   styles,
 }: AboutSettingsScreenProps) {
   const merged = {
@@ -87,7 +101,7 @@ export function AboutSettingsScreen({
     sectionTitle: [defaultStyles.sectionTitle, styles?.sectionTitle],
     hint: [defaultStyles.hint, styles?.hint],
   };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
   const paragraphs = Array.isArray(description) ? description : [description];
 
   return (
