@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- react-native-gesture-handler recommends the Reanimated version of Swipeable instead; migrating is a separate, larger change (extra peer dep, different API) than extracting this component as-is. */
 import type { ReactNode } from "react";
-import { useRef } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text } from "react-native";
-import { Swipeable } from "react-native-gesture-handler";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { Ionicons } from "@expo/vector-icons";
+
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 
 export interface SwipeableRowStyles {
   deleteAction?: StyleProp<ViewStyle>;
@@ -15,10 +15,22 @@ export interface SwipeableRowStyles {
 export interface SwipeableRowProps {
   children: ReactNode;
   onDelete: () => void;
+  /** Accessibility label of the delete button, e.g. `"Delete « Marie »"`. */
   deleteLabel: string;
+  /** Text under the trash icon. Defaults to "Supprimer" (`"Delete"` with `locale="en"`). */
   deleteText?: string;
+  /**
+   * Language of the default `deleteText` — French by default, or the
+   * nearest `KitLocaleProvider`'s.
+   */
+  locale?: KitLocale;
   styles?: SwipeableRowStyles;
 }
+
+const defaultDeleteTexts: Record<KitLocale, string> = {
+  fr: "Supprimer",
+  en: "Delete",
+};
 
 const defaultStyles: Required<SwipeableRowStyles> = {
   deleteAction: {
@@ -34,14 +46,20 @@ const defaultStyles: Required<SwipeableRowStyles> = {
   deleteIconColor: "#ffffff",
 };
 
-// Swipe a list row left to reveal a delete button, on top of a tap to edit it.
+/**
+ * Swipe a list row left to reveal a delete button, on top of a tap to edit it.
+ * Built on react-native-gesture-handler's `ReanimatedSwipeable`, so the app
+ * needs `react-native-reanimated` (a peer dependency).
+ */
 export function SwipeableRow({
   children,
   onDelete,
   deleteLabel,
-  deleteText = "Delete",
+  deleteText,
+  locale,
   styles,
 }: SwipeableRowProps) {
+  const resolvedLocale = useKitLocale(locale);
   // Style fields are merged as arrays (default, then override) so a partial
   // override (e.g. just backgroundColor) doesn't drop the default's
   // width/borderRadius/marginBottom/gap too.
@@ -53,16 +71,14 @@ export function SwipeableRow({
     ],
     deleteIconColor: styles?.deleteIconColor ?? defaultStyles.deleteIconColor,
   };
-  const swipeableRef = useRef<Swipeable>(null);
 
   return (
-    <Swipeable
-      ref={swipeableRef}
-      renderRightActions={() => (
+    <ReanimatedSwipeable
+      renderRightActions={(_progress, _translation, swipeable) => (
         <Pressable
           style={merged.deleteAction}
           onPress={() => {
-            swipeableRef.current?.close();
+            swipeable.close();
             onDelete();
           }}
           accessibilityRole="button"
@@ -73,11 +89,13 @@ export function SwipeableRow({
             size={22}
             color={merged.deleteIconColor}
           />
-          <Text style={merged.deleteActionText}>{deleteText}</Text>
+          <Text style={merged.deleteActionText}>
+            {deleteText ?? defaultDeleteTexts[resolvedLocale]}
+          </Text>
         </Pressable>
       )}
     >
       {children}
-    </Swipeable>
+    </ReanimatedSwipeable>
   );
 }
