@@ -20,6 +20,11 @@ const meta: Meta<typeof AnimatedTabs> = {
   },
   parameters: {
     layout: "fullscreen",
+    // Violation inside the shadcn-ui copy (not editable here): its "danger
+    // zone" tab label is text-red-500 — revisit with the shadcn update.
+    a11y: {
+      config: { rules: [{ id: "color-contrast", enabled: false }] },
+    },
   },
   decorators: [
     (Story) => (
@@ -42,13 +47,6 @@ export const Default: Story = {};
 export const DefaultTab: Story = {
   args: {
     defaultTabValue: "danger-zone",
-  },
-  parameters: {
-    // Violation inside the shadcn-ui copy (not editable here): its "danger
-    // zone" tab uses text-red-500 — revisit with the shadcn update.
-    a11y: {
-      config: { rules: [{ id: "color-contrast", enabled: false }] },
-    },
   },
 };
 
