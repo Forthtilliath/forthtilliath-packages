@@ -109,7 +109,7 @@ export function MultiStepLoader({
               "flex items-center gap-2 text-sm",
               index < activeIndex && "text-muted-foreground line-through",
               index === activeIndex && "text-foreground font-medium",
-              index > activeIndex && "text-muted-foreground/50",
+              index > activeIndex && "text-muted-foreground",
             )}
           >
             {index < activeIndex ? (

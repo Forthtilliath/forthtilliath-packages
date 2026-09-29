@@ -32,6 +32,13 @@ export const alertVariants = cva(
       size: "default",
     },
     compoundVariants: [
+      { variant: "default", look: "outline", className: "bg-card" },
+      // shadcn's AlertDescription is muted-foreground (grey), unreadable on a
+      // colored background: colored alerts give it their own text color.
+      {
+        variant: ["primary", "success", "warning", "info", "destructive"],
+        className: "*:data-[slot=alert-description]:text-current",
+      },
       // default (neutral) ignores `look` — none of the reference sources
       // show a "solid neutral" or "outline neutral" alert, only colored
       // ones vary by look.
@@ -54,7 +61,7 @@ export const alertVariants = cva(
       {
         variant: "success",
         look: "solid",
-        className: "bg-green-600 text-white border-transparent",
+        className: "bg-green-700 text-white border-transparent",
       },
       {
         variant: "success",
@@ -71,7 +78,7 @@ export const alertVariants = cva(
       {
         variant: "warning",
         look: "solid",
-        className: "bg-amber-500 text-white border-transparent",
+        className: "bg-amber-500 text-amber-950 border-transparent",
       },
       {
         variant: "warning",
@@ -88,7 +95,7 @@ export const alertVariants = cva(
       {
         variant: "info",
         look: "solid",
-        className: "bg-sky-600 text-white border-transparent",
+        className: "bg-sky-700 text-white border-transparent",
       },
       {
         variant: "info",
@@ -111,7 +118,7 @@ export const alertVariants = cva(
         variant: "destructive",
         look: "soft",
         className:
-          "bg-destructive/10 text-destructive border-destructive/20 [&>svg]:text-destructive",
+          "bg-red-50 text-red-700 border-red-200 [&>svg]:text-red-600 dark:bg-red-950 dark:text-red-300 dark:border-red-900 dark:[&>svg]:text-red-400",
       },
       {
         variant: "destructive",
