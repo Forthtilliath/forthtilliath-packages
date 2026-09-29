@@ -19,6 +19,14 @@ export default defineConfig({
       "@expo/vector-icons": fileURLToPath(
         new URL("./src/__mocks__/expo-vector-icons.tsx", import.meta.url),
       ),
+      // Must come before the package's own alias below, which would
+      // otherwise also match this subpath — see the mock for why it's stubbed.
+      "react-native-gesture-handler/ReanimatedSwipeable": fileURLToPath(
+        new URL(
+          "./src/__mocks__/react-native-gesture-handler-reanimated-swipeable.tsx",
+          import.meta.url,
+        ),
+      ),
       // Also ships Flow syntax in its package entry — see
       // src/__mocks__/react-native-gesture-handler.tsx for why this is safe.
       "react-native-gesture-handler": fileURLToPath(
