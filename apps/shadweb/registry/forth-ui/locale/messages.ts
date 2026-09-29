@@ -8,7 +8,7 @@ export interface UiMessages {
   badge: { remove: string };
   breadcrumb: { showHidden: string };
   codeBlock: { copy: string; copied: string };
-  colorPicker: { choose: string };
+  colorPicker: { choose: string; hex: string };
   /** Combobox and MultiSelect. */
   combobox: { placeholder: string };
   commandPalette: { placeholder: string };
@@ -34,7 +34,7 @@ export interface UiMessages {
   rating: { stars: (count: number) => string };
   snippet: { copy: string; copied: string };
   spinner: { loading: string };
-  tagsInput: { placeholder: string };
+  tagsInput: { placeholder: string; label: string };
 }
 
 /** forth-ui's built-in labels, per locale. */
@@ -50,7 +50,7 @@ export const UI_MESSAGES: Record<UiLocale, UiMessages> = {
     badge: { remove: "Retirer" },
     breadcrumb: { showHidden: "Afficher les éléments masqués du fil d'Ariane" },
     codeBlock: { copy: "Copier le code", copied: "Copié" },
-    colorPicker: { choose: "Choisir une couleur" },
+    colorPicker: { choose: "Choisir une couleur", hex: "Code hexadécimal" },
     combobox: { placeholder: "Sélectionner…" },
     commandPalette: { placeholder: "Saisir une commande ou rechercher…" },
     confirmDialog: { cancel: "Annuler", confirm: "Continuer" },
@@ -82,7 +82,7 @@ export const UI_MESSAGES: Record<UiLocale, UiMessages> = {
     },
     snippet: { copy: "Copier", copied: "Copié" },
     spinner: { loading: "Chargement" },
-    tagsInput: { placeholder: "Ajouter un tag…" },
+    tagsInput: { placeholder: "Ajouter un tag…", label: "Ajouter un tag" },
   },
   en: {
     dismiss: "Dismiss",
@@ -95,7 +95,7 @@ export const UI_MESSAGES: Record<UiLocale, UiMessages> = {
     badge: { remove: "Dismiss" },
     breadcrumb: { showHidden: "Show hidden breadcrumb items" },
     codeBlock: { copy: "Copy code", copied: "Copied" },
-    colorPicker: { choose: "Choose color" },
+    colorPicker: { choose: "Choose color", hex: "Hex color code" },
     combobox: { placeholder: "Select…" },
     commandPalette: { placeholder: "Type a command or search…" },
     confirmDialog: { cancel: "Cancel", confirm: "Continue" },
@@ -121,6 +121,6 @@ export const UI_MESSAGES: Record<UiLocale, UiMessages> = {
     },
     snippet: { copy: "Copy", copied: "Copied" },
     spinner: { loading: "Loading" },
-    tagsInput: { placeholder: "Add tag…" },
+    tagsInput: { placeholder: "Add tag…", label: "Add a tag" },
   },
 };
