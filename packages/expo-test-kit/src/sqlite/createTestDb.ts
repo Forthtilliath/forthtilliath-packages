@@ -34,6 +34,9 @@ export async function createTestDb<TSchema extends Record<string, unknown>>(
   const db = drizzle(client, { schema });
 
   await migrate(db, { migrationsFolder });
+  // libsql already enables foreign keys by default (on every connection,
+  // transactions included — checked by this package's tests); kept explicit
+  // so the tests don't silently depend on that default.
   await client.execute("PRAGMA foreign_keys = ON;");
 
   tempFilesByDb.set(db, dbFile);
