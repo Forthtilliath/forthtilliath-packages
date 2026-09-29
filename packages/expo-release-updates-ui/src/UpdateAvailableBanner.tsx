@@ -15,6 +15,9 @@ export interface UpdateAvailableBannerStyles {
   dismissButtonText?: StyleProp<TextStyle>;
 }
 
+/** Languages the banner's built-in labels are available in. */
+export type UpdateBannerLocale = "fr" | "en";
+
 export interface UpdateAvailableBannerLabels {
   title?: (version: string) => string;
   action?: string;
@@ -28,7 +31,13 @@ export interface UpdateAvailableBannerProps {
   notes: string;
   onPress: () => void;
   onDismiss: () => void;
+  /** Overrides individual built-in labels, whatever the `locale`. */
   labels?: UpdateAvailableBannerLabels;
+  /**
+   * Language of the built-in labels.
+   * @defaultValue "fr"
+   */
+  locale?: UpdateBannerLocale;
   styles?: UpdateAvailableBannerStyles;
 }
 
@@ -59,11 +68,22 @@ const defaultStyles: Required<UpdateAvailableBannerStyles> = {
   dismissButtonText: { fontSize: 13, color: "#6b7280" },
 };
 
-const defaultLabels: Required<UpdateAvailableBannerLabels> = {
-  title: (version) => `Version ${version} disponible`,
-  action: "Voir",
-  dismiss: "Fermer",
-  dismissAccessibilityLabel: "Fermer la notification de mise à jour",
+const defaultLabels: Record<
+  UpdateBannerLocale,
+  Required<UpdateAvailableBannerLabels>
+> = {
+  fr: {
+    title: (version) => `Version ${version} disponible`,
+    action: "Voir",
+    dismiss: "Fermer",
+    dismissAccessibilityLabel: "Fermer la notification de mise à jour",
+  },
+  en: {
+    title: (version) => `Version ${version} available`,
+    action: "View",
+    dismiss: "Close",
+    dismissAccessibilityLabel: "Dismiss the update notification",
+  },
 };
 
 // Dismissible banner announcing an available update: version, release notes
@@ -76,6 +96,7 @@ export function UpdateAvailableBanner({
   onPress,
   onDismiss,
   labels,
+  locale = "fr",
   styles,
 }: UpdateAvailableBannerProps) {
   // Style fields are merged as arrays (default, then override) so a partial
@@ -98,7 +119,7 @@ export function UpdateAvailableBanner({
       styles?.dismissButtonText,
     ],
   };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultLabels[locale], ...labels };
 
   return (
     <View style={merged.container}>
