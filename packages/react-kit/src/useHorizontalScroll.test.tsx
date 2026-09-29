@@ -131,6 +131,26 @@ describe("useHorizontalScroll", () => {
     expect(scrollBy).not.toHaveBeenCalled();
   });
 
+  it("tracks a container rendered conditionally after the first render", () => {
+    function LateHarness({ show }: { show: boolean }) {
+      const { scrollRef, innerRef } = useHorizontalScroll<HTMLSpanElement>();
+      return show ? (
+        <div ref={scrollRef} data-testid="late-scroll">
+          <span ref={innerRef} data-testid="late-inner" />
+        </div>
+      ) : null;
+    }
+
+    const { rerender } = render(<LateHarness show={false} />);
+    expect(MockResizeObserver.instances).toHaveLength(0);
+
+    rerender(<LateHarness show />);
+    expect(MockResizeObserver.instances.at(-1)?.observed).toEqual([
+      screen.getByTestId("late-scroll"),
+      screen.getByTestId("late-inner"),
+    ]);
+  });
+
   it("disconnects the observer on unmount", () => {
     const { unmount } = render(<Harness />);
 
