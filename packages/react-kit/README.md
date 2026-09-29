@@ -52,15 +52,26 @@ import {
 
 ### `useKeyListener(config, onKeyDown)`
 
-Attaches a `window` `keydown` listener and calls `onKeyDown` when the event
-matches every modifier specified in `config` (`key`, `ctrl`, `shift`, `alt`,
-`meta` — all optional, unset ones are ignored). Also exports a
-`SPECIAL_KEYS` constant (`ENTER`, `SPACE`, `ESCAPE`, `BACKSPACE`, `TAB`) for
-the `key` field:
+Attaches a `window` `keydown` listener and calls `onKeyDown(event)` when the
+event matches `config`:
+
+- `key` — `KeyboardEvent.key` to match; any key when omitted.
+- `ctrl`, `alt`, `meta` — must match **exactly** (`false` by default): `{ key:
+"s" }` doesn't fire on Ctrl+S, so it never clashes with a browser/OS
+  shortcut.
+- `shift` — only checked when specified, since Shift is often needed to type
+  the key itself (`"?"`, uppercase letters…).
+
+`onKeyDown` can be an inline function: the listener is only re-attached when
+`config`'s values change. Also exports a `SPECIAL_KEYS` constant (`ENTER`,
+`SPACE`, `ESCAPE`, `BACKSPACE`, `TAB`) for the `key` field:
 
 ```ts
 useKeyListener({ key: SPECIAL_KEYS.ESCAPE }, () => setOpen(false));
-useKeyListener({ key: "s", ctrl: true }, save);
+useKeyListener({ key: "s", ctrl: true }, (event) => {
+  event.preventDefault(); // keep the browser's "Save page" dialog closed
+  save();
+});
 ```
 
 ### `useToggleState(defaultValue?)`
@@ -126,7 +137,8 @@ const isOnline = useOnlineStatus();
 Returns `[ref, isIntersecting]` for the returned ref's element — the
 building block behind lazy-loading, infinite scroll and scroll-triggered
 animations. Pass `once: true` to stop observing after the first time it
-becomes visible:
+becomes visible. `ref` is a callback ref: an element rendered conditionally,
+after the first render, is observed as soon as it mounts:
 
 ```ts
 const [ref, isVisible] = useIntersectionObserver<HTMLImageElement>({
@@ -166,7 +178,9 @@ or right — for edge shadows or arrow buttons — kept in sync via a
 `ResizeObserver` on the container (`scrollRef`) and its content
 (`innerRef`). `scrollByStep(-1 | 1)` smooth-scrolls by `step` px (default
 `240`); the left/right arrow keys do the same unless focus is in a form field
-(`keyboard: false` to opt out). Call `updateScrollState` from `onScroll`:
+(`keyboard: false` to opt out). Call `updateScrollState` from `onScroll`.
+`scrollRef`/`innerRef` are callback refs, so a container rendered
+conditionally is tracked too:
 
 ```tsx
 const {
