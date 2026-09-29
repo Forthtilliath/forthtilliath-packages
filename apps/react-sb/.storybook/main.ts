@@ -28,5 +28,14 @@ const config: StorybookConfig = {
   docs: {
     defaultName: "Documentation",
   },
+  // "Show code" prints components by their function name: keep names through
+  // minification, or a static build shows `<c />` instead of `<IconBubble />`.
+  viteFinal: (viteConfig) => ({
+    ...viteConfig,
+    esbuild: {
+      ...(viteConfig.esbuild === false ? {} : viteConfig.esbuild),
+      keepNames: true,
+    },
+  }),
 };
 export default config;
