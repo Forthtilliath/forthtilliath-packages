@@ -5,7 +5,7 @@ storage) via presigned URLs. The file never goes through your app server — han
 on Vercel, whose functions reject request bodies over 4.5 MB.
 
 ```
-browser ──POST { key, contentType }──▶ your presign route ──▶ { uploadUrl, publicUrl? }
+browser ──POST { key, contentType, size }──▶ your presign route ──▶ { uploadUrl, publicUrl? }
 browser ──PUT file──────────────────▶ bucket (uploadUrl)
 ```
 
@@ -18,11 +18,11 @@ npm install @forthtilliath/r2 @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
 The AWS SDK packages are peer dependencies, only loaded by the `./server`
 entry point. `./client` has no dependency at all.
 
-| Entry point                | Runs in | Exports                                                             |
-| -------------------------- | ------- | ------------------------------------------------------------------- |
-| `@forthtilliath/r2`        | —       | Types: `PresignRequest`, `PresignResponse`, `PublicPresignResponse` |
-| `@forthtilliath/r2/client` | Browser | `uploadViaPresignedUrl`                                             |
-| `@forthtilliath/r2/server` | Server  | `createR2Client`, `createPresignHandler`, `isSafeKey`               |
+| Entry point                | Runs in | Exports                                                                       |
+| -------------------------- | ------- | ----------------------------------------------------------------------------- |
+| `@forthtilliath/r2`        | —       | Types: `PresignRequest`, `PresignResponse`, `PublicPresignResponse`           |
+| `@forthtilliath/r2/client` | Browser | `uploadViaPresignedUrl`                                                       |
+| `@forthtilliath/r2/server` | Server  | `createR2Client`, `createPresignHandler`, `isSafeKey`, `ACTIVE_CONTENT_TYPES` |
 
 ## Usage
 
@@ -51,8 +51,10 @@ export const POST = createPresignHandler({
   client: r2,
   bucket: "my-public-bucket",
   publicBaseUrl: "https://cdn.example.com", // omit for a private bucket
-  authorize: async (key) => {
-    const user = await getUser();
+  allowedContentTypes: ["image/*", "application/pdf"], // optional
+  maxSizeBytes: 10 * 1024 * 1024, // optional
+  authorize: async (key, { request, contentType, size }) => {
+    const user = await getUser(request);
     if (!user) return { status: 401, error: "Unauthorized" };
     if (!key.startsWith(`users/${user.id}/`))
       return { status: 403, error: "Forbidden key" };
@@ -64,15 +66,28 @@ export const POST = createPresignHandler({
 `createPresignHandler` returns a standard `(Request) => Promise<Response>`
 handler, so it works with any framework built on the Fetch API. It:
 
-1. reads `{ key, contentType }` — `400` if either is missing;
-2. rejects unsafe keys (`..`, leading `/`, null byte) — `400`, before
-   `authorize` is called;
-3. calls `authorize(key)` — a returned `{ status, error }` is sent as-is;
-4. responds with `{ uploadUrl }`, plus `publicUrl` when `publicBaseUrl` is
-   set.
+1. reads `{ key, contentType, size? }` — `400` if `key` or `contentType` is
+   missing;
+2. rejects unsafe keys (`..`, leading `/`, backslash, control characters,
+   over 1024 bytes) and malformed content types — `400`;
+3. checks the content type — `415` (see [Security](#security));
+4. with `maxSizeBytes`, checks `size` — `400` if missing/invalid, `413` above
+   the limit;
+5. calls `authorize(key, { request, contentType, size })` — a returned
+   `{ status, error }` is sent as-is. Steps 2–4 run first, so an invalid
+   request never reaches your auth logic;
+6. responds with `{ uploadUrl }`, plus `publicUrl` (key segments
+   URL-encoded) when `publicBaseUrl` is set.
 
-Options: `expiresIn` (seconds, default `300`) and `onError(error) => Response`
-for presign failures (default: logs and returns `500`).
+Options:
+
+- `allowedContentTypes` — exact types or wildcards (`"image/*"`); anything
+  else gets a `415`. Replaces the default rule below.
+- `maxSizeBytes` — max file size; the client must send `size` (the bundled
+  client does), and it is signed into the URL.
+- `expiresIn` — URL lifetime in seconds (default `300`).
+- `onError(error) => Response` — for presign failures (default: logs and
+  returns `500`).
 
 ### Browser — upload
 
@@ -90,7 +105,25 @@ const { publicUrl } = await uploadViaPresignedUrl<PublicPresignResponse>({
 ```
 
 Throws with the route's `error` message when presigning fails, or
-`Upload failed (<status>)` when the `PUT` fails.
+`Upload failed (<status>)` when the `PUT` fails. Pass `signal` (an
+`AbortSignal`) to cancel both requests.
+
+## Security
+
+- **The Content-Type is signed.** The presigned URL only accepts a `PUT`
+  with the exact `Content-Type` that was presigned, so a client can't get a
+  URL for `image/webp` and upload `text/html` with it.
+- **Active content is refused on public buckets.** Without
+  `allowedContentTypes`, a public bucket (`publicBaseUrl` set) rejects the
+  types a browser renders or executes (`ACTIVE_CONTENT_TYPES`: HTML, SVG,
+  XML, JavaScript) — served from the bucket, they'd be a stored XSS. A
+  private bucket accepts any type by default. Prefer an explicit
+  `allowedContentTypes` whenever you know what you accept.
+- **Size is only enforced with `maxSizeBytes`.** The exact size is then
+  signed into the URL: the bucket rejects a body of any other length.
+- **`authorize` is your access control.** It gets the `Request`, so check the
+  caller's session there, and restrict the key (e.g. to the user's own
+  prefix) — the key check only blocks path tricks, not someone else's key.
 
 ## Bucket CORS
 
