@@ -1,7 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Contrast, HelpCircle, Palette, PlusIcon, Zap } from "lucide-react";
+import { Contrast, HelpCircle, Palette, Zap } from "lucide-react";
 
 import { Accordion } from "@forthtilliath/forth-ui/components/accordion";
+
+import {
+  baseItems,
+  itemsWith,
+  plusChevron,
+  plusChevronTrigger,
+} from "../accordion-fixtures";
+
+import { accordionArgTypes } from "./accordion.args";
 
 /**
  * A vertically stacked set of interactive headings that each reveal a section of content.
@@ -9,95 +18,9 @@ import { Accordion } from "@forthtilliath/forth-ui/components/accordion";
 const meta = {
   title: "forth-ui/Layout/Accordion",
   component: Accordion,
-  argTypes: {
-    collapsible: {
-      description: "Use the ``collapsible`` prop to allow all items to close.",
-      table: {
-        type: { summary: "boolean" },
-        defaultValue: { summary: "false" },
-      },
-    },
-    multiple: {
-      description:
-        "Set the ``type`` prop to ``multiple`` to enable opening multiple items at once.",
-      table: {
-        type: { summary: "boolean" },
-        defaultValue: { summary: "false" },
-      },
-    },
-    chevronAlignment: {
-      description:
-        "Use the ``chevronAlignment`` prop to change the alignment of the chevron.",
-      options: ["left", "right"],
-      control: {
-        type: "inline-radio",
-        labels: { left: "Left", right: "Right" },
-      },
-      table: {
-        type: {
-          summary: "left | right",
-        },
-        defaultValue: { summary: '"right"' },
-      },
-    },
-    variant: {
-      description: "Use the ``variant`` prop to change the visual style.",
-      options: [
-        "default",
-        "outline",
-        "box",
-        "contained",
-        "box-contained",
-        "tabs",
-        "highlight-active",
-      ],
-      control: { type: "select" },
-      table: {
-        type: {
-          summary:
-            "default | outline | box | contained | box-contained | tabs | highlight-active",
-        },
-        defaultValue: { summary: '"default"' },
-      },
-    },
-    size: {
-      description: "Use the ``size`` prop to change the size of the accordion.",
-      options: ["sm", "default", "lg"],
-      control: {
-        type: "select",
-        labels: { sm: "Small", lg: "Large", default: "Default" },
-      },
-      table: {
-        type: { summary: "sm | default | lg" },
-        defaultValue: { summary: '"default"' },
-      },
-    },
-    items: {
-      description: "Use the ``items`` prop to specify the accordion items.",
-      control: { type: "object", disable: true },
-      table: {
-        type: { summary: "Item[]" },
-        defaultValue: { summary: "Required" },
-      },
-    },
-  },
+  argTypes: accordionArgTypes,
   args: {
-    items: [
-      {
-        title: "Is it accessible?",
-        content: "Yes. It adheres to the WAI-ARIA design pattern.",
-      },
-      {
-        title: "Is it styled?",
-        content:
-          "Yes. It comes with default styles that matches the other components' aesthetic.",
-      },
-      {
-        title: "Is it animated?",
-        content:
-          "Yes. It's animated by default, but you can disable it if you prefer.",
-      },
-    ],
+    items: baseItems,
   },
 } satisfies Meta<typeof Accordion>;
 
@@ -179,25 +102,11 @@ export const HighlightActive: Story = {
 export const Icon: Story = {
   args: {
     defaultValue: "item-0",
-    items: [
-      {
-        title: "Is it accessible?",
-        content: "Yes. It adheres to the WAI-ARIA design pattern.",
-        icon: <Contrast />,
-      },
-      {
-        title: "Is it styled?",
-        content:
-          "Yes. It comes with default styles that matches the other components' aesthetic.",
-        icon: <Palette />,
-      },
-      {
-        title: "Is it animated?",
-        content:
-          "Yes. It's animated by default, but you can disable it if you prefer.",
-        icon: <Zap />,
-      },
-    ],
+    items: itemsWith([
+      { icon: <Contrast /> },
+      { icon: <Palette /> },
+      { icon: <Zap /> },
+    ]),
   },
 };
 
@@ -207,26 +116,11 @@ export const Icon: Story = {
 export const Disabled: Story = {
   args: {
     defaultValue: "item-0",
-    items: [
-      {
-        title: "Is it accessible?",
-        content: "Yes. It adheres to the WAI-ARIA design pattern.",
-        icon: <Contrast color="green" />,
-      },
-      {
-        title: "Is it styled?",
-        content:
-          "Yes. It comes with default styles that matches the other components' aesthetic.",
-        icon: <Palette color="red" />,
-        disabled: true,
-      },
-      {
-        title: "Is it animated?",
-        content:
-          "Yes. It's animated by default, but you can disable it if you prefer.",
-        icon: <Zap color="green" />,
-      },
-    ],
+    items: itemsWith([
+      { icon: <Contrast color="green" /> },
+      { icon: <Palette color="red" />, disabled: true },
+      { icon: <Zap color="green" /> },
+    ]),
   },
 };
 
@@ -294,28 +188,20 @@ export const FAQExample: Story = {
 export const Subtitle: Story = {
   args: {
     defaultValue: "item-0",
-    items: [
+    items: itemsWith([
       {
-        title: "Is it accessible?",
         subtitle: "Find out more about our accessibility features.",
-        content: "Yes. It adheres to the WAI-ARIA design pattern.",
         icon: <Contrast color="green" />,
       },
       {
-        title: "Is it styled?",
         subtitle: "Explore the aesthetic uniformity",
-        content:
-          "Yes. It comes with default styles that matches the other components' aesthetic.",
         icon: <Palette color="purple" />,
       },
       {
-        title: "Is it animated?",
         subtitle: "Animation customization options",
-        content:
-          "Yes. It's animated by default, but you can disable it if you prefer.",
         icon: <Zap color="blue" />,
       },
-    ],
+    ]),
   },
 };
 
@@ -331,25 +217,11 @@ export const Stylizable: Story = {
       "[&_[data-slot=title]]:no-underline [&_[data-slot=icon]]:group-hover:rotate-45 [&_[data-slot=icon]]:transition [&_[data-slot=icon]]:duration-100",
     classNameItem: "bg-purple-300/50",
     classNameContent: "ps-7",
-    items: [
-      {
-        title: "Is it accessible?",
-        content: "Yes. It adheres to the WAI-ARIA design pattern.",
-        icon: <Contrast size={16} />,
-      },
-      {
-        title: "Is it styled?",
-        content:
-          "Yes. It comes with default styles that matches the other components' aesthetic.",
-        icon: <Palette size={16} />,
-      },
-      {
-        title: "Is it animated?",
-        content:
-          "Yes. It's animated by default, but you can disable it if you prefer.",
-        icon: <Zap size={16} />,
-      },
-    ],
+    items: itemsWith([
+      { icon: <Contrast size={16} /> },
+      { icon: <Palette size={16} /> },
+      { icon: <Zap size={16} /> },
+    ]),
   },
 };
 
@@ -359,15 +231,8 @@ export const Stylizable: Story = {
  */
 export const CustomChevron: Story = {
   args: {
-    customChevron: (
-      <PlusIcon
-        size={16}
-        className="pointer-events-none shrink-0 opacity-60 transition-transform duration-200"
-        aria-hidden="true"
-      />
-    ),
-    classNameTrigger:
-      "[&>svg>path:last-child]:origin-center [&>svg>path:last-child]:transition-all [&>svg>path:last-child]:duration-200 [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg>path:last-child]:rotate-90 [&[data-state=open]>svg>path:last-child]:opacity-0",
+    customChevron: plusChevron,
+    classNameTrigger: plusChevronTrigger,
   },
 };
 
@@ -377,14 +242,7 @@ export const CustomChevron: Story = {
 export const LeftCustomChevron: Story = {
   args: {
     chevronAlignment: "left",
-    customChevron: (
-      <PlusIcon
-        size={16}
-        className="pointer-events-none shrink-0 opacity-60 transition-transform duration-200"
-        aria-hidden="true"
-      />
-    ),
-    classNameTrigger:
-      "[&>svg>path:last-child]:origin-center [&>svg>path:last-child]:transition-all [&>svg>path:last-child]:duration-200 [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg>path:last-child]:rotate-90 [&[data-state=open]>svg>path:last-child]:opacity-0",
+    customChevron: plusChevron,
+    classNameTrigger: plusChevronTrigger,
   },
 };
