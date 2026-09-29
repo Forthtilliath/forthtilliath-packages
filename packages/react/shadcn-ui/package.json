@@ -22,7 +22,7 @@
     "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "dev": "tsc --watch",
     "build": "pnpm run clean && tsc",
-    "postbuild": "node -e \"require('node:fs').cpSync('src/styles', 'dist/styles', { recursive: true })\""
+    "postbuild": "node -e \"require('node:fs').cpSync('src/styles', 'dist/styles', { recursive: true })\" && node scripts/add-dist-import-extensions.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
