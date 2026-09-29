@@ -46,3 +46,10 @@ jobs:
       # surface on the next local `storybook build`.
       - name: Build Storybook
         run: pnpm --filter react-sb run build-storybook
+
+      # apps/shadweb/registry is generated from forth-ui's sources: fail if a
+      # forth-ui change was committed without regenerating it.
+      - name: Check the shadweb registry is up to date
+        run: |
+          pnpm --filter shadweb run registry:generate
+          git diff --exit-code -- apps/shadweb/registry apps/shadweb/registry.json
