@@ -6,7 +6,18 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-export type PasswordInputProps = Omit<React.ComponentProps<"input">, "type">;
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
+export type PasswordInputProps = Omit<React.ComponentProps<"input">, "type"> & {
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
+};
 
 /**
  * A password `Input` with a show/hide visibility toggle.
@@ -19,7 +30,12 @@ export type PasswordInputProps = Omit<React.ComponentProps<"input">, "type">;
  * @author Forth
  * @copyright 2026 Forth
  */
-export function PasswordInput({ className, ...props }: PasswordInputProps) {
+export function PasswordInput({
+  className,
+  locale,
+  ...props
+}: PasswordInputProps) {
+  const messages = useUiMessages(locale);
   const [visible, setVisible] = React.useState(false);
 
   return (
@@ -34,7 +50,9 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
         onClick={() => {
           setVisible((prev) => !prev);
         }}
-        aria-label={visible ? "Hide password" : "Show password"}
+        aria-label={
+          visible ? messages.passwordInput.hide : messages.passwordInput.show
+        }
         className="text-muted-foreground hover:text-foreground absolute inset-y-0 right-0 flex items-center px-3"
       >
         {visible ? (

@@ -6,6 +6,11 @@ import { X } from "lucide-react";
 import { Badge as BadgePrimitive } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 import type { BadgeVariants } from "./variants";
 import { badgeVariants, dotVariants } from "./variants";
 
@@ -42,6 +47,11 @@ export type BadgeProps = Omit<
      * Called when the badge is dismissed, whether controlled or not.
      */
     onOpenChange?: (open: boolean) => void;
+    /**
+     * Language of the built-in labels — French by default, or the nearest
+     * `UiLocaleProvider`'s. Explicit text props still win.
+     */
+    locale?: UiLocale;
   };
 
 /**
@@ -69,8 +79,10 @@ export function Badge({
   open,
   onOpenChange,
   children,
+  locale,
   ...props
 }: BadgeProps) {
+  const messages = useUiMessages(locale);
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(true);
   const isOpen = open ?? uncontrolledOpen;
 
@@ -107,7 +119,7 @@ export function Badge({
         <button
           type="button"
           onClick={handleDismiss}
-          aria-label="Dismiss"
+          aria-label={messages.badge.remove}
           className="-mr-0.5 ml-0.5 rounded-full opacity-70 transition-opacity outline-none hover:opacity-100 focus-visible:ring-2 focus-visible:ring-current [&>svg]:size-2.5"
         >
           <X />

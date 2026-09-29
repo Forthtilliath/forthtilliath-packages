@@ -15,6 +15,11 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
+
 import type { ConfirmFn, ConfirmState } from "./confirm-context";
 import { ConfirmContext } from "./confirm-context";
 
@@ -33,9 +38,16 @@ import { ConfirmContext } from "./confirm-context";
  */
 export function ConfirmDialogProvider({
   children,
+  locale,
 }: {
   children: React.ReactNode;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 }) {
+  const messages = useUiMessages(locale);
   const [state, setState] = React.useState<ConfirmState | null>(null);
 
   const confirm = React.useCallback<ConfirmFn>((options) => {
@@ -71,7 +83,7 @@ export function ConfirmDialogProvider({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>
-              {state?.cancelLabel ?? "Cancel"}
+              {state?.cancelLabel ?? messages.confirmDialog.cancel}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
@@ -82,7 +94,7 @@ export function ConfirmDialogProvider({
                   buttonVariants({ variant: "destructive" }),
               )}
             >
-              {state?.confirmLabel ?? "Continue"}
+              {state?.confirmLabel ?? messages.confirmDialog.confirm}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

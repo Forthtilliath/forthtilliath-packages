@@ -1,6 +1,11 @@
 "use client";
 
-import { ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+} from "lucide-react";
 
 import {
   Pagination as PaginationPrimitive,
@@ -8,10 +13,13 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+
+import {
+  type UiLocale,
+  useUiMessages,
+} from "@/components/forth-ui/locale/locale";
 
 import type { PaginationRangeOptions } from "./pagination-range";
 import { getPaginationRange } from "./pagination-range";
@@ -24,6 +32,11 @@ export type PaginationProps = Omit<PaginationRangeOptions, "page"> & {
   showFirstLast?: boolean;
   disabled?: boolean;
   className?: string;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `UiLocaleProvider`'s. Explicit text props still win.
+   */
+  locale?: UiLocale;
 };
 
 /**
@@ -49,7 +62,9 @@ export function Pagination({
   showFirstLast = false,
   disabled = false,
   className,
+  locale,
 }: PaginationProps) {
+  const messages = useUiMessages(locale);
   const items = getPaginationRange({
     page,
     totalPages,
@@ -73,7 +88,7 @@ export function Pagination({
           <PaginationItem>
             <PaginationLink
               href="#"
-              aria-label="Go to first page"
+              aria-label={messages.pagination.first}
               size="icon"
               aria-disabled={page <= 1}
               className={cn(page <= 1 && "pointer-events-none opacity-50")}
@@ -87,15 +102,25 @@ export function Pagination({
           </PaginationItem>
         )}
         <PaginationItem>
-          <PaginationPrevious
+          <PaginationLink
             href="#"
+            aria-label={messages.pagination.previousLabel}
+            size="default"
             aria-disabled={page <= 1}
-            className={cn(page <= 1 && "pointer-events-none opacity-50")}
+            className={cn(
+              "gap-1 px-2.5 sm:pl-2.5",
+              page <= 1 && "pointer-events-none opacity-50",
+            )}
             onClick={(e) => {
               e.preventDefault();
               goTo(page - 1);
             }}
-          />
+          >
+            <ChevronLeftIcon />
+            <span className="hidden sm:block">
+              {messages.pagination.previous}
+            </span>
+          </PaginationLink>
         </PaginationItem>
 
         {items.map((item) =>
@@ -120,23 +145,29 @@ export function Pagination({
         )}
 
         <PaginationItem>
-          <PaginationNext
+          <PaginationLink
             href="#"
+            aria-label={messages.pagination.nextLabel}
+            size="default"
             aria-disabled={page >= totalPages}
             className={cn(
+              "gap-1 px-2.5 sm:pr-2.5",
               page >= totalPages && "pointer-events-none opacity-50",
             )}
             onClick={(e) => {
               e.preventDefault();
               goTo(page + 1);
             }}
-          />
+          >
+            <span className="hidden sm:block">{messages.pagination.next}</span>
+            <ChevronRightIcon />
+          </PaginationLink>
         </PaginationItem>
         {showFirstLast && (
           <PaginationItem>
             <PaginationLink
               href="#"
-              aria-label="Go to last page"
+              aria-label={messages.pagination.last}
               size="icon"
               aria-disabled={page >= totalPages}
               className={cn(
