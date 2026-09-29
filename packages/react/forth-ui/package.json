@@ -45,8 +45,14 @@
     "shiki": "^4.4.3"
   },
   "peerDependencies": {
+    "next-themes": ">=0.4",
     "react": ">=19",
     "react-dom": ">=19"
+  },
+  "peerDependenciesMeta": {
+    "next-themes": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
@@ -61,6 +67,7 @@
     "@types/react-dom": "catalog:",
     "concurrently": "^10.0.4",
     "eslint": "catalog:",
+    "next-themes": "^0.4.6",
     "react": "catalog:",
     "react-dom": "catalog:",
     "size-limit": "catalog:",
