@@ -187,10 +187,11 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 
 ### Buttons & Actions
 
-| Component               | Import              | Description                                                                    |
-| ----------------------- | ------------------- | ------------------------------------------------------------------------------ |
-| `Button`, `ButtonGroup` | `components/button` | A button, or a component that looks like one, plus joined button rows/columns. |
-| `Chip`                  | `components/chip`   | A compact, interactive element for status, categories, or filters.             |
+| Component                     | Import                   | Description                                                                     |
+| ----------------------------- | ------------------------ | ------------------------------------------------------------------------------- |
+| `Button`, `ButtonGroup`       | `components/button`      | A button, or a component that looks like one, plus joined button rows/columns.  |
+| `Chip`                        | `components/chip`        | A compact, interactive element for status, categories, or filters.              |
+| `ModeToggle`, `ThemeProvider` | `components/mode-toggle` | A light / dark / system theme switcher (needs the optional `next-themes` peer). |
 
 ### Forms
 
@@ -231,6 +232,7 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 | ---------------- | ---------------------------- | ----------------------------------------------------------------------------------- |
 | `CommandPalette` | `components/command-palette` | A global command menu (Cmd/Ctrl+K to open).                                         |
 | `useConfirm`     | `components/confirm-dialog`  | An imperative `await confirm({...})` alternative to hand-wiring an `AlertDialog`.   |
+| `CopyMenuItem`   | `components/copy-menu-item`  | A `DropdownMenuItem` that copies a value and briefly shows a checkmark.             |
 | `Dropdrawer`     | `components/dropdrawer`      | A menu that renders as a `DropdownMenu` on desktop and a bottom `Drawer` on mobile. |
 
 ### Data Display
@@ -247,6 +249,7 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 | `QrCode`                       | `components/qr-code`          | Generates a QR code from a string, rendered as inline SVG.               |
 | `RelativeTime`                 | `components/relative-time`    | Displays a live-updating time, defaulting to the local timezone.         |
 | `Sortable`                     | `components/sortable`         | A drag-to-reorder list built on native HTML5 drag events.                |
+| `ThemeImage`                   | `components/theme-image`      | An image with a light and a dark version (`as={Image}` for Next.js).     |
 | `Timeline`                     | `components/timeline`         | A vertical sequence of dated events, connected by a line.                |
 | `Tree`                         | `components/tree`             | A hierarchical, expandable/collapsible list of nodes.                    |
 
