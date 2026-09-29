@@ -59,6 +59,21 @@ describe("useUpdateCheck", () => {
     expect(onChecked).toHaveBeenCalledWith(1000);
   });
 
+  it("compares versions numerically by default when compareVersions is omitted", async () => {
+    const result = await renderHookAsync(() =>
+      useUpdateCheck({
+        currentVersion: "1.9.0",
+        checkForUpdate: () =>
+          Promise.resolve({ ...RELEASE, version: "1.10.0" }),
+        getLastCheck: () => ({ lastCheckedAt: null, dismissedVersion: null }),
+        onChecked: vi.fn(),
+      }),
+    );
+
+    // A plain string comparison would rank "1.10.0" below "1.9.0".
+    expect(result.current.status).toBe("available");
+  });
+
   it("does not check again before minIntervalMs has elapsed", async () => {
     const checkForUpdate = vi.fn().mockResolvedValue(RELEASE);
     const result = await renderHookAsync(() =>
