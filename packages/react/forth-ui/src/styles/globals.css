@@ -7,7 +7,6 @@
 @import "./shiki.css";
 @import "./marquee.css";
 
-@source "../../../apps/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 /* The shadcn-ui components forth-ui builds on (Dialog, Popover…) use classes
    of their own, e.g. tw-animate-css's `animate-in`: scan them too, or the
