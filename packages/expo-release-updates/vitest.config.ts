@@ -6,6 +6,10 @@ export default defineConfig({
     // for a browser-like or React Native environment.
     environment: "node",
     coverage: {
+      // On in CI (GitHub Actions sets CI=true), so `test` also enforces the
+      // thresholds there instead of CI running every test twice. Locally,
+      // `test` stays fast and `coverage` opts in.
+      enabled: process.env.CI === "true",
       provider: "v8",
       reporter: ["text", "lcov"],
       exclude: ["**/*.test.ts", "src/index.ts"],
