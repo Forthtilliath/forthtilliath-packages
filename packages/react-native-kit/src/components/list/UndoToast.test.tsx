@@ -5,6 +5,7 @@ import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
 import { propsOf } from "../../__mocks__/testInstance.js";
+import { KitLocaleProvider } from "../../i18n/locale.js";
 
 import { UndoToast } from "./UndoToast.js";
 
@@ -52,16 +53,35 @@ describe("UndoToast", () => {
     expect(textValues(tree)).toContain("« Marie » supprimée");
   });
 
-  it('defaults the action label to "Undo"', () => {
+  it('defaults the action label to "Annuler"', () => {
     const tree = renderTree(<UndoToast message="x" onAction={vi.fn()} />);
-    expect(textValues(tree)).toContain("Undo");
+    expect(textValues(tree)).toContain("Annuler");
   });
 
-  it("uses a custom action label", () => {
-    const tree = renderTree(
-      <UndoToast message="x" actionLabel="Annuler" onAction={vi.fn()} />,
+  it('defaults to "Undo" with locale="en", or under an English provider', () => {
+    const own = renderTree(
+      <UndoToast message="x" locale="en" onAction={vi.fn()} />,
     );
-    expect(textValues(tree)).toContain("Annuler");
+    expect(textValues(own)).toContain("Undo");
+
+    const provided = renderTree(
+      <KitLocaleProvider locale="en">
+        <UndoToast message="x" onAction={vi.fn()} />
+      </KitLocaleProvider>,
+    );
+    expect(textValues(provided)).toContain("Undo");
+  });
+
+  it("uses a custom action label, whatever the locale", () => {
+    const tree = renderTree(
+      <UndoToast
+        message="x"
+        actionLabel="Rétablir"
+        locale="en"
+        onAction={vi.fn()}
+      />,
+    );
+    expect(textValues(tree)).toContain("Rétablir");
     expect(textValues(tree)).not.toContain("Undo");
   });
 
@@ -137,7 +157,9 @@ describe("UndoToast", () => {
       flattenStyle(propsOf<{ style: unknown }>(findText(tree, "hello")).style),
     ).toMatchObject({ flex: 1, color: "#111111" });
     expect(
-      flattenStyle(propsOf<{ style: unknown }>(findText(tree, "Undo")).style),
+      flattenStyle(
+        propsOf<{ style: unknown }>(findText(tree, "Annuler")).style,
+      ),
     ).toMatchObject({ fontWeight: "700", color: "#2563eb" });
   });
 });
