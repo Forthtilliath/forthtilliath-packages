@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface UseHorizontalScrollOptions {
   /** Distance in px scrolled by `scrollByStep`. Defaults to `240`. */
@@ -27,7 +27,8 @@ function isEditable(el: Element | null): boolean {
  * or right (for edge shadows or arrow buttons), kept in sync on resize of the
  * container or its content. Attach `scrollRef` to the scrolling element,
  * `innerRef` to its (wider) content, and call `updateScrollState` from its
- * `onScroll`.
+ * `onScroll`. Both are callback refs, so elements rendered conditionally
+ * (after the first render) are tracked too.
  *
  * @example
  * const { scrollRef, innerRef, canScrollLeft, canScrollRight, updateScrollState, scrollByStep } =
@@ -42,39 +43,39 @@ export function useHorizontalScroll<TInner extends HTMLElement = HTMLElement>(
   options: UseHorizontalScrollOptions = {},
 ) {
   const { step = 240, keyboard = true } = options;
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<TInner>(null);
+  const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
+  const [innerEl, setInnerEl] = useState<TInner | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const updateScrollState = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 0);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
-  }, []);
+    if (!scrollEl) return;
+    setCanScrollLeft(scrollEl.scrollLeft > 0);
+    setCanScrollRight(
+      scrollEl.scrollLeft + scrollEl.clientWidth < scrollEl.scrollWidth - 1,
+    );
+  }, [scrollEl]);
 
   const scrollByStep = useCallback(
     (direction: -1 | 1) => {
-      scrollRef.current?.scrollBy({
+      scrollEl?.scrollBy({
         left: direction * step,
         behavior: "smooth",
       });
     },
-    [step],
+    [scrollEl, step],
   );
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || typeof ResizeObserver === "undefined") return;
+    if (!scrollEl || typeof ResizeObserver === "undefined") return;
     // ResizeObserver fires once on initial observation, so no manual update
     const observer = new ResizeObserver(updateScrollState);
-    observer.observe(el);
-    if (innerRef.current) observer.observe(innerRef.current);
+    observer.observe(scrollEl);
+    if (innerEl) observer.observe(innerEl);
     return () => {
       observer.disconnect();
     };
-  }, [updateScrollState]);
+  }, [scrollEl, innerEl, updateScrollState]);
 
   useEffect(() => {
     if (!keyboard) return;
@@ -90,8 +91,8 @@ export function useHorizontalScroll<TInner extends HTMLElement = HTMLElement>(
   }, [keyboard, scrollByStep]);
 
   return {
-    scrollRef,
-    innerRef,
+    scrollRef: setScrollEl,
+    innerRef: setInnerEl,
     canScrollLeft,
     canScrollRight,
     updateScrollState,
