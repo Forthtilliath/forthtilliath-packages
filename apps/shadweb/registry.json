@@ -25,6 +25,11 @@
           "target": "@components/forth-ui/accordion/accordion-single.tsx"
         },
         {
+          "path": "registry/forth-ui/accordion/accordion-trigger.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/accordion/accordion-trigger.tsx"
+        },
+        {
           "path": "registry/forth-ui/accordion/accordion.tsx",
           "type": "registry:component",
           "target": "@components/forth-ui/accordion/accordion.tsx"
@@ -600,6 +605,45 @@
           "target": "@components/forth-ui/gradient-frame/index.ts"
         }
       ]
+    },
+    {
+      "name": "grid",
+      "type": "registry:component",
+      "title": "Grid",
+      "description": "A CSS grid with column and spacing variants, plus GridItem spans; with debug, a key (g) toggles a layout overlay.",
+      "files": [
+        {
+          "path": "registry/forth-ui/grid/context.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/grid/context.tsx"
+        },
+        {
+          "path": "registry/forth-ui/grid/grid-item.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/grid/grid-item.tsx"
+        },
+        {
+          "path": "registry/forth-ui/grid/grid.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/grid/grid.tsx"
+        },
+        {
+          "path": "registry/forth-ui/grid/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/grid/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/grid/variants.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/grid/variants.ts"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "clsx",
+        "@forthtilliath/react-kit"
+      ],
+      "devDependencies": ["@forthtilliath/ts-types"]
     },
     {
       "name": "icon-bubble",

@@ -1,10 +1,7 @@
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { AccordionContent, AccordionItem } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
+import { AccordionTrigger } from "./accordion-trigger";
 import type { AccordionProps } from "./types";
 import {
   accordionContentVariants,
