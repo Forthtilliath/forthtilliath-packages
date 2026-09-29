@@ -14,7 +14,7 @@ onlyBuiltDependencies:
   - lefthook
 
 catalog:
-  '@size-limit/file': ^11.2.0
+  '@size-limit/file': ^14.1.0
   # tailwindcss, @tailwindcss/postcss and @tailwindcss/cli: keep all three on
   # the same version (the CLI builds the published forth-ui CSS).
   '@tailwindcss/cli': 4.3.3
@@ -25,10 +25,10 @@ catalog:
   '@types/react-dom': ^19.2.4
   '@vitest/coverage-v8': 5.0.2
   eslint: 10.7.0
-  jsdom: ^29.1.1
+  jsdom: ^30.1.1
   react: ^19.2.8
   react-dom: ^19.2.8
-  size-limit: ^11.2.0
+  size-limit: ^14.1.0
   tailwindcss: 4.3.3
   typescript: ^5.9.3
   vitest: ^5.0.2
