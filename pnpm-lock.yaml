@@ -585,6 +585,9 @@ importers:
       '@forthtilliath/shadcn-ui':
         specifier: workspace:*
         version: link:../shadcn-ui
+      '@forthtilliath/ts-types':
+        specifier: workspace:*
+        version: link:../../ts-types
       '@radix-ui/react-accordion':
         specifier: ^1.2.20
         version: 1.2.20(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -613,9 +616,6 @@ importers:
       '@forthtilliath/eslint-config':
         specifier: workspace:*
         version: link:../../eslint-config
-      '@forthtilliath/ts-types':
-        specifier: workspace:*
-        version: link:../../ts-types
       '@forthtilliath/typescript-config':
         specifier: workspace:*
         version: link:../../typescript-config
