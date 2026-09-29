@@ -12,6 +12,7 @@ import { AboutSettingsScreen } from "../components/settings/AboutSettingsScreen.
 import { ContactSettingsScreen } from "../components/settings/ContactSettingsScreen.js";
 import { PrivacySettingsScreen } from "../components/settings/PrivacySettingsScreen.js";
 import { ThemeSettingsScreen } from "../components/settings/ThemeSettingsScreen.js";
+import { UpdateSettingsScreen } from "../components/settings/UpdateSettingsScreen.js";
 import { ThemeOptionList } from "../components/theme/ThemeOptionList.js";
 import { ThemeToggle } from "../components/theme/ThemeToggle.js";
 
@@ -113,6 +114,21 @@ const cases: [
     ),
     "Aucun résultat.",
     "No results.",
+  ],
+  [
+    "UpdateSettingsScreen",
+    (locale) => (
+      <UpdateSettingsScreen
+        currentVersion="1.0.0"
+        // Never settles: keeps the screen in its initial state.
+        checkForUpdate={() => new Promise(() => undefined)}
+        compareVersions={() => 0}
+        downloadAndInstallApk={vi.fn()}
+        locale={locale}
+      />
+    ),
+    "Version installée",
+    "Installed version",
   ],
 ];
 
