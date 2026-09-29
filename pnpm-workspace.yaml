@@ -3,9 +3,11 @@ packages:
   - packages/*
   - packages/react/*
 
-# Explicit allowlist for dependencies allowed to run install scripts. Newer
-# pnpm (11.21.0+ at least) hard-errors on unapproved ignored build scripts
-# instead of just warning — without this, `pnpm install` fails outright.
+# Explicit allowlist for dependencies allowed to run install scripts. The
+# pnpm pinned in package.json (`packageManager`, 10.x) only warns about
+# unapproved ones, but newer pnpm (11.21.0+ at least) hard-errors instead:
+# keeping this list complete is what lets the repo move to a newer pnpm
+# without `pnpm install` failing outright.
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
   - esbuild
