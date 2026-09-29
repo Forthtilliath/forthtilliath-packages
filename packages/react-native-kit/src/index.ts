@@ -25,6 +25,7 @@ export * from "./hooks/useSubmitGuard.js";
 export * from "./i18n/KitLocaleProvider.js";
 export * from "./i18n/locale.js";
 export * from "./utils/helpers/confirmDestructive.js";
+export * from "./utils/helpers/mergeSlotStyles.js";
 // Framework-agnostic — actually implemented (and tested/documented) in
 // ts-kit, re-exported here so existing imports of these names keep working.
 export {
