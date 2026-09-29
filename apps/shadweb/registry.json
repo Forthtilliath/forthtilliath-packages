@@ -452,6 +452,26 @@
       "registryDependencies": ["alert-dialog", "button", "@forth-ui/locale"]
     },
     {
+      "name": "copy-menu-item",
+      "type": "registry:component",
+      "title": "CopyMenuItem",
+      "description": "A DropdownMenuItem that copies a value and briefly shows a checkmark.",
+      "files": [
+        {
+          "path": "registry/forth-ui/copy-menu-item/copy-menu-item.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/copy-menu-item/copy-menu-item.tsx"
+        },
+        {
+          "path": "registry/forth-ui/copy-menu-item/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/copy-menu-item/index.ts"
+        }
+      ],
+      "dependencies": ["lucide-react", "@forthtilliath/react-kit"],
+      "registryDependencies": ["dropdown-menu"]
+    },
+    {
       "name": "count-animation",
       "type": "registry:component",
       "title": "CountAnimation",
@@ -805,6 +825,31 @@
           "target": "@components/forth-ui/marquee/marquee.tsx"
         }
       ]
+    },
+    {
+      "name": "mode-toggle",
+      "type": "registry:component",
+      "title": "ModeToggle",
+      "description": "A light / dark / system theme switcher, plus its next-themes ThemeProvider.",
+      "files": [
+        {
+          "path": "registry/forth-ui/mode-toggle/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/mode-toggle/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/mode-toggle/mode-toggle.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/mode-toggle/mode-toggle.tsx"
+        },
+        {
+          "path": "registry/forth-ui/mode-toggle/theme-provider.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/mode-toggle/theme-provider.tsx"
+        }
+      ],
+      "dependencies": ["lucide-react", "next-themes"],
+      "registryDependencies": ["button", "dropdown-menu", "@forth-ui/locale"]
     },
     {
       "name": "multi-step-loader",
@@ -1295,6 +1340,24 @@
         }
       ],
       "registryDependencies": ["@forth-ui/badge", "@forth-ui/locale"]
+    },
+    {
+      "name": "theme-image",
+      "type": "registry:component",
+      "title": "ThemeImage",
+      "description": "An image with a light and a dark version, switched by the dark variant.",
+      "files": [
+        {
+          "path": "registry/forth-ui/theme-image/index.ts",
+          "type": "registry:component",
+          "target": "@components/forth-ui/theme-image/index.ts"
+        },
+        {
+          "path": "registry/forth-ui/theme-image/theme-image.tsx",
+          "type": "registry:component",
+          "target": "@components/forth-ui/theme-image/theme-image.tsx"
+        }
+      ]
     },
     {
       "name": "timeline",
