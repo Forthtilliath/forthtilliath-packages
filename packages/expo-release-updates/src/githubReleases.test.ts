@@ -7,9 +7,12 @@ import { fetchLatestRelease, fetchReleaseHistory } from "./githubReleases.js";
 const ref = { owner: "acme", repo: "app" };
 
 function mockFetchOnce(body: unknown, ok = true, status = 200) {
+  // A fresh Response per call: a real body can only be read once.
   const fetchMock = vi
     .fn()
-    .mockResolvedValue(createMockResponse(body, { ok, status }));
+    .mockImplementation(() =>
+      Promise.resolve(createMockResponse(body, { ok, status })),
+    );
   vi.stubGlobal("fetch", fetchMock);
   return fetchMock;
 }
