@@ -15,10 +15,10 @@ const preview: Preview = {
     // To not have conflicts with decorators which setup the theme
     backgrounds: { disable: true },
     // axe runs on every story (Accessibility panel, and in the Vitest run).
-    // "todo": violations are reported, not failing — 60 of the 440 tests
-    // still have some (mostly color-contrast and unlabeled fields), part of
-    // them in the shadcn copies. Switch to "error" once they are fixed.
-    a11y: { test: "todo" },
+    // "error": any violation fails the story. The few rules a story opts
+    // out of (parameters.a11y.config) are violations inside the shadcn-ui
+    // copies, or WCAG exemptions (disabled controls), each with its reason.
+    a11y: { test: "error" },
   },
   tags: ["autodocs"],
   decorators: [twDecoratorHtml, withColorTheme, withUiLocale],
