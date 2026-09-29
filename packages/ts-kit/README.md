@@ -33,6 +33,18 @@ to keep a bundle's included code obvious at a glance):
 import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 ```
 
+### Browser-only functions
+
+Everything runs in any JavaScript runtime (browser, Node, React Native,
+Angular SSR…) **except** these, which need a DOM (`document`, `Image`,
+`URL.createObjectURL`) and throw elsewhere — only call them client-side:
+
+- `csv/downloadCsv`
+- `files/downloadText`, `files/downloadTextBlob`
+- `image/compressImage`
+
+Importing them is harmless anywhere: the DOM is only touched when called.
+
 ### `array`
 
 - `chunk(array, size)` — splits an array into chunks of a given size.
@@ -40,7 +52,8 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
   persist a user-customized column list (order + visibility, e.g. in
   `localStorage`). Only `key`/`visible` are stored; on read, unknown keys are
   dropped, new columns appended, and invalid input falls back to `defaults`.
-- `flattenDeep(array)` — recursively flattens nested arrays.
+- `flattenDeep(array)` — recursively flattens nested arrays, typed as the
+  innermost element type (`number[][][]` → `number[]`).
 - `getMostRecentIds(rows, limit?)` — most recently occurring distinct ids
   (`{ id, occurredAt }[]`), most recent first, deduplicated, limited
   (default 5).
@@ -60,16 +73,23 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 
 ### `async`
 
-- `sleep(ms)` — resolves after a delay.
+- `sleep(ms, signal?)` — resolves after a delay; rejects early if `signal`
+  aborts.
 - `retry(fn, options)` — retries an async operation with exponential backoff.
+  Options: `attempts` (3), `delayMs` (200), `backoffFactor` (2),
+  `maxDelayMs`, `shouldRetry(error, attempt)` (return `false` to rethrow at
+  once, e.g. on a 4xx), `onRetry(error, attempt)` (called before each actual
+  retry), `signal`.
 - `debounce(fn, wait)` — delays `fn` until calls stop for `wait` ms; exposes
   `cancel()` / `flush()`.
 - `throttle(fn, wait)` — runs `fn` at most once per `wait` ms (leading +
   trailing edge); exposes `cancel()`.
-- `memoize(fn, getKey?)` — caches `fn`'s results per argument tuple; exposes
-  the underlying `cache` map.
-- `withTimeout(promise, ms, message?)` — rejects with a `TimeoutError` if
-  `promise` doesn't settle in time.
+- `withTimeout(operation, ms, message?)` — rejects with a `TimeoutError` if
+  `operation` doesn't settle in time. Pass a function `(signal) => promise`
+  instead of a promise to also **cancel** the operation on timeout (e.g.
+  `withTimeout((signal) => fetch(url, { signal }), 5000)`).
+- `memoize` — moved to [`function`](#function); still importable from
+  `async/memoize` (deprecated).
 
 ### `classes`
 
@@ -97,10 +117,18 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `parseCsvLine(line, delimiter?)` — splits one CSV line into trimmed cells;
   quoted cells may contain the delimiter, `""` stands for a literal quote.
   Delimiter defaults to `","`.
-- `toCsv(rows, delimiter?)` — serializes rows to CSV, every cell quoted and
-  escaped, rows joined with `\n`.
+- `toCsv(rows, delimiter?)` — serializes whole rows to CSV, every cell quoted
+  and escaped, rows joined with `\n`. Delimiter defaults to `","`.
+- `escapeCsvField(value, delimiter?)` — escapes a single field (RFC 4180),
+  quoting it only if it contains a `"`, the delimiter or a line break — to
+  build rows cell by cell. Delimiter defaults to `";"` (French-locale Excel).
+- `formatCsvNumber(value, decimals?)` — formats a number with a comma decimal
+  separator (French-locale spreadsheets) instead of JS's dot.
 - `downloadCsv(filename, content)` — browser download as `text/csv`, with a
   UTF-8 BOM so Excel reads accented characters.
+
+`escapeCsvField` and `formatCsvNumber` used to live in `string/` and
+`number/`; those deep imports still work (deprecated).
 
 ### `date`
 
@@ -117,7 +145,16 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `downloadText(filename, text)` — triggers a browser download of a text file
   via a `data:` URI.
 - `downloadTextBlob(filename, text)` — same, but via a `Blob` + object URL
-  (better for larger content).
+  (better for larger content). The object URL is revoked 40 s later, not
+  right after the click (which can cancel the download in Firefox/Safari).
+
+### `function`
+
+- `memoize(fn, getKeyOrOptions?)` — caches `fn`'s results per argument tuple
+  (JSON-stringified by default); exposes the underlying `cache` map. Pass a
+  key function, or `{ getKey, maxSize }` to evict the least recently used
+  result beyond `maxSize`. A returned promise that rejects is evicted, so the
+  next call retries instead of failing forever.
 - `sanitizeFileName(name)` — replaces characters forbidden in file names
   (`\ / : * ? " < > |`) with hyphens, collapses whitespace and trims.
 
@@ -141,21 +178,20 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
   `bold`-aware segments), ready for a UI layer to render without a full
   Markdown dependency.
 
-### `maths`
-
-- `sum(numbers)` — sum of an array of numbers.
-- `avg(numbers)` — average of an array of numbers.
-
 ### `number`
 
+- `sum(numbers)` — sum of an array of numbers (`0` if empty).
+- `avg(numbers)` — average of an array of numbers; `NaN` if empty (no
+  meaningful average of nothing, like lodash's `mean`).
 - `clamp(value, min, max)` — clamps a number between two bounds.
 - `round(value, decimals?)` — rounds to a given number of decimal places.
 - `formatBytes(bytes, decimals?)` — human-readable byte size ("1.5 MB").
 - `formatDuration(ms)` — human-readable duration ("1d 1h 1m 1s").
-- `formatCsvNumber(value, decimals?)` — formats a number with a comma
-  decimal separator (French-locale spreadsheets) instead of JS's dot.
 - `padNumber(n, total, minWidth?)` — zero-pads `n` to the width of `total`
   (at least `minWidth`, default 2) so numbered file names sort correctly.
+
+`sum` and `avg` used to live in `maths/`; those deep imports still work
+(deprecated).
 
 ### `object`
 
@@ -179,10 +215,9 @@ import { chunk } from "@forthtilliath/ts-kit/array/chunk";
 - `normalizeForSearch(text)` — lowercases, trims, strips accents, and expands
   œ/æ ligatures (which `normalize("NFD")` alone doesn't decompose) — for
   accent/case-insensitive search matching.
-- `escapeCsvField(value)` — quotes and escapes a CSV field (RFC 4180) only if
-  it contains a `"`, `;`, or newline.
-- `escapeHtml(text)` — basic HTML entity escaping (`&`, `<`, `>`, `"`) for
-  inserting user text into an HTML template.
+- `escapeHtml(text)` — HTML entity escaping (`&`, `<`, `>`, `"`, `'`) for
+  inserting user text into an HTML template, in text content or in an
+  attribute quoted with `"` or `'`.
 
 ### `version`
 
