@@ -3,6 +3,8 @@ import { Pressable, Text } from "react-native";
 import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
+import { swipeableMethods } from "../../__mocks__/react-native-gesture-handler-reanimated-swipeable.js";
+
 import { SwipeableRow } from "./SwipeableRow.js";
 
 function renderTree(element: Parameters<typeof create>[0]) {
@@ -53,5 +55,44 @@ describe("SwipeableRow", () => {
       borderRadius: 12,
       backgroundColor: "#dc2626",
     });
+  });
+
+  it('defaults the delete text to "Supprimer", "Delete" with locale="en"', () => {
+    const texts = (element: Parameters<typeof create>[0]) =>
+      renderTree(element)
+        .root.findAllByType(Text)
+        .map((t) => t.props.children as unknown);
+
+    expect(
+      texts(
+        <SwipeableRow onDelete={vi.fn()} deleteLabel="x">
+          <Text>Row</Text>
+        </SwipeableRow>,
+      ),
+    ).toContain("Supprimer");
+    expect(
+      texts(
+        <SwipeableRow onDelete={vi.fn()} deleteLabel="x" locale="en">
+          <Text>Row</Text>
+        </SwipeableRow>,
+      ),
+    ).toContain("Delete");
+  });
+
+  it("closes the row then calls onDelete when the delete button is pressed", () => {
+    const close = vi.spyOn(swipeableMethods, "close");
+    const onDelete = vi.fn();
+    const tree = renderTree(
+      <SwipeableRow onDelete={onDelete} deleteLabel="Delete row">
+        <Text>Row content</Text>
+      </SwipeableRow>,
+    );
+
+    act(() => {
+      (tree.root.findByType(Pressable).props.onPress as () => void)();
+    });
+
+    expect(close).toHaveBeenCalledOnce();
+    expect(onDelete).toHaveBeenCalledOnce();
   });
 });
