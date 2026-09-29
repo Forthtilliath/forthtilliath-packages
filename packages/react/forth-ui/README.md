@@ -17,6 +17,7 @@ so you don't have to wire the same recipe from scratch in every project.
 - [Why forth-ui](#why-forth-ui)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Language](#language)
 - [Components](#components)
 - [Conventions](#conventions)
 - [Theming](#theming)
@@ -130,6 +131,28 @@ function Example() {
   );
 }
 ```
+
+## Language
+
+Built-in labels (`aria-label`s, default placeholders, empty states, the
+Pagination and ConfirmDialog buttons…) are available in **French** (the
+default) and **English**. For a bilingual site, set the language once with
+`UiLocaleProvider`; a component's own `locale` prop wins over it, and its
+text props (`placeholder`, `emptyMessage`, `ariaLabel`, a ConfirmDialog's
+`cancelLabel`…) still override individual strings.
+
+```tsx
+import { UiLocaleProvider } from "@forthtilliath/forth-ui/locale";
+
+<UiLocaleProvider locale={lang /* "fr" | "en" */}>{children}</UiLocaleProvider>;
+
+// or per component:
+<Spinner locale="en" />;
+```
+
+`UI_MESSAGES` (same entry point) holds every label, grouped by component.
+Components rendered from shadcn-ui as-is (e.g. a Dialog's close button) keep
+shadcn's English text.
 
 ## Components
 
