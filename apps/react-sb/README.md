@@ -49,7 +49,7 @@ pnpm run test    # vitest run — executes every story's play function
 
 ```bash
 pnpm run dev               # storybook dev -p 6006
-pnpm run build-storybook   # static Storybook build (runs build:tw:once first)
+pnpm run build-storybook   # static Storybook build (runs build:tw first)
 pnpm run preview            # vite preview
 pnpm run check-types        # tsc --noEmit
 pnpm run lint                # eslint (includes eslint-plugin-storybook)
