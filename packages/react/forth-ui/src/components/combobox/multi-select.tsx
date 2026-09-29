@@ -19,9 +19,9 @@ import {
 } from "@forthtilliath/shadcn-ui/components/popover";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { Badge } from "../badge";
+import { Badge } from "../badge/index.js";
 
-import type { ComboboxOption } from "./combobox";
+import type { ComboboxOption } from "./combobox.js";
 
 export type MultiSelectOption = ComboboxOption;
 

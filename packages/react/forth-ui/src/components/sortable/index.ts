@@ -1,2 +1,2 @@
-export type { SortableProps } from "./sortable";
-export { Sortable } from "./sortable";
+export type { SortableProps } from "./sortable.js";
+export { Sortable } from "./sortable.js";

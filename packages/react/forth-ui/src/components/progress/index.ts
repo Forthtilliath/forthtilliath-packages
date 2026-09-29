@@ -1,3 +1,3 @@
-export type { ProgressProps } from "./progress";
-export { Progress } from "./progress";
-export type { ProgressVariants } from "./variants";
+export type { ProgressProps } from "./progress.js";
+export { Progress } from "./progress.js";
+export type { ProgressVariants } from "./variants.js";

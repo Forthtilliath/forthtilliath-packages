@@ -1,2 +1,2 @@
-export type { SnippetItem, SnippetProps } from "./snippet";
-export { Snippet } from "./snippet";
+export type { SnippetItem, SnippetProps } from "./snippet.js";
+export { Snippet } from "./snippet.js";

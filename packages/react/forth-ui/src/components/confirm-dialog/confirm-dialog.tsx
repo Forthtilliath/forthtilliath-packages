@@ -15,8 +15,8 @@ import {
 import { buttonVariants } from "@forthtilliath/shadcn-ui/components/button";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { ConfirmFn, ConfirmState } from "./confirm-context";
-import { ConfirmContext } from "./confirm-context";
+import type { ConfirmFn, ConfirmState } from "./confirm-context.js";
+import { ConfirmContext } from "./confirm-context.js";
 
 /**
  * Provides `useConfirm`, an imperative `await confirm({...})` alternative

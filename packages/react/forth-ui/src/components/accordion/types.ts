@@ -5,7 +5,7 @@ import {
 } from "@radix-ui/react-accordion";
 import type { LucideProps } from "lucide-react";
 
-import type { AccordionTriggerVariants } from "./variants";
+import type { AccordionTriggerVariants } from "./variants.js";
 
 type AccordionVariantType =
   | "default"

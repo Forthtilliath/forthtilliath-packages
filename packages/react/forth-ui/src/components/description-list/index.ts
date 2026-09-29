@@ -3,4 +3,4 @@ export {
   DescriptionGroup,
   DescriptionList,
   DescriptionTerm,
-} from "./description-list";
+} from "./description-list.js";

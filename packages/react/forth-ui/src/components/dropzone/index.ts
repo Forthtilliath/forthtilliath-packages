@@ -1,2 +1,2 @@
-export type { DropzoneProps } from "./dropzone";
-export { Dropzone } from "./dropzone";
+export type { DropzoneProps } from "./dropzone.js";
+export { Dropzone } from "./dropzone.js";

@@ -1,2 +1,2 @@
-export type { ScrollProgressProps } from "./scroll-progress";
-export { ScrollProgress } from "./scroll-progress";
+export type { ScrollProgressProps } from "./scroll-progress.js";
+export { ScrollProgress } from "./scroll-progress.js";

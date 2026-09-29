@@ -5,8 +5,8 @@ import { X } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { AlertVariants } from "./variants";
-import { alertVariants } from "./variants";
+import type { AlertVariants } from "./variants.js";
+import { alertVariants } from "./variants.js";
 
 export type AlertProps = React.ComponentProps<"div"> &
   AlertVariants & {

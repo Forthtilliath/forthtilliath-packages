@@ -1,4 +1,4 @@
-export type { FileListProgressProps } from "./file-list";
+export type { FileListProgressProps } from "./file-list.js";
 export {
   FileList,
   FileListAction,
@@ -12,4 +12,4 @@ export {
   FileListItem,
   FileListName,
   FileListProgress,
-} from "./file-list";
+} from "./file-list.js";

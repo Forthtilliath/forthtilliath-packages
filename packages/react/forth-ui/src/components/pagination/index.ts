@@ -1,7 +1,7 @@
-export type { PaginationProps } from "./pagination";
-export { Pagination } from "./pagination";
+export type { PaginationProps } from "./pagination.js";
+export { Pagination } from "./pagination.js";
 export type {
   PaginationRangeItem,
   PaginationRangeOptions,
-} from "./pagination-range";
-export { getPaginationRange } from "./pagination-range";
+} from "./pagination-range.js";
+export { getPaginationRange } from "./pagination-range.js";

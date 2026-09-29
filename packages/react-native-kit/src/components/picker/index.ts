@@ -1,3 +1,3 @@
-export * from "./PhotoPicker";
-export * from "./PickerModal";
-export * from "./VoiceSearchButton";
+export * from "./PhotoPicker.js";
+export * from "./PickerModal.js";
+export * from "./VoiceSearchButton.js";

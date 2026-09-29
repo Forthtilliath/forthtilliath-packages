@@ -1,10 +1,14 @@
 {
   "extends": "@forthtilliath/typescript-config/react.json",
   "compilerOptions": {
+    // Published as plain ESM: resolve like Node, so relative imports must carry
+    // their emitted `.js` extension (react.json's `bundler` resolution lets
+    // extensionless ones through, which Node cannot load).
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": ["src", "../eslint.config.ts"],
-  "exclude": ["node_modules", "dist"],
-  "types": ["vite/client"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

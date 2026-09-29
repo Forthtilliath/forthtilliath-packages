@@ -12,10 +12,10 @@ import { ChevronDown, RotateCcw } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import { SortableColumnRow } from "./sortable-column-row";
-import type { ColumnMenuColumn, ColumnMenuLabels } from "./types";
-import { DEFAULT_COLUMN_MENU_LABELS } from "./types";
-import { useDndSensors } from "./use-dnd-sensors";
+import { SortableColumnRow } from "./sortable-column-row.js";
+import type { ColumnMenuColumn, ColumnMenuLabels } from "./types.js";
+import { DEFAULT_COLUMN_MENU_LABELS } from "./types.js";
+import { useDndSensors } from "./use-dnd-sensors.js";
 
 export interface ColumnMenuProps<C extends ColumnMenuColumn> {
   columns: C[];

@@ -1,2 +1,2 @@
-export type { GradientFrameProps } from "./gradient-frame";
-export { GradientFrame } from "./gradient-frame";
+export type { GradientFrameProps } from "./gradient-frame.js";
+export { GradientFrame } from "./gradient-frame.js";

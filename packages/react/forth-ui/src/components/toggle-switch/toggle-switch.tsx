@@ -4,11 +4,11 @@ import type React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
-import type { ToggleSwitchSizeVariants } from "./variants";
+import type { ToggleSwitchSizeVariants } from "./variants.js";
 import {
   toggleSwitchThumbVariants,
   toggleSwitchTrackVariants,
-} from "./variants";
+} from "./variants.js";
 
 export type ToggleSwitchProps = Omit<
   React.ComponentProps<"button">,

@@ -1,4 +1,4 @@
-export type { PasswordInputProps } from "./password-input";
-export { PasswordInput } from "./password-input";
-export type { PasswordStrengthMeterProps } from "./password-strength-meter";
-export { PasswordStrengthMeter } from "./password-strength-meter";
+export type { PasswordInputProps } from "./password-input.js";
+export { PasswordInput } from "./password-input.js";
+export type { PasswordStrengthMeterProps } from "./password-strength-meter.js";
+export { PasswordStrengthMeter } from "./password-strength-meter.js";

@@ -2,8 +2,8 @@
 
 import { useFormStatus } from "react-dom";
 
-import type { ButtonProps } from "../button";
-import { Button } from "../button";
+import type { ButtonProps } from "../button/index.js";
+import { Button } from "../button/index.js";
 
 export type SubmitButtonProps = Omit<ButtonProps, "type" | "loading">;
 

@@ -1,8 +1,13 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
-import type { IndicatorPosition, Shape, Size, StatusLabel } from "./constants";
-import { DEFAULT_BADGE_POSITION, DEFAULT_SHAPE } from "./constants";
+import type {
+  IndicatorPosition,
+  Shape,
+  Size,
+  StatusLabel,
+} from "./constants.js";
+import { DEFAULT_BADGE_POSITION, DEFAULT_SHAPE } from "./constants.js";
 
 export const avatarVariants = cva("size-10", {
   variants: {
