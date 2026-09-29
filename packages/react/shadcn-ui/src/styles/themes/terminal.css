@@ -1,0 +1,112 @@
+/*
+ * terminal — Retro terminal: phosphor green on black (dark), listing paper (light), monospace everywhere.
+ *
+ * Fonts fall back to system stacks; for the full look, load JetBrains Mono
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.97 0.012 145);
+  --foreground: oklch(0.27 0.07 150);
+  --card: oklch(0.99 0.006 145);
+  --card-foreground: oklch(0.27 0.07 150);
+  --popover: oklch(0.99 0.006 145);
+  --popover-foreground: oklch(0.27 0.07 150);
+  --primary: oklch(0.48 0.14 150);
+  --primary-foreground: oklch(0.99 0.006 145);
+  --secondary: oklch(0.92 0.03 145);
+  --secondary-foreground: oklch(0.27 0.07 150);
+  --muted: oklch(0.93 0.025 145);
+  --muted-foreground: oklch(0.43 0.07 150);
+  --accent: oklch(0.86 0.12 85);
+  --accent-foreground: oklch(0.28 0.06 70);
+  --destructive: oklch(0.52 0.2 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.8 0.05 145);
+  --input: oklch(0.8 0.05 145);
+  --ring: oklch(0.48 0.14 150);
+  --chart-1: oklch(0.48 0.14 150);
+  --chart-2: oklch(0.6 0.13 85);
+  --chart-3: oklch(0.55 0.1 200);
+  --chart-4: oklch(0.4 0.1 150);
+  --chart-5: oklch(0.62 0.15 40);
+  --sidebar: oklch(0.99 0.006 145);
+  --sidebar-foreground: oklch(0.27 0.07 150);
+  --sidebar-primary: oklch(0.48 0.14 150);
+  --sidebar-primary-foreground: oklch(0.99 0.006 145);
+  --sidebar-accent: oklch(0.86 0.12 85);
+  --sidebar-accent-foreground: oklch(0.28 0.06 70);
+  --sidebar-border: oklch(0.8 0.05 145);
+  --sidebar-ring: oklch(0.48 0.14 150);
+  --font-sans:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-mono:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --radius: 0.125rem;
+  --shadow-2xs: 0px 1px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow-xs: 0px 1px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow-sm: 0px 2px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow: 0px 3px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow-md: 0px 4px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow-lg: 0px 5px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow-xl: 0px 6px 0px 0px hsl(140 30% 30% / 0.2);
+  --shadow-2xl: 0px 7px 0px 0px hsl(140 30% 30% / 0.2);
+}
+
+.dark {
+  --background: oklch(0.15 0.02 150);
+  --foreground: oklch(0.86 0.2 145);
+  --card: oklch(0.19 0.03 150);
+  --card-foreground: oklch(0.86 0.2 145);
+  --popover: oklch(0.19 0.03 150);
+  --popover-foreground: oklch(0.86 0.2 145);
+  --primary: oklch(0.86 0.22 145);
+  --primary-foreground: oklch(0.15 0.02 150);
+  --secondary: oklch(0.26 0.045 150);
+  --secondary-foreground: oklch(0.86 0.2 145);
+  --muted: oklch(0.23 0.035 150);
+  --muted-foreground: oklch(0.72 0.15 145);
+  --accent: oklch(0.82 0.15 85);
+  --accent-foreground: oklch(0.15 0.02 150);
+  --destructive: oklch(0.68 0.2 27);
+  --destructive-foreground: oklch(0.15 0.02 150);
+  --border: oklch(0.36 0.08 150);
+  --input: oklch(0.36 0.08 150);
+  --ring: oklch(0.86 0.22 145);
+  --chart-1: oklch(0.86 0.22 145);
+  --chart-2: oklch(0.82 0.15 85);
+  --chart-3: oklch(0.75 0.12 200);
+  --chart-4: oklch(0.65 0.17 145);
+  --chart-5: oklch(0.72 0.17 40);
+  --sidebar: oklch(0.19 0.03 150);
+  --sidebar-foreground: oklch(0.86 0.2 145);
+  --sidebar-primary: oklch(0.86 0.22 145);
+  --sidebar-primary-foreground: oklch(0.15 0.02 150);
+  --sidebar-accent: oklch(0.82 0.15 85);
+  --sidebar-accent-foreground: oklch(0.15 0.02 150);
+  --sidebar-border: oklch(0.36 0.08 150);
+  --sidebar-ring: oklch(0.86 0.22 145);
+  --font-sans:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --font-mono:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+  --radius: 0.125rem;
+  --shadow-2xs: 0 0 4px 0 hsl(140 100% 50% / 0.25);
+  --shadow-xs: 0 0 7px 0 hsl(140 100% 50% / 0.25);
+  --shadow-sm: 0 0 10px 0 hsl(140 100% 50% / 0.25);
+  --shadow: 0 0 13px 0 hsl(140 100% 50% / 0.25);
+  --shadow-md: 0 0 16px 0 hsl(140 100% 50% / 0.25);
+  --shadow-lg: 0 0 19px 0 hsl(140 100% 50% / 0.25);
+  --shadow-xl: 0 0 22px 0 hsl(140 100% 50% / 0.25);
+  --shadow-2xl: 0 0 25px 0 hsl(140 100% 50% / 0.25);
+}

@@ -1,0 +1,108 @@
+/*
+ * aurora — Aurora: deep indigo, neon magenta and cyan, glowing shadows, very round.
+ *
+ * Fonts fall back to system stacks; for the full look, load Outfit, Fira Code
+ * (e.g. from Google Fonts, or next/font).
+ */
+
+:root {
+  --background: oklch(0.98 0.01 280);
+  --foreground: oklch(0.23 0.06 280);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.23 0.06 280);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.23 0.06 280);
+  --primary: oklch(0.55 0.25 305);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.93 0.04 200);
+  --secondary-foreground: oklch(0.3 0.08 220);
+  --muted: oklch(0.95 0.018 280);
+  --muted-foreground: oklch(0.5 0.05 280);
+  --accent: oklch(0.9 0.08 190);
+  --accent-foreground: oklch(0.3 0.08 210);
+  --destructive: oklch(0.57 0.22 15);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.025 280);
+  --input: oklch(0.9 0.025 280);
+  --ring: oklch(0.55 0.25 305);
+  --chart-1: oklch(0.55 0.25 305);
+  --chart-2: oklch(0.7 0.14 195);
+  --chart-3: oklch(0.62 0.2 260);
+  --chart-4: oklch(0.7 0.18 350);
+  --chart-5: oklch(0.8 0.14 150);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.23 0.06 280);
+  --sidebar-primary: oklch(0.55 0.25 305);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9 0.08 190);
+  --sidebar-accent-foreground: oklch(0.3 0.08 210);
+  --sidebar-border: oklch(0.9 0.025 280);
+  --sidebar-ring: oklch(0.55 0.25 305);
+  --font-sans:
+    "Outfit", "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 1rem;
+  --shadow-2xs: 0 2px 8px -4px hsl(285 90% 60% / 0.1);
+  --shadow-xs: 0 3px 12px -4px hsl(285 90% 60% / 0.13);
+  --shadow-sm: 0 4px 16px -4px hsl(285 90% 60% / 0.16);
+  --shadow: 0 5px 20px -4px hsl(285 90% 60% / 0.19);
+  --shadow-md: 0 6px 24px -4px hsl(285 90% 60% / 0.22);
+  --shadow-lg: 0 7px 28px -4px hsl(285 90% 60% / 0.25);
+  --shadow-xl: 0 8px 32px -4px hsl(285 90% 60% / 0.28);
+  --shadow-2xl: 0 9px 36px -4px hsl(285 90% 60% / 0.31);
+}
+
+.dark {
+  --background: oklch(0.16 0.045 285);
+  --foreground: oklch(0.95 0.02 280);
+  --card: oklch(0.2 0.055 285);
+  --card-foreground: oklch(0.95 0.02 280);
+  --popover: oklch(0.2 0.055 285);
+  --popover-foreground: oklch(0.95 0.02 280);
+  --primary: oklch(0.73 0.2 320);
+  --primary-foreground: oklch(0.16 0.045 285);
+  --secondary: oklch(0.28 0.065 285);
+  --secondary-foreground: oklch(0.95 0.02 280);
+  --muted: oklch(0.24 0.055 285);
+  --muted-foreground: oklch(0.76 0.05 280);
+  --accent: oklch(0.83 0.14 195);
+  --accent-foreground: oklch(0.16 0.045 285);
+  --destructive: oklch(0.69 0.2 15);
+  --destructive-foreground: oklch(0.16 0.045 285);
+  --border: oklch(0.33 0.07 285);
+  --input: oklch(0.33 0.07 285);
+  --ring: oklch(0.73 0.2 320);
+  --chart-1: oklch(0.73 0.2 320);
+  --chart-2: oklch(0.83 0.14 195);
+  --chart-3: oklch(0.7 0.18 260);
+  --chart-4: oklch(0.78 0.16 350);
+  --chart-5: oklch(0.85 0.15 150);
+  --sidebar: oklch(0.2 0.055 285);
+  --sidebar-foreground: oklch(0.95 0.02 280);
+  --sidebar-primary: oklch(0.73 0.2 320);
+  --sidebar-primary-foreground: oklch(0.16 0.045 285);
+  --sidebar-accent: oklch(0.83 0.14 195);
+  --sidebar-accent-foreground: oklch(0.16 0.045 285);
+  --sidebar-border: oklch(0.33 0.07 285);
+  --sidebar-ring: oklch(0.73 0.2 320);
+  --font-sans:
+    "Outfit", "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono:
+    "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --radius: 1rem;
+  --shadow-2xs: 0 0 10px -2px hsl(300 100% 65% / 0.2);
+  --shadow-xs: 0 0 15px -2px hsl(300 100% 65% / 0.23);
+  --shadow-sm: 0 0 20px -2px hsl(300 100% 65% / 0.26);
+  --shadow: 0 0 25px -2px hsl(300 100% 65% / 0.29);
+  --shadow-md: 0 0 30px -2px hsl(300 100% 65% / 0.32);
+  --shadow-lg: 0 0 35px -2px hsl(300 100% 65% / 0.35);
+  --shadow-xl: 0 0 40px -2px hsl(300 100% 65% / 0.38);
+  --shadow-2xl: 0 0 45px -2px hsl(300 100% 65% / 0.41);
+}
