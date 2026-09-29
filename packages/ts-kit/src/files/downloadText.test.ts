@@ -54,7 +54,8 @@ describe("downloadTextBlob", () => {
     Reflect.deleteProperty(URL, "revokeObjectURL");
   });
 
-  it("creates a blob download link, clicks it, then revokes the URL and removes the link", () => {
+  it("creates a blob download link, clicks it, removes the link, then revokes the URL later", () => {
+    vi.useFakeTimers();
     const createObjectURL = vi.fn<(blob: Blob) => string>(
       () => "blob:mock-url",
     );
@@ -85,8 +86,12 @@ describe("downloadTextBlob", () => {
     expect(anchor.style.display).toBe("none");
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
-    expect(revokeObjectURL).toHaveBeenCalledWith("blob:mock-url");
     expect(removeSpy).toHaveBeenCalledWith(anchor);
+    // Revoking right after the click can cancel the download in Firefox/Safari.
+    expect(revokeObjectURL).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(40_000);
+    expect(revokeObjectURL).toHaveBeenCalledWith("blob:mock-url");
+    vi.useRealTimers();
   });
 
   it("uses the given mimeType instead of the text/plain default", () => {

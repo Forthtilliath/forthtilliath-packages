@@ -20,6 +20,13 @@ export function downloadText(filename: string, text: string): void {
 }
 
 /**
+ * How long the object URL stays valid after the click. Revoking it right
+ * away can cancel the download in Firefox and Safari, which start it
+ * asynchronously; FileSaver.js uses the same 40 s delay.
+ */
+const REVOKE_DELAY_MS = 40_000;
+
+/**
  * Downloads a text blob as a file.
  * @param filename The filename to save to.
  * @param text The text to save.
@@ -41,6 +48,8 @@ export function downloadTextBlob(
   document.body.appendChild(a);
   a.click();
 
-  URL.revokeObjectURL(url);
   document.body.removeChild(a);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, REVOKE_DELAY_MS);
 }
