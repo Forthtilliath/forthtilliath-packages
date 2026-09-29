@@ -2,9 +2,10 @@
 
 import type React from "react";
 import { useMemo, useState } from "react";
+import type { ClassValue } from "clsx";
 
 import { useKeyListener } from "@forthtilliath/react-kit/useKeyListener";
-import { type ClassValue, cn } from "@forthtilliath/shadcn-ui/lib/utils";
+import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import { type Prettify } from "@forthtilliath/ts-types/object";
 
 import { GridDebugContext } from "./context.js";
