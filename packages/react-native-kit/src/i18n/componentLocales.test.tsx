@@ -5,6 +5,7 @@ import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
 import { propsOf } from "../__mocks__/testInstance.js";
+import { PhotoPicker } from "../components/picker/PhotoPicker.js";
 import { AboutSettingsScreen } from "../components/settings/AboutSettingsScreen.js";
 import { ContactSettingsScreen } from "../components/settings/ContactSettingsScreen.js";
 import { PrivacySettingsScreen } from "../components/settings/PrivacySettingsScreen.js";
@@ -81,6 +82,20 @@ const cases: [
     (locale) => <PrivacySettingsScreen locale={locale} />,
     "Stockage local uniquement",
     "Local storage only",
+  ],
+  [
+    "PhotoPicker",
+    (locale) => (
+      <PhotoPicker
+        photoUri={null}
+        onChange={vi.fn()}
+        savePhoto={vi.fn()}
+        photoLabel="du récipient"
+        locale={locale}
+      />
+    ),
+    "Ajouter une photo",
+    "Add a photo",
   ],
 ];
 
