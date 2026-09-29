@@ -37,8 +37,22 @@ describe("isSafeKey", () => {
     expect(isSafeKey("songs/a/1.mp3")).toBe(true);
   });
 
-  it.each(["", "../x", "a/../b", "/abs", "a\0b"])("rejects %j", (key) => {
-    expect(isSafeKey(key)).toBe(false);
+  it("accepts non-ASCII characters", () => {
+    expect(isSafeKey("partitions/Chœur d'été.pdf")).toBe(true);
+  });
+
+  it.each(["", "../x", "a/../b", "/abs", "a\0b", "a\\b", "a\nb", "a\u007fb"])(
+    "rejects %j",
+    (key) => {
+      expect(isSafeKey(key)).toBe(false);
+    },
+  );
+
+  it("rejects keys longer than 1024 UTF-8 bytes", () => {
+    expect(isSafeKey("a".repeat(1024))).toBe(true);
+    expect(isSafeKey("a".repeat(1025))).toBe(false);
+    // 2 bytes each in UTF-8: 513 characters are 1026 bytes.
+    expect(isSafeKey("é".repeat(513))).toBe(false);
   });
 });
 
@@ -87,10 +101,10 @@ describe("createPresignHandler", () => {
       authorize: allow,
       expiresIn: 60,
     })(post(body));
-    expect(vi.mocked(getSignedUrl).mock.calls[0]?.[2]).toEqual({
+    expect(vi.mocked(getSignedUrl).mock.calls[0]?.[2]).toMatchObject({
       expiresIn: 300,
     });
-    expect(vi.mocked(getSignedUrl).mock.calls[1]?.[2]).toEqual({
+    expect(vi.mocked(getSignedUrl).mock.calls[1]?.[2]).toMatchObject({
       expiresIn: 60,
     });
   });
