@@ -24,13 +24,13 @@
     "description": "A full-width, page-level announcement bar.",
     "dependencies": ["class-variance-authority", "lucide-react"]
   },
-  "breadcrumb": {
-    "title": "Breadcrumb",
-    "description": "Displays the path to the current resource using a hierarchy of links."
-  },
   "bento-grid": {
     "title": "BentoGrid",
     "description": "A CSS-grid layout for unevenly-sized cards (\"bento box\" layouts)."
+  },
+  "breadcrumb": {
+    "title": "Breadcrumb",
+    "description": "Displays the path to the current resource using a hierarchy of links."
   },
   "button": {
     "title": "Button",
@@ -116,6 +116,16 @@
     "title": "GradientFrame",
     "description": "A visual laid on an offset, gradient-filled frame."
   },
+  "grid": {
+    "title": "Grid",
+    "description": "A CSS grid with column and spacing variants, plus GridItem spans; with debug, a key (g) toggles a layout overlay.",
+    "dependencies": [
+      "class-variance-authority",
+      "clsx",
+      "@forthtilliath/react-kit"
+    ],
+    "devDependencies": ["@forthtilliath/ts-types"]
+  },
   "icon-bubble": {
     "title": "IconBubble",
     "description": "An icon inside a round, tinted bubble.",
@@ -135,11 +145,6 @@
     "title": "Kbd",
     "description": "Displays which key or combination of keys performs a given action."
   },
-  "locale": {
-    "title": "UiLocale",
-    "description": "The French/English built-in labels shared by the components, plus UiLocaleProvider.",
-    "source": "../locale"
-  },
   "link": {
     "title": "Link",
     "description": "A styled hyperlink, or a component that looks like one, plus LinkPreview for hover-triggered metadata cards.",
@@ -148,6 +153,11 @@
       "lucide-react",
       "@radix-ui/react-slot"
     ]
+  },
+  "locale": {
+    "title": "UiLocale",
+    "description": "The French/English built-in labels shared by the components, plus UiLocaleProvider.",
+    "source": "../locale"
   },
   "marquee": {
     "title": "Marquee",
