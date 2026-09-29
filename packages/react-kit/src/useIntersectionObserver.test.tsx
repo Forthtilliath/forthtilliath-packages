@@ -72,6 +72,45 @@ describe("useIntersectionObserver", () => {
     expect(observer?.disconnect).toHaveBeenCalledTimes(1);
   });
 
+  it("observes an element rendered conditionally after the first render", () => {
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+
+    function LateTarget({ show }: { show: boolean }) {
+      const [ref, isIntersecting] = useIntersectionObserver<HTMLDivElement>();
+      return show ? (
+        <div ref={ref}>{isIntersecting ? "visible" : "hidden"}</div>
+      ) : null;
+    }
+
+    const { rerender } = render(<LateTarget show={false} />);
+    expect(FakeIntersectionObserver.instances).toHaveLength(0);
+
+    rerender(<LateTarget show />);
+    const observer = FakeIntersectionObserver.instances[0];
+    expect(observer?.observe).toHaveBeenCalledWith(screen.getByText("hidden"));
+
+    act(() => {
+      observer?.trigger(true);
+    });
+    expect(screen.getByText("visible")).toBeDefined();
+  });
+
+  it("doesn't recreate the observer on re-render with an inline threshold array", () => {
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+
+    function ThresholdTarget({ label }: { label: string }) {
+      const [ref] = useIntersectionObserver<HTMLDivElement>({
+        threshold: [0, 1],
+      });
+      return <div ref={ref}>{label}</div>;
+    }
+
+    const { rerender } = render(<ThresholdTarget label="a" />);
+    rerender(<ThresholdTarget label="b" />);
+
+    expect(FakeIntersectionObserver.instances).toHaveLength(1);
+  });
+
   it("disconnects the observer on unmount", () => {
     vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
 
