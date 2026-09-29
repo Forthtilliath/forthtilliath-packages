@@ -1,5 +1,3 @@
-import { useState } from "react";
-import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import {
   ActivityIndicator,
   Alert,
@@ -10,68 +8,29 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import { useSubmitGuard } from "../../hooks/useSubmitGuard.js";
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { confirmDestructive } from "../../utils/helpers/confirmDestructive.js";
+import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-export interface BackupSettingsScreenReminder {
-  enabled: boolean;
-  /** Set while a permission request or the toggle's own persistence is in flight. */
-  busy?: boolean;
-  onToggle: (value: boolean) => void;
-  /** How often the reminder fires, only used to word the hint (e.g. "every 7 days"). */
-  intervalDays: number;
-}
+import {
+  type BackupSettingsScreenIcons,
+  type BackupSettingsScreenInfo,
+  type BackupSettingsScreenLabels,
+  type BackupSettingsScreenReminder,
+  type BackupSettingsScreenStyles,
+  defaultIconColor,
+  defaultLabels,
+  defaultStyles,
+} from "./BackupSettingsScreen.styles.js";
 
-export interface BackupSettingsScreenInfo {
-  label: string;
-  value: string;
-}
-
-export interface BackupSettingsScreenIcons {
-  export?: keyof typeof Ionicons.glyphMap;
-  import?: keyof typeof Ionicons.glyphMap;
-}
-
-export interface BackupSettingsScreenStyles {
-  container?: StyleProp<ViewStyle>;
-  infoBox?: StyleProp<ViewStyle>;
-  infoLabel?: StyleProp<TextStyle>;
-  infoValue?: StyleProp<TextStyle>;
-  sectionTitle?: StyleProp<TextStyle>;
-  hint?: StyleProp<TextStyle>;
-  row?: StyleProp<ViewStyle>;
-  button?: StyleProp<ViewStyle>;
-  buttonDisabled?: StyleProp<ViewStyle>;
-  buttonText?: StyleProp<TextStyle>;
-  iconColor?: string;
-  /** Merged on top of `button`/`buttonText` — defaults to the same look as the export button. */
-  importButton?: StyleProp<ViewStyle>;
-  importButtonText?: StyleProp<TextStyle>;
-  reminderRow?: StyleProp<ViewStyle>;
-  reminderTextColumn?: StyleProp<ViewStyle>;
-  reminderLabel?: StyleProp<TextStyle>;
-  reminderHint?: StyleProp<TextStyle>;
-  activityIndicatorColor?: string;
-}
-
-export interface BackupSettingsScreenLabels {
-  hint?: string;
-  exportButton?: string;
-  importButton?: string;
-  /** Only shown in `layout="sections"`. */
-  exportSectionTitle?: string;
-  exportHelpText?: string;
-  importSectionTitle?: string;
-  importHelpText?: string;
-  importConfirmTitle?: string;
-  importConfirmMessage?: string;
-  importConfirmLabel?: string;
-  importConfirmCancelLabel?: string;
-  reminderLabel?: string;
-  reminderHint?: (intervalDays: number) => string;
-  exportErrorTitle?: string;
-  importErrorTitle?: string;
-  genericErrorMessage?: string;
-}
+export type {
+  BackupSettingsScreenIcons,
+  BackupSettingsScreenInfo,
+  BackupSettingsScreenLabels,
+  BackupSettingsScreenReminder,
+  BackupSettingsScreenStyles,
+} from "./BackupSettingsScreen.styles.js";
 
 export interface BackupSettingsScreenProps {
   /** Exports/shares the app's data however it sees fit (e.g. a JSON file via the native share sheet). */
@@ -95,102 +54,13 @@ export interface BackupSettingsScreenProps {
   /** Leading icon for each button. Omit either (or both) for a text-only button (default). */
   icons?: BackupSettingsScreenIcons;
   labels?: BackupSettingsScreenLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: BackupSettingsScreenStyles;
 }
-
-const defaultLabels: Required<
-  Omit<BackupSettingsScreenLabels, "reminderHint">
-> &
-  Pick<BackupSettingsScreenLabels, "reminderHint"> = {
-  hint: "Les données sont stockées uniquement sur cet appareil et sont perdues en cas de réinstallation ou de mise à jour incompatible. Exporte-les régulièrement pour pouvoir les restaurer.",
-  exportButton: "⬆️ Exporter",
-  importButton: "⬇️ Importer",
-  exportSectionTitle: "Exporter",
-  exportHelpText:
-    "Exporte toutes tes données dans un fichier que tu peux garder précieusement ou transférer vers un autre appareil.",
-  importSectionTitle: "Importer",
-  importHelpText:
-    "Restaure une sauvegarde exportée précédemment. Remplace entièrement les données actuelles — il n'y a pas de fusion.",
-  importConfirmTitle: "Importer une sauvegarde ?",
-  importConfirmMessage:
-    "Toutes les données actuelles seront remplacées par celles du fichier choisi.",
-  importConfirmLabel: "Choisir un fichier",
-  importConfirmCancelLabel: "Annuler",
-  reminderLabel: "🔔 Rappel de sauvegarde",
-  reminderHint: undefined,
-  exportErrorTitle: "Échec de l'export",
-  importErrorTitle: "Échec de l'import",
-  genericErrorMessage: "Une erreur inconnue s'est produite.",
-};
-
-const defaultStyles: Required<
-  Omit<
-    BackupSettingsScreenStyles,
-    "activityIndicatorColor" | "iconColor" | "importButton" | "importButtonText"
-  >
-> &
-  Pick<
-    BackupSettingsScreenStyles,
-    "activityIndicatorColor" | "iconColor" | "importButton" | "importButtonText"
-  > = {
-  container: {},
-  infoBox: {
-    backgroundColor: "#f9fafb",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 20,
-    gap: 2,
-  } satisfies ViewStyle,
-  infoLabel: { fontSize: 12, color: "#6b7280" },
-  infoValue: { fontSize: 12, color: "#111827", fontWeight: "600" },
-  sectionTitle: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#111827",
-    marginTop: 20,
-  },
-  hint: {
-    fontSize: 13,
-    color: "#6b7280",
-    marginTop: 6,
-    marginBottom: 14,
-    lineHeight: 18,
-  },
-  row: { flexDirection: "row", gap: 10 },
-  button: {
-    flexDirection: "row",
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#2563eb",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  buttonDisabled: { opacity: 0.5 },
-  buttonText: { color: "#2563eb", fontWeight: "700" },
-  iconColor: "#2563eb",
-  importButton: undefined,
-  importButtonText: undefined,
-  reminderRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginTop: 24,
-  },
-  reminderTextColumn: { flex: 1 },
-  reminderLabel: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#111827",
-    marginBottom: 4,
-  },
-  reminderHint: { fontSize: 13, color: "#6b7280" },
-  activityIndicatorColor: undefined,
-};
 
 function errorMessage(err: unknown, fallback: string) {
   return err instanceof Error ? err.message : fallback;
@@ -209,65 +79,39 @@ export function BackupSettingsScreen({
   layout = "compact",
   icons,
   labels,
+  locale,
   styles,
 }: BackupSettingsScreenProps) {
-  const [exporting, setExporting] = useState(false);
-  const [importing, setImporting] = useState(false);
-  const merged = {
-    container: [defaultStyles.container, styles?.container],
-    infoBox: [defaultStyles.infoBox, styles?.infoBox],
-    infoLabel: [defaultStyles.infoLabel, styles?.infoLabel],
-    infoValue: [defaultStyles.infoValue, styles?.infoValue],
-    sectionTitle: [defaultStyles.sectionTitle, styles?.sectionTitle],
-    hint: [defaultStyles.hint, styles?.hint],
-    row: [defaultStyles.row, styles?.row],
-    button: [defaultStyles.button, styles?.button],
-    buttonDisabled: [defaultStyles.buttonDisabled, styles?.buttonDisabled],
-    buttonText: [defaultStyles.buttonText, styles?.buttonText],
-    importButton: [
-      defaultStyles.button,
-      styles?.button,
-      defaultStyles.importButton,
-      styles?.importButton,
-    ],
-    importButtonText: [
-      defaultStyles.buttonText,
-      styles?.buttonText,
-      defaultStyles.importButtonText,
-      styles?.importButtonText,
-    ],
-    reminderRow: [defaultStyles.reminderRow, styles?.reminderRow],
-    reminderTextColumn: [
-      defaultStyles.reminderTextColumn,
-      styles?.reminderTextColumn,
-    ],
-    reminderLabel: [defaultStyles.reminderLabel, styles?.reminderLabel],
-    reminderHint: [defaultStyles.reminderHint, styles?.reminderHint],
-  };
-  const t = { ...defaultLabels, ...labels };
-  const activityIndicatorColor =
-    styles?.activityIndicatorColor ?? defaultStyles.activityIndicatorColor;
-  const iconColor = styles?.iconColor ?? defaultStyles.iconColor;
+  // Guards rather than a plain `if (busy) return`: two taps before the
+  // re-render would both see the stale "not busy" state and run twice.
+  const exportGuard = useSubmitGuard();
+  const importGuard = useSubmitGuard();
+  const merged = mergeSlotStyles(defaultStyles, styles);
+  const importButtonStyle = [merged.button, styles?.importButton];
+  const importButtonTextStyle = [merged.buttonText, styles?.importButtonText];
+  const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
+  const activityIndicatorColor = styles?.activityIndicatorColor;
+  const iconColor = styles?.iconColor ?? defaultIconColor;
 
-  async function handleExport() {
-    if (exporting) return;
-    setExporting(true);
-    try {
-      await onExport();
-    } catch (err) {
-      Alert.alert(t.exportErrorTitle, errorMessage(err, t.genericErrorMessage));
-    } finally {
-      setExporting(false);
-    }
+  function handleExport() {
+    void exportGuard.guard(async () => {
+      try {
+        await onExport();
+      } catch (err) {
+        Alert.alert(
+          t.exportErrorTitle,
+          errorMessage(err, t.genericErrorMessage),
+        );
+      }
+    });
   }
 
   function handleImportPress() {
-    if (importing) return;
+    if (importGuard.isSaving) return;
     confirmDestructive(
       t.importConfirmTitle,
       () => {
-        void (async () => {
-          setImporting(true);
+        void importGuard.guard(async () => {
           try {
             await onImport();
           } catch (err) {
@@ -275,10 +119,8 @@ export function BackupSettingsScreen({
               t.importErrorTitle,
               errorMessage(err, t.genericErrorMessage),
             );
-          } finally {
-            setImporting(false);
           }
-        })();
+        });
       },
       {
         message: t.importConfirmMessage,
@@ -288,13 +130,14 @@ export function BackupSettingsScreen({
     );
   }
 
+  const exporting = exportGuard.isSaving;
+  const importing = importGuard.isSaving;
+
   const exportButton = (
     <Pressable
       style={[merged.button, exporting && merged.buttonDisabled]}
       disabled={exporting}
-      onPress={() => {
-        void handleExport();
-      }}
+      onPress={handleExport}
       accessibilityRole="button"
       accessibilityLabel={t.exportButton}
     >
@@ -313,7 +156,7 @@ export function BackupSettingsScreen({
 
   const importButton = (
     <Pressable
-      style={[merged.importButton, importing && merged.buttonDisabled]}
+      style={[importButtonStyle, importing && merged.buttonDisabled]}
       disabled={importing}
       onPress={handleImportPress}
       accessibilityRole="button"
@@ -326,7 +169,7 @@ export function BackupSettingsScreen({
           {icons?.import && (
             <Ionicons name={icons.import} size={18} color={iconColor} />
           )}
-          <Text style={merged.importButtonText}>{t.importButton}</Text>
+          <Text style={importButtonTextStyle}>{t.importButton}</Text>
         </>
       )}
     </Pressable>
@@ -375,8 +218,7 @@ export function BackupSettingsScreen({
           <View style={merged.reminderTextColumn}>
             <Text style={merged.reminderLabel}>{t.reminderLabel}</Text>
             <Text style={merged.reminderHint}>
-              {t.reminderHint?.(reminder.intervalDays) ??
-                `Une notification tous les ${String(reminder.intervalDays)} jours pour penser à exporter.`}
+              {t.reminderHint(reminder.intervalDays)}
             </Text>
           </View>
           {reminder.busy ? (

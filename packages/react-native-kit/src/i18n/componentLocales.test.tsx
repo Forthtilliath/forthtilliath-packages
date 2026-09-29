@@ -9,6 +9,7 @@ import { PhotoPicker } from "../components/picker/PhotoPicker.js";
 import { PickerModal } from "../components/picker/PickerModal.js";
 import { VoiceSearchButton } from "../components/picker/VoiceSearchButton.js";
 import { AboutSettingsScreen } from "../components/settings/AboutSettingsScreen.js";
+import { BackupSettingsScreen } from "../components/settings/BackupSettingsScreen.js";
 import { ContactSettingsScreen } from "../components/settings/ContactSettingsScreen.js";
 import { PrivacySettingsScreen } from "../components/settings/PrivacySettingsScreen.js";
 import { ThemeSettingsScreen } from "../components/settings/ThemeSettingsScreen.js";
@@ -129,6 +130,19 @@ const cases: [
     ),
     "Version installée",
     "Installed version",
+  ],
+  [
+    "BackupSettingsScreen",
+    (locale) => (
+      <BackupSettingsScreen
+        onExport={vi.fn()}
+        onImport={vi.fn()}
+        reminder={{ enabled: false, onToggle: vi.fn(), intervalDays: 7 }}
+        locale={locale}
+      />
+    ),
+    "Une notification tous les 7 jours pour penser à exporter.",
+    "A notification every 7 days as a reminder to export.",
   ],
 ];
 
