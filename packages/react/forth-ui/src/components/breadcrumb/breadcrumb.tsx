@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import * as React from "react";
 
 import {
   Breadcrumb as BreadcrumbPrimitive,
@@ -126,10 +126,9 @@ export function Breadcrumb({
         )}
 
         {visibleMiddleItems.map((item, index) => (
-          <span
+          <React.Fragment
             // eslint-disable-next-line @eslint-react/no-array-index-key -- `label` is an arbitrary ReactNode and `href` is optional, so index is the only stable fallback
             key={item.href ?? index}
-            className="inline-flex items-center gap-1.5 sm:gap-2.5"
           >
             <BreadcrumbItem>
               {item.href ? (
@@ -143,7 +142,7 @@ export function Breadcrumb({
               )}
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-          </span>
+          </React.Fragment>
         ))}
 
         {lastItem && items.length > 1 && (

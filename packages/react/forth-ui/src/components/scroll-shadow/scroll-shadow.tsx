@@ -57,6 +57,8 @@ export function ScrollShadow({
     <div
       ref={ref}
       data-slot="scroll-shadow"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be focusable for keyboard users to scroll it (axe scrollable-region-focusable)
+      tabIndex={0}
       data-at-top={atTop}
       data-at-bottom={atBottom}
       onScroll={(e) => {
