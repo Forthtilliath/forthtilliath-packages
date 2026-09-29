@@ -6,7 +6,8 @@
  * `packages/react/forth-ui/src/components/**` stays the single source of
  * truth — never hand-edit the generated `registry/forth-ui/**` output.
  *
- * Import-rewrite rules (only the string literal, never the imported names):
+ * Import-rewrite rules (only the string literal, never the imported names),
+ * applied after stripping relative `.js`/`/index.js` extensions:
  *   @forthtilliath/shadcn-ui/components/X  -> @/components/ui/X   (+ bare registryDependency "X")
  *   @forthtilliath/shadcn-ui/lib/utils     -> @/lib/utils
  *   @forthtilliath/shadcn-ui/hooks/X       -> @/hooks/X
@@ -393,6 +394,12 @@ const SHADCN_UTILS_IMPORT_RE =
 const SHADCN_HOOKS_IMPORT_RE =
   /from\s+(["'])@forthtilliath\/shadcn-ui\/hooks\/([a-z0-9-]+)\1/g;
 const SIBLING_IMPORT_RE = /from\s+(["'])\.\.\/([a-z0-9-]+)\1/g;
+// forth-ui is published as plain ESM, so its relative imports carry the
+// NodeNext-style `.js` extension (`./variants.js`, `../button/index.js`).
+// Registry consumers use shadcn's usual extensionless, bundler-resolved
+// imports: strip them first, so the rules above see `./variants`/`../button`.
+const RELATIVE_JS_EXTENSION_RE =
+  /(from\s+["'])(\.{1,2}\/[^"']*?)(?:\/index)?\.js(["'])/g;
 
 interface TransformResult {
   content: string;
@@ -404,7 +411,8 @@ function transformSource(source: string): TransformResult {
   const shadcnDeps = new Set<string>();
   const forthUiDeps = new Set<string>();
 
-  let content = source.replace(
+  let content = source.replace(RELATIVE_JS_EXTENSION_RE, "$1$2$3");
+  content = content.replace(
     SHADCN_IMPORT_RE,
     (_match, quote: string, name: string) => {
       shadcnDeps.add(name);
