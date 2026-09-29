@@ -326,9 +326,10 @@ Tailwind v4 expects any npm-distributed component library to be consumed.
 
 ### Available themes
 
-11 [tweakcn](https://tweakcn.com)-generated themes ship under
+17 themes ship under
 `@forthtilliath/shadcn-ui/styles/themes/`, all rendered here with the same
-components:
+components. The first 11 are [tweakcn](https://tweakcn.com)-generated — most of
+them only change the colors:
 
 | `default`                                   | `blue`                                | `bubblegum`                                     |
 | ------------------------------------------- | ------------------------------------- | ----------------------------------------------- |
@@ -345,6 +346,20 @@ components:
 | `violet`                                  | `yellow`                                  |
 | ----------------------------------------- | ----------------------------------------- |
 | ![violet theme](./docs/themes/violet.png) | ![yellow theme](./docs/themes/yellow.png) |
+
+The other 6 each have their own personality — fonts, corner radius and
+shadows change too, not just the colors. Their fonts fall back to system
+stacks; load the fonts named at the top of each file (Google Fonts,
+`next/font`…) for the full look.
+
+| Theme       | Style                                                                                        | Light                                                  | Dark                                                       |
+| ----------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
+| `brutalist` | Neo-brutalism: bold yellow, black outlines, hard offset shadows, square corners.             | ![brutalist theme, light](./docs/themes/brutalist.png) | ![brutalist theme, dark](./docs/themes/brutalist-dark.png) |
+| `terminal`  | Retro terminal: phosphor green on black (dark), listing paper (light), monospace everywhere. | ![terminal theme, light](./docs/themes/terminal.png)   | ![terminal theme, dark](./docs/themes/terminal-dark.png)   |
+| `editorial` | Editorial: cream paper, ink and burgundy, serif everywhere, almost flat.                     | ![editorial theme, light](./docs/themes/editorial.png) | ![editorial theme, dark](./docs/themes/editorial-dark.png) |
+| `aurora`    | Aurora: deep indigo, neon magenta and cyan, glowing shadows, very round.                     | ![aurora theme, light](./docs/themes/aurora.png)       | ![aurora theme, dark](./docs/themes/aurora-dark.png)       |
+| `nordic`    | Nordic: cool greys, frost blue, completely flat (no shadows), quiet type.                    | ![nordic theme, light](./docs/themes/nordic.png)       | ![nordic theme, dark](./docs/themes/nordic-dark.png)       |
+| `forest`    | Forest: moss, linen and terracotta, warm soft shadows, rounded type.                         | ![forest theme, light](./docs/themes/forest.png)       | ![forest theme, dark](./docs/themes/forest-dark.png)       |
 
 ## Development
 
