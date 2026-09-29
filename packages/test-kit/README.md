@@ -35,9 +35,13 @@ import { createMockResponse } from "@forthtilliath/test-kit/createMockResponse";
 
 ### `createMockResponse(body, options?)`
 
-Builds a `fetch()` `Response`-shaped object (`ok`, `status`, `headers`,
-`json()`, `text()`) resolving `body` as JSON. Wrap it in your test runner's
-own mock function — this package has no opinion on Jest vs Vitest.
+Builds a real `fetch()` `Response` resolving `body` — full API (`clone()`,
+`blob()`, `arrayBuffer()`…), assignable wherever a `Response` is expected.
+A string `body` is sent as-is; anything else is JSON-serialized, with a
+`content-type: application/json` header unless you pass one. `ok` follows
+the real rule (2xx only) unless forced with `{ ok }`; a 204/205/304 status
+has no body. Wrap it in your test runner's own mock function — this package
+has no opinion on Jest vs Vitest.
 
 ```ts
 vi.stubGlobal(
