@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "@forthtilliath/forth-ui/components/mode-toggle";
+
 import { navLinks } from "../nav-links";
 
 export default function ComponentsLayout({

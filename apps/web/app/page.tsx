@@ -1,9 +1,8 @@
 import Image from "next/image";
 
+import { ThemeImage } from "@forthtilliath/forth-ui/components/theme-image";
 import { Show } from "@forthtilliath/react-kit/show";
 import { AnimatedText } from "@forthtilliath/shadcn-ui/components/blocks/animated-text";
-
-import { ThemeImage } from "./theme-image";
 
 import styles from "./page.module.css";
 
@@ -12,6 +11,7 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <ThemeImage
+          as={Image}
           className={styles.logo}
           srcLight="turborepo-dark.svg"
           srcDark="turborepo-light.svg"
