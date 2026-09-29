@@ -88,6 +88,67 @@ describe("fetchLatestRelease", () => {
   });
 });
 
+describe("timeout and cancellation", () => {
+  // A fetch that never answers on its own, only rejects once aborted (right
+  // away for an already-aborted signal, like the real one).
+  function mockHangingFetch() {
+    const fetchMock = vi.fn(
+      (_url: string, init?: RequestInit) =>
+        new Promise<Response>((_resolve, reject) => {
+          const abort = () => {
+            reject(new DOMException("Aborted", "AbortError"));
+          };
+          if (init?.signal?.aborted) abort();
+          init?.signal?.addEventListener("abort", abort);
+        }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    return fetchMock;
+  }
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it("gives up after 15 s by default", async () => {
+    vi.useFakeTimers();
+    mockHangingFetch();
+    const pending = fetchLatestRelease(ref);
+    const assertion = expect(pending).rejects.toThrow(
+      "GitHub did not respond within 15000 ms",
+    );
+    await vi.advanceTimersByTimeAsync(15_000);
+    await assertion;
+  });
+
+  it("honors a custom timeoutMs", async () => {
+    vi.useFakeTimers();
+    mockHangingFetch();
+    const pending = fetchReleaseHistory({ ...ref, timeoutMs: 1000 });
+    const assertion = expect(pending).rejects.toThrow(
+      "GitHub did not respond within 1000 ms",
+    );
+    await vi.advanceTimersByTimeAsync(1000);
+    await assertion;
+  });
+
+  it("aborts when the caller's signal aborts, without a timeout message", async () => {
+    mockHangingFetch();
+    const controller = new AbortController();
+    const pending = fetchLatestRelease({ ...ref, signal: controller.signal });
+    controller.abort();
+    await expect(pending).rejects.toThrow("Aborted");
+  });
+
+  it("doesn't even start waiting when the signal is already aborted", async () => {
+    const fetchMock = mockHangingFetch();
+    const pending = fetchLatestRelease({ ...ref, signal: AbortSignal.abort() });
+    await expect(pending).rejects.toThrow("Aborted");
+    expect(fetchMock.mock.calls[0]?.[1]?.signal?.aborted).toBe(true);
+  });
+});
+
 describe("fetchReleaseHistory", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -145,6 +206,23 @@ describe("fetchReleaseHistory", () => {
     await expect(fetchReleaseHistory(ref)).rejects.toThrow(
       "GitHub responded with 500",
     );
+  });
+
+  it("leaves draft releases out", async () => {
+    mockFetchOnce([
+      { tag_name: "v3.0.0", draft: true, published_at: null },
+      { tag_name: "v2.0.0", draft: false, published_at: "2026-02-01" },
+    ]);
+    const history = await fetchReleaseHistory(ref);
+    expect(history.map((entry) => entry.version)).toEqual(["2.0.0"]);
+  });
+
+  it("clamps the limit to GitHub's 1–100 per_page range", async () => {
+    const fetchMock = mockFetchOnce([]);
+    await fetchReleaseHistory({ ...ref, limit: 500 });
+    await fetchReleaseHistory({ ...ref, limit: 0 });
+    expect(fetchMock.mock.calls[0]?.[0]).toContain("per_page=100");
+    expect(fetchMock.mock.calls[1]?.[0]).toContain("per_page=1");
   });
 
   it("sends a bearer token when provided", async () => {
