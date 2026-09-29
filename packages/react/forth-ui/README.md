@@ -326,7 +326,7 @@ Tailwind v4 expects any npm-distributed component library to be consumed.
 
 ### Available themes
 
-17 themes ship under
+19 themes ship under
 `@forthtilliath/shadcn-ui/styles/themes/`, all rendered here with the same
 components. The first 11 are [tweakcn](https://tweakcn.com)-generated — most of
 them only change the colors:
@@ -347,19 +347,25 @@ them only change the colors:
 | ----------------------------------------- | ----------------------------------------- |
 | ![violet theme](./docs/themes/violet.png) | ![yellow theme](./docs/themes/yellow.png) |
 
-The other 6 each have their own personality — fonts, corner radius and
-shadows change too, not just the colors. Their fonts fall back to system
-stacks; load the fonts named at the top of each file (Google Fonts,
-`next/font`…) for the full look.
+The other 8 go further: besides fonts, radius and shadows, each
+adds **signature effects** — plain CSS rules on shadcn-ui's `data-slot`
+attributes (pixel frames, scanlines, frosted glass, hand-drawn outlines…),
+active only while the theme is imported. The components themselves are
+untouched, and focus stays visible (a theme restyling a button's shadow
+gets an outline instead). Their fonts fall back to system stacks; load the
+fonts named at the top of each file (Google Fonts, `next/font`…) for the
+full look.
 
-| Theme       | Style                                                                                        | Light                                                  | Dark                                                       |
-| ----------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
-| `brutalist` | Neo-brutalism: bold yellow, black outlines, hard offset shadows, square corners.             | ![brutalist theme, light](./docs/themes/brutalist.png) | ![brutalist theme, dark](./docs/themes/brutalist-dark.png) |
-| `terminal`  | Retro terminal: phosphor green on black (dark), listing paper (light), monospace everywhere. | ![terminal theme, light](./docs/themes/terminal.png)   | ![terminal theme, dark](./docs/themes/terminal-dark.png)   |
-| `editorial` | Editorial: cream paper, ink and burgundy, serif everywhere, almost flat.                     | ![editorial theme, light](./docs/themes/editorial.png) | ![editorial theme, dark](./docs/themes/editorial-dark.png) |
-| `aurora`    | Aurora: deep indigo, neon magenta and cyan, glowing shadows, very round.                     | ![aurora theme, light](./docs/themes/aurora.png)       | ![aurora theme, dark](./docs/themes/aurora-dark.png)       |
-| `nordic`    | Nordic: cool greys, frost blue, completely flat (no shadows), quiet type.                    | ![nordic theme, light](./docs/themes/nordic.png)       | ![nordic theme, dark](./docs/themes/nordic-dark.png)       |
-| `forest`    | Forest: moss, linen and terracotta, warm soft shadows, rounded type.                         | ![forest theme, light](./docs/themes/forest.png)       | ![forest theme, dark](./docs/themes/forest-dark.png)       |
+| Theme       | Style                                                                                                 | Light                                                  | Dark                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
+| `brutalist` | Neo-brutalism: thick black outlines, hard offset shadows, buttons that press in, dotted paper.        | ![brutalist theme, light](./docs/themes/brutalist.png) | ![brutalist theme, dark](./docs/themes/brutalist-dark.png) |
+| `pixel`     | 8-bit: notched pixel frames, pixel type, checkerboard — Game Boy greens (light), PICO-8 night (dark). | ![pixel theme, light](./docs/themes/pixel.png)         | ![pixel theme, dark](./docs/themes/pixel-dark.png)         |
+| `crt`       | CRT monitor: amber phosphor, scanlines and vignette, glowing text, blinking cursor.                   | ![crt theme, light](./docs/themes/crt.png)             | ![crt theme, dark](./docs/themes/crt-dark.png)             |
+| `synthwave` | Synthwave: sunset sky over a perspective grid, chrome titles, neon gradient buttons.                  | ![synthwave theme, light](./docs/themes/synthwave.png) | ![synthwave theme, dark](./docs/themes/synthwave-dark.png) |
+| `glass`     | Glassmorphism: frosted translucent surfaces floating over a colorful gradient mesh.                   | ![glass theme, light](./docs/themes/glass.png)         | ![glass theme, dark](./docs/themes/glass-dark.png)         |
+| `sketch`    | Hand-drawn: wobbly inked outlines and handwriting — lined notebook (light), chalkboard (dark).        | ![sketch theme, light](./docs/themes/sketch.png)       | ![sketch theme, dark](./docs/themes/sketch-dark.png)       |
+| `newspaper` | Newspaper: newsprint and ink, Didone headlines over double rules, halftone dots, small caps.          | ![newspaper theme, light](./docs/themes/newspaper.png) | ![newspaper theme, dark](./docs/themes/newspaper-dark.png) |
+| `memphis`   | Memphis pop: confetti pattern, asymmetric corners, squiggly underlined titles, colored hard shadows.  | ![memphis theme, light](./docs/themes/memphis.png)     | ![memphis theme, dark](./docs/themes/memphis-dark.png)     |
 
 ## Development
 
