@@ -3,6 +3,8 @@
 export interface PresignRequest {
   key: string;
   contentType: string;
+  /** File size in bytes — required by a presign route that sets `maxSizeBytes`. */
+  size?: number;
 }
 
 export interface PresignResponse {
