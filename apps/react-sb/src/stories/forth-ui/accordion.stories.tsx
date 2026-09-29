@@ -262,3 +262,14 @@ export const ShouldExpandOneItem: Story = {
     await expect(first).toHaveAttribute("aria-expanded", "false");
   },
 };
+
+export const ShouldHideChevron: Story = {
+  name: "when hideChevron is set, should render no chevron",
+  tags: ["!dev", "!autodocs"],
+  args: { hideChevron: true },
+  play: async ({ canvas }) => {
+    for (const trigger of canvas.getAllByRole("button")) {
+      await expect(trigger.querySelector("svg")).toBeNull();
+    }
+  },
+};
