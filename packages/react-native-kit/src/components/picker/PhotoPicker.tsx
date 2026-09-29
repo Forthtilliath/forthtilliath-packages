@@ -3,6 +3,8 @@ import { Alert, Image, Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
+import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
+
 export interface PhotoPickerStyles {
   photoPicker?: StyleProp<ViewStyle>;
   photoPreview?: StyleProp<ImageStyle>;
@@ -34,6 +36,11 @@ export interface PhotoPickerProps {
   /** Used as-is in titles/accessibility labels, e.g. "of the container". */
   photoLabel: string;
   labels?: PhotoPickerLabels;
+  /**
+   * Language of the built-in labels — French by default, or the nearest
+   * `KitLocaleProvider`'s. `labels` still overrides individual strings.
+   */
+  locale?: KitLocale;
   styles?: PhotoPickerStyles;
 }
 
@@ -67,22 +74,43 @@ const defaultStyles: Required<PhotoPickerStyles> = {
   iconColor: "#6b7280",
 };
 
-const defaultLabels: Required<PhotoPickerLabels> = {
-  photoTitle: (photoLabel) => `Photo ${photoLabel}`,
-  editAccessibilityLabel: (photoLabel) => `Photo ${photoLabel}. Modifier.`,
-  addAccessibilityLabel: (photoLabel) => `Ajouter une photo ${photoLabel}`,
-  addPlaceholderText: "Ajouter une photo",
-  cameraPermissionTitle: "Accès à l'appareil photo refusé",
-  cameraPermissionMessage:
-    "Autorise l'accès dans les réglages du téléphone pour prendre une photo.",
-  libraryPermissionTitle: "Accès aux photos refusé",
-  libraryPermissionMessage:
-    "Autorise l'accès dans les réglages du téléphone pour choisir une photo.",
-  takePhoto: "Prendre une photo",
-  chooseFromLibrary: "Choisir dans la galerie",
-  cancel: "Annuler",
-  removePhoto: "Retirer la photo",
-};
+const defaultLabels = {
+  fr: {
+    photoTitle: (photoLabel: string) => `Photo ${photoLabel}`,
+    editAccessibilityLabel: (photoLabel: string) =>
+      `Photo ${photoLabel}. Modifier.`,
+    addAccessibilityLabel: (photoLabel: string) =>
+      `Ajouter une photo ${photoLabel}`,
+    addPlaceholderText: "Ajouter une photo",
+    cameraPermissionTitle: "Accès à l'appareil photo refusé",
+    cameraPermissionMessage:
+      "Autorise l'accès dans les réglages du téléphone pour prendre une photo.",
+    libraryPermissionTitle: "Accès aux photos refusé",
+    libraryPermissionMessage:
+      "Autorise l'accès dans les réglages du téléphone pour choisir une photo.",
+    takePhoto: "Prendre une photo",
+    chooseFromLibrary: "Choisir dans la galerie",
+    cancel: "Annuler",
+    removePhoto: "Retirer la photo",
+  },
+  en: {
+    photoTitle: (photoLabel: string) => `Photo ${photoLabel}`,
+    editAccessibilityLabel: (photoLabel: string) =>
+      `Photo ${photoLabel}. Edit.`,
+    addAccessibilityLabel: (photoLabel: string) => `Add a photo ${photoLabel}`,
+    addPlaceholderText: "Add a photo",
+    cameraPermissionTitle: "Camera access denied",
+    cameraPermissionMessage:
+      "Allow access in the phone's settings to take a photo.",
+    libraryPermissionTitle: "Photo access denied",
+    libraryPermissionMessage:
+      "Allow access in the phone's settings to choose a photo.",
+    takePhoto: "Take a photo",
+    chooseFromLibrary: "Choose from library",
+    cancel: "Cancel",
+    removePhoto: "Remove photo",
+  },
+} satisfies Record<KitLocale, Required<PhotoPickerLabels>>;
 
 // Photo picker (camera or library) with a preview.
 export function PhotoPicker({
@@ -91,6 +119,7 @@ export function PhotoPicker({
   savePhoto,
   photoLabel,
   labels,
+  locale,
   styles,
 }: PhotoPickerProps) {
   // Style fields are merged as arrays (default, then override) so a partial
@@ -110,7 +139,7 @@ export function PhotoPicker({
     clearLink: [defaultStyles.clearLink, styles?.clearLink],
     iconColor: styles?.iconColor ?? defaultStyles.iconColor,
   };
-  const t = { ...defaultLabels, ...labels };
+  const t = { ...defaultLabels[useKitLocale(locale)], ...labels };
 
   async function pickFromCamera() {
     const permission = await ImagePicker.requestCameraPermissionsAsync();

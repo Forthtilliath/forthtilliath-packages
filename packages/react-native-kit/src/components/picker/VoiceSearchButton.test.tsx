@@ -68,6 +68,34 @@ describe("VoiceSearchButton", () => {
     });
   });
 
+  it("recognizes French by default, English with locale='en'", async () => {
+    ExpoSpeechRecognitionModule.requestPermissionsAsync.mockResolvedValue({
+      granted: true,
+    });
+
+    await press(renderTree(<VoiceSearchButton onResult={vi.fn()} />));
+    await press(
+      renderTree(<VoiceSearchButton onResult={vi.fn()} locale="en" />),
+    );
+
+    expect(ExpoSpeechRecognitionModule.start.mock.calls).toEqual([
+      [{ lang: "fr-FR", interimResults: false }],
+      [{ lang: "en-US", interimResults: false }],
+    ]);
+  });
+
+  it("localizes its default accessibility label", () => {
+    const label = (locale?: "fr" | "en") =>
+      propsOf<{ accessibilityLabel: string }>(
+        renderTree(
+          <VoiceSearchButton onResult={vi.fn()} locale={locale} />,
+        ).root.findByType(Pressable),
+      ).accessibilityLabel;
+
+    expect(label()).toBe("Recherche vocale");
+    expect(label("en")).toBe("Voice search");
+  });
+
   it("does not start recognition if permission is denied", async () => {
     ExpoSpeechRecognitionModule.requestPermissionsAsync.mockResolvedValue({
       granted: false,
