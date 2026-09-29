@@ -33,7 +33,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm run build
+      # No separate build step: the "version" path doesn't need one, and
+      # publish-packages already runs `turbo run build lint` before publishing.
 
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
@@ -51,3 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # npm provenance: each published version is linked to the workflow run
+          # and commit that built it (signed through the id-token permission
+          # above), shown as a "Provenance" badge on npmjs.com.
+          NPM_CONFIG_PROVENANCE: true
