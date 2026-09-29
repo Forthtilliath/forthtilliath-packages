@@ -38,6 +38,35 @@ describe("BackupSettingsScreen", () => {
     expect(onExport).toHaveBeenCalledTimes(1);
   });
 
+  it("ignores a second export tap made before the re-render (double tap)", async () => {
+    let finish!: () => void;
+    const onExport = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const tree = renderTree(
+      <BackupSettingsScreen onExport={onExport} onImport={vi.fn()} />,
+    );
+    const [exportButton] = tree.root.findAllByType(Pressable);
+    if (!exportButton) throw new Error("expected an export button");
+    const { onPress } = propsOf<{ onPress: () => void }>(exportButton);
+
+    await act(async () => {
+      // Same render, same handler: both taps see "not exporting" in state.
+      onPress();
+      onPress();
+      await flushAsync();
+    });
+    expect(onExport).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      finish();
+      await flushAsync();
+    });
+  });
+
   it("asks for confirmation before calling onImport, and only imports on confirm", async () => {
     const onImport = vi.fn().mockResolvedValue(undefined);
     const alertSpy = vi
