@@ -39,7 +39,10 @@ import type {
 import type { UnionToTuple } from "@forthtilliath/ts-types/union";
 ```
 
-Also available as one barrel: `import type { ... } from "@forthtilliath/ts-types"`.
+Also available as one barrel: `import type { ... } from "@forthtilliath/ts-types"`
+— except `helpers`, which depends on React's types and is only exported from
+`@forthtilliath/ts-types/helpers`, so the barrel stays usable in a React-free
+project (Angular, Node).
 
 ### `array`
 
@@ -88,6 +91,7 @@ Also available as one barrel: `import type { ... } from "@forthtilliath/ts-types
 
 - `StoryComponent<T>` / `StoryDecorator<T>` / `StoryArgumentsWithKey<T>` —
   typing helpers for Storybook decorators and custom story render functions.
+  Require `@types/react` (an optional peer dependency of this package).
 
 ## Scripts
 
