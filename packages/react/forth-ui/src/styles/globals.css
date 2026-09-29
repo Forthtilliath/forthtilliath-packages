@@ -2,13 +2,13 @@
 
 @import "@forthtilliath/shadcn-ui/styles/globals-static.css";
 @import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
-@import "./safelist.css";
-@import "./storybook.css";
 @import "./shiki.css";
 @import "./marquee.css";
 
 @source "../**/*.{ts,tsx}";
 /* The shadcn-ui components forth-ui builds on (Dialog, Popover…) use classes
    of their own, e.g. tw-animate-css's `animate-in`: scan them too, or the
-   published CSS lacks them. Path relative to packages/react/forth-ui/src/styles/. */
-@source "../../../shadcn-ui/src/**/*.{ts,tsx}";
+   published CSS lacks them — only those, the others would bloat it. `lint`
+   (scripts/check-css-sources.js) fails when one is missing from the list.
+   Path relative to packages/react/forth-ui/src/styles/. */
+@source "../../../shadcn-ui/src/components/{accordion,alert,alert-dialog,avatar,badge,breadcrumb,button,calendar,checkbox,collapsible,command,dialog,drawer,dropdown-menu,hover-card,input,pagination,popover,progress,separator,sheet,tabs,tooltip}.tsx";
