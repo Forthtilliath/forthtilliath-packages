@@ -1,6 +1,6 @@
 {
   "name": "@forthtilliath/supabase-test-kit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Integration tests against a local Supabase: guarded test clients, throwaway users, schema security rules and production schema drift detection.",
   "type": "module",
   "sideEffects": false,
