@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "table",
+    "name": "posts",
+    "definition": "rls=true force=false"
+  },
+  {
+    "kind": "table",
+    "name": "profiles",
+    "definition": "rls=true force=false"
+  }
+]
