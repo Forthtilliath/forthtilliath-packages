@@ -1,5 +1,32 @@
 # @forthtilliath/ts-kit
 
+## 0.11.0
+
+### Minor Changes
+
+- d26f492: `pluralize` takes `{ plural?, locale? }` as third argument (a plain string still works): which counts take the singular now follows the locale's plural rules (`Intl.PluralRules`), e.g. 0 is singular in French, with a French default suffix. New `createPluralize(locale)` binds a locale once per app. New `date` helpers for servers running in UTC: `dateInTimeZone(date, timeZone)`, `todayInTimeZone(timeZone, now?)` and `daysUntil(date, timeZone, now?)` (calendar days, unaffected by the time of day or DST).
+- cae6bd0: ts-kit quality pass:
+
+  - `retry`: new `shouldRetry(error, attempt)`, `maxDelayMs` and `signal` options. **Behavior change**: `onRetry` is now only called before an actual retry, no longer after the last failed attempt.
+  - `withTimeout`: accepts a function `(signal) => promise` to also cancel the operation on timeout (the promise form still works).
+  - `sleep(ms, signal?)`: can be cancelled.
+  - `memoize`: moved to `function/`; evicts a rejected promise so the next call retries; new `{ getKey, maxSize }` options (LRU eviction beyond `maxSize`). Still importable from `async/memoize` (deprecated).
+  - `flattenDeep`: typed as the innermost element type (`number[][][]` → `number[]`).
+  - `escapeHtml`: also escapes `'` (safe in attributes quoted with `'`).
+  - `escapeCsvField`: new `delimiter` parameter (default `;`, unchanged) and quotes values containing `\r`.
+  - `downloadTextBlob`: revokes the object URL 40 s after the click instead of immediately, which could cancel the download in Firefox/Safari.
+  - `sum`/`avg` moved from `maths/` to `number/`, `escapeCsvField`/`formatCsvNumber` to `csv/`; the former deep imports still work (deprecated). `avg([])` returning `NaN` is now documented.
+  - README lists the browser-only functions.
+
+### Patch Changes
+
+- c1bd669: Declare `sideEffects` (`false`, or `["*.css"]` for `forth-ui`/`shadcn-ui`) so bundlers can tree-shake unused modules, root barrels included. Internal dependencies are now published as caret ranges (`^0.4.0`) instead of exact versions.
+- ccdad7c: Bug fixes:
+
+  - `deepEqual`: `Date`s (by timestamp), `RegExp`s, `Map`s and `Set`s are now actually compared (they were always equal, having no own keys); a key missing from the other object is no longer treated as `undefined` (`{ a: undefined }` vs `{ b: undefined }` was `true`); values with different prototypes are no longer equal.
+  - `compareVersions`: follows semver precedence for pre-releases (`1.0.0-beta.2` < `1.0.0-beta.10` < `1.0.0`) instead of returning `-1` both ways; ignores a leading `v` and build metadata.
+  - `formatBytes`: a fraction of a byte is formatted in `B` (was `"512 undefined"` for `0.5`), and `decimals: 0` no longer strips the integer part's zeros (`formatBytes(100, 0)` was `"1 B"`).
+
 ## 0.10.0
 
 ### Minor Changes
