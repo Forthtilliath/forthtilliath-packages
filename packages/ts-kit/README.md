@@ -139,6 +139,15 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `getPeriodStartMs(period, now?)` — start timestamp (ms) for a
   `"today" | "7d" | "30d" | "all"` period filter, or `null` for `"all"`.
   `"today"` is the current calendar day, not a rolling 24h window.
+- `dateInTimeZone(date, timeZone)` — the calendar date of an instant in an
+  IANA time zone, `{ year, month, day, iso }` (`month` from 1 to 12), whatever
+  the machine's own time zone.
+- `todayInTimeZone(timeZone, now?)` — today's date in that time zone: on a
+  server running in UTC, `new Date()` is still "yesterday" in Paris just
+  after midnight.
+- `daysUntil(date, timeZone, now?)` — calendar days between today and a date,
+  both taken in that time zone (`0` today, `1` tomorrow, `-1` yesterday);
+  unaffected by the time of day or daylight saving time.
 
 ### `files`
 
@@ -210,8 +219,14 @@ Importing them is harmless anywhere: the DOM is only touched when called.
   suffix).
 - `slugify(str)` — URL-friendly slug (accents stripped, lower-cased,
   hyphenated).
-- `pluralize(count, singular, plural?)` — naive English pluralization, with an
-  override for irregular words.
+- `pluralize(count, singular, plural? | { plural?, locale? })` — picks the
+  singular or the plural form. Which counts take the singular follows the
+  locale's rules (`Intl.PluralRules`, `"en"` by default): only ±1 in
+  English, 0 and 1.5 too in French. Without an explicit plural form, a naive
+  suffix: English `s`/`es`/`ies`, French `s` (nothing after `s`/`x`/`z`),
+  `s` elsewhere.
+- `createPluralize(locale)` — `pluralize` bound to a locale, declared once per
+  app: `const plural = createPluralize("fr"); plural(n, "est", "sont")`.
 - `normalizeForSearch(text)` — lowercases, trims, strips accents, and expands
   œ/æ ligatures (which `normalize("NFD")` alone doesn't decompose) — for
   accent/case-insensitive search matching.
