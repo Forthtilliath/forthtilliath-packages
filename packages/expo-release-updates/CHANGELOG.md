@@ -1,5 +1,21 @@
 # @forthtilliath/expo-release-updates
 
+## 0.5.0
+
+### Minor Changes
+
+- f3c3000: `fetchLatestRelease` / `fetchReleaseHistory`: requests now give up after `timeoutMs` (default 15 s) instead of hanging on a bad network, and accept a `signal` to cancel them. `fetchReleaseHistory` leaves draft releases out and clamps `limit` to GitHub's 1–100 range. The README now warns that a `token` bundled in an app can be extracted from the APK, and clarifies that `expectedMd5` catches a corrupted download, not a malicious release.
+
+### Patch Changes
+
+- ccdad7c: `isUpdateAvailable` / `compareVersions` handle pre-release versions (via `ts-kit`): an install on `1.2.0-beta.1` is now offered the stable `1.2.0`.
+- c1bd669: Declare `sideEffects` (`false`, or `["*.css"]` for `forth-ui`/`shadcn-ui`) so bundlers can tree-shake unused modules, root barrels included. Internal dependencies are now published as caret ranges (`^0.4.0`) instead of exact versions.
+- Updated dependencies [c1bd669]
+- Updated dependencies [ccdad7c]
+- Updated dependencies [d26f492]
+- Updated dependencies [cae6bd0]
+  - @forthtilliath/ts-kit@0.11.0
+
 ## 0.4.7
 
 ### Patch Changes

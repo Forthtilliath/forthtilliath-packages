@@ -1,5 +1,46 @@
 # @forthtilliath/react-native-kit
 
+## 0.15.0
+
+### Minor Changes
+
+- 6f171c6: Bilingual built-in copy and quality pass:
+
+  - **`locale` prop (`"fr" | "en"`)** on every component with built-in copy, plus a `KitLocaleProvider` to set it once for a whole tree (a component's own `locale` wins; `labels` still overrides individual strings). `confirmDestructive` takes `{ locale }`. French stays the default.
+  - **Behavior changes** — defaults aligned on French: `UndoToast`'s `actionLabel` is now "Annuler" (was "Undo"), `SwipeableRow`'s `deleteText` "Supprimer" (was "Delete"), `VoiceSearchButton`'s accessibility labels are French and it **recognizes French by default** (`fr-FR`, was `en-US`) — which also fixes `PickerModal`'s dictation, which never passed a language. Pass `locale="en"` (or the explicit props) to get the previous English behavior.
+  - **`SwipeableRow`** now uses `ReanimatedSwipeable` instead of the deprecated `Swipeable`: **`react-native-reanimated` is a new peer dependency** (only for `SwipeableRow`).
+  - **`BackupSettingsScreen`**: a fast double tap no longer runs export/import twice (now built on `useSubmitGuard`); split into a component and a `.styles.ts` file.
+  - New **`mergeSlotStyles`** helper, used by every component instead of the per-component style-merging boilerplate.
+  - `UndoToast`'s docs referenced a non-existent `SwipeToDeleteRow`; remaining French code comments translated to English.
+
+### Patch Changes
+
+- c1bd669: Relative imports in the published ESM now carry their `.js` extension (`./slot-or-callback.js`, `../button/index.js`), so the packages load under plain Node ESM (Vitest with externalized deps, SSR scripts…) and not only through a bundler. These packages now type-check with `moduleResolution: NodeNext`, which enforces it — except `react-native-kit` and `expo-release-updates-ui` (only ever loaded through Metro, they keep `bundler` resolution) and `shadcn-ui`, whose sources are shadcn components kept as-is: its `dist/` gets the extensions added by a post-build step instead.
+- ccdad7c: `useSubmitGuard`: two calls made before a re-render (a fast double tap) no longer both run the action — the lock is now a ref instead of the `isSaving` state.
+- c1bd669: Declare `sideEffects` (`false`, or `["*.css"]` for `forth-ui`/`shadcn-ui`) so bundlers can tree-shake unused modules, root barrels included. Internal dependencies are now published as caret ranges (`^0.4.0`) instead of exact versions.
+- cae6bd0: ts-kit quality pass:
+
+  - `retry`: new `shouldRetry(error, attempt)`, `maxDelayMs` and `signal` options. **Behavior change**: `onRetry` is now only called before an actual retry, no longer after the last failed attempt.
+  - `withTimeout`: accepts a function `(signal) => promise` to also cancel the operation on timeout (the promise form still works).
+  - `sleep(ms, signal?)`: can be cancelled.
+  - `memoize`: moved to `function/`; evicts a rejected promise so the next call retries; new `{ getKey, maxSize }` options (LRU eviction beyond `maxSize`). Still importable from `async/memoize` (deprecated).
+  - `flattenDeep`: typed as the innermost element type (`number[][][]` → `number[]`).
+  - `escapeHtml`: also escapes `'` (safe in attributes quoted with `'`).
+  - `escapeCsvField`: new `delimiter` parameter (default `;`, unchanged) and quotes values containing `\r`.
+  - `downloadTextBlob`: revokes the object URL 40 s after the click instead of immediately, which could cancel the download in Firefox/Safari.
+  - `sum`/`avg` moved from `maths/` to `number/`, `escapeCsvField`/`formatCsvNumber` to `csv/`; the former deep imports still work (deprecated). `avg([])` returning `NaN` is now documented.
+  - README lists the browser-only functions.
+
+- Updated dependencies [c1bd669]
+- Updated dependencies [1ca67e8]
+- Updated dependencies [c1bd669]
+- Updated dependencies [a257370]
+- Updated dependencies [ccdad7c]
+- Updated dependencies [d26f492]
+- Updated dependencies [cae6bd0]
+  - @forthtilliath/expo-release-updates-ui@0.3.0
+  - @forthtilliath/ts-kit@0.11.0
+
 ## 0.14.8
 
 ### Patch Changes
