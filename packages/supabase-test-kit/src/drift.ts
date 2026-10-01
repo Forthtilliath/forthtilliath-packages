@@ -14,11 +14,12 @@ Compares a database schema with the snapshot built from the migrations
 (default snapshot: ${DEFAULT_SNAPSHOT}). Read-only; exits with 1 on drift.`;
 
 /**
- * Reads the result of `supabase db query --output-format json`. The CLI may
- * print other things on stdout first: notices, or another JSON document while
- * it initialises its login role. The result comes last, its opening brace at
- * the start of a line (nested objects are indented, and JSON strings can't
- * hold a raw line break).
+ * Reads the result of `supabase db query --output-format json`, in either of
+ * the CLI's formats: a plain array of rows, or `{ boundary, rows, warning }`
+ * (the "untrusted data" envelope it uses when run by an AI agent). Notices
+ * printed first on stdout are skipped: the result comes last, its opening
+ * bracket at the start of a line (nested values are indented, and JSON
+ * strings can't hold a raw line break).
  *
  * @param stdout - The CLI output.
  * @returns The query rows, or `null` if no result can be read.
@@ -27,17 +28,19 @@ export function parseQueryOutput(
   stdout: string,
 ): { rows: CatalogRow[] } | null {
   const start = Math.max(
-    ...[...stdout.matchAll(/^\{/gm)].map((match) => match.index),
+    ...[...stdout.matchAll(/^[[{]/gm)].map((match) => match.index),
   );
   if (!Number.isFinite(start)) return null;
+  let output: unknown;
   try {
-    const output = JSON.parse(stdout.slice(start)) as { rows?: unknown };
-    return Array.isArray(output.rows)
-      ? { rows: output.rows as CatalogRow[] }
-      : null;
+    output = JSON.parse(stdout.slice(start));
   } catch {
     return null;
   }
+  const rows = Array.isArray(output)
+    ? output
+    : (output as { rows?: unknown } | null)?.rows;
+  return Array.isArray(rows) ? { rows: rows as CatalogRow[] } : null;
 }
 
 function printSection(io: CliIo, title: string, lines: string[]): void {
