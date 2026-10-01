@@ -33,6 +33,19 @@ describe("runDrift", () => {
     ]);
   });
 
+  it("reads the plain array of rows the CLI prints in a terminal", () => {
+    const { io, out } = createTestIo(
+      {
+        status: 0,
+        stdout: JSON.stringify(JSON.parse(snapshot), null, 2),
+      },
+      { [DEFAULT_SNAPSHOT]: snapshot },
+    );
+
+    expect(runDrift(["--project-ref", "abcdef"], io)).toBe(0);
+    expect(out[0]).toMatch(/^No drift/);
+  });
+
   it("lists missing, extra and changed elements", () => {
     const { io, out } = createTestIo(
       cliOutput([
@@ -117,38 +130,30 @@ describe("runDrift", () => {
 
 describe("parseQueryOutput", () => {
   const rows = [{ kind: "table", name: "news", definition: "rls=true" }];
-  // Pretty-printed like the CLI, with its untrusted-data envelope
-  const result = JSON.stringify(
-    { boundary: "b1", rows, warning: "untrusted data" },
-    null,
-    2,
-  );
+  // The CLI's two formats, pretty-printed like the CLI does
+  const formats = [
+    ["a plain array of rows", JSON.stringify(rows, null, 2)],
+    [
+      "the untrusted-data envelope (AI agents)",
+      JSON.stringify({ boundary: "b1", rows, warning: "untrusted" }, null, 2),
+    ],
+  ];
 
-  it("reads a result printed alone", () => {
+  it.each(formats)("reads %s", (_, result) => {
     expect(parseQueryOutput(result)).toEqual({ rows });
   });
 
-  it("skips notices printed before the result", () => {
-    expect(
-      parseQueryOutput(`Connecting to remote database...\n${result}\n`),
-    ).toEqual({ rows });
-  });
-
-  it("skips another JSON document printed before the result", () => {
-    const loginRole = JSON.stringify(
-      [{ rolname: "cli_login_postgres" }, { rolname: "postgres" }],
-      null,
-      2,
+  it.each(formats)("skips notices printed before %s", (_, result) => {
+    expect(parseQueryOutput(`Initialising login role...\n${result}\n`)).toEqual(
+      { rows },
     );
-    expect(
-      parseQueryOutput(`Initialising login role...\n${loginRole}\n${result}`),
-    ).toEqual({ rows });
   });
 
   it.each([
     ["no JSON", "Initialising login role...\n"],
     ["invalid JSON", "{ rows: [ }"],
     ["a JSON object without rows", '{\n  "error": "denied"\n}'],
+    ["JSON null", "null"],
   ])("returns null for %s", (_, stdout) => {
     expect(parseQueryOutput(stdout)).toBeNull();
   });
