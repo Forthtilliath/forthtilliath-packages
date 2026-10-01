@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_SNAPSHOT, runDrift } from "./drift.js";
+import { DEFAULT_SNAPSHOT, parseQueryOutput, runDrift } from "./drift.js";
 import { SCHEMA_CATALOG_SQL_PATH } from "./paths.js";
 import { createTestIo } from "./testIo.js";
 
@@ -79,6 +79,17 @@ describe("runDrift", () => {
     );
   });
 
+  it("fails when the CLI output holds no query result", () => {
+    const { io, err } = createTestIo(
+      { status: 0, stdout: "Initialising login role...\n" },
+      { [DEFAULT_SNAPSHOT]: snapshot },
+    );
+    expect(runDrift(["--project-ref", "abcdef"], io)).toBe(1);
+    expect(err).toEqual([
+      "Unexpected output from the Supabase CLI (project abcdef).",
+    ]);
+  });
+
   it("fails when the schema can't be read", () => {
     const { io, err } = createTestIo({ status: 3, stdout: "" });
     expect(runDrift(["--project-ref", "abcdef"], io)).toBe(3);
@@ -101,5 +112,44 @@ describe("runDrift", () => {
     const { io, err } = createTestIo(cliOutput([]));
     expect(runDrift(["--prod"], io)).toBe(2);
     expect(err[0]).toMatch(/--prod[\s\S]*Usage: supabase-db-drift/);
+  });
+});
+
+describe("parseQueryOutput", () => {
+  const rows = [{ kind: "table", name: "news", definition: "rls=true" }];
+  // Pretty-printed like the CLI, with its untrusted-data envelope
+  const result = JSON.stringify(
+    { boundary: "b1", rows, warning: "untrusted data" },
+    null,
+    2,
+  );
+
+  it("reads a result printed alone", () => {
+    expect(parseQueryOutput(result)).toEqual({ rows });
+  });
+
+  it("skips notices printed before the result", () => {
+    expect(
+      parseQueryOutput(`Connecting to remote database...\n${result}\n`),
+    ).toEqual({ rows });
+  });
+
+  it("skips another JSON document printed before the result", () => {
+    const loginRole = JSON.stringify(
+      [{ rolname: "cli_login_postgres" }, { rolname: "postgres" }],
+      null,
+      2,
+    );
+    expect(
+      parseQueryOutput(`Initialising login role...\n${loginRole}\n${result}`),
+    ).toEqual({ rows });
+  });
+
+  it.each([
+    ["no JSON", "Initialising login role...\n"],
+    ["invalid JSON", "{ rows: [ }"],
+    ["a JSON object without rows", '{\n  "error": "denied"\n}'],
+  ])("returns null for %s", (_, stdout) => {
+    expect(parseQueryOutput(stdout)).toBeNull();
   });
 });
