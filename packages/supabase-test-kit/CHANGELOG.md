@@ -1,5 +1,11 @@
 # @forthtilliath/supabase-test-kit
 
+## 0.1.1
+
+### Patch Changes
+
+- 4dfc36b: `supabase-db-drift` reads the last JSON document of the `supabase db query` output: the CLI may print another one before the result (while initialising its login role), which made the command crash with a `SyntaxError`. An output without a readable result now fails with a clear message (exit code 1). New `parseQueryOutput` function.
+
 ## 0.1.0
 
 ### Minor Changes
