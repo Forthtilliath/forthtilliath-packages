@@ -13,6 +13,33 @@ const USAGE = `Usage: supabase-db-drift (--project-ref <ref> | --local) [--snaps
 Compares a database schema with the snapshot built from the migrations
 (default snapshot: ${DEFAULT_SNAPSHOT}). Read-only; exits with 1 on drift.`;
 
+/**
+ * Reads the result of `supabase db query --output-format json`. The CLI may
+ * print other things on stdout first: notices, or another JSON document while
+ * it initialises its login role. The result comes last, its opening brace at
+ * the start of a line (nested objects are indented, and JSON strings can't
+ * hold a raw line break).
+ *
+ * @param stdout - The CLI output.
+ * @returns The query rows, or `null` if no result can be read.
+ */
+export function parseQueryOutput(
+  stdout: string,
+): { rows: CatalogRow[] } | null {
+  const start = Math.max(
+    ...[...stdout.matchAll(/^\{/gm)].map((match) => match.index),
+  );
+  if (!Number.isFinite(start)) return null;
+  try {
+    const output = JSON.parse(stdout.slice(start)) as { rows?: unknown };
+    return Array.isArray(output.rows)
+      ? { rows: output.rows as CatalogRow[] }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 function printSection(io: CliIo, title: string, lines: string[]): void {
   if (lines.length === 0) return;
   io.log(`\n${title} (${lines.length})`);
@@ -63,11 +90,11 @@ export function runDrift(argv: string[], io: CliIo): number {
     return failureCode(result);
   }
 
-  const output = JSON.parse(
-    result.stdout.slice(result.stdout.indexOf("{")),
-  ) as {
-    rows: CatalogRow[];
-  };
+  const output = parseQueryOutput(result.stdout);
+  if (!output) {
+    io.error(`Unexpected output from the Supabase CLI (${target}).`);
+    return 1;
+  }
   const expected = JSON.parse(io.readFile(values.snapshot)) as CatalogRow[];
   const { missing, extra, changed } = diffCatalogs(expected, output.rows);
 
