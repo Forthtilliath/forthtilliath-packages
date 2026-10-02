@@ -4,14 +4,18 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createTestClients } from "./clients.js";
 
 const signInWithPassword = vi.fn();
+const enroll = vi.fn();
+const challengeAndVerify = vi.fn();
 
 vi.mock("@supabase/supabase-js", () => ({
   createClient: vi.fn((url: string, key: string) => ({
     url,
     key,
-    auth: { signInWithPassword },
+    auth: { signInWithPassword, mfa: { enroll, challengeAndVerify } },
   })),
 }));
+
+const RFC_SECRET = "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ";
 
 const env = {
   url: "http://127.0.0.1:54321",
@@ -55,6 +59,46 @@ describe("createTestClients", () => {
     signInWithPassword.mockResolvedValue({ error });
     await expect(
       clients.signIn({ email: "a@test.invalid", password: "wrong" }),
+    ).rejects.toBe(error);
+  });
+});
+
+describe("signInWithTotp", () => {
+  const clients = createTestClients(env);
+
+  it("signs in, enrolls a TOTP factor and verifies it with the current code", async () => {
+    vi.useFakeTimers({ now: 59_000 });
+    signInWithPassword.mockResolvedValue({ error: null });
+    enroll.mockResolvedValue({
+      data: { id: "factor-1", totp: { secret: RFC_SECRET } },
+      error: null,
+    });
+    challengeAndVerify.mockResolvedValue({ error: null });
+
+    const client = await clients.signInWithTotp({
+      email: "admin@test.invalid",
+      password: "pw",
+    });
+
+    expect(client).toMatchObject({ key: "anon" });
+    expect(enroll).toHaveBeenCalledWith({ factorType: "totp" });
+    expect(challengeAndVerify).toHaveBeenCalledWith({
+      factorId: "factor-1",
+      code: "287082",
+    });
+    vi.useRealTimers();
+  });
+
+  it("throws when the verification fails", async () => {
+    const error = new Error("Invalid TOTP code");
+    signInWithPassword.mockResolvedValue({ error: null });
+    enroll.mockResolvedValue({
+      data: { id: "factor-1", totp: { secret: RFC_SECRET } },
+      error: null,
+    });
+    challengeAndVerify.mockResolvedValue({ error });
+    await expect(
+      clients.signInWithTotp({ email: "admin@test.invalid", password: "pw" }),
     ).rejects.toBe(error);
   });
 });
