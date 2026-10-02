@@ -6,4 +6,5 @@ export * from "./clients.js";
 export * from "./config.js";
 export * from "./env.js";
 export * from "./security.js";
+export * from "./totp.js";
 export * from "./users.js";
