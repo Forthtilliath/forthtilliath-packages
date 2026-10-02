@@ -115,6 +115,14 @@ it("a user only reads their own profile", async () => {
 - `clients.anon()` — a signed-out visitor.
 - `clients.signIn({ email, password })` — a fresh client signed in with these
   credentials, subject to RLS.
+- `clients.signInWithTotp({ email, password })` — the same, then a TOTP factor
+  enrolled and verified on the spot: a full MFA session (`aal2`), for rules
+  that require it (e.g. admin rights gated on `auth.jwt() ->> 'aal'`). Each
+  call enrolls a new factor: keep the client if the account signs in often,
+  Auth limits factors and verifications.
+- `totpCode(secret, now?)` — the current 6-digit TOTP code of a base32 secret
+  (RFC 6238, no dependency): sign in a test account with a known factor, in a
+  Playwright setup or a script.
 - `users.create(options?)` — a confirmed account with a random email and
   password (`{ id, email, password }`); `userMetadata`/`appMetadata` reach
   e.g. a `handle_new_user` trigger.
