@@ -1,5 +1,11 @@
 # @forthtilliath/supabase-test-kit
 
+## 0.2.0
+
+### Minor Changes
+
+- 9ec9639: New `totpCode(secret, now?)`: the current 6-digit TOTP code of a base32 secret (RFC 6238, no dependency), to sign in MFA test accounts from tests, Playwright setups or scripts. New `clients.signInWithTotp(credentials)`: signs in, then enrolls and verifies a TOTP factor on the spot, for a full MFA session (`aal2`).
+
 ## 0.1.2
 
 ### Patch Changes
