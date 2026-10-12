@@ -7,6 +7,18 @@ import * as IntentLauncher from "expo-intent-launcher";
  */
 const FLAG_GRANT_READ_URI_PERMISSION = 1;
 
+const DEFAULT_ALLOWED_HOSTS = ["github.com"];
+
+/**
+ * Host of an `https://` URL, lowercased — or `null` for any other scheme, or
+ * a URL with credentials (`https://github.com@evil.example/`). Parsed by hand:
+ * React Native's `URL` doesn't implement `hostname`.
+ */
+function httpsHost(url: string): string | null {
+  const match = /^https:\/\/([^/?#:@]+)(?::\d+)?(?:[/?#]|$)/i.exec(url);
+  return match?.[1]?.toLowerCase() ?? null;
+}
+
 export interface DownloadAndInstallApkOptions {
   apkUrl: string;
   /** Temp filename in the cache directory, e.g. "myapp-update.apk". */
@@ -21,6 +33,13 @@ export interface DownloadAndInstallApkOptions {
    * signed with the same key as the installed app is what guards against that.
    */
   expectedMd5?: string;
+  /**
+   * Hosts `apkUrl` may point to — `["github.com"]` by default, the host of
+   * the `apkUrl` returned by `fetchLatestRelease` (GitHub then redirects to
+   * its own download host). Any other host, or a non-`https://` URL, is
+   * rejected before downloading anything.
+   */
+  allowedHosts?: string[];
 }
 
 /**
@@ -28,15 +47,27 @@ export interface DownloadAndInstallApkOptions {
  * install-package intent. Android only — there is no equivalent flow on iOS,
  * which doesn't allow installing a downloaded package outside the App Store.
  *
- * @throws if the download fails, or if `expectedMd5` is set and doesn't
- * match the downloaded file.
+ * @throws if `apkUrl` isn't an `https://` URL on one of `allowedHosts`, if
+ * the download fails, or if `expectedMd5` is set and doesn't match the
+ * downloaded file.
  */
 export async function downloadAndInstallApk({
   apkUrl,
   fileName,
   onProgress,
   expectedMd5,
+  allowedHosts = DEFAULT_ALLOWED_HOSTS,
 }: DownloadAndInstallApkOptions): Promise<void> {
+  const host = httpsHost(apkUrl);
+  if (
+    !host ||
+    !allowedHosts.some((allowed) => allowed.toLowerCase() === host)
+  ) {
+    throw new Error(
+      `Refusing to download the APK from ${apkUrl}: expected an https:// URL on ${allowedHosts.join(", ")}.`,
+    );
+  }
+
   const destination = new File(Paths.cache, fileName);
   if (destination.exists) destination.delete();
 

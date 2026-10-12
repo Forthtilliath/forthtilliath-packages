@@ -104,9 +104,9 @@ const history = await fetchReleaseHistory({
 // [{ version: "1.11.0", notes: "### Added\n- ...", publishedAt: "2026-07-30T..." }, ...]
 ```
 
-### `downloadAndInstallApk({ apkUrl, fileName, onProgress?, expectedMd5? })`
+### `downloadAndInstallApk({ apkUrl, fileName, onProgress?, expectedMd5?, allowedHosts? })`
 
-Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there). Pass `expectedMd5` to verify the downloaded file before installing — a mismatch deletes the file and throws instead. Publish the checksum alongside the release (e.g. in the release notes or a `.md5` asset) and read it yourself: `fetchLatestRelease` doesn't return it.
+Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there). `apkUrl` must be an `https://` URL on one of `allowedHosts` (default `["github.com"]`, where `fetchLatestRelease`'s `apkUrl` points) — anything else throws before downloading. Pass `expectedMd5` to verify the downloaded file before installing — a mismatch deletes the file and throws instead. Publish the checksum alongside the release (e.g. in the release notes or a `.md5` asset) and read it yourself: `fetchLatestRelease` doesn't return it.
 
 What `expectedMd5` does and doesn't protect against:
 
