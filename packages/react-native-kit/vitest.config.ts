@@ -44,6 +44,10 @@ export default defineConfig({
       "expo-image-picker": fileURLToPath(
         new URL("./src/__mocks__/expo-image-picker.ts", import.meta.url),
       ),
+      // Same reason — see src/__mocks__/expo-haptics.ts.
+      "expo-haptics": fileURLToPath(
+        new URL("./src/__mocks__/expo-haptics.ts", import.meta.url),
+      ),
     },
   },
   test: {
