@@ -1,5 +1,11 @@
 # @forthtilliath/expo-release-updates
 
+## 0.6.0
+
+### Minor Changes
+
+- 5e942d5: `downloadAndInstallApk` now refuses an `apkUrl` that isn't `https://` on one of the new `allowedHosts` option (default `["github.com"]`, where `fetchLatestRelease`'s `apkUrl` points), before downloading anything. Breaking if your APKs are hosted elsewhere: pass that host in `allowedHosts`.
+
 ## 0.5.0
 
 ### Minor Changes
