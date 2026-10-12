@@ -321,6 +321,42 @@ import { ThemeOptionList } from "@forthtilliath/react-native-kit/components/them
 <ThemeOptionList value={themePreference} onChange={setThemePreference} />;
 ```
 
+### `<ThemePreferenceProvider load save>` + `useThemePreference()` / `useResolvedScheme()`
+
+Holds the light/dark/system preference in a context: loaded once on mount through `load`, changed from anywhere with `useThemePreference().setPreference`, persisted through `save`. Storage-agnostic. A choice made before `load` resolves isn't overwritten by the stored value. `useResolvedScheme()` returns the scheme actually applied (`"light" | "dark"`), to pick the palette.
+
+```tsx
+import { ThemePreferenceProvider } from "@forthtilliath/react-native-kit/components/theme/ThemePreferenceProvider";
+import { useResolvedScheme } from "@forthtilliath/react-native-kit/components/theme/themePreferenceContext";
+
+<ThemePreferenceProvider
+  load={async () => (await getSettings()).theme}
+  save={async (theme) => saveSettings({ ...(await getSettings()), theme })}
+>
+  <App />
+</ThemePreferenceProvider>;
+
+const colors = Colors[useResolvedScheme()];
+```
+
+### Overlays and pickers
+
+Every component below has neutral default colors and a `styles` prop whose slots are each merged **after** their default (a partial override keeps the rest of the slot) — pass the app's palette there.
+
+| Component                                         | Import path                         | What it is                                                                                                                                                  |
+| ------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<BottomSheet visible onClose bottomInset?>`      | `components/overlay/BottomSheet`    | Modal sliding up from the bottom, content scrollable past 85 % of the screen. Pass `useSafeAreaInsets().bottom` as `bottomInset` with Android edge-to-edge. |
+| `<OptionsModal visible onClose options onSelect>` | `components/picker/OptionsModal`    | Centered popup listing `{ value, label }` options; a tap selects and closes.                                                                                |
+| `<SelectField label valueLabel options onSelect>` | `components/picker/SelectField`     | Native-looking "select": captioned button + `OptionsModal` (styled through `styles.optionsModal`).                                                          |
+| `<SegmentedToggle options value onChange>`        | `components/picker/SegmentedToggle` | Row of equal-width buttons, one active (Calendar / List…).                                                                                                  |
+| `<QuantityStepper value onChange label max?>`     | `components/picker/QuantityStepper` | Whole-number counter `0…max`: −/+ buttons and a numeric field; screen-reader labels in French or English (`a11yLabels` to override).                        |
+| `<MonthDayGrid days selected onToggle>`           | `components/picker/MonthDayGrid`    | Monday-first month grid whose days toggle on and off (holidays, days off…); `YYYY-MM-DD` days.                                                              |
+| `<AddButton label onPress>`                       | `components/list/AddButton`         | Dashed "+ Add …" button closing a list.                                                                                                                     |
+| `<DragHandle onPressIn accessibilityLabel>`       | `components/list/DragHandle`        | "⠿" grip for `react-native-draggable-flatlist` rows (gesture-handler's `Pressable`).                                                                        |
+| `<ErrorFallback error retry>`                     | `components/feedback/ErrorFallback` | Readable crash screen with a retry button, for Expo Router's `ErrorBoundary`; texts in French or English (`labels` to override).                            |
+
+`SwipeableRow` also takes `fullSwipeToDelete`: swiping past half the row deletes right away (the row slides out over a full-width delete band) instead of revealing a button — pair it with an `UndoToast`.
+
 > `useUpdateCheck`, `<UpdateAvailableBanner>` and `<ChangelogNotes>` moved to
 > [`@forthtilliath/expo-release-updates-ui`](../expo-release-updates-ui#readme) —
 > install that package alongside this one if you need them.
