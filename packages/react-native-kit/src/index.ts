@@ -3,12 +3,21 @@
 // etc.) remain the recommended default for apps that want to avoid pulling in
 // peer deps they don't have installed (Metro doesn't reliably tree-shake) —
 // see the README.
+export * from "./components/feedback/ErrorFallback.js";
+export * from "./components/list/AddButton.js";
 export * from "./components/list/ColorDot.js";
+export * from "./components/list/DragHandle.js";
 export * from "./components/list/SwipeableRow.js";
 export * from "./components/list/Thumbnail.js";
 export * from "./components/list/UndoToast.js";
+export * from "./components/overlay/BottomSheet.js";
+export * from "./components/picker/MonthDayGrid.js";
+export * from "./components/picker/OptionsModal.js";
 export * from "./components/picker/PhotoPicker.js";
 export * from "./components/picker/PickerModal.js";
+export * from "./components/picker/QuantityStepper.js";
+export * from "./components/picker/SegmentedToggle.js";
+export * from "./components/picker/SelectField.js";
 export * from "./components/picker/VoiceSearchButton.js";
 export * from "./components/settings/AboutSettingsScreen.js";
 export * from "./components/settings/BackupSettingsScreen.js";
@@ -18,6 +27,8 @@ export * from "./components/settings/SettingsMenu.js";
 export * from "./components/settings/ThemeSettingsScreen.js";
 export * from "./components/settings/UpdateSettingsScreen.js";
 export * from "./components/theme/ThemeOptionList.js";
+export * from "./components/theme/themePreferenceContext.js";
+export * from "./components/theme/ThemePreferenceProvider.js";
 export * from "./components/theme/ThemeToggle.js";
 export * from "./hooks/useDebouncedChange.js";
 export * from "./hooks/useEffectiveColorScheme.js";
