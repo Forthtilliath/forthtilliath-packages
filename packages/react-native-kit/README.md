@@ -343,17 +343,18 @@ const colors = Colors[useResolvedScheme()];
 
 Every component below has neutral default colors and a `styles` prop whose slots are each merged **after** their default (a partial override keeps the rest of the slot) — pass the app's palette there.
 
-| Component                                         | Import path                         | What it is                                                                                                                                                  |
-| ------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<BottomSheet visible onClose bottomInset?>`      | `components/overlay/BottomSheet`    | Modal sliding up from the bottom, content scrollable past 85 % of the screen. Pass `useSafeAreaInsets().bottom` as `bottomInset` with Android edge-to-edge. |
-| `<OptionsModal visible onClose options onSelect>` | `components/picker/OptionsModal`    | Centered popup listing `{ value, label }` options; a tap selects and closes.                                                                                |
-| `<SelectField label valueLabel options onSelect>` | `components/picker/SelectField`     | Native-looking "select": captioned button + `OptionsModal` (styled through `styles.optionsModal`).                                                          |
-| `<SegmentedToggle options value onChange>`        | `components/picker/SegmentedToggle` | Row of equal-width buttons, one active (Calendar / List…).                                                                                                  |
-| `<QuantityStepper value onChange label max?>`     | `components/picker/QuantityStepper` | Whole-number counter `0…max`: −/+ buttons and a numeric field; screen-reader labels in French or English (`a11yLabels` to override).                        |
-| `<MonthDayGrid days selected onToggle>`           | `components/picker/MonthDayGrid`    | Monday-first month grid whose days toggle on and off (holidays, days off…); `YYYY-MM-DD` days.                                                              |
-| `<AddButton label onPress>`                       | `components/list/AddButton`         | Dashed "+ Add …" button closing a list.                                                                                                                     |
-| `<DragHandle onPressIn accessibilityLabel>`       | `components/list/DragHandle`        | "⠿" grip for `react-native-draggable-flatlist` rows (gesture-handler's `Pressable`).                                                                        |
-| `<ErrorFallback error retry>`                     | `components/feedback/ErrorFallback` | Readable crash screen with a retry button, for Expo Router's `ErrorBoundary`; texts in French or English (`labels` to override).                            |
+| Component                                          | Import path                         | What it is                                                                                                                                                                                                       |
+| -------------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<BottomSheet visible onClose bottomInset?>`       | `components/overlay/BottomSheet`    | Modal sliding up from the bottom, content scrollable past 85 % of the screen. Pass `useSafeAreaInsets().bottom` as `bottomInset` with Android edge-to-edge.                                                      |
+| `<OptionsModal visible onClose options onSelect>`  | `components/picker/OptionsModal`    | Centered popup listing `{ value, label }` options; a tap selects and closes.                                                                                                                                     |
+| `<SelectField label valueLabel options onSelect>`  | `components/picker/SelectField`     | Native-looking "select": captioned button + `OptionsModal` (styled through `styles.optionsModal`).                                                                                                               |
+| `<SegmentedToggle options value onChange label?>`  | `components/picker/SegmentedToggle` | Row of equal-width buttons, one active (Calendar / List…), announced as a radio group; each option may carry a smaller `hint` line under its label.                                                              |
+| `<QuantityStepper value onChange label min? max?>` | `components/picker/QuantityStepper` | Whole-number counter `min…max` (`0…999`): −/+ buttons (disabled at the bounds, `longPressStep` to jump on long press) and a numeric field; screen-reader labels in French or English (`a11yLabels` to override). |
+| `<SwitchRow label description? value onChange>`    | `components/settings/SwitchRow`     | Settings line "label + description + switch", the whole row pressable and read as one switch; `colors` for the track and thumb.                                                                                  |
+| `<MonthDayGrid days selected onToggle>`            | `components/picker/MonthDayGrid`    | Monday-first month grid whose days toggle on and off (holidays, days off…); `YYYY-MM-DD` days.                                                                                                                   |
+| `<AddButton label onPress>`                        | `components/list/AddButton`         | Dashed "+ Add …" button closing a list.                                                                                                                                                                          |
+| `<DragHandle onPressIn accessibilityLabel>`        | `components/list/DragHandle`        | "⠿" grip for `react-native-draggable-flatlist` rows (gesture-handler's `Pressable`).                                                                                                                             |
+| `<ErrorFallback error retry>`                      | `components/feedback/ErrorFallback` | Readable crash screen with a retry button, for Expo Router's `ErrorBoundary`; texts in French or English (`labels` to override).                                                                                 |
 
 `SwipeableRow` also takes `fullSwipeToDelete`: swiping past half the row deletes right away (the row slides out over a full-width delete band) instead of revealing a button — pair it with an `UndoToast`.
 
@@ -630,6 +631,7 @@ For all 7 components above, styling works the same way as `ChangelogNotes`: an o
 ### Utils (`utils/helpers/`)
 
 - `confirmDestructive` — wraps React Native's `Alert`, so it isn't framework-agnostic (see its own section above).
+- `tapFeedback()`, `selectFeedback()`, `successFeedback()`, `errorFeedback()` (`utils/helpers/haptics`) — semantic aliases over `expo-haptics` (light impact, selection tick, success / error notification). Fire-and-forget: a failed vibration never throws. Needs `expo-haptics`.
 - `mergeSlotStyles(defaultStyles, styles)` — merges a component's per-slot `styles` overrides onto its defaults as `[default, override]` style arrays, so overriding one property of a slot keeps the rest of its default. Every component of this package uses it; handy for your own components following the same `styles` convention.
 - `shareFile(uri, { mimeType, dialogTitle?, locale? })` — opens the native share sheet for a local file; throws a user-facing `Error` (French, or English with `locale: "en"`) when the device can't share. Needs `expo-sharing`.
 - `shareTextFile(filename, content, options)` — writes the text to a file in the cache (replacing any previous one), then `shareFile`s it: `.ics`, `.csv`, JSON exports… Needs `expo-file-system` and `expo-sharing`.
@@ -686,7 +688,7 @@ deleteFileQuietly(oldPhotoUri);
 - `deleteFileQuietly(uri)` — best-effort deletion: an absent file, `null` or a failure never throws.
 - `pruneAppDirectory(name, keep)` — deletes the folder's files whose URI isn't in `keep` (orphaned photos after an edit or an import); returns how many were deleted.
 
-`expo-sharing`, `expo-file-system` and `expo-calendar` are **optional** peer dependencies: only install those your app uses, and deep-import these helpers.
+`expo-sharing`, `expo-file-system`, `expo-calendar` and `expo-haptics` are **optional** peer dependencies: only install those your app uses, and deep-import these helpers.
 
 The framework-agnostic helpers that used to live here (`getPeriodStartMs`, `getMostRecentIds`, `nextInCycle`, `normalizeForSearch`, `rankByNameMatch`, `escapeCsvField`, `formatCsvNumber`, `escapeHtml`) moved to [`@forthtilliath/ts-kit`](../ts-kit#readme) — no React Native dependency on them, so they're usable from Node/web too. They're still re-exported from this package's root barrel for convenience:
 
