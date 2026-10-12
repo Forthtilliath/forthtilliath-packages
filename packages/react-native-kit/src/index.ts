@@ -24,6 +24,7 @@ export * from "./components/settings/BackupSettingsScreen.js";
 export * from "./components/settings/ContactSettingsScreen.js";
 export * from "./components/settings/PrivacySettingsScreen.js";
 export * from "./components/settings/SettingsMenu.js";
+export * from "./components/settings/SwitchRow.js";
 export * from "./components/settings/ThemeSettingsScreen.js";
 export * from "./components/settings/UpdateSettingsScreen.js";
 export * from "./components/theme/ThemeOptionList.js";
