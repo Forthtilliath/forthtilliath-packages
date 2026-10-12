@@ -15,6 +15,7 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
       pull-requests: write
@@ -41,7 +42,9 @@ jobs:
       # publish-packages already runs `turbo run build lint` before publishing.
 
       - name: Create release PR or stage the new versions on npm
-        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        # v1, not v2: changesets/action v2 requires @changesets/cli v3 and
+        # fails right away with the repo's CLI v2 (see .github/dependabot.yml).
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
           # `changeset version`'s own auto-commit (triggered by "commit": true in
           # .changeset/config.json, now set to false) used to run before this
