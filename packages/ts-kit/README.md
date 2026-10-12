@@ -136,6 +136,9 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `isSameDay(a, b)` — checks whether two dates fall on the same local day.
 - `parseIsoDate(iso)` — a `YYYY-MM-DD` calendar date as **local** midnight
   (`new Date("2026-03-14")` is UTC midnight, the previous day in the Americas).
+- `parseSqliteDate(value)` — reads a SQLite `current_timestamp` value
+  (`"2026-10-09 19:46:00"`, UTC without a zone marker) as **UTC** instead of
+  local time; full ISO strings are read as they are.
 - `mondayFirstWeekday(date)` — weekday index with Monday = `0` … Sunday = `6`,
   from a `Date` or a `YYYY-MM-DD` string; offsets a Monday-first month grid.
 - `formatRelativeTime(date, baseDate?, locale?)` — human-readable relative
