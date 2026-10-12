@@ -2,6 +2,7 @@ export * from "./AboutSettingsScreen.js";
 export * from "./BackupSettingsScreen.js";
 export * from "./ContactSettingsScreen.js";
 export * from "./PrivacySettingsScreen.js";
+export * from "./SettingsCard.js";
 export * from "./SettingsMenu.js";
 export * from "./SwitchRow.js";
 export * from "./ThemeSettingsScreen.js";
