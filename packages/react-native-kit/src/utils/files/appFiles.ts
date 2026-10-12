@@ -1,5 +1,7 @@
 import { Directory, File, Paths } from "expo-file-system";
 
+import { randomId } from "@forthtilliath/ts-kit/id/randomId";
+
 // Files the app keeps for good (photos, avatars...): pickers and exports hand
 // back URIs in a cache folder the OS may empty at any time, so anything worth
 // keeping is copied into a sub-folder of the app's documents.
@@ -42,6 +44,41 @@ export async function persistFile(
   );
   await new File(sourceUri).copy(destination);
   return destination.uri;
+}
+
+export interface WriteBase64FileOptions extends PersistFileOptions {
+  /** @defaultValue "jpg" */
+  extension?: string;
+}
+
+/**
+ * Writes base64 content (a photo embedded in a JSON backup…) as a new file of
+ * the persistent sub-folder and returns its URI. Names are random rather than
+ * timestamped: a restore writes many files within the same millisecond.
+ */
+export function writeBase64File(
+  base64: string,
+  { directory, prefix, extension = "jpg" }: WriteBase64FileOptions,
+): string {
+  const file = new File(
+    getAppDirectory(directory),
+    `${prefix}-${randomId()}.${extension}`,
+  );
+  file.create();
+  file.write(base64, { encoding: "base64" });
+  return file.uri;
+}
+
+/**
+ * Content of a file as base64 (to embed it in a JSON backup), `null` when it
+ * can't be read — a photo the OS already cleared from its cache, a bad URI.
+ */
+export function readFileBase64(uri: string): string | null {
+  try {
+    return new File(uri).base64Sync();
+  } catch {
+    return null;
+  }
 }
 
 /** Whether a file exists at `uri`; `false` for a malformed URI instead of throwing. */
