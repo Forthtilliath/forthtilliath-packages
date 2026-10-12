@@ -27,14 +27,21 @@
   ],
   "exports": {
     ".": "./dist/base.js",
+    "./internal/*": null,
     "./*": "./dist/*.js"
   },
   "dependencies": {
-    "@eslint-react/eslint-plugin": "^5.18.3",
     "@eslint/js": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
+    "globals": "^17.9.0",
+    "typescript-eslint": "^8.67.0"
+  },
+  "peerDependencies": {
+    "@eslint-react/eslint-plugin": "^5.18.3",
     "@next/eslint-plugin-next": "^16.3.0",
     "angular-eslint": "^21.4.0",
-    "eslint-config-prettier": "^10.1.8",
+    "eslint": "^9.0.0 || ^10.0.0",
     "eslint-plugin-i18next": "^6.1.5",
     "eslint-plugin-jest-dom": "^5.10.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -42,21 +49,69 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.5.4",
-    "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-storybook": "^10.6.1",
     "eslint-plugin-testing-library": "^7.16.2",
     "eslint-plugin-turbo": "^2.10.9",
-    "globals": "^17.9.0",
-    "typescript-eslint": "^8.67.0"
-  },
-  "peerDependencies": {
-    "eslint": "^9.0.0 || ^10.0.0",
     "typescript": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@eslint-react/eslint-plugin": {
+      "optional": true
+    },
+    "@next/eslint-plugin-next": {
+      "optional": true
+    },
+    "angular-eslint": {
+      "optional": true
+    },
+    "eslint-plugin-i18next": {
+      "optional": true
+    },
+    "eslint-plugin-jest-dom": {
+      "optional": true
+    },
+    "eslint-plugin-jsx-a11y": {
+      "optional": true
+    },
+    "eslint-plugin-react": {
+      "optional": true
+    },
+    "eslint-plugin-react-hooks": {
+      "optional": true
+    },
+    "eslint-plugin-react-native": {
+      "optional": true
+    },
+    "eslint-plugin-react-refresh": {
+      "optional": true
+    },
+    "eslint-plugin-storybook": {
+      "optional": true
+    },
+    "eslint-plugin-testing-library": {
+      "optional": true
+    },
+    "eslint-plugin-turbo": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@angular/core": "^21.0.0",
+    "@eslint-react/eslint-plugin": "^5.18.3",
     "@forthtilliath/typescript-config": "workspace:*",
+    "@next/eslint-plugin-next": "^16.3.0",
+    "angular-eslint": "^21.4.0",
     "eslint": "catalog:",
+    "eslint-plugin-i18next": "^6.1.5",
+    "eslint-plugin-jest-dom": "^5.10.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-native": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.5.4",
+    "eslint-plugin-storybook": "^10.6.1",
+    "eslint-plugin-testing-library": "^7.16.2",
+    "eslint-plugin-turbo": "^2.10.9",
     "rxjs": "^7.8.0",
     "typescript": "catalog:",
     "vitest": "catalog:"
