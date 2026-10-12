@@ -47,6 +47,36 @@ describe("SegmentedToggle", () => {
     expect(onChange).toHaveBeenCalledWith("calendar");
   });
 
+  it("announces options as radios, hint included", () => {
+    const tree = renderTree(
+      <SegmentedToggle
+        label="Format"
+        options={[
+          { value: "duo", label: "Duos", hint: "2 × 2" },
+          { value: "trio", label: "Trios" },
+        ]}
+        value="duo"
+        onChange={vi.fn()}
+      />,
+    );
+    const duo = propsOf<{
+      accessibilityRole: string;
+      accessibilityState: { checked: boolean };
+      accessibilityLabel: string;
+    }>(parentOf(findText(tree, "Duos")));
+    expect(duo.accessibilityRole).toBe("radio");
+    expect(duo.accessibilityState.checked).toBe(true);
+    expect(duo.accessibilityLabel).toBe("Duos, 2 × 2");
+    expect(
+      propsOf<{ accessibilityLabel: string }>(parentOf(findText(tree, "Trios")))
+        .accessibilityLabel,
+    ).toBe("Trios");
+    expect(styleOf(findText(tree, "2 × 2"))).toMatchObject({
+      fontSize: 12,
+      color: "#dbeafe",
+    });
+  });
+
   it("applies active overrides on top of the base slot", () => {
     const tree = renderTree(
       <SegmentedToggle
