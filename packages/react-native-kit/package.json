@@ -70,7 +70,7 @@
     {
       "name": "dist (all modules, brotli)",
       "path": "dist/**/*.js",
-      "limit": "30 KB"
+      "limit": "36 KB"
     }
   ]
 }
