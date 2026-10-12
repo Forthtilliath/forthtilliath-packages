@@ -1,15 +1,35 @@
 import pluginEslintReact from "@eslint-react/eslint-plugin";
 import { defineConfig } from "eslint/config";
-import pluginI18next from "eslint-plugin-i18next";
-import pluginJestDom from "eslint-plugin-jest-dom";
-import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReactRefresh from "eslint-plugin-react-refresh";
-import pluginTestingLibrary from "eslint-plugin-testing-library";
 import globals from "globals";
 
+import { lazyConfig } from "./internal/lazy-config.js";
+import { importOptional, requirePlugin } from "./internal/optional-plugin.js";
 import { createBaseConfig, createNamingConventionRule } from "./base.js";
+
+// Optional peer dependencies, each behind an option (see
+// ReactConfigOptions): a project leaving the option off doesn't install them.
+const [pluginJsxA11y, pluginI18next, pluginTestingLibrary, pluginJestDom] =
+  await Promise.all([
+    importOptional(
+      "eslint-plugin-jsx-a11y",
+      () => import("eslint-plugin-jsx-a11y"),
+    ),
+    importOptional(
+      "eslint-plugin-i18next",
+      () => import("eslint-plugin-i18next"),
+    ),
+    importOptional(
+      "eslint-plugin-testing-library",
+      () => import("eslint-plugin-testing-library"),
+    ),
+    importOptional(
+      "eslint-plugin-jest-dom",
+      () => import("eslint-plugin-jest-dom"),
+    ),
+  ]);
 
 /**
  * Any file matching this is a test file, whatever runner or naming
@@ -40,14 +60,16 @@ const RULES_COVERED_BY_ESLINT_REACT = [
 /**
  * @typedef {object} ReactConfigOptions
  * @property {boolean} [a11y=true] - Enable eslint-plugin-jsx-a11y's
- *   recommended rules.
+ *   recommended rules (needs `eslint-plugin-jsx-a11y` installed).
  * @property {boolean} [i18n=false] - Enable eslint-plugin-i18next's
- *   `no-literal-string` rule, forbidding any hardcoded string in JSX. Only
- *   makes sense for a project fully committed to i18n (e.g. driven by
- *   next-intl) — off by default since it flags every literal otherwise.
+ *   `no-literal-string` rule, forbidding any hardcoded string in JSX (needs
+ *   `eslint-plugin-i18next` installed). Only makes sense for a project fully
+ *   committed to i18n (e.g. driven by next-intl) — off by default since it
+ *   flags every literal otherwise.
  * @property {boolean} [testingLibrary=false] - Enable
  *   eslint-plugin-testing-library's React rules and eslint-plugin-jest-dom's
- *   recommended rules, scoped to test files only. Off by default:
+ *   recommended rules, scoped to test files only (needs both installed). Off
+ *   by default:
  *   `testing-library/no-manual-cleanup` in particular assumes
  *   `@testing-library/*`'s automatic `afterEach(cleanup)` is active, which
  *   only happens when `afterEach` is a real global (vitest's `test.globals:
@@ -70,21 +92,38 @@ export function createReactConfig({
 } = {}) {
   return defineConfig([
     ...createBaseConfig({ snakeCase, ...options }),
-    a11y ? pluginJsxA11y.flatConfigs.recommended : [],
+    a11y
+      ? requirePlugin(pluginJsxA11y, "eslint-plugin-jsx-a11y", "a11y")
+          .flatConfigs.recommended
+      : [],
     i18n
       ? {
-          plugins: { i18next: pluginI18next },
+          plugins: {
+            i18next: requirePlugin(
+              pluginI18next,
+              "eslint-plugin-i18next",
+              "i18n",
+            ),
+          },
           rules: { "i18next/no-literal-string": "error" },
         }
       : [],
     testingLibrary
       ? [
           {
-            ...pluginTestingLibrary.configs["flat/react"],
+            ...requirePlugin(
+              pluginTestingLibrary,
+              "eslint-plugin-testing-library",
+              "testingLibrary",
+            ).configs["flat/react"],
             files: TEST_FILE_GLOBS,
           },
           {
-            ...pluginJestDom.configs["flat/recommended"],
+            ...requirePlugin(
+              pluginJestDom,
+              "eslint-plugin-jest-dom",
+              "testingLibrary",
+            ).configs["flat/recommended"],
             files: TEST_FILE_GLOBS,
           },
         ]
@@ -154,4 +193,4 @@ export function createReactConfig({
  * default options. Use `createReactConfig(options)` instead to customize it.
  *
  * @type {import("eslint").Linter.Config[]} */
-export const reactConfig = createReactConfig();
+export const reactConfig = lazyConfig(() => createReactConfig());

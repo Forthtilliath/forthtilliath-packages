@@ -1,6 +1,7 @@
 import pluginNext from "@next/eslint-plugin-next";
 import { defineConfig } from "eslint/config";
 
+import { lazyConfig } from "./internal/lazy-config.js";
 import { createReactConfig } from "./react.js";
 
 /**
@@ -71,4 +72,4 @@ export function createNextJsConfig(options) {
  *
  * @type {import("eslint").Linter.Config[]}
  * */
-export const nextJsConfig = createNextJsConfig();
+export const nextJsConfig = lazyConfig(() => createNextJsConfig());

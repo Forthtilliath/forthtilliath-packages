@@ -2,9 +2,18 @@ import eslint from "@eslint/js";
 import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
-import turboPlugin from "eslint-plugin-turbo";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+
+import { lazyConfig } from "./internal/lazy-config.js";
+import { importOptional, requirePlugin } from "./internal/optional-plugin.js";
+
+// Optional peer dependency: only a Turborepo needs it (and its own `turbo`
+// peer dependency, the whole Turborepo binary).
+const turboPlugin = await importOptional(
+  "eslint-plugin-turbo",
+  () => import("eslint-plugin-turbo"),
+);
 
 /**
  * Node.js builtins without the `node:` prefix, as the first
@@ -32,8 +41,9 @@ export const NODE_BUILTIN_IMPORT_GROUP = [
  *   fall back to the plain `recommended` preset instead (useful while
  *   migrating an existing codebase that isn't ready for the strict rules).
  * @property {boolean} [turbo=true] - Enable eslint-plugin-turbo's
- *   `no-undeclared-env-vars` rule. Only relevant inside a Turborepo; set to
- *   `false` for a standalone project.
+ *   `no-undeclared-env-vars` rule (needs `eslint-plugin-turbo` installed).
+ *   Only relevant inside a Turborepo; set to `false` for a standalone
+ *   project.
  * @property {boolean} [snakeCase=false] - Also accept `snake_case` variable
  *   names in `@typescript-eslint/naming-convention` — for code that
  *   destructures rows straight from a SQL database (e.g. Supabase), whose
@@ -164,7 +174,7 @@ export function createBaseConfig({
     turbo
       ? {
           plugins: {
-            turbo: turboPlugin,
+            turbo: requirePlugin(turboPlugin, "eslint-plugin-turbo", "turbo"),
           },
           rules: {
             "turbo/no-undeclared-env-vars": "error",
@@ -207,4 +217,4 @@ export function createBaseConfig({
  *
  * @type {import("eslint").Linter.Config[]}
  * */
-export const baseConfig = createBaseConfig();
+export const baseConfig = lazyConfig(() => createBaseConfig());
