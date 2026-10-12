@@ -63,6 +63,8 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `rankByNameMatch(items, query, getName)` — ranks `items` by relevance to
   `query`: earlier match position first, then shorter name — for a
   search-as-you-type list.
+- `shuffle(array, random?)` — shuffled copy (Fisher–Yates); `random`
+  (default `Math.random`) can be swapped for a seeded generator in tests.
 - `sortUpcomingFirst(items, getDates, { now? })` — upcoming items first
   (nearest first), then past ones (most recent first), undated last — for a
   list of events. An item may carry several dates: it stays upcoming while
