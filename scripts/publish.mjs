@@ -124,11 +124,11 @@ for (const pkg of publishablePackages()) {
 }
 
 if (staged.length > 0 && !DRY_RUN) {
-  // Same as `changeset publish`: tag the new versions, and print the
-  // "New tag:" lines changesets/action parses to push tags and create the
-  // GitHub releases.
+  // Same as `changeset publish`: tag the new versions. `changeset tag` itself
+  // prints the "New tag:" lines changesets/action parses to push tags and
+  // create the GitHub releases — printing them again would make the action
+  // push each tag twice, and the second push fails.
   run("npx", ["changeset", "tag"]);
-  for (const id of staged) console.log(`New tag: ${id}`);
   console.log(
     `\n${staged.length} version(s) staged. Approve each with 2FA on npmjs.com ` +
       "(Staged Packages) or with `npm stage approve <stage-id> --otp <code>`.",
