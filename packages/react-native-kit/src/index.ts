@@ -38,6 +38,7 @@ export * from "./i18n/locale.js";
 export * from "./utils/calendar/syncDedicatedCalendar.js";
 export * from "./utils/calendar/toCalendarEventDetails.js";
 export * from "./utils/helpers/confirmDestructive.js";
+export * from "./utils/helpers/haptics.js";
 export * from "./utils/helpers/mergeSlotStyles.js";
 export * from "./utils/helpers/shareFile.js";
 export * from "./utils/helpers/shareTextFile.js";
