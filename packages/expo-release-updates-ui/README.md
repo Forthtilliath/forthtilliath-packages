@@ -131,6 +131,42 @@ import { UpdateAvailableBanner } from "@forthtilliath/expo-release-updates-ui";
 
 Built-in labels are French by default; pass `locale="en"` for English (e.g. from the app's language on a bilingual app). `labels` still overrides individual strings — `title`, `action`, `dismiss`, `dismissAccessibilityLabel` — whatever the locale.
 
+### `<UpdateNotifier ... />` — the whole flow, install included
+
+Mount it once near the root: it checks on launch (`useUpdateCheck`), shows the banner with **Install / Ignore**, and "Install" downloads the APK right away with a progress card — Android then asks for confirmation — instead of sending the user to an update screen. A failed download offers Retry / Close. "Ignore" calls `onDismissVersion` so that exact version is never announced again (a newer one will be).
+
+```tsx
+import { UpdateNotifier } from "@forthtilliath/expo-release-updates-ui/UpdateNotifier";
+
+<View
+  style={{ position: "absolute", top: 56, left: 16, right: 16, zIndex: 10 }}
+>
+  <UpdateNotifier
+    enabled={settings !== undefined}
+    currentVersion={Constants.expoConfig?.version ?? "0.0.0"}
+    checkForUpdate={fetchLatestRelease}
+    getLastCheck={() => ({
+      lastCheckedAt: settings?.lastUpdateCheckAt ?? null,
+      dismissedVersion: settings?.dismissedUpdateVersion ?? null,
+    })}
+    onChecked={(at) => recordUpdateCheck(at)}
+    onDismissVersion={(version) => dismissUpdateVersion(version)}
+    downloadAndInstallApk={(apkUrl, onProgress) =>
+      downloadAndInstallApk({
+        apkUrl,
+        fileName: "myapp-update.apk",
+        onProgress,
+      })
+    }
+    styles={{ banner: { container: { backgroundColor: colors.surface } } }}
+  />
+</View>;
+```
+
+Pass **`enabled={false}` until the settings `getLastCheck` reads have loaded** (async database, live query…): the check runs once, on mount, so starting earlier would ignore both the 12h throttle and the dismissed version. Positioning is left to the parent. `labels` / `styles` take `{ banner, install }`, same keys as `UpdateAvailableBanner` and `UpdateInstallCard`.
+
+The building blocks are exported too, to compose a different flow: `useApkInstall(downloadAndInstallApk)` (`{ state, start(version, apkUrl), retry, reset }`) and `<UpdateInstallCard state onRetry onClose />` (renders nothing while idle).
+
 ## Scripts
 
 ```bash
