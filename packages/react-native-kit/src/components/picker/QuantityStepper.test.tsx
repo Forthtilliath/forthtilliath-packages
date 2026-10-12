@@ -56,6 +56,61 @@ describe("QuantityStepper", () => {
     ).toBe(2);
   });
 
+  it("clamps to a custom min and disables + at max", () => {
+    const onChange = vi.fn();
+    const tree = renderTree(
+      <QuantityStepper
+        value={1}
+        onChange={onChange}
+        label="Bans"
+        min={1}
+        max={5}
+      />,
+    );
+    expect(propsOf<{ disabled: boolean }>(buttons(tree).minus).disabled).toBe(
+      true,
+    );
+    type(tree, "");
+    expect(onChange).toHaveBeenLastCalledWith(1);
+
+    const full = renderTree(
+      <QuantityStepper value={5} onChange={vi.fn()} label="Bans" max={5} />,
+    );
+    const { plus } = buttons(full);
+    expect(propsOf<{ disabled: boolean }>(plus).disabled).toBe(true);
+    expect(styleOf(plus)).toMatchObject({ opacity: 0.35 });
+  });
+
+  it("jumps by longPressStep on long press, clamped", () => {
+    const onChange = vi.fn();
+    const tree = renderTree(
+      <QuantityStepper
+        value={3}
+        onChange={onChange}
+        label="Bans"
+        max={6}
+        longPressStep={5}
+      />,
+    );
+    const longPress = (button: ReturnType<typeof buttons>["plus"]) => {
+      act(() => {
+        propsOf<{ onLongPress: () => void }>(button).onLongPress();
+      });
+    };
+    longPress(buttons(tree).plus);
+    longPress(buttons(tree).minus);
+    expect(onChange.mock.calls).toEqual([[6], [0]]);
+  });
+
+  it("ignores long presses without longPressStep", () => {
+    const tree = renderTree(
+      <QuantityStepper value={3} onChange={vi.fn()} label="Pain" />,
+    );
+    expect(
+      propsOf<{ onLongPress?: unknown }>(buttons(tree).plus).onLongPress,
+    ).toBeUndefined();
+  });
+
   it("labels the controls in French by default, English with locale", () => {
     const fr = renderTree(
       <QuantityStepper value={1} onChange={vi.fn()} label="Pain" />,
