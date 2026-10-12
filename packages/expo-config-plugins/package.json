@@ -1,0 +1,49 @@
+{
+  "name": "@forthtilliath/expo-config-plugins",
+  "version": "0.0.0",
+  "description": "Expo config plugins for sideloaded Android apps: release signing with your own key, ARM-only native code, short CMake paths on Windows.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/forthtilliath-packages.git",
+    "directory": "packages/expo-config-plugins"
+  },
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/expo-config-plugins#readme",
+  "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./withReleaseSigning": "./dist/withReleaseSigning.js",
+    "./withAndroidAbis": "./dist/withAndroidAbis.js",
+    "./withShortCxxPath": "./dist/withShortCxxPath.js",
+    "./transforms": "./dist/transforms.js",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "expo": ">=54.0.0"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "expo": "~57.0.9",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
