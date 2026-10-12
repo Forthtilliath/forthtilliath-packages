@@ -9,18 +9,19 @@ packages.
 
 ## Apps and packages
 
-| Name                                                       | Description                                                                                                                                                            |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`apps/web`](apps/web)                                     | Next.js showcase app, consumes `shadcn-ui` + `react-kit`                                                                                                               |
-| [`apps/shadweb`](apps/shadweb)                             | Fictional dashboard app proving `shadcn-ui` works as an installed dep                                                                                                  |
-| [`apps/react-sb`](apps/react-sb)                           | Storybook workspace documenting/testing every component                                                                                                                |
-| [`packages/react/shadcn-ui`](packages/react/shadcn-ui)     | shadcn/ui component library (Radix + Tailwind), published to npm                                                                                                       |
-| [`packages/react/forth-ui`](packages/react/forth-ui)       | Higher-level components built on `shadcn-ui` — 58 components across 8 categories, see [its README](packages/react/forth-ui/README.md) or Storybook (`pnpm run dev:sb`) |
-| [`packages/react-kit`](packages/react-kit)                 | Hooks + headless control-flow components (`useKeyListener`, `useToggleState`, `Show`, `Repeat`, ...) — the web-React counterpart to `react-native-kit`                 |
-| [`packages/ts-types`](packages/ts-types)                   | Generic TypeScript utility types, no runtime code                                                                                                                      |
-| [`packages/ts-kit`](packages/ts-kit)                       | Framework-agnostic TS utility functions (not yet consumed anywhere)                                                                                                    |
-| [`packages/eslint-config`](packages/eslint-config)         | Shared ESLint flat configs                                                                                                                                             |
-| [`packages/typescript-config`](packages/typescript-config) | Shared `tsconfig.json` bases                                                                                                                                           |
+| Name                                                           | Description                                                                                                                                                            |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`apps/web`](apps/web)                                         | Next.js showcase app, consumes `shadcn-ui` + `react-kit`                                                                                                               |
+| [`apps/shadweb`](apps/shadweb)                                 | Fictional dashboard app proving `shadcn-ui` works as an installed dep                                                                                                  |
+| [`apps/react-sb`](apps/react-sb)                               | Storybook workspace documenting/testing every component                                                                                                                |
+| [`packages/react/shadcn-ui`](packages/react/shadcn-ui)         | shadcn/ui component library (Radix + Tailwind), published to npm                                                                                                       |
+| [`packages/react/forth-ui`](packages/react/forth-ui)           | Higher-level components built on `shadcn-ui` — 58 components across 8 categories, see [its README](packages/react/forth-ui/README.md) or Storybook (`pnpm run dev:sb`) |
+| [`packages/react-kit`](packages/react-kit)                     | Hooks + headless control-flow components (`useKeyListener`, `useToggleState`, `Show`, `Repeat`, ...) — the web-React counterpart to `react-native-kit`                 |
+| [`packages/ts-types`](packages/ts-types)                       | Generic TypeScript utility types, no runtime code                                                                                                                      |
+| [`packages/ts-kit`](packages/ts-kit)                           | Framework-agnostic TS utility functions (not yet consumed anywhere)                                                                                                    |
+| [`packages/expo-config-plugins`](packages/expo-config-plugins) | Expo config plugins for sideloaded Android apps: release signing with your own key, ARM-only native code, short CMake paths on Windows                                 |
+| [`packages/eslint-config`](packages/eslint-config)             | Shared ESLint flat configs                                                                                                                                             |
+| [`packages/typescript-config`](packages/typescript-config)     | Shared `tsconfig.json` bases                                                                                                                                           |
 
 Every package is 100% TypeScript.
 
