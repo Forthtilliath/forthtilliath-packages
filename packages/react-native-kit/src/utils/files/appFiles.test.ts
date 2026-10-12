@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const files = new Set<string>();
 const folders = new Set<string>();
 const undeletable = new Set<string>();
+const contents = new Map<string, string>();
 
 vi.mock("expo-file-system", () => {
   const join = (parent: string | { uri: string }, name?: string) => {
@@ -30,6 +31,16 @@ vi.mock("expo-file-system", () => {
         return Promise.reject(new Error("Missing source"));
       files.add(destination.uri);
       return Promise.resolve();
+    }
+    create() {
+      files.add(this.uri);
+    }
+    write(content: string) {
+      contents.set(this.uri, content);
+    }
+    base64Sync() {
+      if (!files.has(this.uri)) throw new Error("Missing file");
+      return contents.get(this.uri) ?? "";
     }
   }
 
@@ -61,12 +72,39 @@ const {
   getFileExtension,
   persistFile,
   pruneAppDirectory,
+  readFileBase64,
+  writeBase64File,
 } = await import("./appFiles.js");
 
 beforeEach(() => {
   files.clear();
   folders.clear();
   undeletable.clear();
+  contents.clear();
+});
+
+describe("writeBase64File / readFileBase64", () => {
+  it("round-trips base64 content through a new file of the folder", () => {
+    const uri = writeBase64File("AAAA", {
+      directory: "avatars",
+      prefix: "avatar",
+    });
+    expect(uri).toMatch(/^file:\/\/\/documents\/avatars\/avatar-.+\.jpg$/);
+    expect(readFileBase64(uri)).toBe("AAAA");
+  });
+
+  it("names each file uniquely, with the given extension", () => {
+    const options = { directory: "a", prefix: "p", extension: "png" };
+    const first = writeBase64File("x", options);
+    const second = writeBase64File("y", options);
+    expect(first).not.toBe(second);
+    expect(second.endsWith(".png")).toBe(true);
+  });
+
+  it("reads null from a missing file or a bad URI", () => {
+    expect(readFileBase64("file:///cache/gone.jpg")).toBeNull();
+    expect(readFileBase64("bad:uri")).toBeNull();
+  });
 });
 
 describe("getFileExtension", () => {
