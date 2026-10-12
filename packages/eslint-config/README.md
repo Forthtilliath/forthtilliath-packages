@@ -24,10 +24,51 @@ Or, from within this monorepo, as a workspace dependency:
 ```
 
 `eslint` and `typescript` are peer dependencies — install them yourself (any
-recent flat-config-era ESLint 9+/10+, and TypeScript 5+). Every ESLint plugin
-each variant actually uses (`typescript-eslint`, `eslint-plugin-react`,
-`angular-eslint`, etc.) ships as a regular dependency of this package, so
-there's nothing else to install per variant.
+recent flat-config-era ESLint 9+/10+, and TypeScript 5+). Only what the base
+config needs (`typescript-eslint`, `@eslint/js`, `globals`, import sorting,
+Prettier conflict-resolution) ships as a regular dependency: every other
+plugin is an **optional peer dependency**, installed by the project only for
+the variant and options it actually uses. A React Native app doesn't get
+`angular-eslint` (and the Angular CLI it pulls in), nor a TypeScript library
+every React plugin.
+
+| Variant / option        | Also install                                                                                              |
+| ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| `.` (base)              | —                                                                                                         |
+| `/react`                | `@eslint-react/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh`   |
+| `/react-native`         | the `/react` list + `eslint-plugin-react-native`                                                          |
+| `/nextjs`               | the `/react` list + `@next/eslint-plugin-next`                                                            |
+| `/storybook`            | the `/react` list + `eslint-plugin-storybook`                                                             |
+| `/angular`              | `angular-eslint`                                                                                          |
+| `turbo: true` (default) | `eslint-plugin-turbo` — or pass `turbo: false` outside a Turborepo                                        |
+| `a11y: true`\*          | `eslint-plugin-jsx-a11y` — \*default for `/react`, `/nextjs`, `/storybook`; pass `a11y: false` to skip it |
+| `i18n: true`            | `eslint-plugin-i18next`                                                                                   |
+| `testingLibrary: true`  | `eslint-plugin-testing-library eslint-plugin-jest-dom`                                                    |
+
+```bash
+# e.g. a standalone React Native / Expo app, with createReactNativeConfig({ turbo: false })
+npm install --save-dev @forthtilliath/eslint-config eslint typescript \
+  @eslint-react/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks \
+  eslint-plugin-react-refresh eslint-plugin-react-native
+```
+
+A missing plugin fails with an explicit error naming the package to install
+(or the option to turn off) as soon as ESLint loads the config.
+
+**ESLint 10:** `eslint-plugin-react` and `eslint-plugin-react-native` still
+declare `eslint` up to 9 only, so npm refuses to install them next to ESLint
+10 (`ERESOLVE`). They work under ESLint 10 (see the `react-native` rules
+below for the exceptions), so tell npm to accept it in the app's
+`package.json`:
+
+```json
+{
+  "overrides": {
+    "eslint-plugin-react": { "eslint": "$eslint" },
+    "eslint-plugin-react-native": { "eslint": "$eslint" }
+  }
+}
+```
 
 ## Usage
 
@@ -172,6 +213,10 @@ consumer here yet, so `src/angular.test.js` lints small fixture files under
 `src/__fixtures__/angular/` through ESLint's Node API directly, standing in
 for that. Extend it (or add a sibling `<variant>.test.js`) whenever a variant
 changes without a real consumer to catch a regression.
+
+`src/package.test.js` guards the dependency layout: any plugin imported
+outside the base config must stay an optional peer dependency, never a
+regular one.
 
 ## Scripts
 
