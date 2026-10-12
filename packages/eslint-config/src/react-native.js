@@ -1,6 +1,7 @@
 import { defineConfig } from "eslint/config";
 import pluginReactNative from "eslint-plugin-react-native";
 
+import { lazyConfig } from "./internal/lazy-config.js";
 import { createReactConfig } from "./react.js";
 
 /**
@@ -62,4 +63,4 @@ export function createReactNativeConfig({ a11y = false, ...options } = {}) {
  * customize it.
  *
  * @type {import("eslint").Linter.Config[]} */
-export const reactNativeConfig = createReactNativeConfig();
+export const reactNativeConfig = lazyConfig(() => createReactNativeConfig());

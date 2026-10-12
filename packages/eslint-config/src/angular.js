@@ -2,6 +2,7 @@ import angular from "angular-eslint";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
+import { lazyConfig } from "./internal/lazy-config.js";
 import { createBaseConfig, NODE_BUILTIN_IMPORT_GROUP } from "./base.js";
 
 /**
@@ -83,4 +84,4 @@ export function createAngularConfig(options) {
  * default options. Use `createAngularConfig(options)` instead to customize it.
  *
  * @type {import("eslint").Linter.Config[]} */
-export const angularConfig = createAngularConfig();
+export const angularConfig = lazyConfig(() => createAngularConfig());
