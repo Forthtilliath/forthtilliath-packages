@@ -1,5 +1,12 @@
 # @forthtilliath/react-native-kit
 
+## 0.15.1
+
+### Patch Changes
+
+- 85d7b08: `PhotoPicker` no longer requests the media library permission before opening the library: the system photo picker needs none, so apps can now block the storage permissions (`READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`, `READ_MEDIA_IMAGES`). The `libraryPermissionTitle` / `libraryPermissionMessage` labels are deprecated and unused.
+  - @forthtilliath/expo-release-updates-ui@0.3.1
+
 ## 0.15.0
 
 ### Minor Changes
