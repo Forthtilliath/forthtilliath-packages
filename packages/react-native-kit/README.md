@@ -631,6 +631,37 @@ For all 7 components above, styling works the same way as `ChangelogNotes`: an o
 
 - `confirmDestructive` — wraps React Native's `Alert`, so it isn't framework-agnostic (see its own section above).
 - `mergeSlotStyles(defaultStyles, styles)` — merges a component's per-slot `styles` overrides onto its defaults as `[default, override]` style arrays, so overriding one property of a slot keeps the rest of its default. Every component of this package uses it; handy for your own components following the same `styles` convention.
+- `shareFile(uri, { mimeType, dialogTitle?, locale? })` — opens the native share sheet for a local file; throws a user-facing `Error` (French, or English with `locale: "en"`) when the device can't share. Needs `expo-sharing`.
+- `shareTextFile(filename, content, options)` — writes the text to a file in the cache (replacing any previous one), then `shareFile`s it: `.ics`, `.csv`, JSON exports… Needs `expo-file-system` and `expo-sharing`.
+
+### Calendar (`utils/calendar/`)
+
+Write an app's events to its **own** calendar on the phone — a local account the user can hide in one tap, never their personal calendars. Needs `expo-calendar` (and its config plugin's permission text).
+
+```ts
+import { syncDedicatedCalendar } from "@forthtilliath/react-native-kit/utils/calendar/syncDedicatedCalendar";
+import { toCalendarEventDetails } from "@forthtilliath/react-native-kit/utils/calendar/toCalendarEventDetails";
+
+const result = await syncDedicatedCalendar({
+  calendar: { name: "my-app", title: "My App", color: "#293897" },
+  from: new Date(2026, 6, 1),
+  to: new Date(2026, 7, 1),
+  events: shifts.map((s) =>
+    toCalendarEventDetails({
+      title: s.code,
+      date: s.date,
+      start: s.start,
+      end: s.end,
+    }),
+  ),
+});
+if (result.status === "denied") explainPermission();
+```
+
+- `syncDedicatedCalendar({ calendar, from, to, events })` — asks for the permission, finds the calendar by its internal `name` (creating it on first use), deletes its events in `[from, to)`, writes the new ones: a new sync replaces the previous one, no duplicates. Returns `{ status: "denied" }` or `{ status: "done", count }`.
+- `toCalendarEventDetails({ title, notes?, date, start?, end? }, timeZone?)` — converts a day + optional `HH:MM` hours to what `createEvent` expects. An `end` at or before `start` ends the next day (night shift); without hours the event lasts all day, set at UTC midnight in `"UTC"` — otherwise Android shows it a day off depending on the device's time zone.
+
+`expo-sharing`, `expo-file-system` and `expo-calendar` are **optional** peer dependencies: only install those your app uses, and deep-import these helpers.
 
 The framework-agnostic helpers that used to live here (`getPeriodStartMs`, `getMostRecentIds`, `nextInCycle`, `normalizeForSearch`, `rankByNameMatch`, `escapeCsvField`, `formatCsvNumber`, `escapeHtml`) moved to [`@forthtilliath/ts-kit`](../ts-kit#readme) — no React Native dependency on them, so they're usable from Node/web too. They're still re-exported from this package's root barrel for convenience:
 
