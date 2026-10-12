@@ -33,10 +33,14 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # `npm stage publish` (see scripts/publish.mjs) needs npm >= 11.15, newer
+      # than the npm bundled with Node 22.
+      - run: npm install -g npm@11
+
       # No separate build step: the "version" path doesn't need one, and
       # publish-packages already runs `turbo run build lint` before publishing.
 
-      - name: Create release PR or publish to npm
+      - name: Create release PR or stage the new versions on npm
         uses: changesets/action@v1
         with:
           # `changeset version`'s own auto-commit (triggered by "commit": true in
@@ -51,6 +55,9 @@ jobs:
           publish: pnpm run publish-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Granular token with "Read and write (stage only)" on @forthtilliath:
+          # it can only stage versions, each one goes live after a 2FA approval
+          # on npmjs.com (Staged Packages) — a leaked token cannot publish.
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           # npm provenance: each published version is linked to the workflow run
           # and commit that built it (signed through the id-token permission
