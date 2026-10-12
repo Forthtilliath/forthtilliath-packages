@@ -134,6 +134,10 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 
 - `startOfDay(date?)` — returns a new `Date` at local midnight.
 - `isSameDay(a, b)` — checks whether two dates fall on the same local day.
+- `parseIsoDate(iso)` — a `YYYY-MM-DD` calendar date as **local** midnight
+  (`new Date("2026-03-14")` is UTC midnight, the previous day in the Americas).
+- `mondayFirstWeekday(date)` — weekday index with Monday = `0` … Sunday = `6`,
+  from a `Date` or a `YYYY-MM-DD` string; offsets a Monday-first month grid.
 - `formatRelativeTime(date, baseDate?, locale?)` — human-readable relative
   time ("3 hours ago"), backed by `Intl.RelativeTimeFormat`.
 - `getPeriodStartMs(period, now?)` — start timestamp (ms) for a

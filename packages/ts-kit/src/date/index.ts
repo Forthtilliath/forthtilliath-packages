@@ -3,5 +3,7 @@ export * from "./daysUntil.js";
 export * from "./formatRelativeTime.js";
 export * from "./getPeriodStartMs.js";
 export * from "./isSameDay.js";
+export * from "./mondayFirstWeekday.js";
+export * from "./parseIsoDate.js";
 export * from "./startOfDay.js";
 export * from "./todayInTimeZone.js";
