@@ -1,3 +1,4 @@
+export * from "./CheckboxGroup.js";
 export * from "./MonthDayGrid.js";
 export * from "./OptionsModal.js";
 export * from "./PhotoPicker.js";
