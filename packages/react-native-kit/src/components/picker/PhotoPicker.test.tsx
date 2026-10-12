@@ -166,6 +166,39 @@ describe("PhotoPicker", () => {
     expect(ImagePicker.launchCameraAsync).not.toHaveBeenCalled();
   });
 
+  it("picks from the library without requesting any permission", async () => {
+    const alertSpy = vi.spyOn(Alert, "alert");
+    ImagePicker.launchImageLibraryAsync.mockResolvedValue({
+      canceled: false,
+      assets: [{ uri: "file://raw.jpg" }],
+    });
+    const savePhoto = vi.fn().mockResolvedValue("file://saved.jpg");
+    const onChange = vi.fn();
+    const tree = renderTree(
+      <PhotoPicker
+        photoUri={null}
+        onChange={onChange}
+        savePhoto={savePhoto}
+        photoLabel="of the item"
+      />,
+    );
+
+    act(() => {
+      propsOf<{ onPress: () => void }>(
+        tree.root.findByType(Pressable),
+      ).onPress();
+    });
+    await act(async () => {
+      await pressActionSheetButton(alertSpy, "Choisir dans la galerie");
+    });
+
+    expect(
+      ImagePicker.requestMediaLibraryPermissionsAsync,
+    ).not.toHaveBeenCalled();
+    expect(savePhoto).toHaveBeenCalledWith("file://raw.jpg");
+    expect(onChange).toHaveBeenCalledWith("file://saved.jpg");
+  });
+
   it("calls onChange(null) when removing the photo", () => {
     const onChange = vi.fn();
     const tree = renderTree(

@@ -198,6 +198,8 @@ Recognizes French by default (`fr-FR`, or `en-US` with `locale="en"`); pass `lan
 
 Photo picker (camera or library) with a preview and a remove link. `savePhoto` is injected rather than hard-coded, so where/how the picked image gets persisted is entirely up to the caller.
 
+Only the camera asks for a permission: the library opens the system photo picker, which needs none — the app can block `READ_EXTERNAL_STORAGE` / `WRITE_EXTERNAL_STORAGE` / `READ_MEDIA_IMAGES` (e.g. `android.blockedPermissions` in `app.json`).
+
 ```tsx
 import { PhotoPicker } from "@forthtilliath/react-native-kit/components/picker/PhotoPicker";
 

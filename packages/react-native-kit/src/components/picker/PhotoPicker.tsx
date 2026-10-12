@@ -22,7 +22,12 @@ export interface PhotoPickerLabels {
   addPlaceholderText?: string;
   cameraPermissionTitle?: string;
   cameraPermissionMessage?: string;
+  /**
+   * @deprecated Unused: choosing from the library needs no permission (the
+   * system photo picker), so no "access denied" alert is ever shown.
+   */
   libraryPermissionTitle?: string;
+  /** @deprecated Unused — see `libraryPermissionTitle`. */
   libraryPermissionMessage?: string;
   takePhoto?: string;
   chooseFromLibrary?: string;
@@ -86,9 +91,6 @@ const defaultLabels = {
     cameraPermissionTitle: "Accès à l'appareil photo refusé",
     cameraPermissionMessage:
       "Autorise l'accès dans les réglages du téléphone pour prendre une photo.",
-    libraryPermissionTitle: "Accès aux photos refusé",
-    libraryPermissionMessage:
-      "Autorise l'accès dans les réglages du téléphone pour choisir une photo.",
     takePhoto: "Prendre une photo",
     chooseFromLibrary: "Choisir dans la galerie",
     cancel: "Annuler",
@@ -103,15 +105,20 @@ const defaultLabels = {
     cameraPermissionTitle: "Camera access denied",
     cameraPermissionMessage:
       "Allow access in the phone's settings to take a photo.",
-    libraryPermissionTitle: "Photo access denied",
-    libraryPermissionMessage:
-      "Allow access in the phone's settings to choose a photo.",
     takePhoto: "Take a photo",
     chooseFromLibrary: "Choose from library",
     cancel: "Cancel",
     removePhoto: "Remove photo",
   },
-} satisfies Record<KitLocale, Required<PhotoPickerLabels>>;
+} satisfies Record<
+  KitLocale,
+  Required<
+    Omit<
+      PhotoPickerLabels,
+      "libraryPermissionTitle" | "libraryPermissionMessage"
+    >
+  >
+>;
 
 // Photo picker (camera or library) with a preview.
 export function PhotoPicker({
@@ -146,12 +153,10 @@ export function PhotoPicker({
     }
   }
 
+  // No permission request: the library is opened through the system photo
+  // picker, which needs none — so apps don't have to keep the storage
+  // permissions just for this.
   async function pickFromLibrary() {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      Alert.alert(t.libraryPermissionTitle, t.libraryPermissionMessage);
-      return;
-    }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "images",
       quality: 0.5,
