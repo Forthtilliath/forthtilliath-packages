@@ -661,6 +661,31 @@ if (result.status === "denied") explainPermission();
 - `syncDedicatedCalendar({ calendar, from, to, events })` — asks for the permission, finds the calendar by its internal `name` (creating it on first use), deletes its events in `[from, to)`, writes the new ones: a new sync replaces the previous one, no duplicates. Returns `{ status: "denied" }` or `{ status: "done", count }`.
 - `toCalendarEventDetails({ title, notes?, date, start?, end? }, timeZone?)` — converts a day + optional `HH:MM` hours to what `createEvent` expects. An `end` at or before `start` ends the next day (night shift); without hours the event lasts all day, set at UTC midnight in `"UTC"` — otherwise Android shows it a day off depending on the device's time zone.
 
+### App files (`utils/files/`)
+
+Files the app keeps for good (photos, avatars…): pickers return URIs in a cache folder the OS may empty at any time, so anything worth keeping is copied into a sub-folder of the app's documents. Needs `expo-file-system`.
+
+```ts
+import {
+  deleteFileQuietly,
+  persistFile,
+} from "@forthtilliath/react-native-kit/utils/files/appFiles";
+
+const photoUri = await persistFile(pickedUri, {
+  directory: "foods",
+  prefix: "food",
+});
+// later, when the photo is replaced or its entity deleted:
+deleteFileQuietly(oldPhotoUri);
+```
+
+- `getAppDirectory(name)` — the persistent sub-folder `name` of documents, created on first use.
+- `persistFile(sourceUri, { directory, prefix })` — copies a temporary file there as `<prefix>-<timestamp>.<ext>` and returns the copy's URI.
+- `getFileExtension(uri, fallback = "jpg")` — extension of a URI, query string ignored.
+- `fileExists(uri)` — `false` for a malformed URI instead of throwing.
+- `deleteFileQuietly(uri)` — best-effort deletion: an absent file, `null` or a failure never throws.
+- `pruneAppDirectory(name, keep)` — deletes the folder's files whose URI isn't in `keep` (orphaned photos after an edit or an import); returns how many were deleted.
+
 `expo-sharing`, `expo-file-system` and `expo-calendar` are **optional** peer dependencies: only install those your app uses, and deep-import these helpers.
 
 The framework-agnostic helpers that used to live here (`getPeriodStartMs`, `getMostRecentIds`, `nextInCycle`, `normalizeForSearch`, `rankByNameMatch`, `escapeCsvField`, `formatCsvNumber`, `escapeHtml`) moved to [`@forthtilliath/ts-kit`](../ts-kit#readme) — no React Native dependency on them, so they're usable from Node/web too. They're still re-exported from this package's root barrel for convenience:
