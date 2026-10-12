@@ -28,6 +28,22 @@ export function View({
   return React.createElement("View", { style }, children);
 }
 
+export function ScrollView({
+  children,
+  style,
+  contentContainerStyle,
+}: {
+  children?: React.ReactNode;
+  style?: unknown;
+  contentContainerStyle?: unknown;
+}) {
+  return React.createElement(
+    "ScrollView",
+    { style, contentContainerStyle },
+    children,
+  );
+}
+
 export function Image({
   source,
   style,

@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components -- a test stub, never hot-reloaded */
 import type * as React from "react";
+import { useEffect } from "react";
 
 // react-native-gesture-handler/ReanimatedSwipeable needs Reanimated's native
 // runtime, unavailable under Vitest (and the package entry ships Flow syntax
@@ -15,6 +16,9 @@ export interface SwipeableMethods {
 
 export interface SwipeableProps {
   children?: React.ReactNode;
+  containerStyle?: unknown;
+  overshootRight?: boolean;
+  onSwipeableOpen?: (direction: "left" | "right") => void;
   renderRightActions?: (
     progress: unknown,
     translation: unknown,
@@ -30,10 +34,14 @@ export const swipeableMethods: SwipeableMethods = {
   reset: () => undefined,
 };
 
-export default function ReanimatedSwipeable({
-  children,
-  renderRightActions,
-}: SwipeableProps) {
+/** Props of the last render, so tests can check them and fire `onSwipeableOpen`. */
+export const lastSwipeableProps: { current?: SwipeableProps } = {};
+
+export default function ReanimatedSwipeable(props: SwipeableProps) {
+  const { children, renderRightActions } = props;
+  useEffect(() => {
+    lastSwipeableProps.current = props;
+  });
   return (
     <>
       {renderRightActions?.(0, 0, swipeableMethods)}
