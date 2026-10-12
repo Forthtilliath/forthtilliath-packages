@@ -10,7 +10,7 @@ export interface QuantityStepperStyles {
   row?: StyleProp<ViewStyle>;
   /** Both round buttons. */
   button?: StyleProp<ViewStyle>;
-  /** Added on top of `button` for "−" at zero. */
+  /** Added on top of `button` for "−" at `min` and "+" at `max`. */
   buttonDisabled?: StyleProp<ViewStyle>;
   /** The "−" / "+" glyphs. */
   buttonText?: StyleProp<TextStyle>;
@@ -27,12 +27,19 @@ export interface QuantityStepperA11yLabels {
 
 export interface QuantityStepperProps {
   value: number;
-  /** Receives the new value, already clamped to `0…max`. */
+  /** Receives the new value, already clamped to `min…max`. */
   onChange: (value: number) => void;
   /** What is being counted — used in the screen-reader labels. */
   label: string;
+  /** @defaultValue 0 */
+  min?: number;
   /** @defaultValue 999 */
   max?: number;
+  /**
+   * Step applied by a long press on −/+, to reach large values quickly.
+   * Unset, a long press does nothing more than a tap.
+   */
+  longPressStep?: number;
   /**
    * Language of the default screen-reader labels — French by default, or the
    * nearest `KitLocaleProvider`'s.
@@ -93,41 +100,54 @@ const defaultStyles = {
 };
 
 /**
- * A whole-number counter from 0 to `max`: −/+ buttons to adjust, and a
- * numeric field in the middle to type a large number in one go (non-digits
- * are dropped, the result is clamped).
+ * A whole-number counter from `min` (0) to `max`: −/+ buttons to adjust
+ * (optionally faster on long press), and a numeric field in the middle to
+ * type a large number in one go (non-digits are dropped, the result is
+ * clamped).
  *
  * @example
  * ```tsx
  * import { QuantityStepper } from "@forthtilliath/react-native-kit/components/picker/QuantityStepper";
  *
  * <QuantityStepper value={count} onChange={setCount} label="Croissants" />
+ * <QuantityStepper value={bans} onChange={setBans} label="Bannissements" min={1} max={40} longPressStep={5} />
  * ```
  */
 export function QuantityStepper({
   value,
   onChange,
   label,
+  min = 0,
   max = 999,
+  longPressStep,
   locale,
   a11yLabels,
   styles,
 }: QuantityStepperProps) {
   const labels = { ...defaultA11yLabels[useKitLocale(locale)], ...a11yLabels };
   const merged = mergeSlotStyles(defaultStyles, styles);
+  const atMin = value <= min;
+  const atMax = value >= max;
 
   function set(next: number) {
-    onChange(Math.min(max, Math.max(0, next)));
+    onChange(Math.min(max, Math.max(min, next)));
   }
 
   return (
     <View style={merged.row}>
       <Pressable
-        style={[merged.button, value === 0 && merged.buttonDisabled]}
+        style={[merged.button, atMin && merged.buttonDisabled]}
         onPress={() => {
           set(value - 1);
         }}
-        disabled={value === 0}
+        onLongPress={
+          longPressStep === undefined
+            ? undefined
+            : () => {
+                set(value - longPressStep);
+              }
+        }
+        disabled={atMin}
         hitSlop={6}
         accessibilityRole="button"
         accessibilityLabel={labels.decrease(label)}
@@ -139,7 +159,7 @@ export function QuantityStepper({
         value={String(value)}
         onChangeText={(text) => {
           const digits = text.replace(/\D/g, "");
-          set(digits === "" ? 0 : Number(digits));
+          set(digits === "" ? min : Number(digits));
         }}
         keyboardType="number-pad"
         selectTextOnFocus
@@ -147,10 +167,18 @@ export function QuantityStepper({
         accessibilityLabel={labels.input(label)}
       />
       <Pressable
-        style={merged.button}
+        style={[merged.button, atMax && merged.buttonDisabled]}
         onPress={() => {
           set(value + 1);
         }}
+        onLongPress={
+          longPressStep === undefined
+            ? undefined
+            : () => {
+                set(value + longPressStep);
+              }
+        }
+        disabled={atMax}
         hitSlop={6}
         accessibilityRole="button"
         accessibilityLabel={labels.increase(label)}
