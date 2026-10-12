@@ -11,3 +11,8 @@ updates:
         patterns: ["*"]
     commit-message:
       prefix: ci
+    ignore:
+      # changesets/action v2 only works with @changesets/cli v3: stay on v1
+      # until the repo moves to CLI v3 (the v2 bump broke every release).
+      - dependency-name: changesets/action
+        update-types: ["version-update:semver-major"]
