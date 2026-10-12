@@ -160,6 +160,9 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `downloadTextBlob(filename, text)` — same, but via a `Blob` + object URL
   (better for larger content). The object URL is revoked 40 s later, not
   right after the click (which can cancel the download in Firefox/Safari).
+- `formatFileTimestamp(date?, { seconds?, separator? })` — compact **local**
+  timestamp for file names, `"20261008-0902"` by default (`toISOString()` is
+  UTC and its `:` is rejected by Windows); names sort chronologically.
 
 ### `function`
 
@@ -250,6 +253,48 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
 - `escapeHtml(text)` — HTML entity escaping (`&`, `<`, `>`, `"`, `'`) for
   inserting user text into an HTML template, in text content or in an
   attribute quoted with `"` or `'`.
+
+### `validation`
+
+All-or-nothing validation of untrusted records — typically each table of an
+imported backup, before anything replaces the app's data: a tampered file
+must not slip a negative dose ratio or a string where a number is expected
+into the database.
+
+```ts
+import {
+  inRange,
+  isPositiveInteger,
+  maxLength,
+  nullable,
+  oneOf,
+  optional,
+  required,
+  RecordValidationError,
+  validateRecords,
+} from "@forthtilliath/ts-kit";
+
+const ratios = validateRecords(
+  data.ratios,
+  {
+    id: required(isPositiveInteger),
+    label: required(maxLength(100)),
+    gramsPerUnit: required(inRange(0, 200, { exclusiveMin: true })),
+    unit: optional(nullable(oneOf("g", "oz"))),
+  },
+  { label: "ratios", uniqueKey: "id" },
+);
+```
+
+- `validateRecords(rows, spec, { label?, uniqueKey? })` — returns clean copies
+  holding only the fields of `spec` (unknown or injected keys are dropped);
+  throws a `RecordValidationError` on the first anomaly, with `reason`
+  (`"not-a-list" | "not-an-object" | "missing" | "invalid" | "duplicate"`),
+  `path` (`"ratios[2]"`) and `field`, so the app words its own message.
+- Fields: `required(rule)` / `optional(rule)` (may be absent).
+- Rules: `isFiniteNumber`, `isInteger`, `isPositiveInteger` (an id),
+  `isString`, `isBoolean`, `maxLength(n)`, `inRange(min, max, { exclusiveMin? })`,
+  `oneOf(...values)`, `nullable(rule)` — or any `(value: unknown) => boolean`.
 
 ### `version`
 
