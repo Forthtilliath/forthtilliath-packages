@@ -17,4 +17,5 @@ export * from "./markdown/index.js";
 export * from "./number/index.js";
 export * from "./object/index.js";
 export * from "./string/index.js";
+export * from "./validation/index.js";
 export * from "./version/index.js";
