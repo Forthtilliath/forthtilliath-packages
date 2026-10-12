@@ -90,12 +90,12 @@ describe("downloadAndInstallApk", () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" });
 
     await downloadAndInstallApk({
-      apkUrl: "https://example.com/app.apk",
+      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
       fileName: "app-update.apk",
     });
 
     expect(mockCreateDownloadTask).toHaveBeenCalledWith(
-      "https://example.com/app.apk",
+      "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
       expect.objectContaining({ uri: "cache/app-update.apk" }),
       expect.anything(),
     );
@@ -114,7 +114,7 @@ describe("downloadAndInstallApk", () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" });
 
     await downloadAndInstallApk({
-      apkUrl: "https://example.com/app.apk",
+      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
       fileName: "app-update.apk",
     });
 
@@ -126,7 +126,7 @@ describe("downloadAndInstallApk", () => {
     const onProgress = vi.fn();
 
     await downloadAndInstallApk({
-      apkUrl: "https://example.com/app.apk",
+      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
       fileName: "app-update.apk",
       onProgress,
     });
@@ -139,7 +139,7 @@ describe("downloadAndInstallApk", () => {
 
     await expect(
       downloadAndInstallApk({
-        apkUrl: "https://example.com/app.apk",
+        apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
         fileName: "app-update.apk",
       }),
     ).rejects.toThrow("The download failed.");
@@ -150,7 +150,7 @@ describe("downloadAndInstallApk", () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" }, "abc123");
 
     await downloadAndInstallApk({
-      apkUrl: "https://example.com/app.apk",
+      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
       fileName: "app-update.apk",
       expectedMd5: "ABC123",
     });
@@ -164,7 +164,7 @@ describe("downloadAndInstallApk", () => {
 
     await expect(
       downloadAndInstallApk({
-        apkUrl: "https://example.com/app.apk",
+        apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
         fileName: "app-update.apk",
         expectedMd5: "def456",
       }),
@@ -173,11 +173,38 @@ describe("downloadAndInstallApk", () => {
     expect(mockStartActivityAsync).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ["a non-https URL", "http://github.com/acme/app/app.apk"],
+    ["another host", "https://evil.example/app.apk"],
+    ["a lookalike host", "https://github.com.evil.example/app.apk"],
+    ["credentials before the host", "https://github.com@evil.example/app.apk"],
+  ])("refuses %s without downloading anything", async (_case, apkUrl) => {
+    mockDownloadTask({ contentUri: "content://downloads/app.apk" });
+
+    await expect(
+      downloadAndInstallApk({ apkUrl, fileName: "app-update.apk" }),
+    ).rejects.toThrow("Refusing to download the APK");
+    expect(mockCreateDownloadTask).not.toHaveBeenCalled();
+    expect(mockStartActivityAsync).not.toHaveBeenCalled();
+  });
+
+  it("accepts a host listed in allowedHosts, case-insensitively", async () => {
+    mockDownloadTask({ contentUri: "content://downloads/app.apk" });
+
+    await downloadAndInstallApk({
+      apkUrl: "https://Downloads.Example.com:8443/app.apk",
+      fileName: "app-update.apk",
+      allowedHosts: ["downloads.example.com"],
+    });
+
+    expect(mockStartActivityAsync).toHaveBeenCalled();
+  });
+
   it("skips the checksum check when expectedMd5 is not provided", async () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" }, undefined);
 
     await downloadAndInstallApk({
-      apkUrl: "https://example.com/app.apk",
+      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
       fileName: "app-update.apk",
     });
 
