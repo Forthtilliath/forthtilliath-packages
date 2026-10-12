@@ -357,21 +357,40 @@ importers:
 
   packages/eslint-config:
     dependencies:
-      '@eslint-react/eslint-plugin':
-        specifier: ^5.18.3
-        version: 5.18.3(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
       '@eslint/js':
         specifier: ^9.39.5
         version: 9.39.5
+      eslint-config-prettier:
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@10.7.0(jiti@2.7.0))
+      eslint-plugin-simple-import-sort:
+        specifier: ^13.0.0
+        version: 13.0.0(eslint@10.7.0(jiti@2.7.0))
+      globals:
+        specifier: ^17.9.0
+        version: 17.9.0
+      typescript-eslint:
+        specifier: ^8.67.0
+        version: 8.67.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
+    devDependencies:
+      '@angular/core':
+        specifier: ^21.0.0
+        version: 21.2.23(rxjs@7.8.2)
+      '@eslint-react/eslint-plugin':
+        specifier: ^5.18.3
+        version: 5.18.3(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
+      '@forthtilliath/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@next/eslint-plugin-next':
         specifier: ^16.3.0
         version: 16.3.0(eslint@10.7.0(jiti@2.7.0))
       angular-eslint:
         specifier: ^21.4.0
         version: 21.4.0(@angular/cli@21.2.21(@types/node@26.2.0))(eslint@10.7.0(jiti@2.7.0))(typescript-eslint@8.67.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3))(typescript@5.9.3)
-      eslint-config-prettier:
-        specifier: ^10.1.8
-        version: 10.1.8(eslint@10.7.0(jiti@2.7.0))
+      eslint:
+        specifier: 'catalog:'
+        version: 10.7.0(jiti@2.7.0)
       eslint-plugin-i18next:
         specifier: ^6.1.5
         version: 6.1.5
@@ -393,9 +412,6 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.5.4
         version: 0.5.4(eslint@10.7.0(jiti@2.7.0))
-      eslint-plugin-simple-import-sort:
-        specifier: ^13.0.0
-        version: 13.0.0(eslint@10.7.0(jiti@2.7.0))
       eslint-plugin-storybook:
         specifier: ^10.6.1
         version: 10.6.1(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
@@ -405,22 +421,6 @@ importers:
       eslint-plugin-turbo:
         specifier: ^2.10.9
         version: 2.10.9(eslint@10.7.0(jiti@2.7.0))(turbo@2.10.9)
-      globals:
-        specifier: ^17.9.0
-        version: 17.9.0
-      typescript-eslint:
-        specifier: ^8.67.0
-        version: 8.67.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
-    devDependencies:
-      '@angular/core':
-        specifier: ^21.0.0
-        version: 21.2.23(rxjs@7.8.2)
-      '@forthtilliath/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      eslint:
-        specifier: 'catalog:'
-        version: 10.7.0(jiti@2.7.0)
       rxjs:
         specifier: ^7.8.0
         version: 7.8.2
