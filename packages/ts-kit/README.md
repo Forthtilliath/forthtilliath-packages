@@ -145,6 +145,9 @@ Importing them is harmless anywhere: the DOM is only touched when called.
   from a `Date` or a `YYYY-MM-DD` string; offsets a Monday-first month grid.
 - `formatRelativeTime(date, baseDate?, locale?)` — human-readable relative
   time ("3 hours ago"), backed by `Intl.RelativeTimeFormat`.
+- `formatRecentDate(date, { now?, locale? })` — a past moment as a "last
+  saved…" line reads best: `"aujourd'hui à 21:42"`, `"hier à 08:05"`, then
+  `"le 11 octobre 2026"` (`locale: "en"`: `"today at…"`, `"on October 11, 2026"`).
 - `getPeriodStartMs(period, now?)` — start timestamp (ms) for a
   `"today" | "7d" | "30d" | "all"` period filter, or `null` for `"all"`.
   `"today"` is the current calendar day, not a rolling 24h window.
