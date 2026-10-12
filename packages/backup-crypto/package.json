@@ -1,0 +1,47 @@
+{
+  "name": "@forthtilliath/backup-crypto",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forthtilliath/forthtilliath-packages.git",
+    "directory": "packages/backup-crypto"
+  },
+  "homepage": "https://github.com/Forthtilliath/forthtilliath-packages/tree/main/packages/backup-crypto#readme",
+  "bugs": "https://github.com/Forthtilliath/forthtilliath-packages/issues",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js"
+  },
+  "dependencies": {
+    "@noble/ciphers": "^2.4.0",
+    "@noble/hashes": "^2.4.0",
+    "@scure/base": "^2.4.0"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
