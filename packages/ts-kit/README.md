@@ -171,6 +171,19 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `sanitizeFileName(name)` — replaces characters forbidden in file names
   (`\ / : * ? " < > |`) with hyphens, collapses whitespace and trims.
 
+### `ics`
+
+Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
+
+- `escapeIcsText(text)` — escapes a TEXT value (`SUMMARY`, `DESCRIPTION`…):
+  `\`, `;`, `,` and line breaks.
+- `foldIcsLine(line, maxOctets?)` — folds a content line past 75 **octets**
+  (UTF-8 bytes, not characters) without splitting a character.
+- `toIcsDate(isoDate)` — `"2026-07-14"` → `"20260714"`, for all-day events.
+- `toIcsDateTime(isoDate, "HH:MM")` — floating local date-time,
+  `"20260714T063000"`.
+- `icsTimestamp(date?)` — UTC date-time for `DTSTAMP`, `"20260714T080509Z"`.
+
 ### `id`
 
 - `randomId()` — `crypto.randomUUID()` with fallbacks for older/insecure
