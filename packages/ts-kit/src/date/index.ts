@@ -1,5 +1,6 @@
 export * from "./dateInTimeZone.js";
 export * from "./daysUntil.js";
+export * from "./formatRecentDate.js";
 export * from "./formatRelativeTime.js";
 export * from "./getPeriodStartMs.js";
 export * from "./isSameDay.js";
