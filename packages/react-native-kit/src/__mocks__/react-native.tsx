@@ -191,3 +191,13 @@ export const Alert = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional no-op stub
   alert() {},
 };
+
+// No native module is compiled into a test run: tests add old-architecture
+// ones to `NativeModules`, or spy on `TurboModuleRegistry.get`.
+export const NativeModules: Record<string, unknown> = {};
+
+export const TurboModuleRegistry = {
+  get(): unknown {
+    return null;
+  },
+};
