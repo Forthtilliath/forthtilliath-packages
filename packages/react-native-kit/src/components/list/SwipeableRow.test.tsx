@@ -3,7 +3,10 @@ import { Pressable, Text } from "react-native";
 import { act, create } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
-import { swipeableMethods } from "../../__mocks__/react-native-gesture-handler-reanimated-swipeable.js";
+import {
+  lastSwipeableProps,
+  swipeableMethods,
+} from "../../__mocks__/react-native-gesture-handler-reanimated-swipeable.js";
 
 import { SwipeableRow } from "./SwipeableRow.js";
 
@@ -94,5 +97,77 @@ describe("SwipeableRow", () => {
 
     expect(close).toHaveBeenCalledOnce();
     expect(onDelete).toHaveBeenCalledOnce();
+  });
+
+  it("doesn't delete on open in the default (button) mode", () => {
+    renderTree(
+      <SwipeableRow onDelete={vi.fn()} deleteLabel="x">
+        <Text>Row</Text>
+      </SwipeableRow>,
+    );
+    expect(lastSwipeableProps.current?.onSwipeableOpen).toBeUndefined();
+    expect(lastSwipeableProps.current?.overshootRight).toBe(true);
+  });
+
+  describe("with fullSwipeToDelete", () => {
+    it("deletes once the row is swiped open", () => {
+      const onDelete = vi.fn();
+      renderTree(
+        <SwipeableRow onDelete={onDelete} deleteLabel="x" fullSwipeToDelete>
+          <Text>Row</Text>
+        </SwipeableRow>,
+      );
+      act(() => {
+        lastSwipeableProps.current?.onSwipeableOpen?.("right");
+      });
+      expect(onDelete).toHaveBeenCalledOnce();
+      expect(lastSwipeableProps.current?.overshootRight).toBe(false);
+    });
+
+    it("renders a full-width band with the text only, no icon", () => {
+      const tree = renderTree(
+        <SwipeableRow onDelete={vi.fn()} deleteLabel="x" fullSwipeToDelete>
+          <Text>Row</Text>
+        </SwipeableRow>,
+      );
+      const action = tree.root.findByType(Pressable);
+      expect(flattenStyle(action.props.style)).toMatchObject({
+        flex: 1,
+        alignItems: "flex-end",
+        paddingEnd: 16,
+      });
+      expect(action.findAllByType(Text)).toHaveLength(1);
+    });
+
+    it("slides the row out on a tap of the band, instead of deleting at once", () => {
+      const openRight = vi.spyOn(swipeableMethods, "openRight");
+      const onDelete = vi.fn();
+      const tree = renderTree(
+        <SwipeableRow onDelete={onDelete} deleteLabel="x" fullSwipeToDelete>
+          <Text>Row</Text>
+        </SwipeableRow>,
+      );
+      act(() => {
+        (tree.root.findByType(Pressable).props.onPress as () => void)();
+      });
+      expect(openRight).toHaveBeenCalledOnce();
+      expect(onDelete).not.toHaveBeenCalled();
+    });
+
+    it("passes the container slot to the swipeable", () => {
+      renderTree(
+        <SwipeableRow
+          onDelete={vi.fn()}
+          deleteLabel="x"
+          fullSwipeToDelete
+          styles={{ container: { borderRadius: 8 } }}
+        >
+          <Text>Row</Text>
+        </SwipeableRow>,
+      );
+      expect(
+        flattenStyle(lastSwipeableProps.current?.containerStyle),
+      ).toMatchObject({ borderRadius: 8 });
+    });
   });
 });
