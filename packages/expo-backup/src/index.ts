@@ -1,3 +1,4 @@
+export * from "./backupReminder.js";
 export * from "./createBackupManager.js";
 export type { EncryptionMode } from "./encryption.js";
 export * from "./errors.js";
