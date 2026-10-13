@@ -33,11 +33,11 @@
     "./*": "./dist/*.js"
   },
   "dependencies": {
-    "@forthtilliath/expo-release-updates-ui": "workspace:^",
     "@forthtilliath/ts-kit": "workspace:^"
   },
   "peerDependencies": {
     "@expo/vector-icons": ">=15.0.0",
+    "@forthtilliath/expo-release-updates-ui": ">=0.4.0",
     "expo-calendar": ">=54.0.0",
     "expo-file-system": ">=54.0.0",
     "expo-haptics": ">=54.0.0",
@@ -52,6 +52,12 @@
     "react-native-view-shot": ">=4.0.0"
   },
   "peerDependenciesMeta": {
+    "@expo/vector-icons": {
+      "optional": true
+    },
+    "@forthtilliath/expo-release-updates-ui": {
+      "optional": true
+    },
     "expo-calendar": {
       "optional": true
     },
@@ -64,7 +70,19 @@
     "expo-image-manipulator": {
       "optional": true
     },
+    "expo-image-picker": {
+      "optional": true
+    },
     "expo-sharing": {
+      "optional": true
+    },
+    "expo-speech-recognition": {
+      "optional": true
+    },
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-reanimated": {
       "optional": true
     },
     "react-native-view-shot": {
@@ -74,6 +92,7 @@
   "devDependencies": {
     "@expo/vector-icons": "^15.1.1",
     "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/expo-release-updates-ui": "workspace:^",
     "@forthtilliath/typescript-config": "workspace:*",
     "@size-limit/file": "catalog:",
     "@types/react": "catalog:",
