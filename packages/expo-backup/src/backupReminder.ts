@@ -57,7 +57,10 @@ export function shouldShowBackupReminder({
   if (unsaved.length === 0) return false;
   if (unsaved.length >= afterCount) return true;
 
-  return now - Math.min(...unsaved) >= afterDays * DAY_MS;
+  // A loop rather than Math.min(...unsaved): spreading a very long list
+  // overflows the call stack.
+  const oldest = unsaved.reduce((min, date) => (date < min ? date : min));
+  return now - oldest >= afterDays * DAY_MS;
 }
 
 /** End of a "Later" snooze started `now`, to store as `snoozedUntil`. */

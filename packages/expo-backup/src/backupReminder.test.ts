@@ -30,6 +30,13 @@ describe("shouldShowBackupReminder", () => {
     ).toBe(false);
   });
 
+  it("handles a very long history without overflowing the stack", () => {
+    const itemDates = Array.from({ length: 200_000 }, () => now - DAY);
+    expect(() =>
+      shouldShowBackupReminder({ ...base, itemDates, afterCount: Infinity }),
+    ).not.toThrow();
+  });
+
   it("reminds once the oldest unsaved item is old enough", () => {
     expect(
       shouldShowBackupReminder({ ...base, itemDates: [now - 6 * DAY] }),
