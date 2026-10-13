@@ -18,7 +18,7 @@ Or, from within this monorepo, as a workspace dependency:
 }
 ```
 
-`react` and `react-native` are peer dependencies — install them in the consuming app if not already present. `@expo/vector-icons`, `expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler` and `react-native-reanimated` are also peer dependencies, needed only if you import the components that use them (`Thumbnail`/`PickerModal`/`SwipeableRow`, `PhotoPicker`, `VoiceSearchButton`/`PickerModal`, `SwipeableRow`, `SwipeableRow`, respectively).
+`react` and `react-native` are the only required peer dependencies — install them in the consuming app if not already present. Every other peer dependency is **optional**, needed only if you import the components that use them: `@expo/vector-icons` (`Thumbnail`, `PickerModal`, `SwipeableRow`, the settings screens…), `expo-image-picker` (`PhotoPicker`), `expo-speech-recognition` (`VoiceSearchButton`/`PickerModal`), `react-native-gesture-handler` (`DragHandle`, `SwipeableRow`), `react-native-reanimated` (`SwipeableRow`) and `@forthtilliath/expo-release-updates-ui` (`UpdateSettingsScreen`). Package managers no longer install them for you, so a native module (and the Android permissions it declares, e.g. `CAMERA` for `expo-image-picker`) only ends up in your APK if you add it yourself.
 
 ## Usage
 
@@ -30,7 +30,7 @@ import { PhotoPicker } from "@forthtilliath/react-native-kit/components/picker/P
 
 This is the recommended way to import: Metro (React Native's bundler) doesn't reliably tree-shake, so pulling from a single deep-import path keeps peer dependencies you don't use (`expo-image-picker`, `expo-speech-recognition`, `react-native-gesture-handler`...) out of your bundle entirely, rather than merely unused.
 
-A root barrel is also available for convenience:
+A root barrel is also available for convenience — but since it imports every module, Metro will fail to resolve any optional peer dependency you haven't installed. Use it only if you have them all:
 
 ```ts
 import { PhotoPicker, useSubmitGuard } from "@forthtilliath/react-native-kit";
@@ -501,7 +501,7 @@ import { ThemeSettingsScreen } from "@forthtilliath/react-native-kit/components/
 
 #### `<UpdateSettingsScreen currentVersion checkForUpdate compareVersions downloadAndInstallApk />`
 
-The full "check for update" screen: installed version, a manual check button, the available-update box (changelog + install button) or an up-to-date/error message, download progress, and — if `fetchReleaseHistory` is passed — a list of past releases. Checks automatically once on mount. Renders release notes via `@forthtilliath/expo-release-updates-ui`'s `ChangelogNotes`, and pairs naturally with that package's `useUpdateCheck`/`UpdateAvailableBanner` (same `checkForUpdate`/`compareVersions` you already pass those), but takes plain functions so it isn't tied to that package's exact shape.
+The full "check for update" screen: installed version, a manual check button, the available-update box (changelog + install button) or an up-to-date/error message, download progress, and — if `fetchReleaseHistory` is passed — a list of past releases. Checks automatically once on mount. Renders release notes via `@forthtilliath/expo-release-updates-ui`'s `ChangelogNotes`, and pairs naturally with that package's `useUpdateCheck`/`UpdateAvailableBanner` (same `checkForUpdate`/`compareVersions` you already pass those), but takes plain functions so it isn't tied to that package's exact shape. `@forthtilliath/expo-release-updates-ui` is an optional peer dependency: install it to use this screen.
 
 ```tsx
 import { UpdateSettingsScreen } from "@forthtilliath/react-native-kit/components/settings/UpdateSettingsScreen";
