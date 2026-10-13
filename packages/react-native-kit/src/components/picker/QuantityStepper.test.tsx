@@ -22,6 +22,16 @@ function type(tree: ReturnType<typeof renderTree>, text: string) {
   });
 }
 
+function blur(tree: ReturnType<typeof renderTree>) {
+  act(() => {
+    propsOf<{ onBlur: () => void }>(tree.root.findByType(TextInput)).onBlur();
+  });
+}
+
+function fieldText(tree: ReturnType<typeof renderTree>) {
+  return propsOf<{ value: string }>(tree.root.findByType(TextInput)).value;
+}
+
 describe("QuantityStepper", () => {
   it("steps down and up", () => {
     const onChange = vi.fn();
@@ -50,7 +60,10 @@ describe("QuantityStepper", () => {
     type(tree, "1a2");
     type(tree, "75");
     type(tree, "");
-    expect(onChange.mock.calls).toEqual([[12], [50], [0]]);
+    expect(onChange.mock.calls).toEqual([[12], [50]]);
+    expect(fieldText(tree)).toBe("");
+    blur(tree);
+    expect(onChange).toHaveBeenLastCalledWith(0);
     expect(
       propsOf<{ maxLength: number }>(tree.root.findByType(TextInput)).maxLength,
     ).toBe(2);
@@ -71,6 +84,7 @@ describe("QuantityStepper", () => {
       true,
     );
     type(tree, "");
+    blur(tree);
     expect(onChange).toHaveBeenLastCalledWith(1);
 
     const full = renderTree(
@@ -79,6 +93,28 @@ describe("QuantityStepper", () => {
     const { plus } = buttons(full);
     expect(propsOf<{ disabled: boolean }>(plus).disabled).toBe(true);
     expect(styleOf(plus)).toMatchObject({ opacity: 0.35 });
+  });
+
+  it("lets a number starting below min be typed, clamped on blur", () => {
+    const onChange = vi.fn();
+    const tree = renderTree(
+      <QuantityStepper
+        value={10}
+        onChange={onChange}
+        label="Points"
+        min={10}
+        max={99}
+      />,
+    );
+    type(tree, "2");
+    expect(onChange).not.toHaveBeenCalled();
+    expect(fieldText(tree)).toBe("2");
+    type(tree, "25");
+    expect(onChange).toHaveBeenLastCalledWith(25);
+
+    type(tree, "3");
+    blur(tree);
+    expect(onChange).toHaveBeenLastCalledWith(10);
   });
 
   it("jumps by longPressStep on long press, clamped", () => {
