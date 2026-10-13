@@ -1,6 +1,6 @@
 {
   "name": "@forthtilliath/react-native-kit",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "@expo/vector-icons": ">=15.0.0",
-    "@forthtilliath/expo-release-updates-ui": ">=0.4.0",
+    "@forthtilliath/expo-release-updates-ui": ">=0.4.1",
     "expo-calendar": ">=54.0.0",
     "expo-file-system": ">=54.0.0",
     "expo-haptics": ">=54.0.0",
