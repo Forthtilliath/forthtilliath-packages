@@ -34,3 +34,10 @@ catalog:
   tailwindcss: 4.3.3
   typescript: ^5.9.3
   vitest: ^5.0.2
+
+# Security floors for transitive dependencies (pnpm audit): fast-uri via
+# shadcn-ui > @hookform/resolvers > ajv, brace-expansion via eslint's
+# minimatch. Drop an entry once the parent's own range pulls the fix in.
+overrides:
+  fast-uri@<3.1.8: ^3.1.8
+  brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
