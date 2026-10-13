@@ -1,0 +1,3 @@
+# LF everywhere, whatever core.autocrlf says on the machine: Prettier
+# (format:check) and the CI expect LF. Binary files are detected and left alone.
+* text=auto eol=lf
