@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Pressable, Text, TextInput, View } from "react-native";
 
@@ -103,7 +104,8 @@ const defaultStyles = {
  * A whole-number counter from `min` (0) to `max`: −/+ buttons to adjust
  * (optionally faster on long press), and a numeric field in the middle to
  * type a large number in one go (non-digits are dropped, the result is
- * clamped).
+ * clamped). A typed value below `min` (an empty field, the "2" of "25" with
+ * `min={10}`) stays as typed until the field loses focus.
  *
  * @example
  * ```tsx
@@ -128,8 +130,12 @@ export function QuantityStepper({
   const merged = mergeSlotStyles(defaultStyles, styles);
   const atMin = value <= min;
   const atMax = value >= max;
+  // Field text not sent yet: clamping it to `min` on every keystroke would
+  // make any number starting below `min` impossible to type.
+  const [draft, setDraft] = useState<string | null>(null);
 
   function set(next: number) {
+    setDraft(null);
     onChange(Math.min(max, Math.max(min, next)));
   }
 
@@ -156,10 +162,14 @@ export function QuantityStepper({
       </Pressable>
       <TextInput
         style={merged.input}
-        value={String(value)}
+        value={draft ?? String(value)}
         onChangeText={(text) => {
           const digits = text.replace(/\D/g, "");
-          set(digits === "" ? min : Number(digits));
+          if (digits === "" || Number(digits) < min) setDraft(digits);
+          else set(Number(digits));
+        }}
+        onBlur={() => {
+          if (draft !== null) set(draft === "" ? min : Number(draft));
         }}
         keyboardType="number-pad"
         selectTextOnFocus
