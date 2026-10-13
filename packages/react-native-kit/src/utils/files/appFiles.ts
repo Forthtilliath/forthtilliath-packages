@@ -6,9 +6,35 @@ import { randomId } from "@forthtilliath/ts-kit/id/randomId";
 // back URIs in a cache folder the OS may empty at any time, so anything worth
 // keeping is copied into a sub-folder of the app's documents.
 
-/** The app's persistent sub-folder `name` (in documents), created on first use. */
+// Folder names, prefixes and extensions end up in a path, and callers may
+// build them from imported data (a restored backup): only plain name
+// characters get through — no "..", no way out of the documents folder.
+const SAFE_NAME = /^[\w-]+$/;
+const SAFE_FOLDER = /^[\w-]+(\/[\w-]+)*$/;
+
+function assertSafe(value: string, pattern: RegExp, what: string): string {
+  if (!pattern.test(value)) {
+    throw new Error(`Invalid ${what}: ${JSON.stringify(value)}`);
+  }
+  return value;
+}
+
+/** Last segment of a URI, i.e. the file name. */
+function fileNameOf(uri: string): string {
+  return uri.slice(uri.lastIndexOf("/") + 1);
+}
+
+/**
+ * The app's persistent sub-folder `name` (in documents), created on first use.
+ * `name` is made of letters, digits, `_`, `-`, and `/` between nested folders.
+ *
+ * @throws if `name` holds any other character (`..`, a leading `/`…).
+ */
 export function getAppDirectory(name: string): Directory {
-  const directory = new Directory(Paths.document, name);
+  const directory = new Directory(
+    Paths.document,
+    assertSafe(name, SAFE_FOLDER, "folder name"),
+  );
   if (!directory.exists)
     directory.create({ intermediates: true, idempotent: true });
   return directory;
@@ -26,7 +52,7 @@ export function getFileExtension(uri: string, fallback = "jpg"): string {
 export interface PersistFileOptions {
   /** Persistent sub-folder, see `getAppDirectory`. */
   directory: string;
-  /** Start of the new file name, followed by a timestamp. */
+  /** Start of the new file name (letters, digits, `_`, `-`), followed by a timestamp. */
   prefix: string;
 }
 
@@ -40,7 +66,7 @@ export async function persistFile(
 ): Promise<string> {
   const destination = new File(
     getAppDirectory(directory),
-    `${prefix}-${Date.now()}.${getFileExtension(sourceUri)}`,
+    `${assertSafe(prefix, SAFE_NAME, "prefix")}-${Date.now()}.${getFileExtension(sourceUri)}`,
   );
   await new File(sourceUri).copy(destination);
   return destination.uri;
@@ -55,6 +81,9 @@ export interface WriteBase64FileOptions extends PersistFileOptions {
  * Writes base64 content (a photo embedded in a JSON backup…) as a new file of
  * the persistent sub-folder and returns its URI. Names are random rather than
  * timestamped: a restore writes many files within the same millisecond.
+ *
+ * @throws if `directory`, `prefix` or `extension` isn't a plain name (see
+ * {@link getAppDirectory}).
  */
 export function writeBase64File(
   base64: string,
@@ -62,7 +91,7 @@ export function writeBase64File(
 ): string {
   const file = new File(
     getAppDirectory(directory),
-    `${prefix}-${randomId()}.${extension}`,
+    `${assertSafe(prefix, SAFE_NAME, "prefix")}-${randomId()}.${assertSafe(extension, SAFE_NAME, "extension")}`,
   );
   file.create();
   file.write(base64, { encoding: "base64" });
@@ -105,18 +134,22 @@ export function deleteFileQuietly(uri: string | null | undefined): void {
 }
 
 /**
- * Deletes every file of the persistent sub-folder whose URI isn't in `keep`
+ * Deletes every file of the persistent sub-folder that isn't in `keep`
  * (replaced photo, deleted entity, data replaced by an import). Returns how
  * many files were deleted.
+ *
+ * Files are matched by **name**, not by full URI: on iOS the documents path
+ * changes when the app is updated or restored, so URIs stored before that no
+ * longer match — compared as a whole, every photo would be deleted.
  */
 export function pruneAppDirectory(
   name: string,
   keep: Iterable<string>,
 ): number {
-  const kept = new Set(keep);
+  const kept = new Set(Array.from(keep, fileNameOf));
   let deleted = 0;
   for (const entry of getAppDirectory(name).list()) {
-    if (entry instanceof File && !kept.has(entry.uri)) {
+    if (entry instanceof File && !kept.has(fileNameOf(entry.uri))) {
       try {
         entry.delete();
         deleted += 1;

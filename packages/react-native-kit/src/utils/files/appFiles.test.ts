@@ -101,6 +101,21 @@ describe("writeBase64File / readFileBase64", () => {
     expect(second.endsWith(".png")).toBe(true);
   });
 
+  it("refuses a folder, prefix or extension that could leave the folder", () => {
+    for (const options of [
+      { directory: "../outside", prefix: "p" },
+      { directory: "/root", prefix: "p" },
+      { directory: "a", prefix: "../p" },
+      { directory: "a", prefix: "p", extension: "jpg/../../x" },
+    ]) {
+      expect(() => writeBase64File("x", options)).toThrow(/^Invalid /);
+    }
+    expect(files.size).toBe(0);
+    expect(writeBase64File("x", { directory: "a/b", prefix: "p_1" })).toMatch(
+      /^file:\/\/\/documents\/a\/b\/p_1-/,
+    );
+  });
+
   it("reads null from a missing file or a bad URI", () => {
     expect(readFileBase64("file:///cache/gone.jpg")).toBeNull();
     expect(readFileBase64("bad:uri")).toBeNull();
@@ -196,5 +211,18 @@ describe("pruneAppDirectory", () => {
       "file:///documents/avatars/locked.jpg",
       "file:///documents/other/c.jpg",
     ]);
+  });
+
+  it("matches kept files by name, whatever path their URI was stored with", () => {
+    files.add("file:///documents/avatars/a.jpg");
+    files.add("file:///documents/avatars/b.jpg");
+
+    // e.g. an iOS container path from before an app update
+    const deleted = pruneAppDirectory("avatars", [
+      "file:///var/mobile/Containers/OLD-UUID/Documents/avatars/a.jpg",
+    ]);
+
+    expect(deleted).toBe(1);
+    expect([...files]).toEqual(["file:///documents/avatars/a.jpg"]);
   });
 });
