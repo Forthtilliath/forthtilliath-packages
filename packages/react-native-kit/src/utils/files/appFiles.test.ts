@@ -217,9 +217,9 @@ describe("pruneAppDirectory", () => {
     files.add("file:///documents/avatars/a.jpg");
     files.add("file:///documents/avatars/b.jpg");
 
-    // e.g. an iOS container path from before an app update
+    // Same file, other form of Android's app data path
     const deleted = pruneAppDirectory("avatars", [
-      "file:///var/mobile/Containers/OLD-UUID/Documents/avatars/a.jpg",
+      "file:///data/data/com.example.app/files/avatars/a.jpg",
     ]);
 
     expect(deleted).toBe(1);

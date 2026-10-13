@@ -138,9 +138,10 @@ export function deleteFileQuietly(uri: string | null | undefined): void {
  * (replaced photo, deleted entity, data replaced by an import). Returns how
  * many files were deleted.
  *
- * Files are matched by **name**, not by full URI: on iOS the documents path
- * changes when the app is updated or restored, so URIs stored before that no
- * longer match — compared as a whole, every photo would be deleted.
+ * Files are matched by **name**, not by full URI: Android reaches the same
+ * file as `/data/user/0/<package>/…` or `/data/data/<package>/…` depending on
+ * the API that built the URI — compared as a whole, a stored URI in the other
+ * form would get its photo deleted.
  */
 export function pruneAppDirectory(
   name: string,
