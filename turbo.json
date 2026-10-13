@@ -10,8 +10,10 @@
     "lint": {
       "dependsOn": ["^build", "^lint"]
     },
+    // ^build: apps read their workspace dependencies' types from dist/ (e.g.
+    // web from forth-ui), absent or half-written until those are built.
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^build", "^check-types"]
     },
     "test": {
       "dependsOn": ["^build"],
