@@ -18,7 +18,7 @@ Or, from within this monorepo, as a workspace dependency:
 }
 ```
 
-`expo-file-system` and `expo-intent-launcher` are peer dependencies — install them in the consuming app if not already present.
+`expo-file-system` and `expo-intent-launcher` are **optional** peer dependencies, needed only by `downloadAndInstallApk` — install them in the consuming app if you use it (package managers won't add them for you). Release parsing and version comparison work without them.
 
 ## Usage
 
