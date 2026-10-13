@@ -1,5 +1,15 @@
 # @forthtilliath/ts-kit
 
+## 0.12.0
+
+### Minor Changes
+
+- 1a37234: New `files/formatFileTimestamp` (compact local timestamp for export file names) and `date/parseSqliteDate` (SQLite `current_timestamp` read as UTC). Extracted from GlucoDose.
+- 39224c0: New `date/formatRecentDate(date, { now?, locale? })`: "aujourd'hui à 21:42", "hier à 08:05", then "le 11 octobre 2026" (French or English), for "last saved…" lines.
+- d98cd71: New `ics/` helpers to write iCalendar files: `escapeIcsText`, `foldIcsLine` (folds on 75 UTF-8 octets, never splitting a character), `toIcsDate`, `toIcsDateTime` and `icsTimestamp`.
+- 84bc200: New `date/parseIsoDate` (a `YYYY-MM-DD` date as local midnight, unlike `new Date(iso)`'s UTC midnight) and `date/mondayFirstWeekday` (weekday index with Monday = 0).
+- d7cbc38: New `array/shuffle(array, random?)`: a Fisher–Yates shuffled copy, with an injectable generator for deterministic tests.
+
 ## 0.11.0
 
 ### Minor Changes

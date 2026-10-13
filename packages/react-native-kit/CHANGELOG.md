@@ -1,5 +1,26 @@
 # @forthtilliath/react-native-kit
 
+## 0.16.0
+
+### Minor Changes
+
+- 0b623d7: New `SettingsCard` (+ `SettingsCardStatus`, `SettingsCardHint`) in `components/settings/` and `CheckboxGroup` in `components/picker/`. New `utils/files` helpers to embed photos in backups: `readFileBase64`, `writeBase64File`, and `saveImageThumbnail` (`expo-image-manipulator`, a new optional peer dependency). New `utils/helpers/shareViewAsImage` (`react-native-view-shot`, a new optional peer dependency, loaded on demand) and `isNativeModuleAvailable`. Extracted from 7 Wonders Assistant.
+- 89939ad: New `utils/files/appFiles`: keep picked photos in a persistent sub-folder of the app's documents (`persistFile`, `getAppDirectory`), delete them without ever throwing (`deleteFileQuietly`, `fileExists`) and clean up orphans (`pruneAppDirectory`, matching files by name so a URI stored with another form of the app data path never gets its file deleted). Folder names, prefixes and extensions are restricted to plain name characters, so data from an imported backup can't write outside the folder. Extracted from GlucoDose and 7 Wonders Assistant.
+- e12ad3b: New helpers: `shareFile` / `shareTextFile` (`utils/helpers/`, native share sheet, optionally writing the text to the cache first) and `syncDedicatedCalendar` / `toCalendarEventDetails` (`utils/calendar/`, replace a period's events in the app's own local calendar, with Android-safe all-day events and night shifts). `expo-sharing`, `expo-file-system` and `expo-calendar` are optional peer dependencies.
+- f486227: New components, each with neutral defaults and per-slot `styles` overrides: `BottomSheet` (`components/overlay/`), `ErrorFallback` (`components/feedback/`), `AddButton` and `DragHandle` (`components/list/`), `OptionsModal`, `SelectField`, `SegmentedToggle`, `QuantityStepper` and `MonthDayGrid` (`components/picker/`), and `ThemePreferenceProvider` with `useThemePreference` / `useResolvedScheme` (`components/theme/`). `SwipeableRow` gains `fullSwipeToDelete` (swipe past half the row to delete right away, no button) and a `container` style slot.
+- fb38853: New `SwitchRow` (`components/settings/`): a fully pressable "label + description + switch" line, announced as one switch. New `utils/helpers/haptics` (`tapFeedback`, `selectFeedback`, `successFeedback`, `errorFeedback`), fire-and-forget aliases over `expo-haptics`, a new optional peer dependency. `SegmentedToggle` is now announced as a radio group (`label` prop, options as radios) and options take an optional `hint` line (`hint` / `hintActive` style slots). `QuantityStepper` gains `min` (default 0) and `longPressStep`, and disables "+" at `max`.
+
+### Patch Changes
+
+- Updated dependencies [120ad70]
+- Updated dependencies [1a37234]
+- Updated dependencies [39224c0]
+- Updated dependencies [d98cd71]
+- Updated dependencies [84bc200]
+- Updated dependencies [d7cbc38]
+  - @forthtilliath/expo-release-updates-ui@0.4.0
+  - @forthtilliath/ts-kit@0.12.0
+
 ## 0.15.1
 
 ### Patch Changes
