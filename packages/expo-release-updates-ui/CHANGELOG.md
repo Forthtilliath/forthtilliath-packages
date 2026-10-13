@@ -1,5 +1,15 @@
 # @forthtilliath/expo-release-updates-ui
 
+## 0.4.0
+
+### Minor Changes
+
+- 120ad70: New `UpdateNotifier` (check on launch, banner, direct APK install with progress and retry, `enabled` to wait for persisted settings), built from the new `useApkInstall` hook and `UpdateInstallCard` component. Extracted from GlucoDose.
+
+### Patch Changes
+
+- @forthtilliath/expo-release-updates@0.6.1
+
 ## 0.3.1
 
 ### Patch Changes
