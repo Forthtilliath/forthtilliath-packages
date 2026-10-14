@@ -210,7 +210,7 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
 ### `markdown`
 
 - `parseChangelogNotes(notes)` — parses a small subset of Markdown
-  (`### heading`, `- item`, `**bold**`) commonly found in GitHub release
+  (`#` to `###### heading`, `- item`, `**bold**`) commonly found in GitHub release
   notes into a list of typed blocks (`heading` / `item` / `text`, each with
   `bold`-aware segments), ready for a UI layer to render without a full
   Markdown dependency.
