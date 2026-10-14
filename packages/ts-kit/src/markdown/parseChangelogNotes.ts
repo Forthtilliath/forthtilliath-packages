@@ -35,14 +35,22 @@ function parseInlineSegments(text: string): ChangelogSegment[] {
   return segments;
 }
 
+// Any ATX heading level ("# " to "###### ") — release notes are not always
+// written with "###" (e.g. "## What's new" on a hand-written GitHub release).
+const headingPattern = /^#{1,6}\s+/;
+
 export function parseChangelogNotes(notes: string): ChangelogBlock[] {
   return notes
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
     .map((line) => {
-      if (line.startsWith("### ")) {
-        return { type: "heading" as const, text: line.slice(4).trim() };
+      const heading = headingPattern.exec(line);
+      if (heading) {
+        return {
+          type: "heading" as const,
+          text: line.slice(heading[0].length).trim(),
+        };
       }
       if (line.startsWith("- ")) {
         return {
