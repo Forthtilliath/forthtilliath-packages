@@ -7,6 +7,16 @@ import type { ManagerContext } from "./context.js";
 import { BackupError, normalizeBackupError } from "./errors.js";
 import type { PickResult } from "./types.js";
 
+const DEFAULT_MAX_FILE_BYTES = 10 * 1024 * 1024;
+
+// Depending on the phone and the app holding it, a `.json` file is reported
+// as JSON, plain text or raw bytes: with JSON alone, the picker may hide it.
+const PICKER_MIME_TYPES = [
+  "application/json",
+  "text/plain",
+  "application/octet-stream",
+];
+
 function pad(value: number) {
   return value.toString().padStart(2, "0");
 }
@@ -80,11 +90,16 @@ export function createFileBackup<T>(ctx: ManagerContext<T>): FileBackup<T> {
     },
     async pickBackupFile() {
       await ctx.ready();
-      const picked = await File.pickFileAsync({
-        mimeTypes: ["application/json"],
-      });
+      const picked = await File.pickFileAsync({ mimeTypes: PICKER_MIME_TYPES });
       if (picked.canceled) return { status: "cancelled" };
-      return read(await picked.result.text());
+      const maxBytes = config.maxFileBytes ?? DEFAULT_MAX_FILE_BYTES;
+      // `size` is 0 when the provider doesn't report it: the length is
+      // checked again once read (a UTF-16 length never exceeds the bytes).
+      if (picked.result.size > maxBytes)
+        throw new BackupError("file-too-large");
+      const content = await picked.result.text();
+      if (content.length > maxBytes) throw new BackupError("file-too-large");
+      return read(content);
     },
   };
 }

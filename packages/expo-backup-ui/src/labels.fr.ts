@@ -99,6 +99,8 @@ export const frLabels: BackupScreenLabels = {
     "no-safety-backup": "Aucune restauration à annuler.",
     "sharing-unavailable":
       "Le partage de fichiers n'est pas disponible sur cet appareil.",
+    "file-too-large":
+      "Ce fichier est trop volumineux pour être une sauvegarde de l'app.",
     unknown: "Une erreur inattendue est survenue.",
   },
 };

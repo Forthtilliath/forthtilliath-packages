@@ -17,6 +17,7 @@ import { DriveError } from "./googleDrive.js";
  *   but of another key than the file's), `corrupted`, `newer-format`.
  * - `no-safety-backup`: nothing to undo.
  * - `sharing-unavailable`: no share sheet to hand the exported file to.
+ * - `file-too-large`: the picked file exceeds `maxFileBytes` (not read).
  */
 export type BackupErrorCode =
   | "google-unavailable"
@@ -36,6 +37,7 @@ export type BackupErrorCode =
   | "newer-format"
   | "no-safety-backup"
   | "sharing-unavailable"
+  | "file-too-large"
   | "unknown";
 
 export class BackupError extends Error {
