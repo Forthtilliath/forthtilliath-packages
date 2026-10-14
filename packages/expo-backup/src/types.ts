@@ -22,6 +22,13 @@ export interface BackupSource<T> {
    * Defaults to never empty (always ask).
    */
   isEmpty?: (data: T) => boolean;
+  /**
+   * Whether this device holds data worth snapshotting before a restore. When
+   * it resolves to false (first launch, new phone), `restore` skips the
+   * safety backup — and so never calls `collect` on an empty app — and there
+   * is nothing to undo afterwards. Defaults to always true.
+   */
+  hasLocalData?: () => Promise<boolean> | boolean;
 }
 
 export interface BackupManagerConfig<T> extends BackupSource<T> {
@@ -36,6 +43,11 @@ export interface BackupManagerConfig<T> extends BackupSource<T> {
   exportFileName?: (date: Date) => string;
   /** Title of the Android share sheet when exporting. */
   exportDialogTitle?: string;
+  /**
+   * Largest file `pickBackupFile` accepts, checked before reading it.
+   * @defaultValue 10 MB
+   */
+  maxFileBytes?: number;
   /**
    * Delay grouping close changes into one cloud upload. Pending changes are
    * still flushed at once when the app goes to the background.
