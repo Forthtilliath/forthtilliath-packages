@@ -11,6 +11,8 @@ export const device = {
   sharingAvailable: true,
   /** Next file the picker returns; null = cancelled. */
   pickedContent: null as string | null,
+  /** Size the provider reports for the picked file; null = its real size. */
+  pickedSize: null as number | null,
   appStateListeners: new Set<(status: string) => void>(),
 };
 
@@ -20,6 +22,7 @@ export function resetDevice() {
   device.shared = [];
   device.sharingAvailable = true;
   device.pickedContent = null;
+  device.pickedSize = null;
   device.appStateListeners.clear();
 }
 
@@ -30,6 +33,11 @@ class FakeFile {
   }
   get exists() {
     return device.files.has(this.uri);
+  }
+  get size() {
+    if (this.uri === "picked/backup.json" && device.pickedSize !== null)
+      return device.pickedSize;
+    return new TextEncoder().encode(device.files.get(this.uri) ?? "").length;
   }
   create() {
     device.files.set(this.uri, "");
