@@ -9,6 +9,26 @@ describe("parseChangelogNotes", () => {
     ]);
   });
 
+  it("recognizes every heading level (# to ######)", () => {
+    expect(
+      parseChangelogNotes("# One\n## Nouveautés\n#### Four\n###### Six"),
+    ).toEqual([
+      { type: "heading", text: "One" },
+      { type: "heading", text: "Nouveautés" },
+      { type: "heading", text: "Four" },
+      { type: "heading", text: "Six" },
+    ]);
+  });
+
+  it("does not treat a hashtag or 7+ hashes as a heading", () => {
+    expect(parseChangelogNotes("#123 fixed").map((b) => b.type)).toEqual([
+      "text",
+    ]);
+    expect(parseChangelogNotes("####### Seven").map((b) => b.type)).toEqual([
+      "text",
+    ]);
+  });
+
   it("recognizes a list item (-)", () => {
     expect(parseChangelogNotes("- Export history to CSV.")).toEqual([
       {
