@@ -124,6 +124,24 @@ describe("pickBackupFile", () => {
     });
   });
 
+  it("rejects a file over maxFileBytes without reading it", async () => {
+    device.pickedContent = JSON.stringify({ items: ["a"] });
+    const { manager, apply } = createTestApp([], { maxFileBytes: 10 });
+    await expect(manager.pickBackupFile()).rejects.toMatchObject({
+      code: "file-too-large",
+    });
+    expect(apply).not.toHaveBeenCalled();
+  });
+
+  it("checks the length too when the provider reports no size", async () => {
+    device.pickedContent = JSON.stringify({ items: ["a"] });
+    device.pickedSize = 0;
+    const { manager } = createTestApp([], { maxFileBytes: 10 });
+    await expect(manager.pickBackupFile()).rejects.toMatchObject({
+      code: "file-too-large",
+    });
+  });
+
   it("reports a damaged encrypted file as corrupted", async () => {
     const { manager } = createTestApp(["a"], { encryption: "required" });
     await manager.exportToFile();
@@ -157,6 +175,29 @@ describe("restore / undoLastRestore", () => {
       items: ["before"],
     });
     expect(app.data).toEqual({ items: ["before"] });
+  });
+
+  it("restores on an empty device without collecting its data", async () => {
+    // An earlier restore left a snapshot on this device.
+    const { manager } = createTestApp(["old"]);
+    await manager.restore({ items: ["first"] });
+    expect(manager.getState().hasSafetyBackup).toBe(true);
+
+    const collect = vi.fn(() => {
+      throw new Error("nothing to collect");
+    });
+    const empty = createTestApp([], {
+      hasLocalData: () => false,
+      collect,
+    });
+    await empty.manager.restore({ items: ["from cloud"] });
+    expect(empty.app.data).toEqual({ items: ["from cloud"] });
+    expect(collect).not.toHaveBeenCalled();
+    expect(empty.manager.getState().hasSafetyBackup).toBe(false);
+    // The older snapshot is gone: undo can't go back past this restore.
+    await expect(empty.manager.undoLastRestore()).rejects.toMatchObject({
+      code: "no-safety-backup",
+    });
   });
 
   it("fails clearly when there is nothing to undo", async () => {

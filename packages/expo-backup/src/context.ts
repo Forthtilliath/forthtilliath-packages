@@ -26,8 +26,11 @@ export interface ManagerContext<T> {
   writeBackup: (data: T) => Promise<string>;
   /** Decrypted if needed, then validated by the app's `parse`. */
   readBackup: (content: string) => Promise<T>;
-  /** Snapshot of the current data, kept to undo the next restore. */
-  writeSafetyBackup: () => Promise<void>;
+  /**
+   * Snapshot of the current data, kept to undo the next restore. Resolves to
+   * false (and drops any older snapshot) when the app has no local data.
+   */
+  writeSafetyBackup: () => Promise<boolean>;
   readSafetyBackup: () => Promise<T>;
 }
 
@@ -80,9 +83,15 @@ export function createManagerContext<T>(
     writeBackup,
     readBackup,
     async writeSafetyBackup() {
+      if (config.hasLocalData && !(await config.hasLocalData())) {
+        // An older snapshot would "undo" to data from before that restore.
+        if (safetyFile.exists) safetyFile.delete();
+        return false;
+      }
       const content = await writeBackup(await config.collect());
       if (!safetyFile.exists) safetyFile.create();
       safetyFile.write(content);
+      return true;
     },
     async readSafetyBackup() {
       if (!safetyFile.exists) throw new BackupError("no-safety-backup");

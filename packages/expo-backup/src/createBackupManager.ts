@@ -58,11 +58,11 @@ export function createBackupManager<T>(
     { source = "file" }: { source?: "file" | "cloud" } = {},
   ) {
     await ctx.ready();
-    await ctx.writeSafetyBackup();
+    const hasSafetyBackup = await ctx.writeSafetyBackup();
     await config.apply(data);
     const now = Date.now();
     store.setState({
-      hasSafetyBackup: true,
+      hasSafetyBackup,
       lastBackupAt: Math.max(now, store.getState().lastBackupAt ?? 0),
       // Restored from the cloud: both sides now hold the same data.
       ...(source === "cloud" ? { cloudPending: false, cloudError: null } : {}),
