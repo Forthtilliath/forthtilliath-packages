@@ -31,6 +31,8 @@ export const backup = createBackupManager<ExportedData>({
   parse: parseBackup, // validate + migrate; throw an Error with a user-facing message
   apply: replaceAllData, // replace everything (no merge)
   isEmpty: (data) => data.foods.length === 0, // optional: skip the "which one to keep?" question
+  hasLocalData: () => countFoods() > 0, // optional: false = restore skips the undo snapshot (first launch, new phone)
+  maxFileBytes: 5 * 1024 * 1024, // optional: largest importable file, checked before reading (default 10 MB)
   exportFileName: (date) => buildExportFileName("sauvegarde", "json", date),
 });
 ```
@@ -44,6 +46,8 @@ backup.notifyDataChanged(); // debounced (3 s), flushed when the app goes to the
 ```
 
 `BackupManager` methods: `connectCloud` → `{ cancelled | connected | conflict }`, `resolveConflict(conflict, "device" | "cloud")`, `cancelConflict`, `syncNow`, `fetchCloudBackup`, `disconnectCloud`, `exportToFile`, `pickBackupFile` → `{ cancelled | ready | missing-key (+ retry(recoveryCode)) }`, `restore(data, { source })`, `undoLastRestore`, `setEncryptionEnabled`, `getRecoveryCode`, `addRecoveryCode`, plus `getState`/`subscribe` (for `useSyncExternalStore`).
+
+The file picker offers `.json` files whether the phone labels them JSON, plain text or raw bytes; anything over `maxFileBytes` is rejected (`file-too-large`) before `parse` runs.
 
 Errors are `BackupError`s with a `code` (see `BackupErrorCode`), translated by the UI package. The app's own `parse` errors are passed through untouched.
 
