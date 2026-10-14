@@ -95,6 +95,7 @@ export const enLabels: BackupScreenLabels = {
       "This backup comes from a newer version of the app. Update the app before importing it.",
     "no-safety-backup": "No restore to undo.",
     "sharing-unavailable": "File sharing isn't available on this device.",
+    "file-too-large": "This file is too large to be a backup of the app.",
     unknown: "An unexpected error occurred.",
   },
 };
