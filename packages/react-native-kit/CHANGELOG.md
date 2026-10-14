@@ -1,5 +1,12 @@
 # @forthtilliath/react-native-kit
 
+## 0.17.1
+
+### Patch Changes
+
+- Updated dependencies [0e61dea]
+  - @forthtilliath/ts-kit@0.13.0
+
 ## 0.17.0
 
 ### Minor Changes
