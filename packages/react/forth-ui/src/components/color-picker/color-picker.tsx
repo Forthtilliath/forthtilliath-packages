@@ -50,8 +50,15 @@ export function ColorPicker({
   const messages = useUiMessages(locale);
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState(defaultValue);
-  const [textValue, setTextValue] = React.useState(defaultValue);
   const color = value ?? uncontrolledValue;
+
+  // Hex text being typed; resynced when the color changes from outside.
+  const [textValue, setTextValue] = React.useState(color);
+  const [shownColor, setShownColor] = React.useState(color);
+  if (color !== shownColor) {
+    setShownColor(color);
+    setTextValue(color);
+  }
 
   function commit(next: string) {
     setUncontrolledValue(next);
