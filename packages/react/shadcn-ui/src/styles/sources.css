@@ -1,0 +1,6 @@
+/* Registers shadcn-ui's components with the consumer's Tailwind build, so
+   their classes get generated: import this file from your CSS entry point.
+   The path is relative to this file, so it holds both in src/ (this monorepo)
+   and in the published dist/, whatever the node_modules layout (npm, or pnpm
+   symlinks, where a `node_modules/@forthtilliath/*` glob finds nothing). */
+@source "../components";
