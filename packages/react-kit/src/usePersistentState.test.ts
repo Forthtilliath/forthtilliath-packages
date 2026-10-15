@@ -2,7 +2,17 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { usePersistentState } from "./usePersistentState.js";
+import {
+  type PersistentStateSchema,
+  usePersistentState,
+} from "./usePersistentState.js";
+
+const positiveInt: PersistentStateSchema<number> = {
+  safeParse: (input) =>
+    Number.isInteger(input) && (input as number) > 0
+      ? { success: true, data: input as number }
+      : { success: false },
+};
 
 describe("usePersistentState", () => {
   afterEach(() => {
@@ -67,5 +77,51 @@ describe("usePersistentState", () => {
     const { result } = renderHook(() => usePersistentState("key", "default"));
 
     expect(result.current.value).toBe("default");
+  });
+
+  it("setValue still works when the stored JSON is corrupted", () => {
+    window.localStorage.setItem("count", "not-json");
+    const { result } = renderHook(() => usePersistentState("count", 0));
+
+    act(() => {
+      result.current.setValue((previous) => previous + 1);
+    });
+
+    expect(result.current.value).toBe(1);
+  });
+
+  describe("with a schema", () => {
+    it("returns a stored value accepted by the schema", () => {
+      window.localStorage.setItem("count", JSON.stringify(3));
+
+      const { result } = renderHook(() =>
+        usePersistentState("count", 1, { schema: positiveInt }),
+      );
+
+      expect(result.current.value).toBe(3);
+    });
+
+    it("falls back to the initial value when the schema rejects it", () => {
+      window.localStorage.setItem("count", JSON.stringify("3"));
+
+      const { result } = renderHook(() =>
+        usePersistentState("count", 1, { schema: positiveInt }),
+      );
+
+      expect(result.current.value).toBe(1);
+    });
+
+    it("gives the initial value to the updater instead of a rejected one", () => {
+      window.localStorage.setItem("count", JSON.stringify(-5));
+      const { result } = renderHook(() =>
+        usePersistentState("count", 1, { schema: positiveInt }),
+      );
+
+      act(() => {
+        result.current.setValue((previous) => previous + 1);
+      });
+
+      expect(result.current.value).toBe(2);
+    });
   });
 });
