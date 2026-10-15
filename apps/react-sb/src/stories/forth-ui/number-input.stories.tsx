@@ -61,3 +61,33 @@ export const ShouldStepWithinBounds: Story = {
     await expect(input).toHaveValue(1);
   },
 };
+
+export const ShouldClampOnlyOnBlur: Story = {
+  name: "when typing, should keep the text free and clamp on blur",
+  tags: ["!dev", "!autodocs"],
+  args: { min: 128, max: 4096, defaultValue: 300, onValueChange: fn() },
+  play: async ({ args, canvas, userEvent }) => {
+    const input = canvas.getByRole("spinbutton", { name: "Quantity" });
+
+    await userEvent.clear(input);
+    await userEvent.type(input, "600");
+    await expect(input).toHaveValue(600);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith(600);
+
+    await userEvent.clear(input);
+    await userEvent.type(input, "5");
+    await userEvent.tab();
+    await expect(input).toHaveValue(128);
+    await expect(args.onValueChange).toHaveBeenLastCalledWith(128);
+  },
+};
+
+export const ShouldRoundDecimalSteps: Story = {
+  name: "when stepping by a decimal step, should not leak float noise",
+  tags: ["!dev", "!autodocs"],
+  args: { min: 0, max: 1, step: 0.01, defaultValue: 0.4, onValueChange: fn() },
+  play: async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Increment" }));
+    await expect(args.onValueChange).toHaveBeenLastCalledWith(0.41);
+  },
+};
