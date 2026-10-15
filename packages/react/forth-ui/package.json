@@ -23,9 +23,10 @@
     "dev": "concurrently \"pnpm:dev:ts\" \"pnpm:dev:tw\"",
     "dev:ts": "tsc --watch",
     "dev:tw": "pnpm run build:tw --watch",
-    "build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw",
+    "build": "pnpm run clean && pnpm run build:ts && pnpm run build:tw && pnpm run build:css",
     "build:ts": "tsc",
     "build:tw": "tailwindcss -i ./src/styles/globals.css -o ./dist/globals.css",
+    "build:css": "node -e \"require('node:fs').cpSync('src/styles/sources.css', 'dist/styles/sources.css')\"",
     "size": "size-limit"
   },
   "dependencies": {
@@ -80,7 +81,8 @@
   "exports": {
     "./components/*": "./dist/components/*/index.js",
     "./locale": "./dist/locale/index.js",
-    "./styles/globals.css": "./dist/globals.css"
+    "./styles/globals.css": "./dist/globals.css",
+    "./styles/sources.css": "./dist/styles/sources.css"
   },
   "size-limit": [
     {

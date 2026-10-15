@@ -1,0 +1,8 @@
+/* Registers forth-ui's components, and the shadcn-ui ones they're built on,
+   with the consumer's Tailwind build: import this file from your CSS entry
+   point. The path is relative to this file, so it holds both in src/ (this
+   monorepo) and in the published dist/styles/, whatever the node_modules
+   layout (npm, or pnpm symlinks). Copied to dist/ by `build:css`. */
+@import "@forthtilliath/shadcn-ui/styles/sources.css";
+
+@source "../components";
