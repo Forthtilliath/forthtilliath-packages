@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import { ColorPicker } from "@forthtilliath/forth-ui/components/color-picker";
 
@@ -29,5 +30,14 @@ export const Default: Story = {};
 export const Disabled: Story = {
   args: {
     disabled: true,
+  },
+};
+
+export const ShouldShowControlledValue: Story = {
+  name: "when controlled, should show the given value in the hex field",
+  tags: ["!dev", "!autodocs"],
+  args: { value: "#e8edf2", ariaLabel: "Color" },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("textbox")).toHaveValue("#e8edf2");
   },
 };
