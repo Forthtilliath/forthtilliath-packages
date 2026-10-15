@@ -43,6 +43,17 @@ import { useIsMobile } from "@forthtilliath/shadcn-ui/hooks/use-mobile";
 import "@forthtilliath/shadcn-ui/styles/globals.css";
 ```
 
+The components ship pre-built, so your Tailwind build must scan them or their
+classes are never generated. Import `sources.css` from your CSS entry point —
+its `@source` path is relative to the package itself, so it works with any
+`node_modules` layout (a `node_modules/@forthtilliath/*/dist/**/*.js` glob finds
+nothing under pnpm's symlinks):
+
+```css
+@import "@forthtilliath/shadcn-ui/styles/globals-static.css";
+@import "@forthtilliath/shadcn-ui/styles/sources.css";
+```
+
 ### Components (`src/components/`)
 
 The full shadcn/ui primitive set: `accordion`, `alert`, `alert-dialog`,

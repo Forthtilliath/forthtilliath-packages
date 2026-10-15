@@ -300,29 +300,28 @@ base file overrides the default colors via normal CSS cascade:
 ```css
 @import "@forthtilliath/shadcn-ui/styles/globals-static.css";
 @import "@forthtilliath/shadcn-ui/styles/themes/rose.css";
-
-@source "../node_modules/@forthtilliath/*/dist/**/*.js";
+@import "@forthtilliath/forth-ui/styles/sources.css";
 ```
 
 Don't add your own `@import "tailwindcss";` — `globals-static.css` already
 does that internally.
 
-**What that `@source` line does, and why it's needed:** Tailwind only
-generates CSS for class names it can actually find, as literal text, in
-the files it scans — by default your own project source, honoring
-`.gitignore` (which is why `node_modules` is skipped: scanning every
-dependency would be slow and mostly pointless). But forth-ui and shadcn-ui
-ship pre-built, and their component code — the literal `"bg-primary"`,
-`"rounded-md"`, etc. strings — only exists inside their already-compiled
-`node_modules/@forthtilliath/*/dist/**/*.js` files. Without pointing
-Tailwind at them explicitly, none of those classes would be generated and
-every forth-ui/shadcn-ui component would render completely unstyled. This
-one line, with a wildcard for the package name, covers both packages (and
-any other `@forthtilliath/*` package added later) — confirmed to produce
-the exact same generated CSS as listing each package's path separately.
-This isn't a workaround specific to forth-ui: it's the
-[documented, standard way](https://tailwindcss.com/docs/detecting-classes-in-source-files#explicitly-registering-sources)
-Tailwind v4 expects any npm-distributed component library to be consumed.
+**What `sources.css` does, and why it's needed:** Tailwind only generates
+CSS for class names it can actually find, as literal text, in the files it
+scans — by default your own project source, honoring `.gitignore` (which is
+why `node_modules` is skipped). But forth-ui and shadcn-ui ship pre-built:
+their component code — the literal `"bg-primary"`, `"rounded-md"`, etc.
+strings — only exists in their compiled `dist/` files. Without registering
+them explicitly, none of those classes would be generated and the
+components would render unstyled. `sources.css` does that with
+[`@source`](https://tailwindcss.com/docs/detecting-classes-in-source-files#explicitly-registering-sources)
+for forth-ui's components and, through shadcn-ui's own `sources.css`, for
+the shadcn-ui ones they're built on.
+
+Its paths are relative to the package itself, so it works whatever the
+`node_modules` layout. Don't write the `@source` yourself with a glob such as
+`../node_modules/@forthtilliath/*/dist/**/*.js`: under pnpm (packages are
+symlinks — junctions on Windows) that pattern silently matches nothing.
 
 ### Available themes
 
