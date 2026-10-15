@@ -4,6 +4,21 @@ import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 type Updater<T> = T | ((previous: T) => T);
 
+/**
+ * Any validator exposing a zod-style `safeParse` (zod, or a hand-written one).
+ * Kept structural so the hook does not depend on a validation library.
+ */
+export interface PersistentStateSchema<T> {
+  safeParse: (
+    input: unknown,
+  ) => { success: true; data: T } | { success: false };
+}
+
+export interface PersistentStateOptions<T> {
+  /** Checks the stored value on every read; must be stable (module-level). */
+  schema?: PersistentStateSchema<T>;
+}
+
 function subscribe(onChange: () => void) {
   if (typeof window === "undefined") return () => undefined;
   window.addEventListener("storage", onChange);
@@ -20,6 +35,24 @@ function readRaw(key: string): string | null {
   }
 }
 
+/** Stored value, or `initialValue` when it is missing, corrupted or rejected. */
+function parseStored<T>(
+  raw: string | null,
+  initialValue: T,
+  schema: PersistentStateSchema<T> | undefined,
+): T {
+  if (raw == null) return initialValue;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return initialValue;
+  }
+  if (!schema) return parsed as T;
+  const result = schema.safeParse(parsed);
+  return result.success ? result.data : initialValue;
+}
+
 /**
  * State persisted to `localStorage`, safe to use during SSR and kept in sync
  * across tabs.
@@ -28,11 +61,21 @@ function readRaw(key: string): string | null {
  *   literal, otherwise it changes identity on every render.
  * - `hydrated` becomes `true` once the value has been read from the browser;
  *   useful to avoid a flash of the default value.
+ * - `options.schema` validates the stored value (anyone can edit
+ *   `localStorage`, and older app versions may have stored another shape).
+ *   A rejected value is replaced by `initialValue`, never applied. Without a
+ *   schema, the stored JSON is trusted as `T`.
  *
  * @example
  * const { value, setValue, clear, hydrated } = usePersistentState("theme", "system");
+ * const { value } = usePersistentState("settings", DEFAULTS, { schema: settingsSchema });
  */
-export function usePersistentState<T>(key: string, initialValue: T) {
+export function usePersistentState<T>(
+  key: string,
+  initialValue: T,
+  options: PersistentStateOptions<T> = {},
+) {
+  const { schema } = options;
   const raw = useSyncExternalStore(
     subscribe,
     () => readRaw(key),
@@ -45,21 +88,15 @@ export function usePersistentState<T>(key: string, initialValue: T) {
     () => false,
   );
 
-  const value = useMemo<T>(() => {
-    if (raw == null) return initialValue;
-    try {
-      return JSON.parse(raw) as T;
-    } catch {
-      return initialValue;
-    }
-  }, [raw, initialValue]);
+  const value = useMemo<T>(
+    () => parseStored(raw, initialValue, schema),
+    [raw, initialValue, schema],
+  );
 
   const setValue = useCallback(
     (updater: Updater<T>) => {
       try {
-        const current = readRaw(key);
-        const previous =
-          current == null ? initialValue : (JSON.parse(current) as T);
+        const previous = parseStored(readRaw(key), initialValue, schema);
         const next =
           typeof updater === "function"
             ? (updater as (p: T) => T)(previous)
@@ -72,7 +109,7 @@ export function usePersistentState<T>(key: string, initialValue: T) {
         // localStorage unavailable (private mode, quota exceeded): fail silently.
       }
     },
-    [key, initialValue],
+    [key, initialValue, schema],
   );
 
   const clear = useCallback(() => {
