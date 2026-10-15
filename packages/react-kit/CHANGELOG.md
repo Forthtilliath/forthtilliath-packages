@@ -1,5 +1,11 @@
 # @forthtilliath/react-kit
 
+## 0.6.0
+
+### Minor Changes
+
+- c109a7c: `usePersistentState` accepts an optional `schema` (any zod-style `safeParse`) that validates the stored value on every read; a rejected value falls back to `initialValue` instead of entering the app untyped. Also fixes `setValue` silently doing nothing when the stored JSON was corrupted.
+
 ## 0.5.0
 
 ### Minor Changes
