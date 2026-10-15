@@ -1,5 +1,13 @@
 # web
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [9539764]
+  - @forthtilliath/shadcn-ui@0.4.0
+  - @forthtilliath/forth-ui@0.5.0
+
 ## 0.1.8
 
 ### Patch Changes
