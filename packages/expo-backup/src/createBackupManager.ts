@@ -3,6 +3,7 @@ import { AppState } from "react-native";
 import { createCloudSync } from "./cloudSync.js";
 import { createManagerContext } from "./context.js";
 import { createFileBackup } from "./fileBackup.js";
+import { noCloudError } from "./stateStore.js";
 import type { BackupManager, BackupManagerConfig } from "./types.js";
 
 const DEFAULT_AUTO_BACKUP_DELAY_MS = 3000;
@@ -65,7 +66,7 @@ export function createBackupManager<T>(
       hasSafetyBackup,
       lastBackupAt: Math.max(now, store.getState().lastBackupAt ?? 0),
       // Restored from the cloud: both sides now hold the same data.
-      ...(source === "cloud" ? { cloudPending: false, cloudError: null } : {}),
+      ...(source === "cloud" ? { cloudPending: false, ...noCloudError } : {}),
     });
     if (source === "file") schedule();
   }

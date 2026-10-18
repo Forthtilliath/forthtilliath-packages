@@ -16,11 +16,22 @@ export interface BackupState {
   cloudPending: boolean;
   /** Why the last cloud upload failed, cleared by the next success. */
   cloudError: BackupErrorCode | null;
+  /** Technical cause of `cloudError` ("HTTP 403 · storageQuotaExceeded"), for diagnosis. */
+  cloudErrorDetail: string | null;
+  /** When uploads started failing (first failure since the last success). Epoch ms. */
+  cloudFailingSince: number | null;
   /** A pre-restore snapshot exists, so the last restore can be undone. */
   hasSafetyBackup: boolean;
 }
 
 type PersistedState = Omit<BackupState, "hydrated">;
+
+/** Patch that forgets a cloud failure (success, account unlinked…). */
+export const noCloudError = {
+  cloudError: null,
+  cloudErrorDetail: null,
+  cloudFailingSince: null,
+} satisfies Partial<PersistedState>;
 
 export const initialBackupState: BackupState = {
   hydrated: false,
@@ -29,7 +40,7 @@ export const initialBackupState: BackupState = {
   lastBackupAt: null,
   lastCloudBackupAt: null,
   cloudPending: false,
-  cloudError: null,
+  ...noCloudError,
   hasSafetyBackup: false,
 };
 

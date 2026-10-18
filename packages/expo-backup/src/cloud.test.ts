@@ -137,6 +137,54 @@ describe("syncNow", () => {
     expect(manager.getState().cloudError).toBeNull();
   });
 
+  it("says the storage is full, with the cause and since when, until a success", async () => {
+    const { manager } = createTestApp(["a"]);
+    await manager.connectCloud();
+    drive.failNext(403, "storageQuotaExceeded");
+    await manager.syncNow();
+    const failure = manager.getState();
+    expect(failure).toMatchObject({
+      cloudError: "drive-storage-full",
+      cloudErrorDetail: "HTTP 403 · storageQuotaExceeded",
+    });
+    expect(failure.cloudFailingSince).not.toBeNull();
+
+    drive.failNext(403, "storageQuotaExceeded");
+    await manager.syncNow();
+    // Still the first failure's date.
+    expect(manager.getState().cloudFailingSince).toBe(
+      failure.cloudFailingSince,
+    );
+
+    await manager.syncNow();
+    expect(manager.getState()).toMatchObject({
+      cloudError: null,
+      cloudErrorDetail: null,
+      cloudFailingSince: null,
+    });
+  });
+
+  it("uploads a backup over 5 MB in a resumable session", async () => {
+    const big = "x".repeat(6 * 1024 * 1024);
+    const { manager } = createTestApp([big]);
+    await manager.connectCloud();
+    expect(drive.contentOf("testapp-backup.json")).toContain(big);
+    expect(drive.requests).toContain("PUT /upload/drive/v3/files");
+    await expect(manager.syncNow()).resolves.toBe(true);
+  });
+
+  it("asks to reconnect when Drive rejects even a fresh token", async () => {
+    const { manager } = createTestApp(["a"]);
+    await manager.connectCloud();
+    drive.failNext(401);
+    drive.failNext(401);
+    await manager.syncNow();
+    expect(manager.getState()).toMatchObject({
+      cloudError: "reconnect-required",
+      cloudErrorDetail: "HTTP 401",
+    });
+  });
+
   it("retries once with a fresh token after a 401", async () => {
     const { manager, auth } = createTestApp(["a"]);
     await manager.connectCloud();
