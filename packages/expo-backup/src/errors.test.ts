@@ -7,6 +7,7 @@ import { createTestApp } from "./__mocks__/testApp.js";
 import {
   BackupError,
   backupErrorCode,
+  backupErrorDetail,
   normalizeBackupError,
 } from "./errors.js";
 import { DriveError } from "./googleDrive.js";
@@ -21,7 +22,12 @@ describe("normalizeBackupError", () => {
       new DriveError("", 403, "insufficientPermissions"),
       "drive-permission-missing",
     ],
-    [new DriveError("", 401), "drive-access-denied"],
+    [new DriveError("", 403, "storageQuotaExceeded"), "drive-storage-full"],
+    [new DriveError("", 403, "userRateLimitExceeded"), "drive-rate-limited"],
+    [new DriveError("", 429), "drive-rate-limited"],
+    [new DriveError("", 403, "domainPolicy"), "drive-blocked-by-admin"],
+    [new DriveError("", 403, "somethingNew"), "drive-access-denied"],
+    [new DriveError("", 401), "reconnect-required"],
     [new DriveError("", 503), "drive-unavailable"],
     [new BackupCryptoError("unsupported-version"), "newer-format"],
     [new BackupCryptoError("not-encrypted"), "corrupted"],
@@ -36,6 +42,29 @@ describe("normalizeBackupError", () => {
     expect(normalizeBackupError(backupError)).toBe(backupError);
     expect(normalizeBackupError(appError)).toBe(appError);
     expect(backupErrorCode(appError)).toBe("unknown");
+  });
+});
+
+describe("backupErrorDetail", () => {
+  it("gives Drive's status and reason", () => {
+    expect(
+      backupErrorDetail(new DriveError("", 403, "storageQuotaExceeded")),
+    ).toBe("HTTP 403 · storageQuotaExceeded");
+    expect(
+      backupErrorDetail(
+        new BackupError("drive-access-denied", {
+          cause: new DriveError("", 403),
+        }),
+      ),
+    ).toBe("HTTP 403");
+  });
+
+  it("gives an unexpected error's message, nothing for self-explanatory codes", () => {
+    expect(backupErrorDetail(new Error("x".repeat(500)))).toHaveLength(160);
+    expect(backupErrorDetail(new BackupError("missing-key"))).toBeNull();
+    expect(backupErrorDetail(new TypeError("Network request failed"))).toBe(
+      null,
+    );
   });
 });
 

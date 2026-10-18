@@ -8,13 +8,18 @@ import {
 } from "@forthtilliath/backup-crypto";
 
 import type { ManagerContext } from "./context.js";
-import { backupErrorCode, normalizeBackupError } from "./errors.js";
+import {
+  backupErrorCode,
+  backupErrorDetail,
+  normalizeBackupError,
+} from "./errors.js";
 import {
   downloadAppDataFile,
   DriveError,
   findAppDataFile,
   uploadAppDataFile,
 } from "./googleDrive.js";
+import { noCloudError } from "./stateStore.js";
 import type { ConnectResult } from "./types.js";
 
 export interface CloudSync<T> {
@@ -118,7 +123,7 @@ export function createCloudSync<T>(
       lastCloudBackupAt: startedAt,
       lastBackupAt: Math.max(startedAt, store.getState().lastBackupAt ?? 0),
       cloudPending: false,
-      cloudError: null,
+      ...noCloudError,
     });
   }
 
@@ -146,6 +151,8 @@ export function createCloudSync<T>(
       store.setState({
         cloudPending: true,
         cloudError: backupErrorCode(error),
+        cloudErrorDetail: backupErrorDetail(error),
+        cloudFailingSince: store.getState().cloudFailingSince ?? Date.now(),
       });
       return false;
     } finally {
@@ -162,7 +169,7 @@ export function createCloudSync<T>(
     email: string,
     { upload: shouldUpload }: { upload: boolean },
   ) {
-    store.setState({ cloudAccount: { email }, cloudError: null });
+    store.setState({ cloudAccount: { email }, ...noCloudError });
     if (shouldUpload) await syncNow();
   }
 
@@ -215,7 +222,7 @@ export function createCloudSync<T>(
       store.setState({
         cloudAccount: null,
         cloudPending: false,
-        cloudError: null,
+        ...noCloudError,
       });
     },
   };
