@@ -1,13 +1,19 @@
 import { Alert, Text, View } from "react-native";
 
 import { ActionButton } from "./ActionButton.js";
-import { askConfirmation, askConflictChoice } from "./dialogs.js";
+import { askConfirmation, askConflictChoice, codeMessage } from "./dialogs.js";
 import type { BackupUi } from "./useBackupUi.js";
 
 /** Linking a Google account, then the automatic backup's status and actions. */
 export function CloudSection<T>({ ui }: { ui: BackupUi<T> }) {
   const { manager, state, t, styles, busy, run } = ui;
   const { cloudAccount } = state;
+
+  /** The failure of the upload that just ran (kept in the state, never thrown), if any. */
+  function lastUploadError(): string | null {
+    const { cloudError, cloudErrorDetail } = manager.getState();
+    return cloudError ? codeMessage(t, cloudError, cloudErrorDetail) : null;
+  }
 
   const handleConnect = () =>
     run(async () => {
@@ -21,13 +27,22 @@ export function CloudSection<T>({ ui }: { ui: BackupUi<T> }) {
         }
         await manager.resolveConflict(result, keep);
       }
-      Alert.alert(t.connectedTitle, t.connectedConfirm(result.email));
+      // Linking succeeds even when its first upload fails (Drive full…):
+      // saying "enabled" then would hide the problem.
+      const uploadError = lastUploadError();
+      if (uploadError) Alert.alert(t.connectedButFailedTitle, uploadError);
+      else Alert.alert(t.connectedTitle, t.connectedConfirm(result.email));
     });
 
   const handleSyncNow = () =>
     run(async () => {
-      await manager.syncNow();
-      // Errors are kept in the state (shown below) rather than thrown.
+      if (await manager.syncNow()) {
+        Alert.alert(t.syncDoneTitle, t.syncDoneMessage);
+        return;
+      }
+      // False also when an upload was already running: it reports itself.
+      const uploadError = lastUploadError();
+      if (uploadError) Alert.alert(t.syncFailedTitle, uploadError);
     });
 
   const handleRestore = () =>
@@ -75,7 +90,21 @@ export function CloudSection<T>({ ui }: { ui: BackupUi<T> }) {
         {state.cloudPending && !state.cloudError ? t.cloudPending : ""}
       </Text>
       {state.cloudError && (
-        <Text style={styles.errorText}>{t.errors[state.cloudError]}</Text>
+        <>
+          <Text style={styles.errorText}>
+            {codeMessage(t, state.cloudError)}
+          </Text>
+          {state.cloudFailingSince !== null && (
+            <Text style={styles.hint}>
+              {t.failingSince(ui.formatDate(state.cloudFailingSince))}
+            </Text>
+          )}
+          {state.cloudErrorDetail && (
+            <Text style={styles.hint} selectable>
+              {t.errorDetail(state.cloudErrorDetail)}
+            </Text>
+          )}
+        </>
       )}
       <Text style={styles.hint}>{t.autoHint}</Text>
       <ActionButton

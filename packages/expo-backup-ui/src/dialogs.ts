@@ -1,13 +1,33 @@
 import { Alert } from "react-native";
 
 // Subpath: errors.js loads no native module, unlike the package root.
-import { BackupError } from "@forthtilliath/expo-backup/errors";
+import {
+  BackupError,
+  type BackupErrorCode,
+  backupErrorDetail,
+} from "@forthtilliath/expo-backup/errors";
 
 import type { BackupScreenLabels } from "./labels.js";
 
+/**
+ * Message of an error code, followed by its technical cause when known. The
+ * code may come from a state saved by another version: unknown ones fall
+ * back to the generic message rather than to nothing.
+ */
+export function codeMessage(
+  t: BackupScreenLabels,
+  code: BackupErrorCode,
+  detail: string | null = null,
+): string {
+  const message = (t.errors[code] as string | undefined) ?? t.errors.unknown;
+  return detail ? `${message}\n\n${t.errorDetail(detail)}` : message;
+}
+
 /** User-facing text of any error: localized for the package's own, as is for the app's. */
 export function errorMessage(error: unknown, t: BackupScreenLabels): string {
-  if (error instanceof BackupError) return t.errors[error.code];
+  // The app's own errors (`parse`…) are already meant for the user: no detail.
+  if (error instanceof BackupError)
+    return codeMessage(t, error.code, backupErrorDetail(error));
   if (error instanceof Error && error.message) return error.message;
   return t.errors.unknown;
 }
