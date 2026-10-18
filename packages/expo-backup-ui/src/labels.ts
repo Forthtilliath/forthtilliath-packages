@@ -13,8 +13,14 @@ export interface BackupScreenLabels {
   connectButton: string;
   connectedTitle: string;
   connectedConfirm: (email: string) => string;
+  /** Account linked, but its first upload failed: shown instead of `connectedTitle`. */
+  connectedButFailedTitle: string;
   lastCloudBackup: (date: string) => string;
   cloudPending: string;
+  failingSince: (date: string) => string;
+  syncDoneTitle: string;
+  syncDoneMessage: string;
+  syncFailedTitle: string;
   autoHint: string;
   syncNowButton: string;
   restoreCloudButton: string;
@@ -65,6 +71,8 @@ export interface BackupScreenLabels {
   confirm: string;
   close: string;
   errorTitle: string;
+  /** Technical cause under an error message ("HTTP 403 · storageQuotaExceeded"). */
+  errorDetail: (detail: string) => string;
   errors: Record<BackupErrorCode, string>;
 }
 

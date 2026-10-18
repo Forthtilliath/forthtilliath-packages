@@ -104,9 +104,7 @@ describe("EncryptionSection", () => {
 describe("helpers", () => {
   it("errorMessage falls back sensibly", () => {
     const t = defaultLabels.en;
-    expect(errorMessage(new BackupError("network"), t)).toBe(
-      "No internet connection.",
-    );
+    expect(errorMessage(new BackupError("network"), t)).toBe(t.errors.network);
     expect(errorMessage(new Error("custom"), t)).toBe("custom");
     expect(errorMessage("weird", t)).toBe(t.errors.unknown);
   });

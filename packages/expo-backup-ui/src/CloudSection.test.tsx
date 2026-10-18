@@ -34,6 +34,27 @@ describe("CloudSection — not linked", () => {
     expect(alerts.last()?.[0]).toBe("Sauvegarde automatique activée");
   });
 
+  it("says the first upload failed instead of confirming", async () => {
+    const alerts = spyOnAlerts();
+    const { manager, setState } = createFakeManager();
+    manager.connectCloud.mockImplementation(() => {
+      setState({
+        ...linked,
+        cloudError: "drive-storage-full",
+        cloudErrorDetail: "HTTP 403 · storageQuotaExceeded",
+      });
+      return Promise.resolve({ status: "connected", email: "me@example.com" });
+    });
+    const tree = render(<BackupScreen manager={manager} />);
+    await press(tree, "Connecter Google Drive");
+    expect(alerts.last()).toEqual([
+      "Compte relié, mais l'envoi a échoué",
+      expect.stringMatching(
+        /stockage Google est plein[\s\S]*Détail technique : HTTP 403 · storageQuotaExceeded/,
+      ),
+    ]);
+  });
+
   it("asks which backup to keep on a conflict", async () => {
     const alerts = spyOnAlerts();
     const { manager } = createFakeManager();
@@ -112,11 +133,54 @@ describe("CloudSection — linked", () => {
     expect(allText(tree)).not.toContain("envoi en attente");
   });
 
-  it("uploads on demand", async () => {
+  it("shows since when uploads fail and the technical detail", () => {
+    const { manager } = createFakeManager({
+      state: {
+        ...linked,
+        cloudError: "drive-storage-full",
+        cloudErrorDetail: "HTTP 403 · storageQuotaExceeded",
+        cloudFailingSince: 0,
+      },
+    });
+    const text = allText(render(<BackupScreen manager={manager} />));
+    expect(text).toContain("stockage Google est plein");
+    expect(text).toContain("Les envois échouent depuis le");
+    expect(text).toContain(
+      "Détail technique : HTTP 403 · storageQuotaExceeded",
+    );
+  });
+
+  it("falls back to the generic message for a code it doesn't know", () => {
+    const { manager } = createFakeManager({
+      state: { ...linked, cloudError: "from-a-newer-version" as "unknown" },
+    });
+    expect(allText(render(<BackupScreen manager={manager} />))).toContain(
+      "Une erreur inattendue est survenue.",
+    );
+  });
+
+  it("uploads on demand and confirms", async () => {
+    const alerts = spyOnAlerts();
     const { manager } = createFakeManager({ state: linked });
     const tree = render(<BackupScreen manager={manager} />);
     await press(tree, "Sauvegarder maintenant");
     expect(manager.syncNow).toHaveBeenCalled();
+    expect(alerts.last()?.[0]).toBe("Sauvegarde envoyée");
+  });
+
+  it("explains why an upload on demand failed", async () => {
+    const alerts = spyOnAlerts();
+    const { manager, setState } = createFakeManager({ state: linked });
+    manager.syncNow.mockImplementation(() => {
+      setState({ cloudError: "reconnect-required" });
+      return Promise.resolve(false);
+    });
+    const tree = render(<BackupScreen manager={manager} />);
+    await press(tree, "Sauvegarder maintenant");
+    expect(alerts.last()).toEqual([
+      "La sauvegarde n'a pas pu être envoyée",
+      expect.stringContaining("Déconnecter"),
+    ]);
   });
 
   it("restores from the cloud after confirmation", async () => {

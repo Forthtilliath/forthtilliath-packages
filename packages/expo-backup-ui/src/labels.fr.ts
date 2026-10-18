@@ -8,8 +8,13 @@ export const frLabels: BackupScreenLabels = {
   connectedTitle: "Sauvegarde automatique activée",
   connectedConfirm: (email) =>
     `Tes données sont désormais envoyées sur le Google Drive de ${email} après chaque modification.`,
+  connectedButFailedTitle: "Compte relié, mais l'envoi a échoué",
   lastCloudBackup: (date) => `Dernier envoi : ${date}`,
   cloudPending: " · envoi en attente…",
+  failingSince: (date) => `Les envois échouent depuis le ${date}.`,
+  syncDoneTitle: "Sauvegarde envoyée",
+  syncDoneMessage: "Tes données sont à jour sur Google Drive.",
+  syncFailedTitle: "La sauvegarde n'a pas pu être envoyée",
   autoHint: "Envoi automatique après chaque modification.",
   syncNowButton: "Sauvegarder maintenant",
   restoreCloudButton: "Restaurer depuis Google Drive",
@@ -69,24 +74,34 @@ export const frLabels: BackupScreenLabels = {
   confirm: "Valider",
   close: "Fermer",
   errorTitle: "Erreur",
+  errorDetail: (detail) => `Détail technique : ${detail}`,
   errors: {
     "google-unavailable":
-      "La sauvegarde Google Drive n'est pas disponible dans cette version de l'app.",
+      "La sauvegarde Google Drive n'est pas disponible dans cette version de l'app. Utilise la sauvegarde manuelle (Exporter mes données).",
     "play-services-unavailable":
-      "Les services Google Play sont indisponibles sur ce téléphone.",
+      "Les services Google Play sont indisponibles sur ce téléphone : la sauvegarde Google Drive ne peut pas fonctionner. Utilise la sauvegarde manuelle (Exporter mes données).",
     "oauth-misconfigured":
-      "Google ne reconnaît pas cette version de l'app (client OAuth absent ou empreinte SHA-1 différente).",
-    "sign-in-failed": "La connexion à Google a échoué.",
+      "Google ne reconnaît pas cette version de l'app (client OAuth absent ou empreinte SHA-1 différente). Tu n'y peux rien : préviens le développeur de l'app.",
+    "sign-in-failed":
+      "La connexion à Google a échoué. Vérifie ta connexion internet, puis réessaie.",
     "reconnect-required":
-      "Reconnecte ton compte Google pour reprendre la sauvegarde.",
+      "Google n'autorise plus l'app à accéder à ton Drive (accès retiré ou expiré). Appuie sur « Déconnecter », puis reconnecte ton compte Google.",
+    "drive-storage-full":
+      "Ton espace de stockage Google est plein : la sauvegarde ne peut plus être envoyée. Libère de la place (Gmail, Drive et Photos partagent le même espace, voir one.google.com/storage), puis appuie sur « Sauvegarder maintenant ».",
+    "drive-rate-limited":
+      "Google Drive reçoit trop de demandes pour le moment. L'envoi sera retenté automatiquement plus tard.",
+    "drive-blocked-by-admin":
+      "L'administrateur de ce compte Google (travail, école…) interdit aux apps d'utiliser Drive. Déconnecte-le et relie plutôt un compte Google personnel.",
     "drive-api-disabled":
-      "L'API Google Drive n'est pas activée dans le projet Google Cloud de l'app.",
+      "L'API Google Drive n'est pas activée dans le projet Google Cloud de l'app. Tu n'y peux rien : préviens le développeur de l'app.",
     "drive-permission-missing":
-      "L'accès à Google Drive n'a pas été autorisé. Reconnecte ton compte en acceptant l'accès à Drive.",
+      "L'accès à Google Drive n'a pas été autorisé. Appuie sur « Déconnecter », puis reconnecte ton compte en cochant l'accès à Drive.",
     "drive-access-denied":
-      "Google Drive a refusé l'accès. Reconnecte ton compte Google.",
-    "drive-unavailable": "Google Drive est momentanément indisponible.",
-    network: "Pas de connexion internet.",
+      "Google Drive a refusé l'envoi pour une raison inattendue. Si ça se reproduit, appuie sur « Déconnecter » puis reconnecte ton compte Google, et sinon préviens le développeur de l'app avec le détail technique.",
+    "drive-unavailable":
+      "Google Drive est momentanément indisponible. L'envoi sera retenté automatiquement.",
+    network:
+      "Pas de connexion internet. L'envoi sera retenté automatiquement une fois connecté.",
     "missing-key":
       "Cette sauvegarde est chiffrée avec une clé inconnue de ce téléphone. Saisis la clé de secours de l'appareil qui l'a créée.",
     "invalid-recovery-code":

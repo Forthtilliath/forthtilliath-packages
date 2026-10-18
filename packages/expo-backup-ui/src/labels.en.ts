@@ -8,8 +8,13 @@ export const enLabels: BackupScreenLabels = {
   connectedTitle: "Automatic backup enabled",
   connectedConfirm: (email) =>
     `Your data is now sent to the Google Drive of ${email} after every change.`,
+  connectedButFailedTitle: "Account linked, but the upload failed",
   lastCloudBackup: (date) => `Last upload: ${date}`,
   cloudPending: " · upload pending…",
+  failingSince: (date) => `Uploads have been failing since ${date}.`,
+  syncDoneTitle: "Backup uploaded",
+  syncDoneMessage: "Your data is up to date on Google Drive.",
+  syncFailedTitle: "The backup couldn't be uploaded",
   autoHint: "Uploaded automatically after every change.",
   syncNowButton: "Back up now",
   restoreCloudButton: "Restore from Google Drive",
@@ -68,23 +73,34 @@ export const enLabels: BackupScreenLabels = {
   confirm: "OK",
   close: "Close",
   errorTitle: "Error",
+  errorDetail: (detail) => `Technical detail: ${detail}`,
   errors: {
     "google-unavailable":
-      "Google Drive backup isn't available in this version of the app.",
+      "Google Drive backup isn't available in this version of the app. Use the manual backup (Export my data).",
     "play-services-unavailable":
-      "Google Play services aren't available on this phone.",
+      "Google Play services aren't available on this phone, so Google Drive backup can't work. Use the manual backup (Export my data).",
     "oauth-misconfigured":
-      "Google doesn't recognize this version of the app (missing OAuth client or different SHA-1).",
-    "sign-in-failed": "Signing in to Google failed.",
-    "reconnect-required": "Reconnect your Google account to resume backups.",
+      "Google doesn't recognize this version of the app (missing OAuth client or different SHA-1). Nothing you can do: let the app's developer know.",
+    "sign-in-failed":
+      "Signing in to Google failed. Check your internet connection, then try again.",
+    "reconnect-required":
+      "Google no longer lets the app reach your Drive (access removed or expired). Tap “Disconnect”, then reconnect your Google account.",
+    "drive-storage-full":
+      "Your Google storage is full, so the backup can't be uploaded anymore. Free up some space (Gmail, Drive and Photos share it, see one.google.com/storage), then tap “Back up now”.",
+    "drive-rate-limited":
+      "Google Drive is receiving too many requests right now. The upload will be retried automatically later.",
+    "drive-blocked-by-admin":
+      "The administrator of this Google account (work, school…) doesn't let apps use Drive. Disconnect it and link a personal Google account instead.",
     "drive-api-disabled":
-      "The Google Drive API isn't enabled in the app's Google Cloud project.",
+      "The Google Drive API isn't enabled in the app's Google Cloud project. Nothing you can do: let the app's developer know.",
     "drive-permission-missing":
-      "Access to Google Drive wasn't granted. Reconnect your account and allow Drive access.",
+      "Access to Google Drive wasn't granted. Tap “Disconnect”, then reconnect your account and tick Drive access.",
     "drive-access-denied":
-      "Google Drive denied access. Reconnect your Google account.",
-    "drive-unavailable": "Google Drive is temporarily unavailable.",
-    network: "No internet connection.",
+      "Google Drive refused the upload for an unexpected reason. If it happens again, tap “Disconnect” and reconnect your Google account; otherwise let the app's developer know, with the technical detail.",
+    "drive-unavailable":
+      "Google Drive is temporarily unavailable. The upload will be retried automatically.",
+    network:
+      "No internet connection. The upload will be retried automatically once you're online.",
     "missing-key":
       "This backup is encrypted with a key this phone doesn't know. Enter the recovery code of the device that created it.",
     "invalid-recovery-code": "This recovery code contains a typo.",
