@@ -25,6 +25,7 @@ export function createFakeDrive(): FakeDrive {
   >();
   const failures: { status: number; reason?: string }[] = [];
   const requests: string[] = [];
+  const sessions = new Map<string, { id: string; name?: string }>();
   let nextId = 1;
 
   function describe(id: string) {
@@ -63,23 +64,37 @@ export function createFakeDrive(): FakeDrive {
       const file = files.get(fileId);
       return Promise.resolve(file ? new Response(file.content) : json({}, 404));
     }
-    if (method === "PATCH" && fileId) {
-      const file = files.get(fileId);
-      if (!file) return Promise.resolve(json({}, 404));
-      file.content = body;
-      return Promise.resolve(json(describe(file.id)));
+    // Resumable upload: POST (create) or PATCH (update) opens a session, the
+    // PUT to its Location (same URL plus `upload_id`) sends the content.
+    if (method === "PUT") {
+      const session = sessions.get(url.searchParams.get("upload_id") ?? "");
+      if (!session) return Promise.resolve(json({}, 404));
+      const existing = files.get(session.id);
+      files.set(session.id, {
+        id: session.id,
+        name: existing?.name ?? session.name ?? "",
+        content: body,
+      });
+      return Promise.resolve(json(describe(session.id)));
     }
-    if (method === "POST") {
-      const boundary = /boundary=(.+)$/.exec(
-        new Headers(init.headers).get("Content-Type") ?? "",
-      )?.[1];
-      const parts = body
-        .split(`--${boundary ?? ""}`)
-        .map((part) => part.split("\r\n\r\n")[1]?.replace(/\r\n$/, ""));
-      const metadata = JSON.parse(parts[1] ?? "{}") as { name: string };
-      const id = `file-${(nextId++).toString()}`;
-      files.set(id, { id, name: metadata.name, content: parts[2] ?? "" });
-      return Promise.resolve(json(describe(id)));
+    if (
+      url.searchParams.get("uploadType") === "resumable" &&
+      (method === "POST" || method === "PATCH")
+    ) {
+      if (method === "PATCH" && (!fileId || !files.has(fileId)))
+        return Promise.resolve(json({}, 404));
+      const metadata = JSON.parse(body || "{}") as { name?: string };
+      const id = fileId ?? `file-${(nextId++).toString()}`;
+      const sessionId = `session-${(nextId++).toString()}`;
+      sessions.set(sessionId, { id, name: metadata.name });
+      const location = new URL(url);
+      location.searchParams.set("upload_id", sessionId);
+      return Promise.resolve(
+        new Response(null, {
+          status: 200,
+          headers: { Location: location.toString() },
+        }),
+      );
     }
     return Promise.resolve(json({}, 400));
   };
