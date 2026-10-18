@@ -54,4 +54,6 @@ Every action runs one at a time (a double tap is ignored) and shows errors in an
 
 The encryption section only appears when the manager's encryption isn't `off`: a switch in `optional` mode, a status line in `required` mode, and — on demand only, since it is the key — the recovery code, shown selectable so it can be copied into a password manager.
 
-Also exported: `useBackupState(manager)` (the manager's state, re-rendering on change) and `errorMessage(error, labels)`.
+A failing automatic backup is spelled out on the screen: what went wrong and what to do, since when uploads fail, and the technical cause (selectable, to send to the developer). Linking an account whose first upload fails says so instead of "enabled", and "Back up now" confirms or explains.
+
+Also exported: `useBackupState(manager)` (the manager's state, re-rendering on change), `useCloudBackupProblem(manager)` (a failure to warn about outside the screen, see `getCloudBackupProblem` in expo-backup), `errorMessage(error, labels)` and `codeMessage(labels, code, detail)`.
