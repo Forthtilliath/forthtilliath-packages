@@ -49,7 +49,13 @@ backup.notifyDataChanged(); // debounced (3 s), flushed when the app goes to the
 
 The file picker offers `.json` files whether the phone labels them JSON, plain text or raw bytes; anything over `maxFileBytes` is rejected (`file-too-large`) before `parse` runs.
 
-Errors are `BackupError`s with a `code` (see `BackupErrorCode`), translated by the UI package. The app's own `parse` errors are passed through untouched.
+Errors are `BackupError`s with a `code` (see `BackupErrorCode`), translated by the UI package. The app's own `parse` errors are passed through untouched. Drive's refusals get their own code when Google says why (`drive-storage-full`, `drive-rate-limited`, `drive-blocked-by-admin`…), and `backupErrorDetail(error)` gives the raw cause (`HTTP 403 · storageQuotaExceeded`) to show under the message.
+
+A failed automatic upload never throws: the state keeps `cloudError`, `cloudErrorDetail` and `cloudFailingSince` (first failure since the last success) until the next success. Uploads go through a resumable session, so a backup isn't limited to Drive's 5 MB cap on simple uploads.
+
+### Telling the user the automatic backup fails
+
+The backup screen shows the error, but nobody opens it to check. `getCloudBackupProblem(state)` (pure, deep-importable from `@forthtilliath/expo-backup/cloudBackupProblem`) says when to warn elsewhere — banner, alert, tab badge: at once for what the user must fix (storage full, access removed…), and only after `transientGraceMs` (1 day) for what fixes itself (offline, Drive down). The UI package wraps it in `useCloudBackupProblem(manager)`.
 
 ### Backup reminder
 
@@ -90,4 +96,4 @@ It shows once the oldest unsaved item is `afterDays` old, or as soon as `afterCo
 3. **Credentials ▸ Create OAuth client ID ▸ Android**: the app's package name (`android.package`) and the **SHA-1 of the release signing key** (`keytool -list -v -keystore release.keystore`). One client per signing key: a debug build needs its own.
 4. Rebuild the APK (the native module must be in the binary).
 
-`oauth-misconfigured` (DEVELOPER_ERROR) means step 3 doesn't match the APK; `drive-api-disabled` means step 1 was skipped.
+`oauth-misconfigured` (DEVELOPER_ERROR) means step 3 doesn't match the APK; `drive-api-disabled` means step 1 was skipped. Declare only `drive.appdata` (non-sensitive) and no logo: a broader Drive scope is restricted, and a logo requires brand verification, both reviews Google asks for once the app is published.
