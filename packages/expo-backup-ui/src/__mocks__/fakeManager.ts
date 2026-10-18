@@ -18,6 +18,8 @@ const baseState: BackupState = {
   lastCloudBackupAt: null,
   cloudPending: false,
   cloudError: null,
+  cloudErrorDetail: null,
+  cloudFailingSince: null,
   hasSafetyBackup: false,
 };
 
