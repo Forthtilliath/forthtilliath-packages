@@ -1,7 +1,8 @@
 # @forthtilliath/test-kit
 
 Framework-agnostic test helpers: a `fetch()` mock response builder, a JSON
-fixture loader, and an in-memory file system fake — extracted from patterns
+fixture loader, an in-memory file system fake, and readers/writers for
+Zustand's persisted state — extracted from patterns
 duplicated across test files in this monorepo, none of them tied to Expo or
 any other framework (see `@forthtilliath/expo-test-kit` for the
 Expo/Drizzle-specific ones: a real SQLite test database and an
@@ -75,6 +76,27 @@ inspection) — enough to test code that reads/writes files by path (e.g. via
 ```ts
 const fakeFs = createInMemoryFileSystem({ "/config.json": "{}" });
 vi.mock("node:fs/promises", () => fakeFs);
+```
+
+### `readPersisted(storage, key)` / `writePersisted(storage, key, state, version)`
+
+Read and write the `{ state, version }` envelope Zustand's `persist`
+middleware keeps under its storage key — to check what a store saves on the
+device, or to plant the data an earlier app version left there and test the
+rehydration (and its `migrate`). `storage` is anything with `getItem` /
+`setItem`, sync or async: React Native's `AsyncStorage` (its Jest mock),
+the web's `localStorage`… `readPersisted` throws if nothing is stored, or
+if the value isn't such an envelope.
+
+```ts
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+await writePersisted(AsyncStorage, "settings", { dark: true }, 1);
+// …rehydrate the store, then:
+await expect(readPersisted(AsyncStorage, "settings")).resolves.toEqual({
+  state: { theme: "dark" },
+  version: 2,
+});
 ```
 
 ## Scripts
