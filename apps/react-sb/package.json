@@ -15,6 +15,10 @@
     "build-storybook": "storybook build",
     "pretest": "pnpm run build:tw",
     "test": "vitest run",
+    "pretest:visual": "pnpm run build:tw",
+    "test:visual": "vitest run -c vitest.visual.config.ts",
+    "test:visual:baseline": "pnpm run build:tw && vitest run -c vitest.visual.config.ts --update",
+    "test:visual:accept": "node scripts/visual/accept.mjs",
     "qa:screenshot": "node scripts/screenshot.mjs"
   },
   "dependencies": {
