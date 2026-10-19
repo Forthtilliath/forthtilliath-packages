@@ -1,6 +1,6 @@
 # @forthtilliath/expo-test-kit
 
-Test helpers for Expo/Drizzle apps: a real in-memory SQLite database (via libsql) to exercise a Drizzle repository's actual SQL, and a lightweight `expo-file-system` fake — both extracted from patterns that were duplicated across test files rather than shared.
+Test helpers for Expo/Drizzle apps: a real in-memory SQLite database (via libsql) to exercise a Drizzle repository's actual SQL, a lightweight `expo-file-system` fake, and a whole-app renderer for Expo Router — all extracted from patterns that were duplicated across test files rather than shared.
 
 ## Install
 
@@ -28,6 +28,7 @@ has an obvious home instead of piling into one flat `src/`:
 
 - `sqlite/` — the SQLite/Drizzle/libsql test database and its mocking helper.
 - `file-system/` — the `expo-file-system` fake.
+- `router/` — whole-app rendering through Expo Router.
 
 ```ts
 import {
@@ -94,6 +95,35 @@ beforeAll(() => {
   fakeFs = getFakeExpoFileSystem();
 });
 ```
+
+### `createRenderApp(deps, options?)`
+
+Builds a `renderApp(initialUrl)` that renders the whole app — the real screens of `app/`, the real Expo Router navigation — from a URL, and returns `{ getPathname, getSearchParams, navigate }`. It settles the two traps of `renderRouter` under Testing Library v14: fake timers are advanced _before_ awaiting the render (`renderRouter` turns them on, and the first async render never ends otherwise), and a plain object is returned rather than the enriched promise. `navigate` runs inside `act` and waits for the render.
+
+Expo Router, its testing library and the test runner are passed in (`deps`), so this package depends on none of them. `options`: `appDir` (`"./app"`), `settleMs` (`100`).
+
+```ts
+// test/renderApp.ts
+import { router } from "expo-router";
+import { act, renderRouter } from "expo-router/testing-library";
+import { createRenderApp } from "@forthtilliath/expo-test-kit/router/createRenderApp";
+
+export const renderApp = createRenderApp({
+  renderRouter,
+  act,
+  navigate: (path) => {
+    router.navigate(path);
+  },
+  advanceTimersByTimeAsync: (ms) => jest.advanceTimersByTimeAsync(ms),
+});
+
+// in a test
+const app = await renderApp("/games/new");
+await app.navigate("/settings");
+expect(app.getPathname()).toBe("/settings");
+```
+
+For Zustand stores persisted in `AsyncStorage`, see `readPersisted` / `writePersisted` in `@forthtilliath/test-kit`.
 
 ## Scripts
 
