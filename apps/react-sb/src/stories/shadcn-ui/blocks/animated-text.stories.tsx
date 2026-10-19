@@ -31,6 +31,8 @@ export const Circle: Story = {
     children: "BERLIX UI * BERLIX UI * ",
     className: "font-black text-3xl",
   },
+  // Endless JS rotation (motion): never two identical screenshots.
+  parameters: { visual: { disable: true } },
 };
 
 export const Reveal: Story = {
@@ -46,6 +48,8 @@ export const Reveal: Story = {
     className:
       "font-medium text-2xl bg-gradient-to-b from-amber-200 via-orange-400 to-red-600 bg-clip-text text-transparent",
   },
+  // Words revealed one by one in JS (~3.2 s): wait for the last one.
+  parameters: { visual: { delay: 5000 } },
 };
 
 /**
@@ -64,6 +68,8 @@ export const RevealFromBottomByLetter: Story = {
     className:
       "font-medium text-2xl bg-gradient-to-b from-amber-200 via-orange-400 to-red-600 bg-clip-text text-transparent",
   },
+  // Letters revealed one by one in JS (~4.6 s): wait for the last one.
+  parameters: { visual: { delay: 5000 } },
 };
 
 export const Ripple: Story = {
