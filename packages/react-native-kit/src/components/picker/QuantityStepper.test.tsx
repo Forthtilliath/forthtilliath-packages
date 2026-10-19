@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
+import { useState } from "react";
 import { Pressable, TextInput } from "react-native";
 import { act } from "react-test-renderer";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { press, renderTree, styleOf } from "../../__mocks__/renderTree.js";
 import { propsOf } from "../../__mocks__/testInstance.js";
@@ -145,6 +146,105 @@ describe("QuantityStepper", () => {
     expect(
       propsOf<{ onLongPress?: unknown }>(buttons(tree).plus).onLongPress,
     ).toBeUndefined();
+  });
+
+  it("allows negatives below a negative min, sign included", () => {
+    const onChange = vi.fn();
+    const tree = renderTree(
+      <QuantityStepper
+        value={0}
+        onChange={onChange}
+        label="Pénalités"
+        min={-50}
+      />,
+    );
+    const field = tree.root.findByType(TextInput);
+    expect(propsOf<{ keyboardType: string }>(field).keyboardType).toBe(
+      "numeric",
+    );
+    expect(propsOf<{ maxLength: number }>(field).maxLength).toBe(3);
+    press(buttons(tree).minus);
+    expect(onChange).toHaveBeenLastCalledWith(-1);
+
+    type(tree, "-");
+    expect(fieldText(tree)).toBe("-");
+    type(tree, "-1a3");
+    expect(onChange).toHaveBeenLastCalledWith(-13);
+    type(tree, "-");
+    blur(tree);
+    expect(onChange).toHaveBeenLastCalledWith(0);
+    type(tree, "-80");
+    blur(tree);
+    expect(onChange).toHaveBeenLastCalledWith(-50);
+  });
+
+  it("drops the sign when negatives are not allowed", () => {
+    const onChange = vi.fn();
+    const tree = renderTree(
+      <QuantityStepper value={0} onChange={onChange} label="Pain" />,
+    );
+    type(tree, "-7");
+    expect(onChange).toHaveBeenLastCalledWith(7);
+  });
+
+  describe("repeatOnHold", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    function Controlled(props: { initial: number; min?: number }) {
+      const [value, setValue] = useState(props.initial);
+      return (
+        <QuantityStepper
+          value={value}
+          onChange={setValue}
+          label="Points"
+          min={props.min}
+          repeatOnHold
+        />
+      );
+    }
+
+    function hold(button: ReturnType<typeof buttons>["plus"], ms: number) {
+      act(() => {
+        propsOf<{ onPressIn: () => void }>(button).onPressIn();
+      });
+      act(() => {
+        vi.advanceTimersByTime(ms);
+      });
+      act(() => {
+        propsOf<{ onPressOut: () => void }>(button).onPressOut();
+      });
+    }
+
+    it("repeats while held and stops on release", () => {
+      const tree = renderTree(<Controlled initial={0} />);
+      expect(propsOf<{ onPress?: unknown }>(buttons(tree).plus).onPress).toBe(
+        undefined,
+      );
+      hold(buttons(tree).plus, 450 + 180 * 3);
+      expect(fieldText(tree)).toBe("4");
+      act(() => {
+        vi.advanceTimersByTime(5000);
+      });
+      expect(fieldText(tree)).toBe("4");
+    });
+
+    it("stops at the bound", () => {
+      const tree = renderTree(<Controlled initial={-2} min={-3} />);
+      act(() => {
+        propsOf<{ onPressIn: () => void }>(buttons(tree).minus).onPressIn();
+      });
+      act(() => {
+        vi.advanceTimersByTime(3000);
+      });
+      expect(fieldText(tree)).toBe("-3");
+      expect(vi.getTimerCount()).toBe(0);
+    });
   });
 
   it("labels the controls in French by default, English with locale", () => {
