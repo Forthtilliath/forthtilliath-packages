@@ -8,6 +8,9 @@ import {
 } from "@forthtilliath/forth-ui/components/mode-toggle";
 import { Navbar } from "@forthtilliath/shadcn-ui/components/blocks/navbar-02";
 
+import { PaletteSelect } from "./palette/palette-select";
+import { paletteScript } from "./palette/palettes";
+
 import "./globals.css";
 
 const geistSans = localFont({
@@ -49,6 +52,11 @@ export default function RootLayout({
   return (
     // next-themes sets the theme class on <html> before hydration.
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Constant script built from a fixed list, no user input in it. */}
+        {/* eslint-disable-next-line @eslint-react/dom-no-dangerously-set-innerhtml */}
+        <script dangerouslySetInnerHTML={{ __html: paletteScript }} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider
           attribute="class"
@@ -62,6 +70,7 @@ export default function RootLayout({
             render={({ href, label }) => <Link href={href}>{label}</Link>}
           />
           <main className="container p-8">{children}</main>
+          <PaletteSelect className="fixed right-16 bottom-4" />
           <ModeToggle className="fixed right-4 bottom-4" />
         </ThemeProvider>
       </body>
