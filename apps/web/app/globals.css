@@ -2,5 +2,7 @@
    components too, or their classes aren't generated (see its README). */
 @import "@forthtilliath/shadcn-ui/styles/globals.css";
 @import "@forthtilliath/shadcn-ui/styles/themes/twitter.css";
+/* Every palette, scoped by data-palette (generated: scripts/generate-palettes.mjs). */
+@import "./palette/palettes.css";
 
 @source "../node_modules/@forthtilliath/forth-ui/dist/**/*.js";
