@@ -4,8 +4,11 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "predev": "pnpm run palettes:generate",
     "dev": "next dev --turbopack --port 3000",
+    "prebuild": "pnpm run palettes:generate",
     "build": "next build",
+    "palettes:generate": "node scripts/generate-palettes.mjs",
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
