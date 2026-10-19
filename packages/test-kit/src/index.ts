@@ -4,3 +4,4 @@
 export * from "./createInMemoryFileSystem.js";
 export * from "./createMockResponse.js";
 export * from "./loadJsonFixture.js";
+export * from "./persistedState.js";
