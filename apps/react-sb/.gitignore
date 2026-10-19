@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 *storybook.log
+
+# Visual run (test:visual): local references, diffs and report
+/visual/
