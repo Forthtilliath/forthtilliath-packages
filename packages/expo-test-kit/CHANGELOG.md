@@ -1,5 +1,11 @@
 # @forthtilliath/expo-test-kit
 
+## 0.4.1
+
+### Patch Changes
+
+- 7a7af1c: `drizzle-orm` and `@libsql/client` are now optional peer dependencies: only the `sqlite/` helpers need them.
+
 ## 0.4.0
 
 ### Minor Changes

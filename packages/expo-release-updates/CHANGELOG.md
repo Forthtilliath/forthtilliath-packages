@@ -1,5 +1,18 @@
 # @forthtilliath/expo-release-updates
 
+## 0.8.0
+
+### Minor Changes
+
+- 7a7af1c: expo-release-updates: `fetchLatestRelease` returns the APK's `apkSha256` (computed by GitHub) and takes `includePrereleases`; `downloadAndInstallApk` takes `expectedSha256` (needs expo-file-system 58+) and `allowedUrlPrefix`, with `releaseDownloadUrlPrefix({ owner, repo })` to restrict installs to the repo's own releases. GitHub responses are checked field by field. expo-release-updates-ui (`UpdateNotifier`, `useApkInstall`) and react-native-kit (`UpdateSettingsScreen`) hand `apkSha256` to `downloadAndInstallApk` as a third argument.
+
+### Patch Changes
+
+- Updated dependencies [7a7af1c]
+- Updated dependencies [7a7af1c]
+- Updated dependencies [7a7af1c]
+  - @forthtilliath/ts-kit@0.14.0
+
 ## 0.7.1
 
 ### Patch Changes

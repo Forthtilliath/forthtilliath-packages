@@ -1,5 +1,16 @@
 # @forthtilliath/ts-kit
 
+## 0.14.0
+
+### Minor Changes
+
+- 7a7af1c: New `array/indexById` and `array/moveItem`, and a `color` category: `contrastRatio`, `relativeLuminance`, `readableTextOn`, `TEXT_CONTRAST`, `GRAPHIC_CONTRAST` (WCAG 2).
+- 7a7af1c: Security: `toCsv` and `escapeCsvField` now prefix with `'` a text cell starting with `=`, `+`, `-`, `@`, a tab or a carriage return, so a spreadsheet shows it instead of running it as a formula (CSV injection). Numbers, and numbers written as text, are untouched. `{ neutralizeFormulas: false }` turns it off; `neutralizeCsvFormula` is exported on its own.
+
+### Patch Changes
+
+- 7a7af1c: `pluralize` / `createPluralize` and `formatRelativeTime` no longer crash on Hermes (React Native on Android), which has no `Intl.PluralRules` nor `Intl.RelativeTimeFormat`: a built-in French/English fallback takes over.
+
 ## 0.13.0
 
 ### Minor Changes
