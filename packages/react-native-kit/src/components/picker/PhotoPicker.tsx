@@ -5,6 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
+
 import {
   defaultLabels,
   defaultStyles,
@@ -71,13 +72,13 @@ export function PhotoPicker({
   const [saving, setSaving] = useState(false);
   // Ahead of `saving`, which only changes on the next render: a second press
   // in the same frame must not start a second save.
-  const busy = useRef(false);
+  const busyRef = useRef(false);
 
   async function pick(
     launch: () => Promise<ImagePicker.ImagePickerResult | null>,
   ) {
-    if (busy.current) return;
-    busy.current = true;
+    if (busyRef.current) return;
+    busyRef.current = true;
     try {
       const result = await launch();
       const asset = result && !result.canceled ? result.assets[0] : undefined;
@@ -88,7 +89,7 @@ export function PhotoPicker({
       if (onError) onError(error);
       else Alert.alert(t.saveErrorTitle, t.saveErrorMessage);
     } finally {
-      busy.current = false;
+      busyRef.current = false;
       setSaving(false);
     }
   }
@@ -110,7 +111,7 @@ export function PhotoPicker({
   }
 
   function handlePickPhoto() {
-    if (busy.current) return;
+    if (busyRef.current) return;
     Alert.alert(t.photoTitle(photoLabel), undefined, [
       {
         text: t.takePhoto,
