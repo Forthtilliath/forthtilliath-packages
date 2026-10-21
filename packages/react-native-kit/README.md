@@ -345,10 +345,8 @@ import { ThemeOptionList } from "@forthtilliath/react-native-kit/components/them
 Radio group of background swatches, each drawing the page and a card in the colours on offer (`{ id, label, page, card, cardBorder? }`), the chosen one outlined with a check mark. `onChange` receives the whole option (extra fields kept: the full palette to apply). `findBackground` reads a saved id back, falling back to the first option (the original background) for an unknown id. Check each palette's text contrast in a test with `contrastRatio` from `@forthtilliath/ts-kit/color/contrastRatio`.
 
 ```tsx
-import {
-  BackgroundPicker,
-  findBackground,
-} from "@forthtilliath/react-native-kit/components/theme/BackgroundPicker";
+import { BackgroundPicker } from "@forthtilliath/react-native-kit/components/theme/BackgroundPicker";
+import { findBackground } from "@forthtilliath/react-native-kit/components/theme/findBackground";
 
 const background = findBackground(DARK_BACKGROUNDS, settings.background);
 
