@@ -76,9 +76,11 @@ if (release && isUpdateAvailable(currentVersion, release.version)) {
 }
 ```
 
-### `fetchLatestRelease({ owner, repo, token?, timeoutMs?, signal? })`
+### `fetchLatestRelease({ owner, repo, includePrereleases?, token?, timeoutMs?, signal? })`
 
-Fetches the latest GitHub release and its `.apk` asset. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails. Pass `token` for private repos, or to raise the API rate limit from 60 to 5000 requests/hour on public ones.
+Fetches the latest GitHub release and its `.apk` asset: `{ version, notes, apkUrl, apkSha256? }`. `apkSha256` is the SHA-256 GitHub computed when the APK was uploaded — pass it to `downloadAndInstallApk`'s `expectedSha256`. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails. Pass `token` for private repos, or to raise the API rate limit from 60 to 5000 requests/hour on public ones.
+
+GitHub's `/releases/latest` only ever returns a **stable** release: an app that only publishes pre-releases (alpha, beta) would never see an update. Pass `includePrereleases: true` to scan the 10 most recent releases instead (drafts left out) and keep the highest version (semver, `1.0.0-alpha.10` > `1.0.0-alpha.2`) that carries an `.apk`.
 
 The request gives up after `timeoutMs` (default `15000`) instead of hanging on a bad network, and can be cancelled with `signal` (an `AbortSignal`) — both also apply to `fetchReleaseHistory`.
 
@@ -104,22 +106,34 @@ const history = await fetchReleaseHistory({
 // [{ version: "1.11.0", notes: "### Added\n- ...", publishedAt: "2026-07-30T..." }, ...]
 ```
 
-### `downloadAndInstallApk({ apkUrl, fileName, onProgress?, expectedMd5?, allowedHosts? })`
+### `downloadAndInstallApk({ apkUrl, fileName, onProgress?, expectedSha256?, allowedUrlPrefix?, expectedMd5?, allowedHosts? })`
 
-Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only** — there is no iOS equivalent (sideloading isn't possible there). `apkUrl` must be an `https://` URL on one of `allowedHosts` (default `["github.com"]`, where `fetchLatestRelease`'s `apkUrl` points) — anything else throws before downloading. Pass `expectedMd5` to verify the downloaded file before installing — a mismatch deletes the file and throws instead. Publish the checksum alongside the release (e.g. in the release notes or a `.md5` asset) and read it yourself: `fetchLatestRelease` doesn't return it.
+Downloads an APK to the app's cache directory and triggers the Android install-package intent. **Android only**. `apkUrl` must be an `https://` URL on one of `allowedHosts` (default `["github.com"]`, where `fetchLatestRelease`'s `apkUrl` points) — anything else throws before downloading.
 
-What `expectedMd5` does and doesn't protect against:
+Recommended checks, both fed by `fetchLatestRelease`:
 
-- ✅ a corrupted or truncated download;
+- **`allowedUrlPrefix: releaseDownloadUrlPrefix({ owner, repo })`** — only an APK of _this_ repo's releases (`https://github.com/<owner>/<repo>/releases/download/…`): `allowedHosts` alone accepts any github.com URL, another repo's included. After the prefix, only plain path segments pass (no `..`, query, fragment or `%`-escape).
+- **`expectedSha256: release.apkSha256`** — the downloaded file must match the SHA-256 GitHub computed on upload; a mismatch deletes it and throws. Computed natively with `File#digest`, so it needs **expo-file-system 58 or later** (with an older one, it throws rather than skip the check).
+
+`expectedMd5` remains for a checksum you publish yourself (release notes, `.md5` asset).
+
+What a checksum does and doesn't protect against:
+
+- ✅ a corrupted, truncated or swapped download;
 - ❌ a malicious release — whoever can publish the APK can publish its checksum too. The real safeguard there is Android itself: it refuses to install an update that isn't signed with the same key as the installed app. **Keep that signing key out of the repo and CI logs**, and restrict who can publish releases.
 
 ```ts
-await downloadAndInstallApk({
-  apkUrl: release.apkUrl,
-  fileName: "myapp-update.apk",
-  onProgress: (fraction) => setProgress(fraction),
-  expectedMd5, // read from the release notes or a .md5 asset
-});
+const repo = { owner: "acme", repo: "app" };
+const release = await fetchLatestRelease(repo);
+if (release) {
+  await downloadAndInstallApk({
+    apkUrl: release.apkUrl,
+    fileName: "myapp-update.apk",
+    onProgress: (fraction) => setProgress(fraction),
+    allowedUrlPrefix: releaseDownloadUrlPrefix(repo),
+    expectedSha256: release.apkSha256,
+  });
+}
 ```
 
 ### `parseChangelogNotes(notes)`
