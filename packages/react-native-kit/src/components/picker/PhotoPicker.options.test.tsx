@@ -61,7 +61,9 @@ describe("PhotoPicker options", () => {
         renderPreview={renderPreview}
       />,
     );
-    const texts = tree.root.findAllByType(Text).map((t) => t.props.children);
+    const texts = tree.root
+      .findAllByType(Text)
+      .map((t) => propsOf<{ children: unknown }>(t).children);
     expect(texts).toContain("initiales");
     expect(texts).not.toContain("Ajouter une photo");
     expect(renderPreview).toHaveBeenCalledWith(null, false);

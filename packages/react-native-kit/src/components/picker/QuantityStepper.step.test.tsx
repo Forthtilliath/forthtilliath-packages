@@ -23,6 +23,27 @@ function field(tree: ReturnType<typeof renderTree>) {
   }>(tree.root.findByType(TextInput));
 }
 
+/** A stepper that holds its value and repeats while held. */
+function Controlled(props: {
+  initial: number;
+  min?: number;
+  step?: number;
+  onStep?: (value: number) => void;
+}) {
+  const [value, setValue] = useState(props.initial);
+  return (
+    <QuantityStepper
+      value={value}
+      onChange={setValue}
+      label="Points"
+      min={props.min}
+      step={props.step}
+      repeatOnHold
+      onStep={props.onStep}
+    />
+  );
+}
+
 describe("QuantityStepper: step", () => {
   it("moves by step on −/+", () => {
     const onChange = vi.fn();
@@ -57,20 +78,7 @@ describe("QuantityStepper: step", () => {
 
   it("repeats by step while held", () => {
     vi.useFakeTimers();
-    function Controlled() {
-      const [value, setValue] = useState(0);
-      return (
-        <QuantityStepper
-          value={value}
-          onChange={setValue}
-          label="Points"
-          min={-100}
-          step={4}
-          repeatOnHold
-        />
-      );
-    }
-    const tree = renderTree(<Controlled />);
+    const tree = renderTree(<Controlled initial={0} min={-100} step={4} />);
     act(() => {
       propsOf<{ onPressIn: () => void }>(buttons(tree).minus).onPressIn();
     });
@@ -126,19 +134,7 @@ describe("QuantityStepper: onStep", () => {
   it("stays silent when a bound stops the step", () => {
     vi.useFakeTimers();
     const onStep = vi.fn();
-    function Controlled() {
-      const [value, setValue] = useState(1);
-      return (
-        <QuantityStepper
-          value={value}
-          onChange={setValue}
-          label="Pain"
-          repeatOnHold
-          onStep={onStep}
-        />
-      );
-    }
-    const tree = renderTree(<Controlled />);
+    const tree = renderTree(<Controlled initial={1} onStep={onStep} />);
     act(() => {
       propsOf<{ onPressIn: () => void }>(buttons(tree).minus).onPressIn();
     });
