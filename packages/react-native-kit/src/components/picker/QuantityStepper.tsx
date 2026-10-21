@@ -4,6 +4,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { usePressRepeat } from "../../hooks/usePressRepeat.js";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
+
 import {
   defaultA11yLabels,
   defaultStyles,
@@ -164,32 +165,32 @@ export function QuantityStepper({
     stepBy(delta);
   }
 
-  function pressHandlers(direction: 1 | -1) {
-    return {
-      onPress: tapsOnly
-        ? () => {
-            tap(direction * step);
-          }
-        : undefined,
-      onLongPress: jumps
-        ? () => {
-            tap(direction * longPressStep);
-          }
-        : undefined,
-      onPressIn: repeatOnHold
-        ? () => {
-            startRepeat(direction);
-          }
-        : undefined,
-      onPressOut: repeatOnHold ? repeat.stop : undefined,
-    };
-  }
-
   return (
     <View style={merged.row}>
       <Pressable
         style={[merged.button, atMin && merged.buttonDisabled]}
-        {...pressHandlers(-1)}
+        onPress={
+          tapsOnly
+            ? () => {
+                tap(-step);
+              }
+            : undefined
+        }
+        onLongPress={
+          jumps
+            ? () => {
+                tap(-longPressStep);
+              }
+            : undefined
+        }
+        onPressIn={
+          repeatOnHold
+            ? () => {
+                startRepeat(-1);
+              }
+            : undefined
+        }
+        onPressOut={repeatOnHold ? repeat.stop : undefined}
         disabled={atMin}
         hitSlop={6}
         accessibilityRole="button"
@@ -220,7 +221,28 @@ export function QuantityStepper({
       />
       <Pressable
         style={[merged.button, atMax && merged.buttonDisabled]}
-        {...pressHandlers(1)}
+        onPress={
+          tapsOnly
+            ? () => {
+                tap(step);
+              }
+            : undefined
+        }
+        onLongPress={
+          jumps
+            ? () => {
+                tap(longPressStep);
+              }
+            : undefined
+        }
+        onPressIn={
+          repeatOnHold
+            ? () => {
+                startRepeat(1);
+              }
+            : undefined
+        }
+        onPressOut={repeatOnHold ? repeat.stop : undefined}
         disabled={atMax}
         hitSlop={6}
         accessibilityRole="button"
