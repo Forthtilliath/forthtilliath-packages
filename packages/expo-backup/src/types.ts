@@ -17,9 +17,11 @@ export interface BackupSource<T> {
   /** Replaces all local data with `data` (no merge). */
   apply: (data: T) => Promise<void> | void;
   /**
-   * Whether a cloud backup holds nothing worth keeping, so linking an
-   * account can upload this device's data without asking which to keep.
-   * Defaults to never empty (always ask).
+   * Whether a backup holds nothing worth keeping. Linking an account then
+   * uploads this device's data without asking which to keep when the cloud
+   * backup is empty; and an automatic upload of empty data never replaces a
+   * cloud backup that isn't (`cloud-erase-blocked`, until the user decides).
+   * Defaults to never empty (always ask; no erase check).
    */
   isEmpty?: (data: T) => boolean;
   /**
@@ -96,6 +98,12 @@ export interface BackupManager<T> {
   cancelConflict: () => Promise<void>;
   /** Uploads now. Resolves to false (error kept in the state) instead of throwing. */
   syncNow: () => Promise<boolean>;
+  /**
+   * After `cloud-erase-blocked`, once the user confirmed: uploads this
+   * device's (empty) data over the cloud backup. The other way out is to
+   * restore the cloud backup (`fetchCloudBackup` + `restore`).
+   */
+  confirmCloudErase: () => Promise<boolean>;
   fetchCloudBackup: () => Promise<T | null>;
   disconnectCloud: () => Promise<void>;
 
