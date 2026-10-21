@@ -19,6 +19,36 @@ function httpsHost(url: string): string | null {
   return match?.[1]?.toLowerCase() ?? null;
 }
 
+/**
+ * Whether `url` is `prefix` followed by plain path segments only: letters,
+ * digits, `.`, `_`, `-` — no `..` segment, query, fragment, `%`-escape or
+ * `@` that could lead it out of the prefix.
+ */
+function isUnderPrefix(url: string, prefix: string): boolean {
+  if (!url.startsWith(prefix)) return false;
+  const rest = url.slice(prefix.length);
+  return (
+    /^[\w.-]+(\/[\w.-]+)*$/.test(rest) &&
+    rest.split("/").every((segment) => segment !== "." && segment !== "..")
+  );
+}
+
+const SHA256_HEX = /^[0-9a-f]{64}$/;
+
+/** `"sha256:ABC…"` or `"abc…"` → `"abc…"`, or `null` if not a SHA-256. */
+function normalizeSha256(value: string): string | null {
+  const hex = value
+    .trim()
+    .replace(/^sha256:/i, "")
+    .toLowerCase();
+  return SHA256_HEX.test(hex) ? hex : null;
+}
+
+/** `File#digest`, from expo-file-system 58 on. */
+interface DigestFile {
+  digest?: (algorithm: "SHA-256") => Promise<string>;
+}
+
 export interface DownloadAndInstallApkOptions {
   apkUrl: string;
   /** Temp filename in the cache directory, e.g. "myapp-update.apk". */
@@ -34,12 +64,30 @@ export interface DownloadAndInstallApkOptions {
    */
   expectedMd5?: string;
   /**
+   * SHA-256 the downloaded file must match — `apkSha256` from
+   * `fetchLatestRelease`, computed by GitHub itself when the asset was
+   * uploaded (`"sha256:…"` or bare hex, any case). A mismatch deletes the
+   * file and rejects instead of installing it. Same limits as `expectedMd5`
+   * against a malicious release, but SHA-256 can't be forged to match a
+   * tampered file. Needs expo-file-system 58 or later (`File#digest`, native,
+   * without loading the APK in JS); with an older one, it rejects.
+   */
+  expectedSha256?: string;
+  /**
    * Hosts `apkUrl` may point to — `["github.com"]` by default, the host of
    * the `apkUrl` returned by `fetchLatestRelease` (GitHub then redirects to
    * its own download host). Any other host, or a non-`https://` URL, is
    * rejected before downloading anything.
    */
   allowedHosts?: string[];
+  /**
+   * The start `apkUrl` must have, e.g. `releaseDownloadUrlPrefix({ owner,
+   * repo })` to only accept an APK of this repo's releases (any github.com
+   * URL passes `allowedHosts`, another repo's included). After the prefix,
+   * only plain path segments are allowed: no `..`, query, fragment or
+   * `%`-escape.
+   */
+  allowedUrlPrefix?: string;
 }
 
 /**
@@ -47,16 +95,19 @@ export interface DownloadAndInstallApkOptions {
  * install-package intent. Android only — there is no equivalent flow on iOS,
  * which doesn't allow installing a downloaded package outside the App Store.
  *
- * @throws if `apkUrl` isn't an `https://` URL on one of `allowedHosts`, if
- * the download fails, or if `expectedMd5` is set and doesn't match the
- * downloaded file.
+ * @throws if `apkUrl` isn't an `https://` URL on one of `allowedHosts` (or
+ * under `allowedUrlPrefix`), if `expectedSha256` isn't a SHA-256, if the
+ * download fails, or if `expectedMd5` / `expectedSha256` is set and doesn't
+ * match the downloaded file.
  */
 export async function downloadAndInstallApk({
   apkUrl,
   fileName,
   onProgress,
   expectedMd5,
+  expectedSha256,
   allowedHosts = DEFAULT_ALLOWED_HOSTS,
+  allowedUrlPrefix,
 }: DownloadAndInstallApkOptions): Promise<void> {
   const host = httpsHost(apkUrl);
   if (
@@ -66,6 +117,19 @@ export async function downloadAndInstallApk({
     throw new Error(
       `Refusing to download the APK from ${apkUrl}: expected an https:// URL on ${allowedHosts.join(", ")}.`,
     );
+  }
+  if (
+    allowedUrlPrefix !== undefined &&
+    !isUnderPrefix(apkUrl, allowedUrlPrefix)
+  ) {
+    throw new Error(
+      `Refusing to download the APK from ${apkUrl}: expected a file under ${allowedUrlPrefix}.`,
+    );
+  }
+  const sha256 =
+    expectedSha256 === undefined ? undefined : normalizeSha256(expectedSha256);
+  if (sha256 === null) {
+    throw new Error(`Invalid expectedSha256: "${String(expectedSha256)}".`);
   }
 
   const destination = new File(Paths.cache, fileName);
@@ -85,6 +149,23 @@ export async function downloadAndInstallApk({
       file.delete();
       throw new Error(
         `APK checksum mismatch: expected ${expectedMd5}, got ${actualMd5 ?? "none"}.`,
+      );
+    }
+  }
+
+  if (sha256) {
+    const { digest } = file as DigestFile;
+    if (typeof digest !== "function") {
+      file.delete();
+      throw new Error(
+        "expectedSha256 needs expo-file-system 58 or later (File#digest).",
+      );
+    }
+    const actualSha256 = (await digest.call(file, "SHA-256")).toLowerCase();
+    if (actualSha256 !== sha256) {
+      file.delete();
+      throw new Error(
+        `APK SHA-256 mismatch: expected ${sha256}, got ${actualSha256}.`,
       );
     }
   }
