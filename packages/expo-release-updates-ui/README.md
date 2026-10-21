@@ -138,24 +138,28 @@ Mount it once near the root: it checks on launch (`useUpdateCheck`), shows the b
 ```tsx
 import { UpdateNotifier } from "@forthtilliath/expo-release-updates-ui/UpdateNotifier";
 
+const repo = { owner: "acme", repo: "app" };
+
 <View
   style={{ position: "absolute", top: 56, left: 16, right: 16, zIndex: 10 }}
 >
   <UpdateNotifier
     enabled={settings !== undefined}
     currentVersion={Constants.expoConfig?.version ?? "0.0.0"}
-    checkForUpdate={fetchLatestRelease}
+    checkForUpdate={() => fetchLatestRelease(repo)}
     getLastCheck={() => ({
       lastCheckedAt: settings?.lastUpdateCheckAt ?? null,
       dismissedVersion: settings?.dismissedUpdateVersion ?? null,
     })}
     onChecked={(at) => recordUpdateCheck(at)}
     onDismissVersion={(version) => dismissUpdateVersion(version)}
-    downloadAndInstallApk={(apkUrl, onProgress) =>
+    downloadAndInstallApk={(apkUrl, onProgress, apkSha256) =>
       downloadAndInstallApk({
         apkUrl,
         fileName: "myapp-update.apk",
         onProgress,
+        allowedUrlPrefix: releaseDownloadUrlPrefix(repo),
+        expectedSha256: apkSha256,
       })
     }
     styles={{ banner: { container: { backgroundColor: colors.surface } } }}
@@ -165,7 +169,9 @@ import { UpdateNotifier } from "@forthtilliath/expo-release-updates-ui/UpdateNot
 
 Pass **`enabled={false}` until the settings `getLastCheck` reads have loaded** (async database, live query…): the check runs once, on mount, so starting earlier would ignore both the 12h throttle and the dismissed version. Positioning is left to the parent. `labels` / `styles` take `{ banner, install }`, same keys as `UpdateAvailableBanner` and `UpdateInstallCard`.
 
-The building blocks are exported too, to compose a different flow: `useApkInstall(downloadAndInstallApk)` (`{ state, start(version, apkUrl), retry, reset }`) and `<UpdateInstallCard state onRetry onClose />` (renders nothing while idle).
+`downloadAndInstallApk` receives the release's `apkSha256` (from `fetchLatestRelease`) as its third argument: pass it on as `expectedSha256` so a swapped or damaged APK is never installed (needs expo-file-system 58+), and restrict the URL to your repo's releases with `allowedUrlPrefix`.
+
+The building blocks are exported too, to compose a different flow: `useApkInstall(downloadAndInstallApk)` (`{ state, start(version, apkUrl, apkSha256?), retry, reset }`) and `<UpdateInstallCard state onRetry onClose />` (renders nothing while idle).
 
 ## Scripts
 

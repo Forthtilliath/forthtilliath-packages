@@ -8,6 +8,8 @@ export interface UpdateSettingsScreenRelease {
   version: string;
   notes: string;
   apkUrl: string;
+  /** SHA-256 of the APK, handed back to `downloadAndInstallApk`. */
+  apkSha256?: string;
 }
 
 export interface UpdateSettingsScreenHistoryEntry {

@@ -56,6 +56,7 @@ describe("UpdateSettingsScreen", () => {
           version: "1.1.0",
           notes: "- New stuff.",
           apkUrl: "https://example.com/app.apk",
+          apkSha256: "ab".repeat(32),
         })}
         compareVersions={(a, b) => (a > b ? 1 : -1)}
         downloadAndInstallApk={downloadAndInstallApk}
@@ -86,6 +87,7 @@ describe("UpdateSettingsScreen", () => {
     expect(downloadAndInstallApk).toHaveBeenCalledWith(
       "https://example.com/app.apk",
       expect.any(Function),
+      "ab".repeat(32),
     );
   });
 
