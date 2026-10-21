@@ -9,6 +9,7 @@ import {
 
 import type { ManagerContext } from "./context.js";
 import {
+  BackupError,
   backupErrorCode,
   backupErrorDetail,
   normalizeBackupError,
@@ -16,6 +17,7 @@ import {
 import {
   downloadAppDataFile,
   DriveError,
+  type DriveFile,
   findAppDataFile,
   uploadAppDataFile,
 } from "./googleDrive.js";
@@ -26,14 +28,17 @@ export interface CloudSync<T> {
   connect: () => Promise<ConnectResult<T>>;
   /** Links the account without asking (after a conflict was resolved). */
   link: (email: string, options: { upload: boolean }) => Promise<void>;
-  syncNow: () => Promise<boolean>;
+  /** `allowErase`: upload even over a cloud backup this one would wipe. */
+  syncNow: (options?: { allowErase?: boolean }) => Promise<boolean>;
   fetchCloudBackup: () => Promise<T | null>;
   disconnect: () => Promise<void>;
 }
 
 /**
  * The Drive half of the manager. Two files in the app folder: the backup
- * itself, overwritten on every upload (a full snapshot, no history), and the
+ * itself, overwritten on every upload (a full snapshot, no history — so an
+ * empty device never overwrites a cloud backup holding data without the
+ * user's say, see `assertNoCloudErase`), and the
  * keyring escrow, so a new device signed in to the same account can read the
  * encrypted backups without the user having to keep anything.
  */
@@ -110,13 +115,39 @@ export function createCloudSync<T>(
     return ctx.readBackup(await downloadAppDataFile(token, file.id));
   }
 
-  async function upload(): Promise<void> {
+  /**
+   * Refuses to replace a cloud backup that still holds data with an empty
+   * one ("erase everything", data lost on the device…): the only copy would
+   * be gone 3 s later. An unreadable cloud backup counts as holding data.
+   */
+  async function assertNoCloudErase(
+    token: string,
+    data: T,
+    existing: DriveFile | null,
+  ): Promise<void> {
+    const { isEmpty } = config;
+    if (!existing || !isEmpty?.(data)) return;
+    const content = await downloadAppDataFile(token, existing.id);
+    const cloudIsEmpty = await ctx.readBackup(content).then(
+      (remote) => isEmpty(remote),
+      () => false,
+    );
+    if (!cloudIsEmpty) throw new BackupError("cloud-erase-blocked");
+  }
+
+  async function upload({ allowErase }: { allowErase: boolean }) {
+    // Once refused, every upload waits for the user's decision: data added
+    // since (one new entry) must not silently replace the cloud backup either.
+    if (!allowErase && store.getState().cloudError === "cloud-erase-blocked") {
+      throw new BackupError("cloud-erase-blocked");
+    }
     const startedAt = Date.now();
     const data = await config.collect();
     await withToken(async (token) => {
       if (keyringDirty || encryption.isActive()) await syncKeyring(token);
-      const content = await ctx.writeBackup(data);
       const existing = await findAppDataFile(token, backupName);
+      if (!allowErase) await assertNoCloudErase(token, data, existing);
+      const content = await ctx.writeBackup(data);
       await uploadAppDataFile(token, backupName, content, existing?.id ?? null);
     });
     store.setState({
@@ -129,6 +160,7 @@ export function createCloudSync<T>(
 
   let syncing = false;
   let syncAgain = false;
+  let eraseAgain = false;
 
   /**
    * One upload at a time: a change made during an upload triggers another
@@ -136,16 +168,19 @@ export function createCloudSync<T>(
    * device. Errors are kept in the state, never thrown, and the upload stays
    * pending until the next try.
    */
-  async function syncNow(): Promise<boolean> {
+  async function syncNow({
+    allowErase = false,
+  }: { allowErase?: boolean } = {}): Promise<boolean> {
     await ctx.ready();
     if (!store.getState().cloudAccount) return false;
     if (syncing) {
       syncAgain = true;
+      eraseAgain ||= allowErase;
       return false;
     }
     syncing = true;
     try {
-      await upload();
+      await upload({ allowErase });
       return true;
     } catch (error) {
       store.setState({
@@ -158,9 +193,11 @@ export function createCloudSync<T>(
     } finally {
       syncing = false;
       if (syncAgain) {
+        const again = { allowErase: eraseAgain };
         syncAgain = false;
+        eraseAgain = false;
         store.setState({ cloudPending: true });
-        void syncNow();
+        void syncNow(again);
       }
     }
   }

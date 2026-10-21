@@ -62,9 +62,12 @@ export function createBackupManager<T>(
     const hasSafetyBackup = await ctx.writeSafetyBackup();
     await config.apply(data);
     const now = Date.now();
+    const eraseBlocked = store.getState().cloudError === "cloud-erase-blocked";
     store.setState({
       hasSafetyBackup,
       lastBackupAt: Math.max(now, store.getState().lastBackupAt ?? 0),
+      // A deliberate restore is the user's decision on a blocked erase.
+      ...(eraseBlocked ? noCloudError : {}),
       // Restored from the cloud: both sides now hold the same data.
       ...(source === "cloud" ? { cloudPending: false, ...noCloudError } : {}),
     });
@@ -112,7 +115,8 @@ export function createBackupManager<T>(
     async cancelConflict() {
       await ctx.auth.signOut();
     },
-    syncNow: cloud.syncNow,
+    syncNow: () => cloud.syncNow(),
+    confirmCloudErase: () => cloud.syncNow({ allowErase: true }),
     fetchCloudBackup: cloud.fetchCloudBackup,
     disconnectCloud: cloud.disconnect,
 
