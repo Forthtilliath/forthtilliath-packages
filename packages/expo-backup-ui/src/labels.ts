@@ -33,6 +33,11 @@ export interface BackupScreenLabels {
   conflictKeepCloud: string;
   noCloudBackupTitle: string;
   noCloudBackupMessage: string;
+  /** Shown only after `cloud-erase-blocked`: overwrite the cloud backup anyway. */
+  eraseCloudButton: string;
+  eraseCloudConfirmTitle: string;
+  eraseCloudConfirmMessage: string;
+  eraseCloudConfirmButton: string;
 
   fileTitle: string;
   lastBackup: (date: string) => string;
