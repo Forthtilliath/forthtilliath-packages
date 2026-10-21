@@ -57,6 +57,11 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `getMostRecentIds(rows, limit?)` — most recently occurring distinct ids
   (`{ id, occurredAt }[]`), most recent first, deduplicated, limited
   (default 5).
+- `indexById(items)` — `ReadonlyMap` from each item's `id` to the item (last
+  wins on duplicates), to build once instead of a `find` per rendered row.
+- `moveItem(items, from, offset)` — copy of `items` with the element at
+  `from` moved `offset` places (negative = towards the start); returns
+  `items` itself when nothing moves, so a state setter can skip the update.
 - `nextInCycle(ids, currentId)` — next id in a short list (e.g. cycling
   through recents on tap) — wraps to the first if `currentId` is at the end
   or no longer in the list.
@@ -114,16 +119,35 @@ Importing them is harmless anywhere: the DOM is only touched when called.
     rarely needed since `FArray` is already assignable to `T[]` anywhere a
     plain array is expected, but useful when the runtime type matters too.
 
+### `color`
+
+- `contrastRatio(a, b)` — WCAG 2 contrast ratio between two hex colours
+  (`#rgb`/`#rrggbb`), from 1 to 21; compare with `TEXT_CONTRAST` (4.5) or
+  `GRAPHIC_CONTRAST` (3). Throws a `TypeError` on an invalid colour.
+- `relativeLuminance(hex)` — WCAG 2 relative luminance, 0 (black) to 1.
+- `readableTextOn(background)` — `"#ffffff"` or `"#000000"`, whichever reads
+  best on that background.
+
 ### `csv`
+
+Every text cell that starts with `=`, `+`, `-`, `@`, a tab or a carriage
+return is prefixed with `'` by `toCsv` and `escapeCsvField`, so Excel,
+LibreOffice or Sheets show it instead of running it as a formula (CSV
+injection: `=HYPERLINK(…)` typed as a name becomes a trapped link). Numbers,
+and numbers written as text (`"-3"`), are left as they are. Pass
+`{ neutralizeFormulas: false }` only for a file no spreadsheet opens.
 
 - `parseCsvLine(line, delimiter?)` — splits one CSV line into trimmed cells;
   quoted cells may contain the delimiter, `""` stands for a literal quote.
   Delimiter defaults to `","`.
-- `toCsv(rows, delimiter?)` — serializes whole rows to CSV, every cell quoted
-  and escaped, rows joined with `\n`. Delimiter defaults to `","`.
-- `escapeCsvField(value, delimiter?)` — escapes a single field (RFC 4180),
-  quoting it only if it contains a `"`, the delimiter or a line break — to
-  build rows cell by cell. Delimiter defaults to `";"` (French-locale Excel).
+- `toCsv(rows, delimiter?, { neutralizeFormulas? })` — serializes whole rows
+  to CSV, every cell quoted and escaped, rows joined with `\n`. Delimiter
+  defaults to `","`.
+- `escapeCsvField(value, delimiter?, { neutralizeFormulas? })` — escapes a
+  single field (RFC 4180), quoting it only if it contains a `"`, the
+  delimiter or a line break — to build rows cell by cell. Delimiter defaults
+  to `";"` (French-locale Excel).
+- `neutralizeCsvFormula(value)` — the formula guard above, on its own.
 - `formatCsvNumber(value, decimals?)` — formats a number with a comma decimal
   separator (French-locale spreadsheets) instead of JS's dot.
 - `downloadCsv(filename, content)` — browser download as `text/csv`, with a
@@ -144,7 +168,9 @@ Importing them is harmless anywhere: the DOM is only touched when called.
 - `mondayFirstWeekday(date)` — weekday index with Monday = `0` … Sunday = `6`,
   from a `Date` or a `YYYY-MM-DD` string; offsets a Monday-first month grid.
 - `formatRelativeTime(date, baseDate?, locale?)` — human-readable relative
-  time ("3 hours ago"), backed by `Intl.RelativeTimeFormat`.
+  time ("3 hours ago"), backed by `Intl.RelativeTimeFormat`. Without it
+  (Hermes, React Native on Android), a built-in French/English fallback
+  ("il y a 3 heures"; other locales in English) instead of a crash.
 - `formatRecentDate(date, { now?, locale? })` — a past moment as a "last
   saved…" line reads best: `"aujourd'hui à 21:42"`, `"hier à 08:05"`, then
   `"le 11 octobre 2026"` (`locale: "en"`: `"today at…"`, `"on October 11, 2026"`).
@@ -250,7 +276,9 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
 - `pluralize(count, singular, plural? | { plural?, locale? })` — picks the
   singular or the plural form. Which counts take the singular follows the
   locale's rules (`Intl.PluralRules`, `"en"` by default): only ±1 in
-  English, 0 and 1.5 too in French. Without an explicit plural form, a naive
+  English, 0 and 1.5 too in French. Where `Intl.PluralRules` is missing
+  (Hermes, React Native on Android), French keeps the singular below 2 and
+  other languages only for ±1. Without an explicit plural form, a naive
   suffix: English `s`/`es`/`ies`, French `s` (nothing after `s`/`x`/`z`),
   `s` elsewhere.
 - `createPluralize(locale)` — `pluralize` bound to a locale, declared once per
