@@ -40,9 +40,14 @@ export interface UpdateSettingsScreenProps {
   checkForUpdate: () => Promise<UpdateSettingsScreenRelease | null>;
   /** Positive when `a` is newer than `b`, e.g. semver comparison. */
   compareVersions: (a: string, b: string) => number;
+  /**
+   * Receives the release's `apkSha256`: pass it on as
+   * `expectedSha256` so a swapped or damaged APK is never installed.
+   */
   downloadAndInstallApk: (
     apkUrl: string,
     onProgress?: (fraction: number) => void,
+    apkSha256?: string,
   ) => Promise<void>;
   /** Omit to not show a version history section at all. */
   fetchReleaseHistory?: () => Promise<UpdateSettingsScreenHistoryEntry[]>;
@@ -122,12 +127,19 @@ export function UpdateSettingsScreen({
     // eslint-disable-next-line @eslint-react/exhaustive-deps -- runs once on mount by design; handleCheckForUpdate is expected to be stable enough for the screen's lifetime.
   }, []);
 
-  async function handleInstall(apkUrl: string) {
+  async function handleInstall({
+    apkUrl,
+    apkSha256,
+  }: UpdateSettingsScreenRelease) {
     setUpdateState({ status: "downloading", progress: 0 });
     try {
-      await downloadAndInstallApk(apkUrl, (progress) => {
-        setUpdateState({ status: "downloading", progress });
-      });
+      await downloadAndInstallApk(
+        apkUrl,
+        (progress) => {
+          setUpdateState({ status: "downloading", progress });
+        },
+        apkSha256,
+      );
       setUpdateState({ status: "idle" });
     } catch {
       setUpdateState({ status: "error", message: t.downloadError });
@@ -193,7 +205,7 @@ export function UpdateSettingsScreen({
           <Pressable
             style={merged.button}
             onPress={() => {
-              void handleInstall(updateState.release.apkUrl);
+              void handleInstall(updateState.release);
             }}
             accessibilityRole="button"
             accessibilityLabel={t.installButtonAccessibilityLabel(
