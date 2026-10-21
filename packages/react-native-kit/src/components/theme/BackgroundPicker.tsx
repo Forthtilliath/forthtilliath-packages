@@ -4,18 +4,9 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** One background on offer, drawn as a page with a card on it. */
-export interface BackgroundOption {
-  id: string;
-  /** Shown under the swatch and read by screen readers. */
-  label: string;
-  /** The page colour. */
-  page: string;
-  /** The card drawn on the page. */
-  card: string;
-  /** The card's border. Defaults to `card`. */
-  cardBorder?: string;
-}
+import type { BackgroundOption } from "./findBackground.js";
+
+export type { BackgroundOption } from "./findBackground.js";
 
 export interface BackgroundPickerStyles {
   /** The wrapping row of swatches. */
@@ -81,24 +72,9 @@ const defaultStyles = {
 };
 
 /**
- * The option with this id, or the first one (the original background) if the
- * id is unknown — a background removed since it was saved, or none saved yet.
- *
- * @throws {RangeError} If `options` is empty.
- */
-export function findBackground<T extends BackgroundOption>(
-  options: readonly T[],
-  id: string | null | undefined,
-): T {
-  const found = options.find((option) => option.id === id) ?? options[0];
-  if (!found) throw new RangeError("findBackground needs at least one option");
-  return found;
-}
-
-/**
  * Radio group of background swatches: each one draws the page and a card in
  * the colours on offer, the chosen one outlined with a check mark. Pair it
- * with `findBackground` to read the saved id, and check each palette's
+ * with `findBackground` (`./findBackground`) to read the saved id, and check each palette's
  * contrast with `contrastRatio` from `@forthtilliath/ts-kit/color`.
  *
  * @example
