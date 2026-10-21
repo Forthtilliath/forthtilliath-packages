@@ -30,7 +30,7 @@ export const backup = createBackupManager<ExportedData>({
   collect: buildExportedData, // snapshot of all the data
   parse: parseBackup, // validate + migrate; throw an Error with a user-facing message
   apply: replaceAllData, // replace everything (no merge)
-  isEmpty: (data) => data.foods.length === 0, // optional: skip the "which one to keep?" question
+  isEmpty: (data) => data.foods.length === 0, // optional, recommended: skip the "which one to keep?" question, and never let empty data wipe the cloud backup
   hasLocalData: () => countFoods() > 0, // optional: false = restore skips the undo snapshot (first launch, new phone)
   maxFileBytes: 5 * 1024 * 1024, // optional: largest importable file, checked before reading (default 10 MB)
   exportFileName: (date) => buildExportFileName("sauvegarde", "json", date),
@@ -45,13 +45,15 @@ useAutoBackup(backup); // from expo-backup-ui, or: useEffect(() => backup.start(
 backup.notifyDataChanged(); // debounced (3 s), flushed when the app goes to the background
 ```
 
-`BackupManager` methods: `connectCloud` → `{ cancelled | connected | conflict }`, `resolveConflict(conflict, "device" | "cloud")`, `cancelConflict`, `syncNow`, `fetchCloudBackup`, `disconnectCloud`, `exportToFile`, `pickBackupFile` → `{ cancelled | ready | missing-key (+ retry(recoveryCode)) }`, `restore(data, { source })`, `undoLastRestore`, `setEncryptionEnabled`, `getRecoveryCode`, `addRecoveryCode`, plus `getState`/`subscribe` (for `useSyncExternalStore`).
+`BackupManager` methods: `connectCloud` → `{ cancelled | connected | conflict }`, `resolveConflict(conflict, "device" | "cloud")`, `cancelConflict`, `syncNow`, `confirmCloudErase`, `fetchCloudBackup`, `disconnectCloud`, `exportToFile`, `pickBackupFile` → `{ cancelled | ready | missing-key (+ retry(recoveryCode)) }`, `restore(data, { source })`, `undoLastRestore`, `setEncryptionEnabled`, `getRecoveryCode`, `addRecoveryCode`, plus `getState`/`subscribe` (for `useSyncExternalStore`).
 
 The file picker offers `.json` files whether the phone labels them JSON, plain text or raw bytes; anything over `maxFileBytes` is rejected (`file-too-large`) before `parse` runs.
 
 Errors are `BackupError`s with a `code` (see `BackupErrorCode`), translated by the UI package. The app's own `parse` errors are passed through untouched. Drive's refusals get their own code when Google says why (`drive-storage-full`, `drive-rate-limited`, `drive-blocked-by-admin`…), and `backupErrorDetail(error)` gives the raw cause (`HTTP 403 · storageQuotaExceeded`) to show under the message.
 
 A failed automatic upload never throws: the state keeps `cloudError`, `cloudErrorDetail` and `cloudFailingSince` (first failure since the last success) until the next success. Uploads go through a resumable session, so a backup isn't limited to Drive's 5 MB cap on simple uploads.
+
+The cloud keeps a single copy, overwritten on every upload. So when this device's data is empty (`isEmpty`) while the cloud backup still holds some (or can't be read), the upload is **refused** (`cloud-erase-blocked`) rather than wipe the only other copy 3 s after an "erase everything" or a data loss. Every upload then stays refused — data added since included — until the user decides: restore the cloud backup (`fetchCloudBackup` + `restore`, which lifts the block), or confirm the erase with `confirmCloudErase()`. `expo-backup-ui` offers both. Without `isEmpty`, there is no such check.
 
 ### Telling the user the automatic backup fails
 
