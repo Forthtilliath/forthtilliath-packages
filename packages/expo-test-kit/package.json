@@ -32,6 +32,14 @@
     "@libsql/client": ">=0.14.0",
     "drizzle-orm": ">=0.44.0"
   },
+  "peerDependenciesMeta": {
+    "@libsql/client": {
+      "optional": true
+    },
+    "drizzle-orm": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
