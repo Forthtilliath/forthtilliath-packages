@@ -1,5 +1,19 @@
 # @forthtilliath/react-native-kit
 
+## 0.19.0
+
+### Minor Changes
+
+- 7a7af1c: expo-release-updates: `fetchLatestRelease` returns the APK's `apkSha256` (computed by GitHub) and takes `includePrereleases`; `downloadAndInstallApk` takes `expectedSha256` (needs expo-file-system 58+) and `allowedUrlPrefix`, with `releaseDownloadUrlPrefix({ owner, repo })` to restrict installs to the repo's own releases. GitHub responses are checked field by field. expo-release-updates-ui (`UpdateNotifier`, `useApkInstall`) and react-native-kit (`UpdateSettingsScreen`) hand `apkSha256` to `downloadAndInstallApk` as a third argument.
+- 7a7af1c: `QuantityStepper`: `step`, `onStep` (e.g. a haptic tick on each −/+ change) and unbounded `min`/`max` (`-Infinity`/`Infinity`). `PhotoPicker`: `renderPreview`, `onError` (an alert by default instead of an unhandled rejection) and presses ignored while `savePhoto` runs. New `BackgroundPicker` + `findBackground` in `components/theme`.
+
+### Patch Changes
+
+- Updated dependencies [7a7af1c]
+- Updated dependencies [7a7af1c]
+- Updated dependencies [7a7af1c]
+  - @forthtilliath/ts-kit@0.14.0
+
 ## 0.18.0
 
 ### Minor Changes
