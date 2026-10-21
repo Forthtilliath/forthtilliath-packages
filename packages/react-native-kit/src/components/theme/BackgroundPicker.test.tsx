@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import { Pressable, Text, View } from "react-native";
 import { describe, expect, it, vi } from "vitest";
 
 import { press, renderTree, styleOf } from "../../__mocks__/renderTree.js";
 import { propsOf } from "../../__mocks__/testInstance.js";
 
-import { BackgroundPicker, findBackground } from "./BackgroundPicker.js";
+import { BackgroundPicker } from "./BackgroundPicker.js";
+import { findBackground } from "./findBackground.js";
 
 const OPTIONS = [
   { id: "night", label: "Bleu nuit", page: "#0f172a", card: "#1e293b" },
