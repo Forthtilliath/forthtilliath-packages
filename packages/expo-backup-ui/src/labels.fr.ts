@@ -29,6 +29,11 @@ export const frLabels: BackupScreenLabels = {
   conflictKeepCloud: "Google Drive",
   noCloudBackupTitle: "Aucune sauvegarde",
   noCloudBackupMessage: "Rien n'a encore été envoyé sur Google Drive.",
+  eraseCloudButton: "Remplacer la sauvegarde Drive",
+  eraseCloudConfirmTitle: "Effacer la sauvegarde Google Drive ?",
+  eraseCloudConfirmMessage:
+    "La sauvegarde Google Drive sera remplacée par les données de ce téléphone, qui est vide. Ce qu'elle contient sera perdu.",
+  eraseCloudConfirmButton: "Remplacer",
 
   fileTitle: "Sauvegarde manuelle",
   lastBackup: (date) => `Dernière sauvegarde : ${date}`,
@@ -102,6 +107,8 @@ export const frLabels: BackupScreenLabels = {
       "Google Drive est momentanément indisponible. L'envoi sera retenté automatiquement.",
     network:
       "Pas de connexion internet. L'envoi sera retenté automatiquement une fois connecté.",
+    "cloud-erase-blocked":
+      "Ce téléphone n'a plus aucune donnée, mais ta sauvegarde Google Drive en contient encore : l'envoi automatique est suspendu pour ne pas l'effacer. Restaure-la, ou confirme que tu veux la remplacer.",
     "missing-key":
       "Cette sauvegarde est chiffrée avec une clé inconnue de ce téléphone. Saisis la clé de secours de l'appareil qui l'a créée.",
     "invalid-recovery-code":

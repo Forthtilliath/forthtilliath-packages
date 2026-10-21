@@ -55,6 +55,23 @@ export function CloudSection<T>({ ui }: { ui: BackupUi<T> }) {
       await ui.confirmAndRestore(remote, "cloud");
     });
 
+  const handleConfirmErase = () =>
+    run(async () => {
+      const confirmed = await askConfirmation(
+        t,
+        t.eraseCloudConfirmTitle,
+        t.eraseCloudConfirmMessage,
+        t.eraseCloudConfirmButton,
+      );
+      if (!confirmed) return;
+      if (await manager.confirmCloudErase()) {
+        Alert.alert(t.syncDoneTitle, t.syncDoneMessage);
+        return;
+      }
+      const uploadError = lastUploadError();
+      if (uploadError) Alert.alert(t.syncFailedTitle, uploadError);
+    });
+
   const handleDisconnect = () =>
     run(async () => {
       const confirmed = await askConfirmation(
@@ -121,6 +138,15 @@ export function CloudSection<T>({ ui }: { ui: BackupUi<T> }) {
         disabled={busy}
         styles={styles}
       />
+      {state.cloudError === "cloud-erase-blocked" && (
+        <ActionButton
+          label={t.eraseCloudButton}
+          variant="ghost"
+          onPress={() => void handleConfirmErase()}
+          disabled={busy}
+          styles={styles}
+        />
+      )}
       <ActionButton
         label={t.disconnectButton}
         variant="ghost"
