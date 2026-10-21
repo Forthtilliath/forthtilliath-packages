@@ -5,7 +5,9 @@ Test helpers for Expo/Drizzle apps: a real in-memory SQLite database (via libsql
 ## Install
 
 ```bash
-npm install --save-dev @forthtilliath/expo-test-kit drizzle-orm @libsql/client
+npm install --save-dev @forthtilliath/expo-test-kit
+# only for the sqlite/ helpers:
+npm install --save-dev drizzle-orm @libsql/client
 ```
 
 Or, from within this monorepo, as a workspace dependency:
@@ -18,7 +20,7 @@ Or, from within this monorepo, as a workspace dependency:
 }
 ```
 
-`drizzle-orm` and `@libsql/client` are peer dependencies — install them if not already present. Both are dev-only: `expo-test-kit` doesn't touch your app's production `expo-sqlite` driver, it's a separate in-memory database used only while testing.
+`drizzle-orm` and `@libsql/client` are **optional** peer dependencies: only the `sqlite/` modules need them, so an app that only takes `router/createRenderApp` or the file-system fake doesn't install them. Both are dev-only: `expo-test-kit` doesn't touch your app's production `expo-sqlite` driver, it's a separate in-memory database used only while testing.
 
 ## Usage
 
