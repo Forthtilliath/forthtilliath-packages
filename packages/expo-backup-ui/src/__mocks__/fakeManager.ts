@@ -64,6 +64,9 @@ export function createFakeManager({
       Promise.resolve(),
     ),
     syncNow: vi.fn<BackupManager<Data>["syncNow"]>(() => Promise.resolve(true)),
+    confirmCloudErase: vi.fn<BackupManager<Data>["confirmCloudErase"]>(() =>
+      Promise.resolve(true),
+    ),
     fetchCloudBackup: vi.fn<BackupManager<Data>["fetchCloudBackup"]>(),
     disconnectCloud: vi.fn<BackupManager<Data>["disconnectCloud"]>(() =>
       Promise.resolve(),

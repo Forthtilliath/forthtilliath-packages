@@ -2,6 +2,8 @@
 
 The "Settings ▸ Backup" screen for [`@forthtilliath/expo-backup`](../expo-backup#readme), shared by every app: automatic Google Drive backup, manual export/import with undo, encryption and recovery code. French by default, English with `locale="en"`, every text and style overridable.
 
+When the automatic backup refused to wipe the Drive copy with an empty phone (`cloud-erase-blocked`), the Drive section explains it and offers both ways out: "Restore from Google Drive", or "Replace the Drive backup" (`confirmCloudErase`, after a confirmation).
+
 ## Install
 
 ```bash

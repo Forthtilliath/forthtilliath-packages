@@ -29,6 +29,11 @@ export const enLabels: BackupScreenLabels = {
   conflictKeepCloud: "Google Drive",
   noCloudBackupTitle: "No backup",
   noCloudBackupMessage: "Nothing has been sent to Google Drive yet.",
+  eraseCloudButton: "Replace the Drive backup",
+  eraseCloudConfirmTitle: "Erase the Google Drive backup?",
+  eraseCloudConfirmMessage:
+    "The Google Drive backup will be replaced by this phone's data, which is empty. What it holds will be lost.",
+  eraseCloudConfirmButton: "Replace",
 
   fileTitle: "Manual backup",
   lastBackup: (date) => `Last backup: ${date}`,
@@ -101,6 +106,8 @@ export const enLabels: BackupScreenLabels = {
       "Google Drive is temporarily unavailable. The upload will be retried automatically.",
     network:
       "No internet connection. The upload will be retried automatically once you're online.",
+    "cloud-erase-blocked":
+      "This phone has no data left, but your Google Drive backup still has some: automatic uploads are paused so as not to erase it. Restore it, or confirm you want to replace it.",
     "missing-key":
       "This backup is encrypted with a key this phone doesn't know. Enter the recovery code of the device that created it.",
     "invalid-recovery-code": "This recovery code contains a typo.",
