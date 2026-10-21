@@ -12,6 +12,7 @@ const RELEASE = {
   version: "2.0.0",
   notes: "",
   apkUrl: "https://example.com/app.apk",
+  apkSha256: "ab".repeat(32),
 };
 
 function flushAsync() {
@@ -102,6 +103,7 @@ describe("UpdateNotifier", () => {
     expect(downloadAndInstallApk).toHaveBeenCalledWith(
       RELEASE.apkUrl,
       expect.any(Function),
+      RELEASE.apkSha256,
     );
     expect(texts(tree)).toContain("Téléchargement de la version 2.0.0… 42%");
     expect(props.onDismissVersion).not.toHaveBeenCalled();
@@ -122,6 +124,11 @@ describe("UpdateNotifier", () => {
 
     await press(tree, "Réessayer");
     expect(downloadAndInstallApk).toHaveBeenCalledTimes(2);
+    expect(downloadAndInstallApk).toHaveBeenLastCalledWith(
+      RELEASE.apkUrl,
+      expect.any(Function),
+      RELEASE.apkSha256,
+    );
     expect(texts(tree)).toContain("Téléchargement de la version 2.0.0… 0%");
   });
 

@@ -106,7 +106,7 @@ function ActiveUpdateNotifier({
         // Not persisted as dismissed: if the install doesn't go through, the
         // banner may come back on a later launch (unlike "Ignore").
         update.dismiss();
-        install.start(release.version, release.apkUrl);
+        install.start(release.version, release.apkUrl, release.apkSha256);
       }}
       onDismiss={() => {
         onDismissVersion(release.version);
