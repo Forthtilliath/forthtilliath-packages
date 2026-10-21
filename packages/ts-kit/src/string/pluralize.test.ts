@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createPluralize, pluralize } from "./pluralize.js";
 
@@ -58,6 +58,34 @@ describe("pluralize", () => {
       expect(pluralize(0, "Auto", { locale: "de" })).toBe("Autos");
       expect(pluralize(1, "Auto", { locale: "de" })).toBe("Auto");
     });
+  });
+});
+
+describe("pluralize without Intl.PluralRules (Hermes)", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "Intl",
+      Object.create(Intl, { PluralRules: { value: undefined } }),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("does not throw and keeps the English rules", () => {
+    expect(pluralize(1, "item")).toBe("item");
+    expect(pluralize(-1, "item")).toBe("item");
+    expect(pluralize(0, "item")).toBe("items");
+    expect(pluralize(1.5, "item")).toBe("items");
+  });
+
+  it("keeps the singular below 2 in French", () => {
+    const plural = createPluralize("fr-FR");
+    expect(plural(0, "chant")).toBe("chant");
+    expect(plural(1.5, "litre")).toBe("litre");
+    expect(plural(-1, "point")).toBe("point");
+    expect(plural(2, "chant")).toBe("chants");
   });
 });
 

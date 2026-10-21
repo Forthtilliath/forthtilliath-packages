@@ -10,7 +10,22 @@ export interface PluralizeOptions {
 
 const pluralRules = new Map<string, Intl.PluralRules>();
 
+function languageOf(locale: string): string | undefined {
+  return locale.split("-")[0]?.toLowerCase();
+}
+
+// Hermes (React Native on Android) ships no `Intl.PluralRules`: without it,
+// French keeps the singular below 2, every other language only for ±1.
+function fallbackTakesSingular(count: number, locale: string): boolean {
+  return languageOf(locale) === "fr"
+    ? Math.abs(count) < 2
+    : Math.abs(count) === 1;
+}
+
 function takesSingular(count: number, locale: string): boolean {
+  if (typeof Intl === "undefined" || typeof Intl.PluralRules !== "function") {
+    return fallbackTakesSingular(count, locale);
+  }
   let rules = pluralRules.get(locale);
   if (!rules) {
     rules = new Intl.PluralRules(locale);
@@ -20,7 +35,7 @@ function takesSingular(count: number, locale: string): boolean {
 }
 
 function defaultPlural(singular: string, locale: string): string {
-  const language = locale.split("-")[0]?.toLowerCase();
+  const language = languageOf(locale);
   if (language === "fr") {
     return /[sxz]$/i.test(singular) ? singular : `${singular}s`;
   }
@@ -33,7 +48,9 @@ function defaultPlural(singular: string, locale: string): string {
 
 /**
  * Pluralizes a word based on a count. Which counts take the singular follows
- * the locale's plural rules (`Intl.PluralRules`). Without an explicit plural
+ * the locale's plural rules (`Intl.PluralRules`); where the engine lacks it
+ * (Hermes on Android), French keeps the singular below 2 and other languages
+ * only for ±1. Without an explicit plural
  * form, the default suffix is naive: in English `s`, `y` → `ies`, `es` after
  * `s`/`x`/`z`/`sh`/`ch`; in French `s`, nothing after `s`/`x`/`z`; `s` in
  * any other language.
