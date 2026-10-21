@@ -15,6 +15,10 @@ import { DriveError } from "./googleDrive.js";
  *   `drive-blocked-by-admin` (work or school account), `drive-api-disabled`,
  *   `drive-permission-missing`, `drive-access-denied` (any other refusal),
  *   `drive-unavailable`, `network`.
+ * - `cloud-erase-blocked`: this device holds nothing (`isEmpty`) while the
+ *   cloud backup still has data — the upload was refused rather than wipe
+ *   it, and every upload stays refused until the user restores the cloud
+ *   backup or confirms the erase (`confirmCloudErase`).
  * - `missing-key`: an encrypted backup from a key this device doesn't have —
  *   enter the recovery code of the device that wrote it.
  * - `invalid-recovery-code` (typo), `recovery-code-mismatch` (valid code,
@@ -37,6 +41,7 @@ export type BackupErrorCode =
   | "drive-access-denied"
   | "drive-unavailable"
   | "network"
+  | "cloud-erase-blocked"
   | "missing-key"
   | "invalid-recovery-code"
   | "recovery-code-mismatch"
