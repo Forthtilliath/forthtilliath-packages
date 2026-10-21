@@ -1,105 +1,38 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-interface ProgressEvent {
-  bytesWritten: number;
-  totalBytes: number;
-}
+import {
+  fakes,
+  GITHUB_APK,
+  mockDownloadTask,
+  resetFakes,
+} from "./testing/fakeApkDownload.js";
 
-interface FakeDownloadedFile {
-  contentUri: string;
-  info: () => { md5?: string };
-  delete: () => void;
-}
-
-interface FakeDownloadTask {
-  downloadAsync: () => Promise<FakeDownloadedFile | undefined>;
-}
-
-type CreateDownloadTask = (
-  url: string,
-  destination: unknown,
-  options: { onProgress: (event: ProgressEvent) => void },
-) => FakeDownloadTask;
-
-let fileExists = false;
-let downloadedMd5: string | undefined = "abc123";
-const mockDelete = vi.fn();
-const mockCreateDownloadTask = vi.fn<CreateDownloadTask>();
-
-vi.mock("expo-file-system", () => {
-  class FakeFile {
-    uri: string;
-    constructor(...parts: (string | { uri: string })[]) {
-      this.uri = parts
-        .map((p) => (typeof p === "string" ? p : p.uri))
-        .join("/");
-    }
-    get exists() {
-      return fileExists;
-    }
-    delete(): void {
-      mockDelete();
-    }
-    static createDownloadTask(
-      ...args: Parameters<CreateDownloadTask>
-    ): FakeDownloadTask {
-      return mockCreateDownloadTask(...args);
-    }
-  }
-  return { File: FakeFile, Paths: { cache: { uri: "cache" } } };
-});
-
-const mockStartActivityAsync = vi.fn<(...args: unknown[]) => Promise<void>>();
-vi.mock("expo-intent-launcher", () => ({
-  startActivityAsync: (...args: unknown[]) => mockStartActivityAsync(...args),
-}));
+vi.mock("expo-file-system", async () =>
+  (await import("./testing/fakeApkDownload.js")).expoFileSystemModule(),
+);
+vi.mock("expo-intent-launcher", async () =>
+  (await import("./testing/fakeApkDownload.js")).intentLauncherModule(),
+);
 
 const { downloadAndInstallApk } = await import("./downloadAndInstallApk.js");
 
-const mockDeleteDownloadedFile = vi.fn();
-
-function mockDownloadTask(
-  result: { contentUri: string } | undefined,
-  md5 = downloadedMd5,
-) {
-  mockCreateDownloadTask.mockImplementation((_url, _dest, options) => ({
-    downloadAsync: () => {
-      options.onProgress({ bytesWritten: 50, totalBytes: 100 });
-      return Promise.resolve(
-        result && {
-          ...result,
-          info: () => ({ md5 }),
-          delete: mockDeleteDownloadedFile,
-        },
-      );
-    },
-  }));
-}
-
 describe("downloadAndInstallApk", () => {
-  beforeEach(() => {
-    fileExists = false;
-    downloadedMd5 = "abc123";
-    mockDelete.mockClear();
-    mockDeleteDownloadedFile.mockClear();
-    mockCreateDownloadTask.mockReset();
-    mockStartActivityAsync.mockClear();
-  });
+  beforeEach(resetFakes);
 
   it("downloads the apk and triggers the Android install intent", async () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" });
 
     await downloadAndInstallApk({
-      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+      apkUrl: GITHUB_APK,
       fileName: "app-update.apk",
     });
 
-    expect(mockCreateDownloadTask).toHaveBeenCalledWith(
-      "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+    expect(fakes.createDownloadTask).toHaveBeenCalledWith(
+      GITHUB_APK,
       expect.objectContaining({ uri: "cache/app-update.apk" }),
       expect.anything(),
     );
-    expect(mockStartActivityAsync).toHaveBeenCalledWith(
+    expect(fakes.startActivityAsync).toHaveBeenCalledWith(
       "android.intent.action.VIEW",
       {
         data: "content://downloads/app.apk",
@@ -110,15 +43,15 @@ describe("downloadAndInstallApk", () => {
   });
 
   it("deletes a pre-existing file at the destination before downloading", async () => {
-    fileExists = true;
+    fakes.fileExists = true;
     mockDownloadTask({ contentUri: "content://downloads/app.apk" });
 
     await downloadAndInstallApk({
-      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+      apkUrl: GITHUB_APK,
       fileName: "app-update.apk",
     });
 
-    expect(mockDelete).toHaveBeenCalledTimes(1);
+    expect(fakes.deleteDestination).toHaveBeenCalledTimes(1);
   });
 
   it("reports progress as a 0-1 fraction", async () => {
@@ -126,7 +59,7 @@ describe("downloadAndInstallApk", () => {
     const onProgress = vi.fn();
 
     await downloadAndInstallApk({
-      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+      apkUrl: GITHUB_APK,
       fileName: "app-update.apk",
       onProgress,
     });
@@ -139,24 +72,24 @@ describe("downloadAndInstallApk", () => {
 
     await expect(
       downloadAndInstallApk({
-        apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+        apkUrl: GITHUB_APK,
         fileName: "app-update.apk",
       }),
     ).rejects.toThrow("The download failed.");
-    expect(mockStartActivityAsync).not.toHaveBeenCalled();
+    expect(fakes.startActivityAsync).not.toHaveBeenCalled();
   });
 
   it("installs when the downloaded file matches the expected md5", async () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" }, "abc123");
 
     await downloadAndInstallApk({
-      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+      apkUrl: GITHUB_APK,
       fileName: "app-update.apk",
       expectedMd5: "ABC123",
     });
 
-    expect(mockStartActivityAsync).toHaveBeenCalled();
-    expect(mockDeleteDownloadedFile).not.toHaveBeenCalled();
+    expect(fakes.startActivityAsync).toHaveBeenCalled();
+    expect(fakes.deleteDownloadedFile).not.toHaveBeenCalled();
   });
 
   it("deletes the file and throws when the md5 doesn't match", async () => {
@@ -164,13 +97,13 @@ describe("downloadAndInstallApk", () => {
 
     await expect(
       downloadAndInstallApk({
-        apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+        apkUrl: GITHUB_APK,
         fileName: "app-update.apk",
         expectedMd5: "def456",
       }),
     ).rejects.toThrow("APK checksum mismatch: expected def456, got abc123.");
-    expect(mockDeleteDownloadedFile).toHaveBeenCalledTimes(1);
-    expect(mockStartActivityAsync).not.toHaveBeenCalled();
+    expect(fakes.deleteDownloadedFile).toHaveBeenCalledTimes(1);
+    expect(fakes.startActivityAsync).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -184,8 +117,8 @@ describe("downloadAndInstallApk", () => {
     await expect(
       downloadAndInstallApk({ apkUrl, fileName: "app-update.apk" }),
     ).rejects.toThrow("Refusing to download the APK");
-    expect(mockCreateDownloadTask).not.toHaveBeenCalled();
-    expect(mockStartActivityAsync).not.toHaveBeenCalled();
+    expect(fakes.createDownloadTask).not.toHaveBeenCalled();
+    expect(fakes.startActivityAsync).not.toHaveBeenCalled();
   });
 
   it("accepts a host listed in allowedHosts, case-insensitively", async () => {
@@ -197,17 +130,17 @@ describe("downloadAndInstallApk", () => {
       allowedHosts: ["downloads.example.com"],
     });
 
-    expect(mockStartActivityAsync).toHaveBeenCalled();
+    expect(fakes.startActivityAsync).toHaveBeenCalled();
   });
 
   it("skips the checksum check when expectedMd5 is not provided", async () => {
     mockDownloadTask({ contentUri: "content://downloads/app.apk" }, undefined);
 
     await downloadAndInstallApk({
-      apkUrl: "https://github.com/acme/app/releases/download/v1.0.0/app.apk",
+      apkUrl: GITHUB_APK,
       fileName: "app-update.apk",
     });
 
-    expect(mockStartActivityAsync).toHaveBeenCalled();
+    expect(fakes.startActivityAsync).toHaveBeenCalled();
   });
 });

@@ -12,7 +12,7 @@ export default defineConfig({
       enabled: process.env.CI === "true",
       provider: "v8",
       reporter: ["text", "lcov"],
-      exclude: ["**/*.test.ts", "src/index.ts"],
+      exclude: ["**/*.test.ts", "src/testing/**", "src/index.ts"],
       // Thresholds pinned near this package's actual coverage rather than a
       // round number — catches a real regression without blocking every PR
       // that doesn't happen to add a test for its one new line.
