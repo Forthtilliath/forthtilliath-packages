@@ -36,6 +36,12 @@ export interface PhotoPickerProps {
    * (`labels.saveErrorTitle` / `saveErrorMessage`).
    */
   onError?: (error: unknown) => void;
+  /**
+   * Called when a press opens the camera/library choice (not while a photo
+   * is being saved). The place for a haptic tick: `onOpen={tapFeedback}`
+   * (from `utils/helpers/haptics`).
+   */
+  onOpen?: () => void;
   labels?: PhotoPickerLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -60,6 +66,7 @@ export function PhotoPicker({
   photoLabel,
   renderPreview,
   onError,
+  onOpen,
   labels,
   locale,
   styles,
@@ -112,6 +119,7 @@ export function PhotoPicker({
 
   function handlePickPhoto() {
     if (busyRef.current) return;
+    onOpen?.();
     Alert.alert(t.photoTitle(photoLabel), undefined, [
       {
         text: t.takePhoto,
