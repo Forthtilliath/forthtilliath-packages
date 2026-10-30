@@ -395,6 +395,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.7.0(jiti@2.7.0)
+      eslint-plugin-expo:
+        specifier: ^1.2.1
+        version: 1.2.1(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
       eslint-plugin-i18next:
         specifier: ^6.1.5
         version: 6.1.5
@@ -6234,6 +6237,12 @@ packages:
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
+
+  eslint-plugin-expo@1.2.1:
+    resolution: {integrity: sha512-6eIogfGM7tIq169MbqJTA0iaI9h/VGujSUAy85hA3OHvYecEYM8XE9fMLd7ywnQClnVkT3JgbW8NWyhEP8g5yw==}
+    engines: {node: ^22.13.0 || ^24.3.0 || ^26.0.0 || >=27.0.0}
+    peerDependencies:
+      eslint: '>=8.10'
 
   eslint-plugin-i18next@6.1.5:
     resolution: {integrity: sha512-xCTfstbK9ZpQ6UFT5S1s6zbZMhKn2o2jRSQYiU2UkV7wt8y1m3WjkUYGkGlipgRdFInYI9+LAqE+JQU/L73HmA==}
@@ -15870,6 +15879,15 @@ snapshots:
   eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)):
     dependencies:
       eslint: 10.7.0(jiti@2.7.0)
+
+  eslint-plugin-expo@1.2.1(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3):
+    dependencies:
+      '@typescript-eslint/types': 8.67.0
+      '@typescript-eslint/utils': 8.67.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
+      eslint: 10.7.0(jiti@2.7.0)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   eslint-plugin-i18next@6.1.5:
     dependencies:

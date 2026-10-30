@@ -42,6 +42,7 @@
     "@next/eslint-plugin-next": "^16.3.0",
     "angular-eslint": "^21.4.0",
     "eslint": "^9.0.0 || ^10.0.0",
+    "eslint-plugin-expo": "^1.2.1",
     "eslint-plugin-i18next": "^6.1.5",
     "eslint-plugin-jest-dom": "^5.10.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -62,6 +63,9 @@
       "optional": true
     },
     "angular-eslint": {
+      "optional": true
+    },
+    "eslint-plugin-expo": {
       "optional": true
     },
     "eslint-plugin-i18next": {
@@ -102,6 +106,7 @@
     "@next/eslint-plugin-next": "^16.3.0",
     "angular-eslint": "^21.4.0",
     "eslint": "catalog:",
+    "eslint-plugin-expo": "^1.2.1",
     "eslint-plugin-i18next": "^6.1.5",
     "eslint-plugin-jest-dom": "^5.10.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
