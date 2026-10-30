@@ -268,6 +268,18 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
 - `deepEqual(a, b)` — recursive structural equality check.
 - `mapValues(obj, fn)` — maps every value of an object through `fn`.
 
+### `security`
+
+- `createAttemptLimiter({ storage, key, freeAttempts?, delaysMs?, now? })` —
+  growing delays between attempts at a secret (a PIN…): 4 free failures,
+  then 30 s, 1 min, 5 min, 15 min for each one after. `attempt(verify)`
+  returns `{ ok: true }` or `{ ok: false, lockedUntil }` (0 when no delay
+  is running) and doesn't call `verify` while locked; `getLockedUntil()`,
+  `reset()`. The counter lives in the injected `storage` (e.g.
+  expo-secure-store's `getItemAsync`/`setItemAsync`/`deleteItemAsync`); an
+  unreadable or tampered value counts as used up, not as zero, a clock set
+  back restarts the delay from now, and parallel attempts are serialized.
+
 ### `string`
 
 - `capitalize(str)` — uppercases the first letter, lowercases the rest.
