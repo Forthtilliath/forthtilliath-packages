@@ -4,6 +4,8 @@ import type { ChangelogNotesStyles } from "@forthtilliath/expo-release-updates-u
 
 import type { KitLocale } from "../../i18n/locale.js";
 
+import type { SwitchRowColors, SwitchRowStyles } from "./SwitchRow.js";
+
 export interface UpdateSettingsScreenRelease {
   version: string;
   notes: string;
@@ -30,6 +32,8 @@ export interface UpdateSettingsScreenLabels {
   downloadingLabel?: (percent: number) => string;
   downloadingHint?: string;
   historyTitle?: string;
+  prereleaseLabel?: string;
+  prereleaseDescription?: string;
 }
 
 export interface UpdateSettingsScreenStyles {
@@ -52,6 +56,9 @@ export interface UpdateSettingsScreenStyles {
   changelogVersion?: StyleProp<TextStyle>;
   changelogDate?: StyleProp<TextStyle>;
   notes?: ChangelogNotesStyles;
+  /** The "test versions" switch row, shown with `onIncludePrereleasesChange`. */
+  prereleaseSwitch?: SwitchRowStyles;
+  prereleaseSwitchColors?: SwitchRowColors;
 }
 
 export const defaultLabels = {
@@ -70,6 +77,9 @@ export const defaultLabels = {
     downloadingHint:
       "Ton téléphone va ensuite te demander confirmation pour installer la mise à jour.",
     historyTitle: "Historique des versions",
+    prereleaseLabel: "Recevoir les versions de test",
+    prereleaseDescription:
+      "Versions alpha et bêta, avant leur sortie : elles peuvent contenir des bugs.",
   },
   en: {
     installedVersionLabel: "Installed version",
@@ -84,11 +94,20 @@ export const defaultLabels = {
     downloadingLabel: (percent: number) => `Downloading… ${String(percent)}%`,
     downloadingHint: "Your phone will then ask you to confirm the install.",
     historyTitle: "Version history",
+    prereleaseLabel: "Get test versions",
+    prereleaseDescription:
+      "Alpha and beta versions, before their release: they may contain bugs.",
   },
 } satisfies Record<KitLocale, Required<UpdateSettingsScreenLabels>>;
 
+type LooseStyleKeys =
+  | "activityIndicatorColor"
+  | "notes"
+  | "prereleaseSwitch"
+  | "prereleaseSwitchColors";
+
 export const defaultStyles: Required<
-  Omit<UpdateSettingsScreenStyles, "activityIndicatorColor" | "notes">
+  Omit<UpdateSettingsScreenStyles, LooseStyleKeys>
 > &
   Pick<UpdateSettingsScreenStyles, "activityIndicatorColor" | "notes"> = {
   container: { gap: 4 },

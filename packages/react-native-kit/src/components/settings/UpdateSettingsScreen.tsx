@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 import { ChangelogNotes } from "@forthtilliath/expo-release-updates-ui";
@@ -10,6 +10,7 @@ import {
 } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
+import { SwitchRow } from "./SwitchRow.js";
 import type {
   UpdateSettingsScreenHistoryEntry,
   UpdateSettingsScreenLabels,
@@ -36,8 +37,14 @@ type UpdateState =
 
 export interface UpdateSettingsScreenProps {
   currentVersion: string;
-  /** Fetches the latest available release, or `null` if there is none. */
-  checkForUpdate: () => Promise<UpdateSettingsScreenRelease | null>;
+  /**
+   * Fetches the latest available release, or `null` if there is none.
+   * Receives the current `includePrereleases`, e.g. to pass on to
+   * `fetchLatestRelease`.
+   */
+  checkForUpdate: (options: {
+    includePrereleases: boolean;
+  }) => Promise<UpdateSettingsScreenRelease | null>;
   /** Positive when `a` is newer than `b`, e.g. semver comparison. */
   compareVersions: (a: string, b: string) => number;
   /**
@@ -51,6 +58,13 @@ export interface UpdateSettingsScreenProps {
   ) => Promise<void>;
   /** Omit to not show a version history section at all. */
   fetchReleaseHistory?: () => Promise<UpdateSettingsScreenHistoryEntry[]>;
+  /** Whether test versions (alpha, beta…) are offered. Defaults to `false`. */
+  includePrereleases?: boolean;
+  /**
+   * Shows a "test versions" switch when passed; the app stores the choice and
+   * hands it back as `includePrereleases`. Every change triggers a new check.
+   */
+  onIncludePrereleasesChange?: (value: boolean) => void;
   /**
    * Locale for formatting each history entry's date. Defaults to the
    * locale's (`"fr-FR"`, or `"en-US"` with `locale="en"`).
@@ -69,14 +83,16 @@ export interface UpdateSettingsScreenProps {
 // the available-update box (with changelog + install button) or an
 // up-to-date/error message, download progress, and — if
 // `fetchReleaseHistory` is passed — a list of past releases. Checks
-// automatically once on mount (the caller decided to navigate here, no need
-// to make them tap "check" again).
+// automatically on mount (the caller decided to navigate here, no need to make
+// them tap "check" again) and again whenever `includePrereleases` changes.
 export function UpdateSettingsScreen({
   currentVersion,
   checkForUpdate,
   compareVersions,
   downloadAndInstallApk,
   fetchReleaseHistory,
+  includePrereleases = false,
+  onIncludePrereleasesChange,
   dateLocale: customDateLocale,
   labels,
   locale,
@@ -108,24 +124,36 @@ export function UpdateSettingsScreen({
       });
   }, [fetchReleaseHistory]);
 
+  // Only the latest check may update the screen: toggling the switch during a
+  // check must not let the older answer land last.
+  const latestCheckRef = useRef(0);
   const handleCheckForUpdate = useCallback(async () => {
+    const check = ++latestCheckRef.current;
     setUpdateState({ status: "checking" });
     try {
-      const release = await checkForUpdate();
+      const release = await checkForUpdate({ includePrereleases });
+      if (check !== latestCheckRef.current) return;
       if (!release || compareVersions(release.version, currentVersion) <= 0) {
         setUpdateState({ status: "up-to-date" });
         return;
       }
       setUpdateState({ status: "available", release });
     } catch {
+      if (check !== latestCheckRef.current) return;
       setUpdateState({ status: "error", message: t.checkError });
     }
-  }, [checkForUpdate, compareVersions, currentVersion, t.checkError]);
+  }, [
+    checkForUpdate,
+    compareVersions,
+    currentVersion,
+    includePrereleases,
+    t.checkError,
+  ]);
 
   useEffect(() => {
     void handleCheckForUpdate();
-    // eslint-disable-next-line @eslint-react/exhaustive-deps -- runs once on mount by design; handleCheckForUpdate is expected to be stable enough for the screen's lifetime.
-  }, []);
+    // eslint-disable-next-line @eslint-react/exhaustive-deps -- runs on mount and when includePrereleases changes by design; the other inputs are expected to be stable enough for the screen's lifetime.
+  }, [includePrereleases]);
 
   async function handleInstall({
     apkUrl,
@@ -163,6 +191,18 @@ export function UpdateSettingsScreen({
         <Text style={merged.infoLabel}>{t.installedVersionLabel}</Text>
         <Text style={merged.infoValue}>{currentVersion}</Text>
       </View>
+
+      {onIncludePrereleasesChange && (
+        <SwitchRow
+          label={t.prereleaseLabel}
+          description={t.prereleaseDescription}
+          value={includePrereleases}
+          onChange={onIncludePrereleasesChange}
+          disabled={updateState.status === "downloading"}
+          colors={styles?.prereleaseSwitchColors}
+          styles={styles?.prereleaseSwitch}
+        />
+      )}
 
       {updateState.status !== "available" &&
         updateState.status !== "downloading" && (
