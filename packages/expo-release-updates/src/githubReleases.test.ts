@@ -220,6 +220,23 @@ describe("fetchReleaseHistory", () => {
     expect(history.map((entry) => entry.version)).toEqual(["2.0.0"]);
   });
 
+  it("lists pre-releases unless includePrereleases is false", async () => {
+    mockFetchOnce([
+      { tag_name: "v2.0.0-alpha.1", prerelease: true, published_at: "" },
+      { tag_name: "v1.0.0", prerelease: false, published_at: "" },
+    ]);
+    const all = await fetchReleaseHistory(ref);
+    const stable = await fetchReleaseHistory({
+      ...ref,
+      includePrereleases: false,
+    });
+    expect(all.map((entry) => entry.version)).toEqual([
+      "2.0.0-alpha.1",
+      "1.0.0",
+    ]);
+    expect(stable.map((entry) => entry.version)).toEqual(["1.0.0"]);
+  });
+
   it("clamps the limit to GitHub's 1–100 per_page range", async () => {
     const fetchMock = mockFetchOnce([]);
     await fetchReleaseHistory({ ...ref, limit: 500 });
