@@ -112,6 +112,26 @@ describe("PhotoPicker options", () => {
     );
   });
 
+  it("calls onOpen when the choice opens, not while saving", async () => {
+    const alertSpy = vi.spyOn(Alert, "alert");
+    const onOpen = vi.fn();
+    const tree = renderTree(
+      <PhotoPicker
+        photoUri={null}
+        onChange={vi.fn()}
+        savePhoto={() => new Promise<string>(() => undefined)}
+        photoLabel="du joueur"
+        onOpen={onOpen}
+      />,
+    );
+
+    openPicker(tree);
+    expect(onOpen).toHaveBeenCalledTimes(1);
+    await chooseFromLibrary(alertSpy);
+    openPicker(tree);
+    expect(onOpen).toHaveBeenCalledTimes(1);
+  });
+
   it("ignores presses while saving", async () => {
     const alertSpy = vi.spyOn(Alert, "alert");
     let finishSave: (uri: string) => void = () => undefined;
