@@ -79,7 +79,7 @@ beforeAll(async () => {
 
 ### `createFakeExpoFileSystem()` / `getFakeExpoFileSystem()`
 
-A minimal in-memory `File`/`Paths` fake — enough to test code that reads/writes files via `expo-file-system`, without the native filesystem (unavailable under Jest/Vitest).
+A minimal in-memory `File`/`Directory`/`Paths` fake — enough to test code that reads/writes files via `expo-file-system`, without the native filesystem (unavailable under Jest/Vitest).
 
 ```ts
 import {
@@ -97,6 +97,10 @@ beforeAll(() => {
   fakeFs = getFakeExpoFileSystem();
 });
 ```
+
+- `File`: `exists`, `create()`, `write(content)`, `delete()`, `text()`, `textSync()`; `Directory`: `exists` (created, a `Paths` root, or holding a file), `create()`, `delete()` (with its files). `store` maps each URI to its content.
+- `fakeFs.failWrites = true` simulates a full disk: `create()`/`write()` throw `"Fake disk full"` and change nothing. `fakeFs.reset()` (e.g. in `beforeEach`) empties the store and turns it back off.
+- `Paths.document` / `Paths.cache` are `"document"` / `"cache"` by default; pass `{ documentUri: "file:///documents", cacheUri: "file:///cache" }` for code that checks the scheme. Parts are joined with a single `/`, as expo-file-system does.
 
 ### `createRenderApp(deps, options?)`
 
