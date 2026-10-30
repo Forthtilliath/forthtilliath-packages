@@ -70,6 +70,7 @@ interface GithubApiRelease {
   body?: unknown;
   published_at?: unknown;
   draft?: unknown;
+  prerelease?: unknown;
   assets?: unknown;
 }
 
@@ -240,19 +241,25 @@ export async function fetchLatestRelease(
 /**
  * Fetches the most recent published releases for a repo (version, notes,
  * publish date), most recent first — useful for a "release history" screen.
- * Draft releases (only visible with a token) are left out.
+ * Draft releases (only visible with a token) are left out, and so are
+ * pre-releases with `includePrereleases: false` (the list may then hold fewer
+ * than `limit` entries).
  */
 export async function fetchReleaseHistory(
-  ref: GithubRepoRef & { limit?: number },
+  ref: GithubRepoRef & { limit?: number; includePrereleases?: boolean },
 ): Promise<ReleaseHistoryEntry[]> {
-  const { limit = 10 } = ref;
+  const { limit = 10, includePrereleases = true } = ref;
   const perPage = Math.min(Math.max(Math.trunc(limit), 1), MAX_PER_PAGE);
   const data = await fetchGithubJson<unknown>(
     `${releasesUrl(ref)}?per_page=${String(perPage)}`,
     ref,
   );
   return releasesIn(data)
-    .filter((release) => release.draft !== true)
+    .filter(
+      (release) =>
+        release.draft !== true &&
+        (includePrereleases || release.prerelease !== true),
+    )
     .map((release) => ({
       version: versionOf(release),
       notes: notesOf(release),
