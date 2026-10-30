@@ -94,6 +94,78 @@ describe("fetchLatestRelease: includePrereleases", () => {
   });
 });
 
+describe("fetchLatestRelease: requireVerifiedApk", () => {
+  const verified = { ...ref, requireVerifiedApk: true };
+
+  it("skips an apk without a SHA-256", async () => {
+    mockFetch({ tag_name: "v1.0.0", assets: [apk("1.0.0")] });
+    expect(await fetchLatestRelease(verified)).toBeNull();
+    // Without the option, it's still offered.
+    expect((await fetchLatestRelease(ref))?.version).toBe("1.0.0");
+  });
+
+  it("skips an apk outside this repo's releases", async () => {
+    mockFetch({
+      tag_name: "v1.0.0",
+      assets: [
+        {
+          ...apk("1.0.0", `sha256:${SHA}`),
+          browser_download_url:
+            "https://github.com/evil/app/releases/download/v1.0.0/App.apk",
+        },
+      ],
+    });
+    expect(await fetchLatestRelease(verified)).toBeNull();
+  });
+
+  it("takes the next apk of the release that passes", async () => {
+    mockFetch({
+      tag_name: "v1.0.0",
+      assets: [apk("1.0.0"), apk("1.0.0", `sha256:${SHA}`)],
+    });
+    expect((await fetchLatestRelease(verified))?.apkSha256).toBe(SHA);
+  });
+
+  it("falls back to the highest version that passes", async () => {
+    mockFetch([
+      { tag_name: "v1.1.0-beta.1", assets: [apk("1.1.0-beta.1")] },
+      { tag_name: "v1.0.0", assets: [apk("1.0.0", `sha256:${SHA}`)] },
+    ]);
+    const release = await fetchLatestRelease({
+      ...verified,
+      includePrereleases: true,
+    });
+    expect(release?.version).toBe("1.0.0");
+  });
+});
+
+describe("fetchLatestRelease: field lengths", () => {
+  it("cuts very long notes", async () => {
+    mockFetch({
+      tag_name: "v1.0.0",
+      body: "x".repeat(200_000),
+      assets: [apk("1.0.0")],
+    });
+    expect((await fetchLatestRelease(ref))?.notes).toHaveLength(100_000);
+  });
+
+  it("ignores an oversized tag or download URL", async () => {
+    mockFetch({ tag_name: `v1.${"0".repeat(3_000)}`, assets: [apk("1.0.0")] });
+    expect(await fetchLatestRelease(ref)).toBeNull();
+
+    mockFetch({
+      tag_name: "v1.0.0",
+      assets: [
+        {
+          ...apk("1.0.0"),
+          browser_download_url: `${releaseDownloadUrlPrefix(ref)}${"a".repeat(3_000)}.apk`,
+        },
+      ],
+    });
+    expect(await fetchLatestRelease(ref)).toBeNull();
+  });
+});
+
 describe("releaseDownloadUrlPrefix", () => {
   it("is where the repo's release assets live", () => {
     expect(releaseDownloadUrlPrefix(ref)).toBe(
