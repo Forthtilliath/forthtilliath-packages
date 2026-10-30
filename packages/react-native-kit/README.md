@@ -581,6 +581,24 @@ import {
 />;
 ```
 
+`checkForUpdate` receives `{ includePrereleases }` (`false` by default). Pass `onIncludePrereleasesChange` to show a "Recevoir les versions de test" switch: the app stores the choice, hands it back as `includePrereleases`, and the screen checks again on each change (an older check that answers late is ignored). Hand the value on to `fetchLatestRelease({ …, includePrereleases, requireVerifiedApk: true })`, and to the launch check (`UpdateNotifier`) too. Style it with `styles.prereleaseSwitch` / `styles.prereleaseSwitchColors` (`SwitchRow`'s slots).
+
+```tsx
+<UpdateSettingsScreen
+  checkForUpdate={({ includePrereleases }) =>
+    fetchLatestRelease({
+      owner,
+      repo,
+      includePrereleases,
+      requireVerifiedApk: true,
+    })
+  }
+  includePrereleases={includePrereleases}
+  onIncludePrereleasesChange={setIncludePrereleases}
+  {...otherProps}
+/>
+```
+
 #### `<BackupSettingsScreen onExport onImport reminder? />`
 
 Export/import buttons plus an optional reminder-notification switch. Deliberately just a shell: what actually gets exported/imported is entirely app-specific (your own database tables), so `onExport`/`onImport` are required — this package can't have a sensible default for "how do I export my schema". Import asks for confirmation first (via `confirmDestructive`, from `utils/helpers/`) since it replaces existing data; `onImport` itself doesn't need to.
