@@ -1,5 +1,12 @@
 # @forthtilliath/expo-release-updates-ui
 
+## 0.5.2
+
+### Patch Changes
+
+- Updated dependencies [1435bf7]
+  - @forthtilliath/expo-release-updates@0.10.0
+
 ## 0.5.1
 
 ### Patch Changes
