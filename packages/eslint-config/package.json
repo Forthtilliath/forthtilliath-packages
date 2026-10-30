@@ -100,7 +100,7 @@
     }
   },
   "devDependencies": {
-    "@angular/core": "^21.0.0",
+    "@angular/core": "^21.2.25",
     "@eslint-react/eslint-plugin": "^5.18.3",
     "@forthtilliath/typescript-config": "workspace:*",
     "@next/eslint-plugin-next": "^16.3.0",
