@@ -14,10 +14,20 @@ const { useViewShare } = await import("./useViewShare.js");
 
 beforeEach(() => {
   shareViewAsImage.mockReset().mockResolvedValue(undefined);
-  vi.stubGlobal("requestAnimationFrame", (callback: () => void) =>
-    setTimeout(callback, 0),
-  );
+  // Frames run as microtasks: deterministic, and all done before any
+  // macrotask (see `settle`), however slow the machine.
+  vi.stubGlobal("requestAnimationFrame", (callback: () => void) => {
+    queueMicrotask(callback);
+    return 0;
+  });
 });
+
+/** Lets every pending microtask (frames, awaits) run. */
+function settle() {
+  return act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+}
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -43,9 +53,7 @@ describe("useViewShare", () => {
     expect(result.current.capturing).toBe(true);
     expect(shareViewAsImage).not.toHaveBeenCalled();
 
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5));
-    });
+    await settle();
     expect(shareViewAsImage).toHaveBeenCalledWith(result.current.ref, {
       dialogTitle: "Partager le classement",
       locale: "fr",
