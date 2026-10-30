@@ -17,8 +17,9 @@ const pkg = JSON.parse(
 const REQUIRED_PEERS = ["eslint", "typescript"];
 
 /**
- * Packages imported (statically or through `import()`) by each published
- * module, keyed by its path relative to src/.
+ * Packages imported (statically, through `import()` or through
+ * `requireOptional()`) by each published module, keyed by its path relative
+ * to src/.
  * @returns {Map<string, Set<string>>}
  */
 function importsBySourceFile() {
@@ -35,9 +36,10 @@ function importsBySourceFile() {
       );
       const specifiers = [
         // `import ... from "x"` statements (anchored to the start of a line,
-        // so a comment quoting `from "..."` doesn't match), or `import("x")`.
+        // so a comment quoting `from "..."` doesn't match), `import("x")`, or
+        // `requireOptional("x", ...)`.
         ...source.matchAll(
-          /(?:^import\s[^;]*?\sfrom\s|import\()"([^".][^"]*)"/gm,
+          /(?:^import\s[^;]*?\sfrom\s|import\(|requireOptional\(\s*)"([^".][^"]*)"/gm,
         ),
       ].map(([, specifier = ""]) => specifier);
       imports.set(
@@ -79,6 +81,7 @@ describe("package.json dependencies", () => {
       ...(imports.get("base.js") ?? []),
       ...(imports.get("internal/optional-plugin.js") ?? []),
       ...(imports.get("internal/lazy-config.js") ?? []),
+      ...(imports.get("internal/turborepo.js") ?? []),
     ]);
     expect(
       Object.keys(pkg.dependencies).filter((name) => !baseImports.has(name)),

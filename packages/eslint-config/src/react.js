@@ -6,30 +6,8 @@ import pluginReactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 
 import { lazyConfig } from "./internal/lazy-config.js";
-import { importOptional, requirePlugin } from "./internal/optional-plugin.js";
+import { requireOptional } from "./internal/optional-plugin.js";
 import { createBaseConfig, createNamingConventionRule } from "./base.js";
-
-// Optional peer dependencies, each behind an option (see
-// ReactConfigOptions): a project leaving the option off doesn't install them.
-const [pluginJsxA11y, pluginI18next, pluginTestingLibrary, pluginJestDom] =
-  await Promise.all([
-    importOptional(
-      "eslint-plugin-jsx-a11y",
-      () => import("eslint-plugin-jsx-a11y"),
-    ),
-    importOptional(
-      "eslint-plugin-i18next",
-      () => import("eslint-plugin-i18next"),
-    ),
-    importOptional(
-      "eslint-plugin-testing-library",
-      () => import("eslint-plugin-testing-library"),
-    ),
-    importOptional(
-      "eslint-plugin-jest-dom",
-      () => import("eslint-plugin-jest-dom"),
-    ),
-  ]);
 
 /**
  * Any file matching this is a test file, whatever runner or naming
@@ -93,17 +71,17 @@ export function createReactConfig({
   return defineConfig([
     ...createBaseConfig({ snakeCase, ...options }),
     a11y
-      ? requirePlugin(pluginJsxA11y, "eslint-plugin-jsx-a11y", "a11y")
-          .flatConfigs.recommended
+      ? /** @type {typeof import("eslint-plugin-jsx-a11y").default} */ (
+          requireOptional("eslint-plugin-jsx-a11y", "a11y")
+        ).flatConfigs.recommended
       : [],
     i18n
       ? {
           plugins: {
-            i18next: requirePlugin(
-              pluginI18next,
-              "eslint-plugin-i18next",
-              "i18n",
-            ),
+            i18next:
+              /** @type {typeof import("eslint-plugin-i18next").default} */ (
+                requireOptional("eslint-plugin-i18next", "i18n")
+              ),
           },
           rules: { "i18next/no-literal-string": "error" },
         }
@@ -111,18 +89,14 @@ export function createReactConfig({
     testingLibrary
       ? [
           {
-            ...requirePlugin(
-              pluginTestingLibrary,
-              "eslint-plugin-testing-library",
-              "testingLibrary",
+            .../** @type {typeof import("eslint-plugin-testing-library").default} */ (
+              requireOptional("eslint-plugin-testing-library", "testingLibrary")
             ).configs["flat/react"],
             files: TEST_FILE_GLOBS,
           },
           {
-            ...requirePlugin(
-              pluginJestDom,
-              "eslint-plugin-jest-dom",
-              "testingLibrary",
+            .../** @type {typeof import("eslint-plugin-jest-dom").default} */ (
+              requireOptional("eslint-plugin-jest-dom", "testingLibrary")
             ).configs["flat/recommended"],
             files: TEST_FILE_GLOBS,
           },

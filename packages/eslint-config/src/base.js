@@ -6,14 +6,8 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 import { lazyConfig } from "./internal/lazy-config.js";
-import { importOptional, requirePlugin } from "./internal/optional-plugin.js";
-
-// Optional peer dependency: only a Turborepo needs it (and its own `turbo`
-// peer dependency, the whole Turborepo binary).
-const turboPlugin = await importOptional(
-  "eslint-plugin-turbo",
-  () => import("eslint-plugin-turbo"),
-);
+import { requireOptional } from "./internal/optional-plugin.js";
+import { isInsideTurborepo } from "./internal/turborepo.js";
 
 /**
  * Node.js builtins without the `node:` prefix, as the first
@@ -40,10 +34,11 @@ export const NODE_BUILTIN_IMPORT_GROUP = [
  *   `strictTypeChecked` + `stylisticTypeChecked` presets. Set to `false` to
  *   fall back to the plain `recommended` preset instead (useful while
  *   migrating an existing codebase that isn't ready for the strict rules).
- * @property {boolean} [turbo=true] - Enable eslint-plugin-turbo's
+ * @property {boolean} [turbo] - Enable eslint-plugin-turbo's
  *   `no-undeclared-env-vars` rule (needs `eslint-plugin-turbo` installed).
- *   Only relevant inside a Turborepo; set to `false` for a standalone
- *   project.
+ *   Only relevant inside a Turborepo: defaults to `true` when a `turbo.json`
+ *   sits in ESLint's working directory or one of its parents, `false`
+ *   otherwise.
  * @property {boolean} [snakeCase=false] - Also accept `snake_case` variable
  *   names in `@typescript-eslint/naming-convention` — for code that
  *   destructures rows straight from a SQL database (e.g. Supabase), whose
@@ -101,7 +96,7 @@ export function createNamingConventionRule({
 export function createBaseConfig({
   prettier = true,
   strict = true,
-  turbo = true,
+  turbo = isInsideTurborepo(),
   snakeCase = false,
 } = {}) {
   return defineConfig([
@@ -174,7 +169,9 @@ export function createBaseConfig({
     turbo
       ? {
           plugins: {
-            turbo: requirePlugin(turboPlugin, "eslint-plugin-turbo", "turbo"),
+            turbo: /** @type {typeof import("eslint-plugin-turbo").default} */ (
+              requireOptional("eslint-plugin-turbo", "turbo")
+            ),
           },
           rules: {
             "turbo/no-undeclared-env-vars": "error",
