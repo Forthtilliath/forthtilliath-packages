@@ -95,9 +95,9 @@ if (release && isUpdateAvailable(currentVersion, release.version)) {
 }
 ```
 
-### `fetchReleaseHistory({ owner, repo, limit?, token?, timeoutMs?, signal? })`
+### `fetchReleaseHistory({ owner, repo, limit?, includePrereleases?, token?, timeoutMs?, signal? })`
 
-Fetches the most recent published releases (version, notes, publish date), most recent first — draft releases, visible with a token, are left out. `limit` defaults to `10` (clamped to GitHub's 1–100) — useful for a "release history" / "what's new" screen.
+Fetches the most recent published releases (version, notes, publish date), most recent first — draft releases, visible with a token, are left out. `limit` defaults to `10` (clamped to GitHub's 1–100) — useful for a "release history" / "what's new" screen. Pre-releases are listed too, unless `includePrereleases: false` (pass the same value as to `fetchLatestRelease`, so users who don't get test versions don't see them listed either; fewer than `limit` entries may then come back).
 
 ```ts
 const history = await fetchReleaseHistory({
