@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import type { ComponentRef, RefObject } from "react";
 import type { View } from "react-native";
 
 import { DEFAULT_KIT_LOCALE, type KitLocale } from "../../i18n/locale.js";
@@ -23,13 +23,15 @@ const defaultCaptureUnavailableMessages: Record<KitLocale, string> = {
  * module is known to be there: on a binary built without it, only this
  * feature fails — with a user-facing `Error` — instead of the whole screen.
  *
- * @param view - Ref of the view to capture (`collapsable={false}` on Android).
+ * @param view - Ref of the view to capture (`collapsable={false}` on Android),
+ *   as `useRef<ComponentRef<typeof View>>(null)` gives — `View` is the
+ *   component, not its instance type.
  * @param options - See {@link ShareViewAsImageOptions} and `shareFile`.
  * @example
  * await shareViewAsImage(rankingRef, { dialogTitle: "Partager le classement" });
  */
 export async function shareViewAsImage(
-  view: RefObject<View | null>,
+  view: RefObject<ComponentRef<typeof View> | null>,
   { captureUnavailableMessage, ...options }: ShareViewAsImageOptions = {},
 ): Promise<void> {
   if (!isNativeModuleAvailable("RNViewShot")) {
