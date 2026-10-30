@@ -1,5 +1,17 @@
 # @forthtilliath/react-native-kit
 
+## 0.20.0
+
+### Minor Changes
+
+- 3f03f2c: `QuantityStepper` takes `maxFontSizeMultiplier`, applied to "−", "+" and the field. `PhotoPicker` takes `onOpen`, called when a press opens the camera/library choice (e.g. a haptic tick). `shareViewAsImage` now types its ref as `RefObject<ComponentRef<typeof View> | null>`, which a `<View ref>` ref matches without a cast. New `useViewShare` hook: shares as an image a view mounted only for the capture (`capturing`), waiting two frames before capturing, with an error alert or `onError`.
+
+### Patch Changes
+
+- Updated dependencies [a6639da]
+- Updated dependencies [0789b65]
+  - @forthtilliath/ts-kit@0.15.0
+
 ## 0.19.0
 
 ### Minor Changes

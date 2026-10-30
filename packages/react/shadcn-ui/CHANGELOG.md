@@ -1,5 +1,11 @@
 # @forthtilliath/shadcn-ui
 
+## 0.4.1
+
+### Patch Changes
+
+- 5c67142: Requires zod 4.6.7 or later: earlier 4.x versions can exhaust memory while validating oversized constrained collections (GHSA advisory, fixed in 4.6.6).
+
 ## 0.4.0
 
 ### Minor Changes
