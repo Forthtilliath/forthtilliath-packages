@@ -116,6 +116,45 @@ export function applyShortCxxPath(
   );
 }
 
+const KOTLIN_JVM_TARGET_MARKER = "withKotlinJvmTarget";
+
+/**
+ * Appends to the root `android/build.gradle` a block forcing every Kotlin
+ * compile task, in every subproject, to target `jvmTarget` — the Java code's
+ * target: a native module compiling its Kotlin for another one (e.g.
+ * expo-dynamic-app-icon) fails the build with "Inconsistent JVM-target
+ * compatibility". Already-patched contents are returned as is.
+ *
+ * @throws When `jvmTarget` isn't a JVM version such as `17` or `1.8`.
+ */
+export function applyKotlinJvmTarget(
+  contents: string,
+  jvmTarget = "17",
+): string {
+  if (!/^(1\.8|\d{1,2})$/.test(jvmTarget)) {
+    throw new Error(
+      `withKotlinJvmTarget: invalid jvmTarget option "${jvmTarget}" (e.g. 17)`,
+    );
+  }
+  if (contents.includes(KOTLIN_JVM_TARGET_MARKER)) return contents;
+  return `${contents.trimEnd()}
+
+// ${KOTLIN_JVM_TARGET_MARKER}: Kotlin targets the same JVM as Java (avoids "Inconsistent JVM-target compatibility").
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_${jvmTarget.replace(".", "_")})
+        }
+    }
+}
+`;
+}
+
+export interface KotlinJvmTargetOptions {
+  /** JVM version Kotlin compiles for, e.g. `"21"`. @defaultValue `"17"` */
+  jvmTarget?: string;
+}
+
 export interface ReleaseSigningOptions {
   /**
    * Prefix of the Gradle properties holding the upload key, e.g. `MYAPP` for

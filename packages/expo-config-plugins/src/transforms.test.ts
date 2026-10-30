@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   applyAndroidAbis,
+  applyKotlinJvmTarget,
   applyReleaseSigning,
   applyShortCxxPath,
   type GradlePropertiesItem,
@@ -125,6 +126,38 @@ describe("applyShortCxxPath", () => {
   it("fails when the namespace line is missing", () => {
     expect(() => applyShortCxxPath("android { }", "C:/rncxx")).toThrow(
       "namespace",
+    );
+  });
+});
+
+describe("applyKotlinJvmTarget", () => {
+  const ROOT_BUILD_GRADLE = "allprojects {\n  repositories { google() }\n}\n";
+
+  it("forces JVM 17 on every Kotlin compile task by default", () => {
+    const result = applyKotlinJvmTarget(ROOT_BUILD_GRADLE);
+    expect(result.startsWith(ROOT_BUILD_GRADLE.trimEnd())).toBe(true);
+    expect(result).toContain(
+      "tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile)",
+    );
+    expect(result).toContain(
+      "jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)",
+    );
+  });
+
+  it("maps a dotted target to its enum constant", () => {
+    expect(applyKotlinJvmTarget(ROOT_BUILD_GRADLE, "1.8")).toContain(
+      "JvmTarget.JVM_1_8)",
+    );
+  });
+
+  it("leaves already-patched contents alone", () => {
+    const once = applyKotlinJvmTarget(ROOT_BUILD_GRADLE);
+    expect(applyKotlinJvmTarget(once, "21")).toBe(once);
+  });
+
+  it("rejects a target that isn't a JVM version", () => {
+    expect(() => applyKotlinJvmTarget(ROOT_BUILD_GRADLE, '17")\nfoo')).toThrow(
+      "jvmTarget",
     );
   });
 });
