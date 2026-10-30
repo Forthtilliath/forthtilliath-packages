@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import {
+  type ComponentRef,
+  type Ref,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { type ReturnKeyTypeOptions, TextInput, View } from "react-native";
 
 import { usePressRepeat } from "../../hooks/usePressRepeat.js";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
@@ -11,6 +17,7 @@ import {
   type QuantityStepperA11yLabels,
   type QuantityStepperStyles,
 } from "./QuantityStepper.styles.js";
+import { QuantityStepperButton } from "./QuantityStepperButton.js";
 
 export type {
   QuantityStepperA11yLabels,
@@ -61,6 +68,16 @@ export interface QuantityStepperProps {
    * Unset, they follow the system font size without limit.
    */
   maxFontSizeMultiplier?: number;
+  /** Ref of the numeric field, e.g. to focus it from the previous field. */
+  inputRef?: Ref<ComponentRef<typeof TextInput>>;
+  /**
+   * Called when the keyboard's Enter key is pressed in the field, once the
+   * typed value is sent — e.g. to focus the next stepper through its
+   * `inputRef`. Set, the keyboard stays open from one field to the next.
+   */
+  onSubmitEditing?: () => void;
+  /** Label of the Enter key. @defaultValue "next" with `onSubmitEditing` */
+  returnKeyType?: ReturnKeyTypeOptions;
   /**
    * Language of the default screen-reader labels — French by default, or the
    * nearest `KitLocaleProvider`'s.
@@ -94,7 +111,8 @@ function lengthOf(bound: number) {
  * number yet or below `min` (an empty field, a lone "-", the "2" of "25" with
  * `min={10}`) stays as typed until the field loses focus. A negative `min`
  * allows negative values (penalties, defeat tokens…); `-Infinity`/`Infinity`
- * remove a bound.
+ * remove a bound. `inputRef` + `onSubmitEditing` chain fields on the
+ * keyboard's Enter key.
  *
  * @example
  * ```tsx
@@ -103,6 +121,8 @@ function lengthOf(bound: number) {
  * <QuantityStepper value={count} onChange={setCount} label="Croissants" />
  * <QuantityStepper value={bans} onChange={setBans} label="Bannissements" min={1} max={40} longPressStep={5} />
  * <QuantityStepper value={score} onChange={setScore} label="Points" min={-Infinity} max={Infinity} step={4} repeatOnHold onStep={tapFeedback} />
+ * <QuantityStepper value={red} onChange={setRed} label="Rouge" onSubmitEditing={() => blueRef.current?.focus()} />
+ * <QuantityStepper value={blue} onChange={setBlue} label="Bleu" inputRef={blueRef} />
  * ```
  */
 export function QuantityStepper({
@@ -116,6 +136,9 @@ export function QuantityStepper({
   longPressStep,
   repeatOnHold = false,
   maxFontSizeMultiplier,
+  inputRef,
+  onSubmitEditing,
+  returnKeyType = onSubmitEditing ? "next" : undefined,
   locale,
   a11yLabels,
   styles,
@@ -160,11 +183,6 @@ export function QuantityStepper({
     });
   }
 
-  // Held: repeat from press-in to press-out. Otherwise: one step per tap,
-  // and `longPressStep` on long press.
-  const tapsOnly = !repeatOnHold;
-  const jumps = tapsOnly && longPressStep !== undefined;
-
   // A tap starts from the rendered value, even if the parent ignored the
   // previous onChange.
   function tap(delta: number) {
@@ -172,45 +190,37 @@ export function QuantityStepper({
     stepBy(delta);
   }
 
+  /** Sends the typed text kept as a draft, if any. */
+  function commitDraft() {
+    if (draft === null) return;
+    // Nothing typed yet: back to 0, or to the nearest bound.
+    set(draft === "" || draft === "-" ? 0 : Number(draft));
+  }
+
+  // Held: repeat from press-in to press-out. Otherwise: one step per tap,
+  // and `longPressStep` on long press.
+  const buttonProps = {
+    onTap: tap,
+    step,
+    longPressStep,
+    repeatOnHold,
+    onHoldStart: startRepeat,
+    onHoldEnd: repeat.stop,
+    textStyle: merged.buttonText,
+    maxFontSizeMultiplier,
+  };
+
   return (
     <View style={merged.row}>
-      <Pressable
-        style={[merged.button, atMin && merged.buttonDisabled]}
-        onPress={
-          tapsOnly
-            ? () => {
-                tap(-step);
-              }
-            : undefined
-        }
-        onLongPress={
-          jumps
-            ? () => {
-                tap(-longPressStep);
-              }
-            : undefined
-        }
-        onPressIn={
-          repeatOnHold
-            ? () => {
-                startRepeat(-1);
-              }
-            : undefined
-        }
-        onPressOut={repeatOnHold ? repeat.stop : undefined}
+      <QuantityStepperButton
+        {...buttonProps}
+        direction={-1}
         disabled={atMin}
-        hitSlop={6}
-        accessibilityRole="button"
+        style={[merged.button, atMin && merged.buttonDisabled]}
         accessibilityLabel={labels.decrease(label)}
-      >
-        <Text
-          style={merged.buttonText}
-          maxFontSizeMultiplier={maxFontSizeMultiplier}
-        >
-          −
-        </Text>
-      </Pressable>
+      />
       <TextInput
+        ref={inputRef}
         style={merged.input}
         value={draft ?? String(value)}
         onChangeText={(text) => {
@@ -220,11 +230,18 @@ export function QuantityStepper({
             setDraft(cleaned);
           } else set(typed);
         }}
-        onBlur={() => {
-          if (draft === null) return;
-          // Nothing typed yet: back to 0, or to the nearest bound.
-          set(draft === "" || draft === "-" ? 0 : Number(draft));
-        }}
+        onBlur={commitDraft}
+        returnKeyType={returnKeyType}
+        // "submit" keeps the keyboard open while the next field takes focus.
+        submitBehavior={onSubmitEditing ? "submit" : undefined}
+        onSubmitEditing={
+          onSubmitEditing
+            ? () => {
+                commitDraft();
+                onSubmitEditing();
+              }
+            : undefined
+        }
         // "number-pad" has no "-" key on Android.
         keyboardType={allowsNegative ? "numeric" : "number-pad"}
         selectTextOnFocus
@@ -232,42 +249,13 @@ export function QuantityStepper({
         maxLength={Math.max(lengthOf(min), lengthOf(max))}
         accessibilityLabel={labels.input(label)}
       />
-      <Pressable
-        style={[merged.button, atMax && merged.buttonDisabled]}
-        onPress={
-          tapsOnly
-            ? () => {
-                tap(step);
-              }
-            : undefined
-        }
-        onLongPress={
-          jumps
-            ? () => {
-                tap(longPressStep);
-              }
-            : undefined
-        }
-        onPressIn={
-          repeatOnHold
-            ? () => {
-                startRepeat(1);
-              }
-            : undefined
-        }
-        onPressOut={repeatOnHold ? repeat.stop : undefined}
+      <QuantityStepperButton
+        {...buttonProps}
+        direction={1}
         disabled={atMax}
-        hitSlop={6}
-        accessibilityRole="button"
+        style={[merged.button, atMax && merged.buttonDisabled]}
         accessibilityLabel={labels.increase(label)}
-      >
-        <Text
-          style={merged.buttonText}
-          maxFontSizeMultiplier={maxFontSizeMultiplier}
-        >
-          +
-        </Text>
-      </Pressable>
+      />
     </View>
   );
 }
