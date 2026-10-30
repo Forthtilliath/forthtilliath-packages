@@ -39,5 +39,5 @@ catalog:
 # shadcn-ui > @hookform/resolvers > ajv, brace-expansion via eslint's
 # minimatch. Drop an entry once the parent's own range pulls the fix in.
 overrides:
-  fast-uri@<3.1.8: ^3.1.8
+  fast-uri@<3.1.9: ^3.1.9
   brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
