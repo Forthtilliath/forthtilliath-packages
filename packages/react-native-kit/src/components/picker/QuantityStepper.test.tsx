@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import { useState } from "react";
-import { Pressable, TextInput } from "react-native";
+import { Pressable, Text, TextInput } from "react-native";
 import { act } from "react-test-renderer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -42,6 +42,25 @@ describe("QuantityStepper", () => {
     press(buttons(tree).minus);
     press(buttons(tree).plus);
     expect(onChange.mock.calls).toEqual([[2], [4]]);
+  });
+
+  it("caps the font scaling of −, + and the field", () => {
+    const tree = renderTree(
+      <QuantityStepper
+        value={3}
+        onChange={vi.fn()}
+        label="Pain"
+        maxFontSizeMultiplier={1.3}
+      />,
+    );
+    const capped = [
+      ...tree.root.findAllByType(Text),
+      tree.root.findByType(TextInput),
+    ].map(
+      (node) =>
+        propsOf<{ maxFontSizeMultiplier?: number }>(node).maxFontSizeMultiplier,
+    );
+    expect(capped).toEqual([1.3, 1.3, 1.3]);
   });
 
   it("disables and dims − at zero", () => {
