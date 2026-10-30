@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import type { ComponentRef, RefObject } from "react";
 import type { View } from "react-native";
 import { NativeModules, TurboModuleRegistry } from "react-native";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -18,7 +18,7 @@ const { isNativeModuleAvailable } =
 const { shareViewAsImage } = await import("./shareViewAsImage.js");
 
 const modules = NativeModules as Record<string, unknown>;
-const view = { current: null } as RefObject<View | null>;
+const view = { current: null } as RefObject<ComponentRef<typeof View> | null>;
 
 beforeEach(() => {
   captureRef.mockReset().mockResolvedValue("file:///cache/shot.png");
