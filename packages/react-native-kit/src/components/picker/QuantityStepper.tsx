@@ -56,6 +56,12 @@ export interface QuantityStepperProps {
    */
   repeatOnHold?: boolean;
   /**
+   * Caps how much the system font size scales the "−", "+" and the field, so
+   * the row keeps fitting at the largest accessibility font sizes (e.g. `1.3`).
+   * Unset, they follow the system font size without limit.
+   */
+  maxFontSizeMultiplier?: number;
+  /**
    * Language of the default screen-reader labels — French by default, or the
    * nearest `KitLocaleProvider`'s.
    */
@@ -109,6 +115,7 @@ export function QuantityStepper({
   onStep,
   longPressStep,
   repeatOnHold = false,
+  maxFontSizeMultiplier,
   locale,
   a11yLabels,
   styles,
@@ -196,7 +203,12 @@ export function QuantityStepper({
         accessibilityRole="button"
         accessibilityLabel={labels.decrease(label)}
       >
-        <Text style={merged.buttonText}>−</Text>
+        <Text
+          style={merged.buttonText}
+          maxFontSizeMultiplier={maxFontSizeMultiplier}
+        >
+          −
+        </Text>
       </Pressable>
       <TextInput
         style={merged.input}
@@ -216,6 +228,7 @@ export function QuantityStepper({
         // "number-pad" has no "-" key on Android.
         keyboardType={allowsNegative ? "numeric" : "number-pad"}
         selectTextOnFocus
+        maxFontSizeMultiplier={maxFontSizeMultiplier}
         maxLength={Math.max(lengthOf(min), lengthOf(max))}
         accessibilityLabel={labels.input(label)}
       />
@@ -248,7 +261,12 @@ export function QuantityStepper({
         accessibilityRole="button"
         accessibilityLabel={labels.increase(label)}
       >
-        <Text style={merged.buttonText}>+</Text>
+        <Text
+          style={merged.buttonText}
+          maxFontSizeMultiplier={maxFontSizeMultiplier}
+        >
+          +
+        </Text>
       </Pressable>
     </View>
   );
