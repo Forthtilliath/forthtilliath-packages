@@ -32,24 +32,25 @@ the variant and options it actually uses. A React Native app doesn't get
 `angular-eslint` (and the Angular CLI it pulls in), nor a TypeScript library
 every React plugin.
 
-| Variant / option        | Also install                                                                                              |
-| ----------------------- | --------------------------------------------------------------------------------------------------------- |
-| `.` (base)              | —                                                                                                         |
-| `/react`                | `@eslint-react/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh`   |
-| `/react-native`         | the `/react` list + `eslint-plugin-react-native`                                                          |
-| `/nextjs`               | the `/react` list + `@next/eslint-plugin-next`                                                            |
-| `/storybook`            | the `/react` list + `eslint-plugin-storybook`                                                             |
-| `/angular`              | `angular-eslint`                                                                                          |
-| `turbo: true` (default) | `eslint-plugin-turbo` — or pass `turbo: false` outside a Turborepo                                        |
-| `a11y: true`\*          | `eslint-plugin-jsx-a11y` — \*default for `/react`, `/nextjs`, `/storybook`; pass `a11y: false` to skip it |
-| `i18n: true`            | `eslint-plugin-i18next`                                                                                   |
-| `testingLibrary: true`  | `eslint-plugin-testing-library eslint-plugin-jest-dom`                                                    |
+| Variant / option       | Also install                                                                                              |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| `.` (base)             | —                                                                                                         |
+| `/react`               | `@eslint-react/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh`   |
+| `/react-native`        | the `/react` list + `eslint-plugin-react-native`                                                          |
+| `/nextjs`              | the `/react` list + `@next/eslint-plugin-next`                                                            |
+| `/storybook`           | the `/react` list + `eslint-plugin-storybook`                                                             |
+| `/angular`             | `angular-eslint`                                                                                          |
+| `turbo: true`\*\*      | `eslint-plugin-turbo` — \*\*default inside a Turborepo (a `turbo.json` in the working directory or above) |
+| `a11y: true`\*         | `eslint-plugin-jsx-a11y` — \*default for `/react`, `/nextjs`, `/storybook`; pass `a11y: false` to skip it |
+| `i18n: true`           | `eslint-plugin-i18next`                                                                                   |
+| `testingLibrary: true` | `eslint-plugin-testing-library eslint-plugin-jest-dom`                                                    |
+| `expo: true`           | `eslint-plugin-expo` — `/react-native` only                                                               |
 
 ```bash
-# e.g. a standalone React Native / Expo app, with createReactNativeConfig({ turbo: false })
+# e.g. a standalone React Native / Expo app, with createReactNativeConfig({ expo: true })
 npm install --save-dev @forthtilliath/eslint-config eslint typescript \
   @eslint-react/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks \
-  eslint-plugin-react-refresh eslint-plugin-react-native
+  eslint-plugin-react-refresh eslint-plugin-react-native eslint-plugin-expo
 ```
 
 A missing plugin fails with an explicit error naming the package to install
@@ -123,8 +124,20 @@ export default reactNativeConfig;
 
 All six are **named** exports — a default import (`import config from "..."`)
 resolves to the whole module namespace object instead of the config array and
-crashes ESLint's flat-config loader outright. Two of the five variants had
+crashes ESLint's flat-config loader outright. Two of the variants had
 exactly this bug at one point; use the named-import form above.
+
+The config loads from a CommonJS `eslint.config.js` too (the one Expo's
+templates generate), through `require()` — no top-level `await` anywhere in
+the package. That needs Node 20.19+ or 22.12+ (`require()` of an ES module):
+
+```js
+// eslint.config.js (CommonJS)
+const {
+  createReactNativeConfig,
+} = require("@forthtilliath/eslint-config/react-native");
+module.exports = createReactNativeConfig({ expo: true });
+```
 
 Each variant is additive: `reactConfig`/`angularConfig` extend `baseConfig`,
 `nextJsConfig`/`storybookConfig`/`reactNativeConfig` extend `reactConfig`.
@@ -146,20 +159,21 @@ export default createReactConfig({ prettier: false });
 ```ts
 // Fall back to typescript-eslint's `recommended` preset instead of
 // `strictTypeChecked`/`stylisticTypeChecked` (e.g. while migrating an
-// existing codebase), and skip the Turborepo-only rule outside a Turborepo.
+// existing codebase).
 import { createBaseConfig } from "@forthtilliath/eslint-config";
-export default createBaseConfig({ strict: false, turbo: false });
+export default createBaseConfig({ strict: false });
 ```
 
 | Option           | Default  | Effect                                                                                                                                                                                                   |
 | ---------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `prettier`       | `true`   | Append `eslint-config-prettier` at the end.                                                                                                                                                              |
 | `strict`         | `true`   | Use `strictTypeChecked`/`stylisticTypeChecked` instead of plain `recommended`.                                                                                                                           |
-| `turbo`          | `true`   | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule.                                                                                                                                            |
+| `turbo`          | auto     | Enable `eslint-plugin-turbo`'s `no-undeclared-env-vars` rule. Defaults to `true` when a `turbo.json` sits in ESLint's working directory or one of its parents, `false` otherwise.                        |
 | `snakeCase`      | `false`  | Also accept `snake_case` variable names in `@typescript-eslint/naming-convention` (e.g. rows destructured straight from a Supabase/SQL database).                                                        |
 | `a11y`           | `true`\* | _(react/nextjs/storybook/react-native)_ Enable `eslint-plugin-jsx-a11y`'s recommended rules. \*Defaults to `false` in `createReactNativeConfig` (jsx-a11y targets DOM semantics, which RN doesn't have). |
 | `i18n`           | `false`  | _(react/nextjs/storybook/react-native)_ Enable `eslint-plugin-i18next`'s `no-literal-string` rule.                                                                                                       |
 | `testingLibrary` | `false`  | _(react/nextjs/storybook/react-native)_ Enable `eslint-plugin-testing-library` + `eslint-plugin-jest-dom` on test files.                                                                                 |
+| `expo`           | `false`  | _(react-native)_ Enable the `eslint-plugin-expo` rules `eslint-config-expo` turns on: `use-dom-exports`, `no-env-var-destructuring`, `no-dynamic-env-var`.                                               |
 
 Options are forwarded down the chain, so `createNextJsConfig({ prettier: false })`
 also disables Prettier in the `reactConfig`/`baseConfig` layers it builds on.
