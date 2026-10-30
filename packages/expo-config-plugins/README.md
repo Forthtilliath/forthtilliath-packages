@@ -19,7 +19,8 @@ npm install --save-dev @forthtilliath/expo-config-plugins
         { "propertyPrefix": "MYAPP" }
       ],
       "@forthtilliath/expo-config-plugins/withAndroidAbis",
-      "@forthtilliath/expo-config-plugins/withShortCxxPath"
+      "@forthtilliath/expo-config-plugins/withShortCxxPath",
+      "@forthtilliath/expo-config-plugins/withKotlinJvmTarget"
     ]
   }
 }
@@ -59,9 +60,17 @@ On Windows, release builds can overflow the 260-character path limit inside `and
 | ------------ | -------- | --------------------------------- |
 | `stagingDir` | `string` | `C:/rncxx` on Windows, else unset |
 
+## `withKotlinJvmTarget` — one JVM target for Kotlin
+
+Some native modules (e.g. `expo-dynamic-app-icon`) compile their Kotlin code for another JVM target than the project's Java code, and the build fails with "Inconsistent JVM-target compatibility". This plugin appends a block to `android/build.gradle` forcing every Kotlin compile task, in every subproject, to the same target.
+
+| Option      | Type     | Default |
+| ----------- | -------- | ------- |
+| `jvmTarget` | `string` | `"17"`  |
+
 ## Testing your own setup
 
-The transforms behind the plugins are exported as pure functions from `@forthtilliath/expo-config-plugins/transforms` (`applyReleaseSigning`, `applyAndroidAbis`, `applyShortCxxPath`).
+The transforms behind the plugins are exported as pure functions from `@forthtilliath/expo-config-plugins/transforms` (`applyReleaseSigning`, `applyAndroidAbis`, `applyShortCxxPath`, `applyKotlinJvmTarget`).
 
 ## Scripts
 
