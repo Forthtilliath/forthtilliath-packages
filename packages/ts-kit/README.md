@@ -279,6 +279,10 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
   expo-secure-store's `getItemAsync`/`setItemAsync`/`deleteItemAsync`); an
   unreadable or tampered value counts as used up, not as zero, a clock set
   back restarts the delay from now, and parallel attempts are serialized.
+  Limit: the delay is measured with the device clock, so setting it forward
+  ends the wait early — the failure count still grows, and each new failure
+  imposes the longest delay again. Keep the secret itself out of reach
+  (stored hashed, in the Android Keystore through expo-secure-store).
 
 ### `string`
 
