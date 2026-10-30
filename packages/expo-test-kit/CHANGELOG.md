@@ -1,5 +1,11 @@
 # @forthtilliath/expo-test-kit
 
+## 0.5.0
+
+### Minor Changes
+
+- 5009456: `createFakeExpoFileSystem` gains `Directory` (`exists`, `create`, `delete`), `File#textSync`, a `failWrites` flag simulating a full disk, `reset()`, and `documentUri` / `cacheUri` options for full `Paths` URIs (`file:///documents`). Parts are now joined without doubling a trailing `/`.
+
 ## 0.4.1
 
 ### Patch Changes

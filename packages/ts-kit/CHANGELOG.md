@@ -1,5 +1,12 @@
 # @forthtilliath/ts-kit
 
+## 0.15.0
+
+### Minor Changes
+
+- a6639da: New `createAttemptLimiter` (`security/`): growing delays between attempts at a secret such as a PIN (4 free failures, then 30 s, 1 min, 5 min, 15 min), with the counter kept in an injected storage (e.g. expo-secure-store). An unreadable or tampered counter counts as used up, a clock set back restarts the delay from now, and parallel attempts can't lose a failure.
+- 0789b65: ts-kit: new `pickRandom(array, random?)`, one element picked at random (`undefined` for an empty array). expo-config-plugins: new `withKotlinJvmTarget` plugin, forcing every Kotlin compile task to the Java code's JVM target (`jvmTarget`, 17 by default) so a module like expo-dynamic-app-icon no longer fails the build with "Inconsistent JVM-target compatibility".
+
 ## 0.14.0
 
 ### Minor Changes
