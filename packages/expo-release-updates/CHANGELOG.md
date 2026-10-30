@@ -1,5 +1,11 @@
 # @forthtilliath/expo-release-updates
 
+## 0.10.0
+
+### Minor Changes
+
+- 1435bf7: `fetchReleaseHistory` takes `includePrereleases` (`true` by default, as before): with `false`, pre-releases are left out of the history, matching what `fetchLatestRelease` offers.
+
 ## 0.9.0
 
 ### Minor Changes
