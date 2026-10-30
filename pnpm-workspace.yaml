@@ -23,9 +23,9 @@ catalog:
   '@types/node': ^26.2.0
   '@types/react': ^19.2.18
   '@types/react-dom': ^19.2.4
-  '@vitest/browser': ^5.0.2
-  '@vitest/browser-playwright': ^5.0.2
-  '@vitest/coverage-v8': 5.0.2
+  '@vitest/browser': ^5.0.5
+  '@vitest/browser-playwright': ^5.0.5
+  '@vitest/coverage-v8': 5.0.5
   eslint: 10.7.0
   jsdom: ^30.1.1
   react: ^19.2.8
@@ -33,11 +33,41 @@ catalog:
   size-limit: ^14.1.0
   tailwindcss: 4.3.3
   typescript: ^5.9.3
-  vitest: ^5.0.2
+  vitest: ^5.0.5
 
-# Security floors for transitive dependencies (pnpm audit): fast-uri via
-# shadcn-ui > @hookform/resolvers > ajv, brace-expansion via eslint's
-# minimatch. Drop an entry once the parent's own range pulls the fix in.
+# Security floors for transitive dependencies (pnpm audit), each kept inside
+# the major its parent asks for. Drop an entry once the parent's own range
+# pulls the fix in.
 overrides:
+  # shadcn-ui > @hookform/resolvers > ajv
   fast-uri@<3.1.9: ^3.1.9
+  # eslint's and eslint-plugin-jsx-a11y's minimatch
+  brace-expansion@<1.1.21: ^1.1.21
   brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
+  # @changesets/cli, eslint
+  js-yaml@>=3.0.0 <3.15.2: ^3.15.2
+  js-yaml@>=4.0.0 <4.3.2: ^4.3.2
+  # react-native > react-devtools-core, forth-ui > concurrently
+  shell-quote@<1.11.0: ^1.11.0
+  # @tailwindcss/cli
+  source-map-js@<1.2.2: ^1.2.2
+  # expo > @expo/config-plugins > plist
+  '@xmldom/xmldom@>=0.8.0 <0.8.15': ^0.8.15
+  '@xmldom/xmldom@>=0.9.0 <0.9.12': ^0.9.12
+  # shadcn's CLI (MCP server, express), angular-eslint > @angular/cli, jsdom
+  '@modelcontextprotocol/sdk@<1.32.0': ^1.32.0
+  '@hono/node-server@>=2.0.0 <2.1.3': ^2.1.3
+  hono@<4.13.11: ^4.13.11
+  body-parser@>=2.0.0 <2.4.0: ^2.4.0
+  proxy-addr@<2.0.8: ^2.0.8
+  qs@<6.16.1: ^6.16.1
+  ip-address@<10.7.4: ^10.7.4
+  postcss-selector-parser@>=7.0.0 <7.1.6: ^7.1.6
+  systeminformation@<5.33.16: ^5.33.16
+  undici@>=6.0.0 <6.29.1: ^6.29.1
+  undici@>=7.0.0 <7.30.1: ^7.30.1
+  undici@>=8.0.0 <8.12.2: ^8.12.2
+  # angular-eslint > @angular/cli (zod 3, used by @expo/cli, has no fix)
+  zod@>=4.0.0 <4.6.6: ^4.6.7
+  # expo > @expo/config-plugins > xcode, which only calls uuid.v4()
+  uuid@<11.1.1: ^11.1.1
