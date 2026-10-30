@@ -41,6 +41,15 @@ export interface FetchLatestReleaseOptions extends GithubRepoRef {
    * wins. Defaults to `false`.
    */
   includePrereleases?: boolean;
+  /**
+   * Only consider an `.apk` the recommended install would accept: one with a
+   * SHA-256 (`apkSha256`, for `downloadAndInstallApk`'s `expectedSha256`)
+   * and a URL under `releaseDownloadUrlPrefix(options)` (its
+   * `allowedUrlPrefix`). A release whose APK fails either is skipped — with
+   * `includePrereleases`, the next highest version wins — so nothing is
+   * offered that the install would then refuse. Defaults to `false`.
+   */
+  requireVerifiedApk?: boolean;
 }
 
 export interface ReleaseHistoryEntry {
@@ -70,6 +79,10 @@ const MAX_PER_PAGE = 100;
 /** Enough to skip a few releases without an APK (notes only, drafts). */
 const PRERELEASE_SCAN = 10;
 const SHA256_DIGEST = /^sha256:([0-9a-f]{64})$/i;
+/** Release notes longer than this are cut: rendered as is, they'd stall the UI. */
+const MAX_NOTES_LENGTH = 100_000;
+/** Tags, asset names, URLs, dates: anything longer is treated as missing. */
+const MAX_FIELD_LENGTH = 2_048;
 
 function releasesUrl({ owner, repo }: GithubRepoRef): string {
   return `https://api.github.com/repos/${owner}/${repo}/releases`;
@@ -85,7 +98,15 @@ export function releaseDownloadUrlPrefix({ owner, repo }: GithubRepoRef) {
 }
 
 function text(value: unknown): string {
-  return typeof value === "string" ? value : "";
+  return typeof value === "string" && value.length <= MAX_FIELD_LENGTH
+    ? value
+    : "";
+}
+
+function notesOf(release: GithubApiRelease): string {
+  return typeof release.body === "string"
+    ? release.body.slice(0, MAX_NOTES_LENGTH)
+    : "";
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -102,27 +123,34 @@ function versionOf(release: GithubApiRelease): string {
 
 function apkOf(
   release: GithubApiRelease,
+  options: FetchLatestReleaseOptions,
 ): Pick<LatestRelease, "apkUrl" | "apkSha256"> | null {
   const assets: GithubApiReleaseAsset[] = Array.isArray(release.assets)
     ? release.assets.filter(isObject)
     : [];
-  const apk = assets.find(
-    (asset) =>
-      text(asset.name).endsWith(".apk") &&
-      text(asset.browser_download_url) !== "",
-  );
-  if (!apk) return null;
-  const sha256 = SHA256_DIGEST.exec(text(apk.digest))?.[1]?.toLowerCase();
-  return {
-    apkUrl: text(apk.browser_download_url),
-    ...(sha256 ? { apkSha256: sha256 } : {}),
-  };
+  const prefix = releaseDownloadUrlPrefix(options);
+  for (const asset of assets) {
+    const apkUrl = text(asset.browser_download_url);
+    if (!text(asset.name).endsWith(".apk") || apkUrl === "") continue;
+    const sha256 = SHA256_DIGEST.exec(text(asset.digest))?.[1]?.toLowerCase();
+    if (options.requireVerifiedApk && (!sha256 || !apkUrl.startsWith(prefix))) {
+      continue;
+    }
+    return { apkUrl, ...(sha256 ? { apkSha256: sha256 } : {}) };
+  }
+  return null;
 }
 
-function toLatestRelease(release: GithubApiRelease): LatestRelease | null {
-  const apk = apkOf(release);
+function toLatestRelease(
+  release: GithubApiRelease,
+  options: FetchLatestReleaseOptions,
+): LatestRelease | null {
+  const version = versionOf(release);
+  // Without a tag, there's nothing to compare the installed version with.
+  if (version === "") return null;
+  const apk = apkOf(release, options);
   if (!apk) return null;
-  return { version: versionOf(release), notes: text(release.body), ...apk };
+  return { version, notes: notesOf(release), ...apk };
 }
 
 function githubHeaders({ token }: GithubRepoRef): HeadersInit {
@@ -188,7 +216,7 @@ export async function fetchLatestRelease(
       `${releasesUrl(options)}/latest`,
       options,
     );
-    return isObject(data) ? toLatestRelease(data) : null;
+    return isObject(data) ? toLatestRelease(data, options) : null;
   }
 
   const data = await fetchGithubJson<unknown>(
@@ -198,7 +226,7 @@ export async function fetchLatestRelease(
   let latest: LatestRelease | null = null;
   for (const release of releasesIn(data)) {
     if (release.draft === true) continue;
-    const candidate = toLatestRelease(release);
+    const candidate = toLatestRelease(release, options);
     if (
       candidate &&
       (!latest || compareVersions(candidate.version, latest.version) > 0)
@@ -227,7 +255,7 @@ export async function fetchReleaseHistory(
     .filter((release) => release.draft !== true)
     .map((release) => ({
       version: versionOf(release),
-      notes: text(release.body),
+      notes: notesOf(release),
       publishedAt: text(release.published_at),
     }));
 }
