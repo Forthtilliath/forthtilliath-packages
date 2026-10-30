@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { type ComponentRef, createRef } from "react";
+import { act, type ComponentRef, createRef } from "react";
 import { TextInput } from "react-native";
-import { act } from "react-test-renderer";
 import { describe, expect, it, vi } from "vitest";
 
 import { renderTree } from "../../__mocks__/renderTree.js";
