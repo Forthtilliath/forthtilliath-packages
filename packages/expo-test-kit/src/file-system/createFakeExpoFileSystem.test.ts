@@ -48,6 +48,83 @@ describe("createFakeExpoFileSystem", () => {
   });
 });
 
+describe("createFakeExpoFileSystem: sync reads and failing writes", () => {
+  it("textSync() returns the content, or throws for a missing file", () => {
+    const fakeFs = createFakeExpoFileSystem();
+    const file = new fakeFs.File(fakeFs.Paths.document, "note.txt");
+    expect(() => file.textSync()).toThrow("Fake file not found");
+    file.write("hello");
+    expect(file.textSync()).toBe("hello");
+  });
+
+  it("failWrites makes create() and write() throw, leaving the store as is", () => {
+    const fakeFs = createFakeExpoFileSystem();
+    const file = new fakeFs.File(fakeFs.Paths.document, "note.txt");
+    file.write("before");
+    fakeFs.failWrites = true;
+
+    expect(() => {
+      file.write("after");
+    }).toThrow("Fake disk full");
+    expect(() => {
+      new fakeFs.File(fakeFs.Paths.document, "other.txt").create();
+    }).toThrow("Fake disk full");
+    expect(file.textSync()).toBe("before");
+  });
+
+  it("reset() empties the store and turns failWrites off", () => {
+    const fakeFs = createFakeExpoFileSystem();
+    new fakeFs.File(fakeFs.Paths.cache, "note.txt").write("hi");
+    fakeFs.failWrites = true;
+    fakeFs.reset();
+    expect(fakeFs.store.size).toBe(0);
+    expect(fakeFs.failWrites).toBe(false);
+  });
+});
+
+describe("createFakeExpoFileSystem: directories and paths", () => {
+  it("a directory exists once created, as a root, or when it holds a file", () => {
+    const fakeFs = createFakeExpoFileSystem();
+    const backups = new fakeFs.Directory(fakeFs.Paths.document, "backups");
+    expect(fakeFs.Paths.document.exists).toBe(true);
+    expect(backups.exists).toBe(false);
+
+    backups.create();
+    expect(backups.exists).toBe(true);
+
+    const photos = new fakeFs.Directory(fakeFs.Paths.document, "photos");
+    new fakeFs.File(photos, "a.jpg").write("…");
+    expect(photos.exists).toBe(true);
+  });
+
+  it("delete() removes the directory and its files", () => {
+    const fakeFs = createFakeExpoFileSystem();
+    const backups = new fakeFs.Directory(fakeFs.Paths.document, "backups");
+    backups.create();
+    const file = new fakeFs.File(backups, "1.json");
+    file.write("{}");
+    new fakeFs.File(fakeFs.Paths.document, "backups-index.json").write("[]");
+
+    backups.delete();
+    expect(backups.exists).toBe(false);
+    expect(file.exists).toBe(false);
+    expect([...fakeFs.store.keys()]).toEqual(["document/backups-index.json"]);
+  });
+
+  it("takes full root URIs, without doubling slashes", () => {
+    const fakeFs = createFakeExpoFileSystem({
+      documentUri: "file:///documents/",
+      cacheUri: "file:///cache",
+    });
+    expect(new fakeFs.File(fakeFs.Paths.document, "a.txt").uri).toBe(
+      "file:///documents/a.txt",
+    );
+    expect(new fakeFs.File(fakeFs.Paths.cache, "b.txt").uri).toBe(
+      "file:///cache/b.txt",
+    );
+  });
+});
+
 describe("getFakeExpoFileSystem", () => {
   beforeEach(() => {
     createFakeExpoFileSystem();
