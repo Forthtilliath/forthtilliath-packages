@@ -581,7 +581,7 @@ import {
 />;
 ```
 
-`checkForUpdate` receives `{ includePrereleases }` (`false` by default). Pass `onIncludePrereleasesChange` to show a "Recevoir les versions de test" switch: the app stores the choice, hands it back as `includePrereleases`, and the screen checks again on each change (an older check that answers late is ignored). Hand the value on to `fetchLatestRelease({ …, includePrereleases, requireVerifiedApk: true })`, and to the launch check (`UpdateNotifier`) too. Style it with `styles.prereleaseSwitch` / `styles.prereleaseSwitchColors` (`SwitchRow`'s slots).
+`checkForUpdate` receives `{ includePrereleases }` (`false` by default). Pass `onIncludePrereleasesChange` to show a "Recevoir les versions de test" switch: the app stores the choice, hands it back as `includePrereleases`, and the screen checks again on each change (an older check that answers late is ignored). Hand the value on to `fetchLatestRelease({ …, includePrereleases, requireVerifiedApk: true })`, to `fetchReleaseHistory({ …, includePrereleases })` (the history is fetched again when that function changes), and to the launch check (`UpdateNotifier`) too. Style it with `styles.prereleaseSwitch` / `styles.prereleaseSwitchColors` (`SwitchRow`'s slots).
 
 ```tsx
 <UpdateSettingsScreen
