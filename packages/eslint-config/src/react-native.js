@@ -2,6 +2,7 @@ import { defineConfig } from "eslint/config";
 import pluginReactNative from "eslint-plugin-react-native";
 
 import { lazyConfig } from "./internal/lazy-config.js";
+import { requireOptional } from "./internal/optional-plugin.js";
 import { createReactConfig } from "./react.js";
 
 /**
@@ -12,13 +13,43 @@ import { createReactConfig } from "./react.js";
  */
 
 /**
+ * @typedef {object} ReactNativeConfigOptions
+ * @property {boolean} [expo=false] - Enable the eslint-plugin-expo rules that
+ *   eslint-config-expo turns on (`use-dom-exports`,
+ *   `no-env-var-destructuring`, `no-dynamic-env-var`), so an Expo app
+ *   migrating from eslint-config-expo keeps them (needs `eslint-plugin-expo`
+ *   installed).
+ */
+
+/**
  * A custom ESLint configuration for React Native / Expo apps.
  *
- * @param {import("./base.js").BaseConfigOptions & import("./react.js").ReactConfigOptions} [options]
+ * @param {import("./base.js").BaseConfigOptions & import("./react.js").ReactConfigOptions & ReactNativeConfigOptions} [options]
  * @returns {import("eslint").Linter.Config[]} */
-export function createReactNativeConfig({ a11y = false, ...options } = {}) {
+export function createReactNativeConfig({
+  a11y = false,
+  expo = false,
+  ...options
+} = {}) {
   return defineConfig([
     ...createReactConfig({ a11y, ...options }),
+    expo
+      ? {
+          plugins: {
+            expo: /** @type {typeof import("eslint-plugin-expo")} */ (
+              requireOptional("eslint-plugin-expo", "expo")
+            ),
+          },
+          rules: {
+            // Every `EXPO_PUBLIC_*` variable is inlined at build time by
+            // reading `process.env.EXPO_PUBLIC_X` literally: a destructured or
+            // computed access stays `undefined` in the bundle.
+            "expo/no-env-var-destructuring": "error",
+            "expo/no-dynamic-env-var": "error",
+            "expo/use-dom-exports": "error",
+          },
+        }
+      : [],
     {
       languageOptions: {
         globals: {
