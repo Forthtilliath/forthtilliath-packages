@@ -76,11 +76,13 @@ if (release && isUpdateAvailable(currentVersion, release.version)) {
 }
 ```
 
-### `fetchLatestRelease({ owner, repo, includePrereleases?, token?, timeoutMs?, signal? })`
+### `fetchLatestRelease({ owner, repo, includePrereleases?, requireVerifiedApk?, token?, timeoutMs?, signal? })`
 
 Fetches the latest GitHub release and its `.apk` asset: `{ version, notes, apkUrl, apkSha256? }`. `apkSha256` is the SHA-256 GitHub computed when the APK was uploaded — pass it to `downloadAndInstallApk`'s `expectedSha256`. Returns `null` if the latest release has no `.apk` attached; throws if the GitHub API request fails. Pass `token` for private repos, or to raise the API rate limit from 60 to 5000 requests/hour on public ones.
 
 GitHub's `/releases/latest` only ever returns a **stable** release: an app that only publishes pre-releases (alpha, beta) would never see an update. Pass `includePrereleases: true` to scan the 10 most recent releases instead (drafts left out) and keep the highest version (semver, `1.0.0-alpha.10` > `1.0.0-alpha.2`) that carries an `.apk`.
+
+Pass `requireVerifiedApk: true` to only consider an `.apk` that `downloadAndInstallApk` with `expectedSha256` and `allowedUrlPrefix: releaseDownloadUrlPrefix(...)` would accept: one with a SHA-256, under this repo's release URLs. A release whose APK fails either is skipped (with `includePrereleases`, the next highest version wins), so the app never offers an update the install would then refuse. Every field of GitHub's answer is type-checked and bounded: notes are cut at 100,000 characters, an oversized tag or URL counts as missing, and a release without a tag is ignored.
 
 The request gives up after `timeoutMs` (default `15000`) instead of hanging on a bad network, and can be cancelled with `signal` (an `AbortSignal`) — both also apply to `fetchReleaseHistory`.
 
