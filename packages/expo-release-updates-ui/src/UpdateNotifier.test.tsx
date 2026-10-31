@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
-import { Pressable, Text } from "react-native";
-import type { ReactTestRenderer } from "react-test-renderer";
-import { act, create } from "react-test-renderer";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "./__mocks__/testInstance.js";
 import type { UpdateNotifierProps } from "./UpdateNotifier.js";
 import { UpdateNotifier } from "./UpdateNotifier.js";
 
@@ -15,11 +11,11 @@ const RELEASE = {
   apkSha256: "ab".repeat(32),
 };
 
-function flushAsync() {
-  return new Promise((resolve) => setTimeout(resolve, 0));
+function settle() {
+  return act(() => new Promise((resolve) => setTimeout(resolve, 0)));
 }
 
-async function render(overrides: Partial<UpdateNotifierProps> = {}) {
+async function renderNotifier(overrides: Partial<UpdateNotifierProps> = {}) {
   const props: UpdateNotifierProps = {
     currentVersion: "1.0.0",
     checkForUpdate: vi.fn().mockResolvedValue(RELEASE),
@@ -29,59 +25,37 @@ async function render(overrides: Partial<UpdateNotifierProps> = {}) {
     onDismissVersion: vi.fn(),
     ...overrides,
   };
-  let tree!: ReactTestRenderer;
-  await act(async () => {
-    tree = create(<UpdateNotifier {...props} />);
-    await flushAsync();
-  });
-  return { tree, props };
+  await render(<UpdateNotifier {...props} />);
+  await settle();
+  return props;
 }
 
-type Instance = ReactTestRenderer["root"];
-
-function textOf(node: Instance) {
-  return node
-    .findAllByType(Text)
-    .map((t) => propsOf<{ children: unknown }>(t).children)
-    .flat()
-    .join("");
-}
-
-function texts(tree: ReactTestRenderer) {
-  return textOf(tree.root);
-}
-
-async function press(tree: ReactTestRenderer, label: string) {
-  const button = tree.root
-    .findAllByType(Pressable)
-    .find((p) => textOf(p) === label);
-  if (!button) throw new Error(`No "${label}" button`);
-  await act(async () => {
-    propsOf<{ onPress: () => void }>(button).onPress();
-    await flushAsync();
-  });
+/** Taps the button showing `label`, then lets its work settle. */
+async function press(label: string) {
+  await fireEvent.press(screen.getByText(label));
+  await settle();
 }
 
 describe("UpdateNotifier", () => {
   it("announces a newer release with Install / Ignore", async () => {
-    const { tree } = await render();
-    expect(texts(tree)).toContain("Version 2.0.0 disponible");
-    expect(texts(tree)).toContain("Installer");
-    expect(texts(tree)).toContain("Ignorer");
+    await renderNotifier();
+    expect(screen.getByText("Version 2.0.0 disponible")).toBeOnTheScreen();
+    expect(screen.getByText("Installer")).toBeOnTheScreen();
+    expect(screen.getByText("Ignorer")).toBeOnTheScreen();
   });
 
   it("does not check while disabled", async () => {
     const checkForUpdate = vi.fn().mockResolvedValue(RELEASE);
-    const { tree } = await render({ enabled: false, checkForUpdate });
+    await renderNotifier({ enabled: false, checkForUpdate });
     expect(checkForUpdate).not.toHaveBeenCalled();
-    expect(tree.toJSON()).toBeNull();
+    expect(screen.toJSON()).toBeNull();
   });
 
   it("persists an ignored version and hides the banner", async () => {
-    const { tree, props } = await render();
-    await press(tree, "Ignorer");
+    const props = await renderNotifier();
+    await press("Ignorer");
     expect(props.onDismissVersion).toHaveBeenCalledWith("2.0.0");
-    expect(tree.toJSON()).toBeNull();
+    expect(screen.toJSON()).toBeNull();
   });
 
   it("installs right away, showing the download progress", async () => {
@@ -92,12 +66,11 @@ describe("UpdateNotifier", () => {
         return new Promise<void>(() => undefined);
       },
     );
-    const { tree, props } = await render({ downloadAndInstallApk });
+    const props = await renderNotifier({ downloadAndInstallApk });
 
-    await press(tree, "Installer");
-    await act(async () => {
+    await press("Installer");
+    await act(() => {
       report(0.42);
-      await flushAsync();
     });
 
     expect(downloadAndInstallApk).toHaveBeenCalledWith(
@@ -105,7 +78,9 @@ describe("UpdateNotifier", () => {
       expect.any(Function),
       RELEASE.apkSha256,
     );
-    expect(texts(tree)).toContain("Téléchargement de la version 2.0.0… 42%");
+    expect(
+      screen.getByText("Téléchargement de la version 2.0.0… 42%"),
+    ).toBeOnTheScreen();
     expect(props.onDismissVersion).not.toHaveBeenCalled();
   });
 
@@ -115,43 +90,45 @@ describe("UpdateNotifier", () => {
       .mockRejectedValueOnce(new Error("network"))
       .mockReturnValueOnce(new Promise<void>(() => undefined))
       .mockRejectedValueOnce(new Error("network"));
-    const { tree } = await render({ downloadAndInstallApk });
+    await renderNotifier({ downloadAndInstallApk });
 
-    await press(tree, "Installer");
-    expect(texts(tree)).toContain(
-      "Le téléchargement de la version 2.0.0 a échoué.",
-    );
+    await press("Installer");
+    expect(
+      screen.getByText("Le téléchargement de la version 2.0.0 a échoué."),
+    ).toBeOnTheScreen();
 
-    await press(tree, "Réessayer");
+    await press("Réessayer");
     expect(downloadAndInstallApk).toHaveBeenCalledTimes(2);
     expect(downloadAndInstallApk).toHaveBeenLastCalledWith(
       RELEASE.apkUrl,
       expect.any(Function),
       RELEASE.apkSha256,
     );
-    expect(texts(tree)).toContain("Téléchargement de la version 2.0.0… 0%");
+    expect(
+      screen.getByText("Téléchargement de la version 2.0.0… 0%"),
+    ).toBeOnTheScreen();
   });
 
   it("closes the error card", async () => {
     const downloadAndInstallApk = vi
       .fn()
       .mockRejectedValue(new Error("network"));
-    const { tree } = await render({ downloadAndInstallApk });
+    await renderNotifier({ downloadAndInstallApk });
 
-    await press(tree, "Installer");
-    await press(tree, "Fermer");
-    expect(tree.toJSON()).toBeNull();
+    await press("Installer");
+    await press("Fermer");
+    expect(screen.toJSON()).toBeNull();
   });
 
   it("goes back to idle once the installer has taken over", async () => {
-    const { tree } = await render();
-    await press(tree, "Installer");
-    expect(tree.toJSON()).toBeNull();
+    await renderNotifier();
+    await press("Installer");
+    expect(screen.toJSON()).toBeNull();
   });
 
   it("speaks English with locale en", async () => {
-    const { tree } = await render({ locale: "en" });
-    expect(texts(tree)).toContain("Install");
-    expect(texts(tree)).toContain("Ignore");
+    await renderNotifier({ locale: "en" });
+    expect(screen.getByText("Install")).toBeOnTheScreen();
+    expect(screen.getByText("Ignore")).toBeOnTheScreen();
   });
 });
