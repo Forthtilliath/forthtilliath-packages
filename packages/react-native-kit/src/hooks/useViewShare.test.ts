@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import { Alert } from "react-native";
-import { act } from "react-test-renderer";
+import { act, renderHook } from "@testing-library/react-native";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { renderHook } from "../__mocks__/renderHook.js";
 
 const shareViewAsImage = vi.hoisted(() =>
   vi.fn<(view: unknown, options: unknown) => Promise<void>>(),
@@ -14,20 +11,13 @@ const { useViewShare } = await import("./useViewShare.js");
 
 beforeEach(() => {
   shareViewAsImage.mockReset().mockResolvedValue(undefined);
-  // Frames run as microtasks: deterministic, and all done before any
-  // macrotask (see `settle`), however slow the machine.
+  // Frames run as microtasks: deterministic, and all done within the act()
+  // that starts the share, however slow the machine.
   vi.stubGlobal("requestAnimationFrame", (callback: () => void) => {
     queueMicrotask(callback);
     return 0;
   });
 });
-
-/** Lets every pending microtask (frames, awaits) run. */
-function settle() {
-  return act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  });
-}
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -42,18 +32,29 @@ describe("useViewShare", () => {
         finish = resolve;
       }),
     );
-    const { result } = renderHook(() =>
+    // Frames held until this test runs them.
+    const frames: (() => void)[] = [];
+    vi.stubGlobal("requestAnimationFrame", (callback: () => void) => {
+      frames.push(callback);
+      return 0;
+    });
+    const { result } = await renderHook(() =>
       useViewShare({ dialogTitle: "Partager le classement" }),
     );
 
     let sharing!: Promise<void>;
-    act(() => {
+    await act(async () => {
       sharing = result.current.share();
+      await Promise.resolve();
     });
     expect(result.current.capturing).toBe(true);
     expect(shareViewAsImage).not.toHaveBeenCalled();
 
-    await settle();
+    await act(async () => {
+      // A frame may ask for the next one: run until none is left.
+      for (let frame = frames.shift(); frame; frame = frames.shift()) frame();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
     expect(shareViewAsImage).toHaveBeenCalledWith(result.current.ref, {
       dialogTitle: "Partager le classement",
       locale: "fr",
@@ -67,7 +68,7 @@ describe("useViewShare", () => {
   });
 
   it("ignores a second share while one is running", async () => {
-    const { result } = renderHook(() => useViewShare());
+    const { result } = await renderHook(() => useViewShare());
     await act(async () => {
       await Promise.all([result.current.share(), result.current.share()]);
     });
@@ -77,7 +78,7 @@ describe("useViewShare", () => {
   it("alerts the error's message by default", async () => {
     const alertSpy = vi.spyOn(Alert, "alert");
     shareViewAsImage.mockRejectedValue(new Error("Pas de partage ici."));
-    const { result } = renderHook(() => useViewShare());
+    const { result } = await renderHook(() => useViewShare());
     await act(() => result.current.share());
     expect(alertSpy).toHaveBeenCalledWith(
       "Partage impossible",
@@ -91,7 +92,7 @@ describe("useViewShare", () => {
     const error = new Error("boom");
     shareViewAsImage.mockRejectedValue(error);
     const onError = vi.fn();
-    const { result } = renderHook(() => useViewShare({ onError }));
+    const { result } = await renderHook(() => useViewShare({ onError }));
     await act(() => result.current.share());
     expect(onError).toHaveBeenCalledWith(error);
     expect(alertSpy).not.toHaveBeenCalled();

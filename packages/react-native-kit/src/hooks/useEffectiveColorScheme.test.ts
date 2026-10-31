@@ -1,7 +1,7 @@
+import { renderHook } from "@testing-library/react-native";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { mockColorScheme } from "../__mocks__/react-native.js";
-import { renderHook } from "../__mocks__/renderHook.js";
 
 import { useEffectiveColorScheme } from "./useEffectiveColorScheme.js";
 
@@ -10,21 +10,25 @@ describe("useEffectiveColorScheme", () => {
     mockColorScheme.value = "light";
   });
 
-  it('returns the preference as-is when it is not "system"', () => {
+  it('returns the preference as-is when it is not "system"', async () => {
     mockColorScheme.value = "dark";
-    const { result } = renderHook(() => useEffectiveColorScheme("light"));
+    const { result } = await renderHook(() => useEffectiveColorScheme("light"));
     expect(result.current).toBe("light");
   });
 
-  it('follows the device scheme when preference is "system"', () => {
+  it('follows the device scheme when preference is "system"', async () => {
     mockColorScheme.value = "dark";
-    const { result } = renderHook(() => useEffectiveColorScheme("system"));
+    const { result } = await renderHook(() =>
+      useEffectiveColorScheme("system"),
+    );
     expect(result.current).toBe("dark");
   });
 
-  it('falls back to "light" when the device scheme is unknown', () => {
+  it('falls back to "light" when the device scheme is unknown', async () => {
     mockColorScheme.value = null;
-    const { result } = renderHook(() => useEffectiveColorScheme("system"));
+    const { result } = await renderHook(() =>
+      useEffectiveColorScheme("system"),
+    );
     expect(result.current).toBe("light");
   });
 });
