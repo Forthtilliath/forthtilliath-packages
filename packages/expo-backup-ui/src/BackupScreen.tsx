@@ -16,13 +16,25 @@ import { useBackupUi } from "./useBackupUi.js";
 
 const DATE_LOCALES: Record<BackupLocale, string> = { fr: "fr-FR", en: "en-US" };
 
+/** Props of {@link BackupScreen}. */
 export interface BackupScreenProps<T> {
+  /**
+   * The app's backup manager (`createBackupManager` of
+   * `@forthtilliath/expo-backup`).
+   */
   manager: BackupManager<T>;
-  /** Hide the Google Drive section (e.g. an app without an OAuth client yet). */
+  /**
+   * Hide the Google Drive section (e.g. an app without an OAuth client yet).
+   */
   cloud?: boolean;
-  /** Short description of a backup for the confirmations, e.g. "12 aliments, 340 pesées". */
+  /**
+   * Short description of a backup for the confirmations, e.g. "12 aliments, 340
+   * pesées".
+   */
   describeBackup?: (data: T) => string;
-  /** Called after a restore (file or cloud), e.g. to refresh in-memory stores. */
+  /**
+   * Called after a restore (file or cloud), e.g. to refresh in-memory stores.
+   */
   onRestored?: (data: T) => void;
   /** @defaultValue "fr" */
   locale?: BackupLocale;
@@ -30,6 +42,10 @@ export interface BackupScreenProps<T> {
   dateLocale?: string;
   /** Overrides individual built-in texts, whatever the `locale`. */
   labels?: BackupScreenLabelOverrides;
+  /**
+   * Per-slot style overrides, merged over the defaults; also sets the spinner
+   * and placeholder colors.
+   */
   styles?: BackupScreenStyles;
 }
 

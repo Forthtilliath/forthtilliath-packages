@@ -52,6 +52,11 @@ export type BackupErrorCode =
   | "file-too-large"
   | "unknown";
 
+/**
+ * Error thrown or reported by the backup manager: `code` (see {@link
+ * BackupErrorCode}) says what failed, `cause` keeps the original error for
+ * diagnosis (`backupErrorDetail`).
+ */
 export class BackupError extends Error {
   readonly code: BackupErrorCode;
 

@@ -24,13 +24,23 @@ import {
 import { noCloudError } from "./stateStore.js";
 import type { ConnectResult } from "./types.js";
 
+/**
+ * The cloud half of a backup manager (see {@link createCloudSync}).
+ * @internal
+ */
 export interface CloudSync<T> {
+  /**
+   * Signs in, then links the account — or reports a `conflict` when the cloud
+   * already holds a backup with data.
+   */
   connect: () => Promise<ConnectResult<T>>;
   /** Links the account without asking (after a conflict was resolved). */
   link: (email: string, options: { upload: boolean }) => Promise<void>;
   /** `allowErase`: upload even over a cloud backup this one would wipe. */
   syncNow: (options?: { allowErase?: boolean }) => Promise<boolean>;
+  /** Downloads and reads the cloud backup, `null` when there is none. */
   fetchCloudBackup: () => Promise<T | null>;
+  /** Unlinks the account (the cloud backup stays on Drive). */
   disconnect: () => Promise<void>;
 }
 
@@ -41,6 +51,7 @@ export interface CloudSync<T> {
  * user's say, see `assertNoCloudErase`), and the
  * keyring escrow, so a new device signed in to the same account can read the
  * encrypted backups without the user having to keep anything.
+ * @internal
  */
 export function createCloudSync<T>(
   ctx: ManagerContext<T>,
@@ -60,7 +71,10 @@ export function createCloudSync<T>(
     onNeedsSync();
   });
 
-  /** Runs a Drive call, retrying once with a fresh token if Drive rejects it (401). */
+  /**
+   * Runs a Drive call, retrying once with a fresh token if Drive rejects it
+   * (401).
+   */
   async function withToken<R>(call: (token: string) => Promise<R>): Promise<R> {
     const token = await auth.getAccessToken();
     try {
@@ -252,7 +266,10 @@ export function createCloudSync<T>(
         throw normalizeBackupError(error);
       }
     },
-    /** Unlinks the account: the cloud backup stays, the app just stops reaching it. */
+    /**
+     * Unlinks the account: the cloud backup stays, the app just stops reaching
+     * it.
+     */
     async disconnect() {
       await ctx.ready();
       await auth.signOut();

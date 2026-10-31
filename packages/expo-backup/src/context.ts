@@ -14,11 +14,17 @@ const APP_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
 /** Everything the cloud and file halves of the manager share. */
 export interface ManagerContext<T> {
+  /** The app's backup id (see {@link BackupManagerConfig.appId}). */
   appId: string;
+  /** The encryption mode chosen by the app. */
   mode: EncryptionMode;
+  /** The app's full configuration. */
   config: BackupManagerConfig<T>;
+  /** How the cloud account is signed in (Google by default). */
   auth: CloudAuth;
+  /** The persisted backup state. */
   store: StateStore;
+  /** Keyring and encryption helpers. */
   encryption: Encryption;
   /** Resolves once the persisted state is loaded — awaited by every action. */
   ready: () => Promise<void>;
@@ -31,9 +37,18 @@ export interface ManagerContext<T> {
    * false (and drops any older snapshot) when the app has no local data.
    */
   writeSafetyBackup: () => Promise<boolean>;
+  /** Reads back the pre-restore snapshot (see `writeSafetyBackup`). */
   readSafetyBackup: () => Promise<T>;
 }
 
+/**
+ * Validates the configuration (`appId`: lowercase letters, digits and dashes)
+ * and builds the context shared by the manager's halves.
+ * @param config - The app's backup configuration.
+ * @returns The context.
+ * @throws When `appId` is invalid.
+ * @internal
+ */
 export function createManagerContext<T>(
   config: BackupManagerConfig<T>,
 ): ManagerContext<T> {

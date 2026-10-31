@@ -8,6 +8,7 @@ import type { BackupUi } from "./useBackupUi.js";
 /**
  * Encryption status (toggle in `optional` mode), plus the recovery code: shown
  * only on demand, since it is the key itself.
+ * @internal
  */
 export function EncryptionSection<T>({ ui }: { ui: BackupUi<T> }) {
   const { manager, state, t, styles, busy, run } = ui;

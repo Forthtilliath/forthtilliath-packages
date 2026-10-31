@@ -1,5 +1,6 @@
 import type { BackupScreenLabels } from "./labels.js";
 
+/** French texts of the backup screen (the default). */
 export const frLabels: BackupScreenLabels = {
   cloudTitle: "Sauvegarde automatique",
   cloudHint:

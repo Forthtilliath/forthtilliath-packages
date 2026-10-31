@@ -4,7 +4,10 @@ import { ActionButton } from "./ActionButton.js";
 import { askConfirmation, askConflictChoice, codeMessage } from "./dialogs.js";
 import type { BackupUi } from "./useBackupUi.js";
 
-/** Linking a Google account, then the automatic backup's status and actions. */
+/**
+ * Linking a Google account, then the automatic backup's status and actions.
+ * @internal
+ */
 export function CloudSection<T>({ ui }: { ui: BackupUi<T> }) {
   const { manager, state, t, styles, busy, run } = ui;
   const { cloudAccount } = state;

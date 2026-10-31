@@ -33,6 +33,10 @@ export interface BackupSource<T> {
   hasLocalData?: () => Promise<boolean> | boolean;
 }
 
+/**
+ * Configuration of {@link createBackupManager}: the app's data (see {@link
+ * BackupSource}) plus how backups are named, encrypted and synced.
+ */
 export interface BackupManagerConfig<T> extends BackupSource<T> {
   /**
    * Lowercase id used in every file name (`<appId>-backup.json` on Drive…)
@@ -41,7 +45,10 @@ export interface BackupManagerConfig<T> extends BackupSource<T> {
   appId: string;
   /** @defaultValue "off" */
   encryption?: EncryptionMode;
-  /** Name of the manually exported file. Defaults to `<appId>-backup-YYYY-MM-DD-HHmm.json`. */
+  /**
+   * Name of the manually exported file. Defaults to
+   * `<appId>-backup-YYYY-MM-DD-HHmm.json`.
+   */
   exportFileName?: (date: Date) => string;
   /** Title of the Android share sheet when exporting. */
   exportDialogTitle?: string;
@@ -60,12 +67,14 @@ export interface BackupManagerConfig<T> extends BackupSource<T> {
   auth?: CloudAuth;
 }
 
+/** Outcome of {@link BackupManager.connectCloud}. */
 export type ConnectResult<T> =
   | { status: "cancelled" }
   | { status: "connected"; email: string }
   /** A non-empty backup already exists in the cloud: ask which one to keep. */
   | { status: "conflict"; email: string; remote: T };
 
+/** Outcome of {@link BackupManager.pickBackupFile}. */
 export type PickResult<T> =
   | { status: "cancelled" }
   | { status: "ready"; data: T }
@@ -78,25 +87,55 @@ export type PickResult<T> =
       retry: (recoveryCode: string) => Promise<PickResult<T>>;
     };
 
+/**
+ * A backup manager, created once per app by {@link createBackupManager}:
+ * automatic cloud backup, manual file export / import, restore and undo,
+ * encryption and recovery code. Its state is observable (`getState` /
+ * `subscribe`, or `useBackupState` of `@forthtilliath/expo-backup-ui`).
+ */
 export interface BackupManager<T> {
+  /** The app's backup id. */
   readonly appId: string;
+  /** The encryption mode chosen by the app. */
   readonly encryptionMode: EncryptionMode;
+  /** The current backup state (see {@link BackupState}). */
   getState: () => BackupState;
+  /**
+   * Calls `listener` after every state change; returns the unsubscribe
+   * function.
+   */
   subscribe: (listener: () => void) => () => void;
-  /** Reads the persisted state, retries a pending upload, watches app state. Returns a stop function. */
+  /**
+   * Reads the persisted state, retries a pending upload, watches app state.
+   * Returns a stop function.
+   */
   start: () => () => void;
-  /** Schedules an automatic cloud upload. Call it whenever backed-up data changes. */
+  /**
+   * Schedules an automatic cloud upload. Call it whenever backed-up data
+   * changes.
+   */
   notifyDataChanged: () => void;
 
+  /**
+   * Signs in to Google and links the account. A `conflict` means the cloud
+   * already holds a backup with data: let the user choose with
+   * `resolveConflict`, or `cancelConflict`.
+   */
   connectCloud: () => Promise<ConnectResult<T>>;
-  /** After a `conflict`: keep this device's data (uploaded) or the cloud's (restored). */
+  /**
+   * After a `conflict`: keep this device's data (uploaded) or the cloud's
+   * (restored).
+   */
   resolveConflict: (
     conflict: { email: string; remote: T },
     keep: "device" | "cloud",
   ) => Promise<void>;
   /** After a `conflict`: give up linking the account. */
   cancelConflict: () => Promise<void>;
-  /** Uploads now. Resolves to false (error kept in the state) instead of throwing. */
+  /**
+   * Uploads now. Resolves to false (error kept in the state) instead of
+   * throwing.
+   */
   syncNow: () => Promise<boolean>;
   /**
    * After `cloud-erase-blocked`, once the user confirmed: uploads this
@@ -104,21 +143,42 @@ export interface BackupManager<T> {
    * restore the cloud backup (`fetchCloudBackup` + `restore`).
    */
   confirmCloudErase: () => Promise<boolean>;
+  /**
+   * Downloads and reads the cloud backup (decrypted, validated), `null` when
+   * there is none — e.g. to restore it.
+   */
   fetchCloudBackup: () => Promise<T | null>;
+  /**
+   * Signs out and stops the automatic backup; the cloud copy stays on Drive.
+   */
   disconnectCloud: () => Promise<void>;
 
   /** Writes a backup file (encrypted when active) and opens the share sheet. */
   exportToFile: () => Promise<void>;
-  /** Opens the file picker and reads the chosen backup, without applying it yet. */
+  /**
+   * Opens the file picker and reads the chosen backup, without applying it yet.
+   */
   pickBackupFile: () => Promise<PickResult<T>>;
-  /** Replaces local data with `data`, keeping a snapshot of the current data to undo. */
+  /**
+   * Replaces local data with `data`, keeping a snapshot of the current data to
+   * undo.
+   */
   restore: (data: T, options?: { source?: "file" | "cloud" }) => Promise<void>;
   /** Puts back the data as it was just before the last `restore`. */
   undoLastRestore: () => Promise<T>;
 
+  /** Whether new backups are encrypted right now. */
   isEncryptionActive: () => boolean;
   /** `optional` mode only. Re-uploads the cloud backup in the new form. */
   setEncryptionEnabled: (enabled: boolean) => Promise<void>;
+  /**
+   * The current key as a recovery code, to note down (generates the key if
+   * needed).
+   */
   getRecoveryCode: () => Promise<string>;
+  /**
+   * Adds the key behind a recovery code, so this device can read backups
+   * written elsewhere.
+   */
   addRecoveryCode: (code: string) => Promise<void>;
 }

@@ -2,6 +2,11 @@ import { File, Paths } from "expo-file-system";
 
 import type { BackupErrorCode } from "./errors.js";
 
+/**
+ * Everything the backup screen shows, persisted in a small JSON file of the
+ * app's documents (no secret in it). Read it with `getState` / `subscribe`, or
+ * `useBackupState` of `@forthtilliath/expo-backup-ui`.
+ */
 export interface BackupState {
   /** False until the persisted state has been read back at startup. */
   hydrated: boolean;
@@ -9,16 +14,28 @@ export interface BackupState {
   cloudAccount: { email: string } | null;
   /** The user's choice in `optional` encryption mode. */
   encryptionEnabled: boolean;
-  /** Last successful backup by any means (file export, cloud, restore). Epoch ms. */
+  /**
+   * Last successful backup by any means (file export, cloud, restore). Epoch
+   * ms.
+   */
   lastBackupAt: number | null;
+  /** Last successful cloud upload. Epoch ms, `null` if never. */
   lastCloudBackupAt: number | null;
-  /** Data changed since the last successful cloud upload (e.g. while offline). */
+  /**
+   * Data changed since the last successful cloud upload (e.g. while offline).
+   */
   cloudPending: boolean;
   /** Why the last cloud upload failed, cleared by the next success. */
   cloudError: BackupErrorCode | null;
-  /** Technical cause of `cloudError` ("HTTP 403 · storageQuotaExceeded"), for diagnosis. */
+  /**
+   * Technical cause of `cloudError` ("HTTP 403 · storageQuotaExceeded"), for
+   * diagnosis.
+   */
   cloudErrorDetail: string | null;
-  /** When uploads started failing (first failure since the last success). Epoch ms. */
+  /**
+   * When uploads started failing (first failure since the last success). Epoch
+   * ms.
+   */
   cloudFailingSince: number | null;
   /** A pre-restore snapshot exists, so the last restore can be undone. */
   hasSafetyBackup: boolean;
@@ -26,13 +43,20 @@ export interface BackupState {
 
 type PersistedState = Omit<BackupState, "hydrated">;
 
-/** Patch that forgets a cloud failure (success, account unlinked…). */
+/**
+ * Patch that forgets a cloud failure (success, account unlinked…).
+ * @internal
+ */
 export const noCloudError = {
   cloudError: null,
   cloudErrorDetail: null,
   cloudFailingSince: null,
 } satisfies Partial<PersistedState>;
 
+/**
+ * State before anything is read back from disk (`hydrated: false`, no account,
+ * no backup).
+ */
 export const initialBackupState: BackupState = {
   hydrated: false,
   cloudAccount: null,
@@ -46,11 +70,21 @@ export const initialBackupState: BackupState = {
 
 const STATE_VERSION = 1;
 
+/**
+ * The persisted backup state of one manager (see {@link createStateStore}).
+ * @internal
+ */
 export interface StateStore {
+  /** The current state (a new object after each change). */
   getState: () => BackupState;
-  /** Only after {@link StateStore.hydrate}: earlier, it would overwrite what's on disk. */
+  /**
+   * Only after {@link StateStore.hydrate}: earlier, it would overwrite what's
+   * on disk.
+   */
   setState: (patch: Partial<PersistedState>) => void;
+  /** Calls `listener` after every change; returns the unsubscribe function. */
   subscribe: (listener: () => void) => () => void;
+  /** Reads the persisted state back from disk; a no-op once hydrated. */
   hydrate: () => Promise<void>;
 }
 
@@ -59,6 +93,7 @@ export interface StateStore {
  * `subscribe`/`getState` shape `useSyncExternalStore` expects — no state
  * library imposed on the app. Holds no secret: the e-mail of the linked
  * account at most.
+ * @internal
  */
 export function createStateStore(appId: string): StateStore {
   const file = new File(Paths.document, `${appId}-backup-state.json`);

@@ -18,7 +18,15 @@ const TRANSIENT_CODES: ReadonlySet<BackupErrorCode> = new Set([
   "drive-rate-limited",
 ]);
 
+/**
+ * A persistent failure of the automatic cloud backup, as returned by {@link
+ * getCloudBackupProblem}.
+ */
 export interface CloudBackupProblem {
+  /**
+   * What failed; turn it into a message with `backupErrorMessage` of
+   * `@forthtilliath/expo-backup-ui`.
+   */
   code: BackupErrorCode;
   /** Technical cause, for diagnosis (see `backupErrorDetail`). */
   detail: string | null;
@@ -26,8 +34,12 @@ export interface CloudBackupProblem {
   since: number;
 }
 
+/** Options of {@link getCloudBackupProblem}. */
 export interface CloudBackupProblemOptions {
-  /** How long a transient failure (offline, Drive down) is tolerated. @defaultValue 1 day */
+  /**
+   * How long a transient failure (offline, Drive down) is tolerated.
+   * @defaultValue 1 day
+   */
   transientGraceMs?: number;
   /** @defaultValue Date.now() */
   now?: number;

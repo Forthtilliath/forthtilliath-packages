@@ -10,7 +10,15 @@ import {
 } from "./backupKey.js";
 import { BackupCryptoError } from "./errors.js";
 
+/**
+ * Value of the `format` field that marks a file as an encrypted backup
+ * envelope.
+ */
 export const ENCRYPTED_BACKUP_FORMAT = "forthtilliath.encrypted-backup";
+/**
+ * Envelope version this package writes; a higher one is refused as
+ * `unsupported-version`.
+ */
 export const ENCRYPTED_BACKUP_VERSION = 1;
 const CIPHER = "xchacha20-poly1305";
 const NONCE_LENGTH = 24;
@@ -21,20 +29,37 @@ const NONCE_LENGTH = 24;
  * app's data is in `ciphertext`.
  */
 export interface EncryptedBackupEnvelope {
+  /** Always {@link ENCRYPTED_BACKUP_FORMAT}. */
   format: typeof ENCRYPTED_BACKUP_FORMAT;
+  /**
+   * Envelope version, {@link ENCRYPTED_BACKUP_VERSION} when written by this
+   * package.
+   */
   version: number;
   /** Free label of the app that wrote it — authenticated, not secret. */
   app: string;
   /** {@link getBackupKeyId} of the key it was encrypted with. */
   keyId: string;
+  /** The algorithm, always `"xchacha20-poly1305"`. */
   cipher: typeof CIPHER;
+  /** The random 24-byte nonce, base64-encoded. */
   nonce: string;
+  /**
+   * The encrypted backup followed by its 16-byte authentication tag,
+   * base64-encoded.
+   */
   ciphertext: string;
 }
 
+/** Options of {@link encryptBackup}. */
 export interface EncryptBackupOptions {
   /** Stored in clear and authenticated, e.g. `"glucodose"`. */
   app?: string;
+  /**
+   * Source of the nonce. Defaults to the platform's secure generator
+   * (`crypto.getRandomValues`); override it only in tests, for a deterministic
+   * output.
+   */
   randomBytes?: RandomBytes;
 }
 
