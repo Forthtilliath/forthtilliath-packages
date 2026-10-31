@@ -1,79 +1,39 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Pressable, Text, View } from "react-native";
-import type { ReactTestInstance } from "react-test-renderer";
-import { act, create } from "react-test-renderer";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "../../__mocks__/testInstance.js";
 import { KitLocaleProvider } from "../../i18n/KitLocaleProvider.js";
 
 import { UndoToast } from "./UndoToast.js";
 
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
-
-function flattenStyle(style: unknown): Record<string, unknown> {
-  if (Array.isArray(style)) {
-    return (style as unknown[]).reduce<Record<string, unknown>>(
-      (acc, entry) => ({ ...acc, ...flattenStyle(entry) }),
-      {},
-    );
-  }
-  return (style as Record<string, unknown> | null | undefined) ?? {};
-}
-
-function textValues(tree: ReturnType<typeof create>): unknown[] {
-  return tree.root
-    .findAllByType(Text)
-    .map((t) => propsOf<{ children: unknown }>(t).children);
-}
-
-function findText(
-  tree: ReturnType<typeof create>,
-  value: string,
-): ReactTestInstance {
-  const found = tree.root
-    .findAllByType(Text)
-    .find((t) => propsOf<{ children: unknown }>(t).children === value);
-  if (!found)
-    throw new Error(`expected a <Text> reading ${JSON.stringify(value)}`);
-  return found;
-}
-
 describe("UndoToast", () => {
-  it("renders the message", () => {
-    const tree = renderTree(
+  it("renders the message", async () => {
+    await render(
       <UndoToast message="« Marie » supprimée" onAction={vi.fn()} />,
     );
-    expect(textValues(tree)).toContain("« Marie » supprimée");
+    expect(screen.getByText("« Marie » supprimée")).toBeOnTheScreen();
   });
 
-  it('defaults the action label to "Annuler"', () => {
-    const tree = renderTree(<UndoToast message="x" onAction={vi.fn()} />);
-    expect(textValues(tree)).toContain("Annuler");
+  it('defaults the action label to "Annuler"', async () => {
+    await render(<UndoToast message="x" onAction={vi.fn()} />);
+    expect(screen.getByRole("button", { name: "Annuler" })).toBeOnTheScreen();
   });
 
-  it('defaults to "Undo" with locale="en", or under an English provider', () => {
-    const own = renderTree(
+  it('defaults to "Undo" with locale="en", or under an English provider', async () => {
+    const { rerender } = await render(
       <UndoToast message="x" locale="en" onAction={vi.fn()} />,
     );
-    expect(textValues(own)).toContain("Undo");
+    expect(screen.getByRole("button", { name: "Undo" })).toBeOnTheScreen();
 
-    const provided = renderTree(
+    await rerender(
       <KitLocaleProvider locale="en">
         <UndoToast message="x" onAction={vi.fn()} />
       </KitLocaleProvider>,
     );
-    expect(textValues(provided)).toContain("Undo");
+    expect(screen.getByRole("button", { name: "Undo" })).toBeOnTheScreen();
   });
 
-  it("uses a custom action label, whatever the locale", () => {
-    const tree = renderTree(
+  it("uses a custom action label, whatever the locale", async () => {
+    await render(
       <UndoToast
         message="x"
         actionLabel="Rétablir"
@@ -81,69 +41,48 @@ describe("UndoToast", () => {
         onAction={vi.fn()}
       />,
     );
-    expect(textValues(tree)).toContain("Rétablir");
-    expect(textValues(tree)).not.toContain("Undo");
+    expect(screen.getByRole("button", { name: "Rétablir" })).toBeOnTheScreen();
+    expect(screen.queryByText("Undo")).not.toBeOnTheScreen();
   });
 
-  it("calls onAction when the button is pressed", () => {
+  it("calls onAction when the button is pressed", async () => {
     const onAction = vi.fn();
-    const tree = renderTree(<UndoToast message="x" onAction={onAction} />);
-    act(() => {
-      propsOf<{ onPress: () => void }>(
-        tree.root.findByType(Pressable),
-      ).onPress();
-    });
+    await render(<UndoToast message="x" onAction={onAction} />);
+    await fireEvent.press(screen.getByRole("button", { name: "Annuler" }));
     expect(onAction).toHaveBeenCalledTimes(1);
   });
 
-  it("truncates the message to a single line", () => {
-    const tree = renderTree(<UndoToast message="x" onAction={vi.fn()} />);
-    const message = findText(tree, "x");
-    expect(propsOf<{ numberOfLines: number }>(message).numberOfLines).toBe(1);
+  it("truncates the message to a single line", async () => {
+    await render(<UndoToast message="x" onAction={vi.fn()} />);
+    expect(screen.getByText("x")).toHaveProp("numberOfLines", 1);
   });
 
-  it("exposes the action as an accessible button", () => {
-    const tree = renderTree(<UndoToast message="x" onAction={vi.fn()} />);
-    expect(
-      propsOf<{ accessibilityRole: string }>(tree.root.findByType(Pressable))
-        .accessibilityRole,
-    ).toBe("button");
-  });
-
-  it("keeps the default floating-bar layout", () => {
-    const tree = renderTree(<UndoToast message="x" onAction={vi.fn()} />);
-    expect(
-      flattenStyle(
-        propsOf<{ style: unknown }>(tree.root.findByType(View)).style,
-      ),
-    ).toMatchObject({
+  it("keeps the default floating-bar layout", async () => {
+    await render(<UndoToast message="x" onAction={vi.fn()} />);
+    expect(screen.root).toHaveStyle({
       position: "absolute",
       bottom: 24,
       flexDirection: "row",
     });
   });
 
-  it("keeps the rest of a slot's default when overriding one property", () => {
-    const tree = renderTree(
+  it("keeps the rest of a slot's default when overriding one property", async () => {
+    await render(
       <UndoToast
         message="x"
         onAction={vi.fn()}
         styles={{ toast: { backgroundColor: "#0a0a0a" } }}
       />,
     );
-    expect(
-      flattenStyle(
-        propsOf<{ style: unknown }>(tree.root.findByType(View)).style,
-      ),
-    ).toMatchObject({
+    expect(screen.root).toHaveStyle({
       position: "absolute",
       bottom: 24,
       backgroundColor: "#0a0a0a",
     });
   });
 
-  it("applies message and action style overrides", () => {
-    const tree = renderTree(
+  it("applies message and action style overrides", async () => {
+    await render(
       <UndoToast
         message="hello"
         onAction={vi.fn()}
@@ -153,13 +92,13 @@ describe("UndoToast", () => {
         }}
       />,
     );
-    expect(
-      flattenStyle(propsOf<{ style: unknown }>(findText(tree, "hello")).style),
-    ).toMatchObject({ flex: 1, color: "#111111" });
-    expect(
-      flattenStyle(
-        propsOf<{ style: unknown }>(findText(tree, "Annuler")).style,
-      ),
-    ).toMatchObject({ fontWeight: "700", color: "#2563eb" });
+    expect(screen.getByText("hello")).toHaveStyle({
+      flex: 1,
+      color: "#111111",
+    });
+    expect(screen.getByText("Annuler")).toHaveStyle({
+      fontWeight: "700",
+      color: "#2563eb",
+    });
   });
 });

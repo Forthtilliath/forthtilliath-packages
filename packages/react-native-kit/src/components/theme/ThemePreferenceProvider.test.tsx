@@ -1,29 +1,32 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { act } from "react-test-renderer";
+import type { ReactNode } from "react";
+import { act, renderHook } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
 import { mockColorScheme } from "../../__mocks__/react-native.js";
-import { renderTree } from "../../__mocks__/renderTree.js";
 import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
 
 import {
-  type ThemePreferenceContextValue,
   useResolvedScheme,
   useThemePreference,
 } from "./themePreferenceContext.js";
 import { ThemePreferenceProvider } from "./ThemePreferenceProvider.js";
 
-interface Seen {
-  ctx?: ThemePreferenceContextValue;
-  scheme?: "light" | "dark";
+type ProviderProps = Omit<
+  Parameters<typeof ThemePreferenceProvider>[0],
+  "children"
+>;
+
+/** What a screen under the provider reads. */
+function useTheme() {
+  return { ctx: useThemePreference(), scheme: useResolvedScheme() };
 }
 
-// Reports what it reads through a callback (props themselves are immutable).
-function Probe({ report }: { report: (seen: Required<Seen>) => void }) {
-  const ctx = useThemePreference();
-  const scheme = useResolvedScheme();
-  report({ ctx, scheme });
-  return null;
+function renderUnder(props: ProviderProps) {
+  return renderHook(useTheme, {
+    wrapper: ({ children }: { children: ReactNode }) => (
+      <ThemePreferenceProvider {...props}>{children}</ThemePreferenceProvider>
+    ),
+  });
 }
 
 function deferred<T>() {
@@ -42,86 +45,69 @@ async function flush() {
 
 describe("ThemePreferenceProvider", () => {
   it("starts on the initial preference, then applies the loaded one", async () => {
-    const seen: Seen = {};
     const stored = deferred<ThemePreference | null>();
-    renderTree(
-      <ThemePreferenceProvider load={() => stored.promise} save={vi.fn()}>
-        <Probe report={(s) => Object.assign(seen, s)} />
-      </ThemePreferenceProvider>,
-    );
-    expect(seen.ctx?.preference).toBe("system");
+    const { result } = await renderUnder({
+      load: () => stored.promise,
+      save: vi.fn(),
+    });
+    expect(result.current.ctx.preference).toBe("system");
 
     stored.resolve("dark");
     await flush();
-    expect(seen.ctx?.preference).toBe("dark");
-    expect(seen.scheme).toBe("dark");
+    expect(result.current.ctx.preference).toBe("dark");
+    expect(result.current.scheme).toBe("dark");
   });
 
   it("keeps the initial preference when nothing is saved", async () => {
-    const seen: Seen = {};
-    renderTree(
-      <ThemePreferenceProvider
-        load={() => Promise.resolve(null)}
-        save={vi.fn()}
-        initialPreference="light"
-      >
-        <Probe report={(s) => Object.assign(seen, s)} />
-      </ThemePreferenceProvider>,
-    );
+    const { result } = await renderUnder({
+      load: () => Promise.resolve(null),
+      save: vi.fn(),
+      initialPreference: "light",
+    });
     await flush();
-    expect(seen.ctx?.preference).toBe("light");
+    expect(result.current.ctx.preference).toBe("light");
   });
 
   it("applies and saves a new choice", async () => {
-    const seen: Seen = {};
     const save = vi.fn();
-    renderTree(
-      <ThemePreferenceProvider load={() => Promise.resolve(null)} save={save}>
-        <Probe report={(s) => Object.assign(seen, s)} />
-      </ThemePreferenceProvider>,
-    );
-    await flush();
-    act(() => {
-      seen.ctx?.setPreference("dark");
+    const { result } = await renderUnder({
+      load: () => Promise.resolve(null),
+      save,
     });
-    expect(seen.ctx?.preference).toBe("dark");
+    await flush();
+    await act(() => {
+      result.current.ctx.setPreference("dark");
+    });
+    expect(result.current.ctx.preference).toBe("dark");
     expect(save).toHaveBeenCalledWith("dark");
   });
 
   it("doesn't let a late load overwrite a choice made meanwhile", async () => {
-    const seen: Seen = {};
     const stored = deferred<ThemePreference | null>();
-    renderTree(
-      <ThemePreferenceProvider load={() => stored.promise} save={vi.fn()}>
-        <Probe report={(s) => Object.assign(seen, s)} />
-      </ThemePreferenceProvider>,
-    );
-    act(() => {
-      seen.ctx?.setPreference("light");
+    const { result } = await renderUnder({
+      load: () => stored.promise,
+      save: vi.fn(),
+    });
+    await act(() => {
+      result.current.ctx.setPreference("light");
     });
     stored.resolve("dark");
     await flush();
-    expect(seen.ctx?.preference).toBe("light");
+    expect(result.current.ctx.preference).toBe("light");
   });
 
-  it("follows the device scheme under 'system'", () => {
+  it("follows the device scheme under 'system'", async () => {
     mockColorScheme.value = "dark";
-    const seen: Seen = {};
-    renderTree(
-      <ThemePreferenceProvider
-        load={() => Promise.resolve(null)}
-        save={vi.fn()}
-      >
-        <Probe report={(s) => Object.assign(seen, s)} />
-      </ThemePreferenceProvider>,
-    );
-    expect(seen.scheme).toBe("dark");
+    const { result } = await renderUnder({
+      load: () => Promise.resolve(null),
+      save: vi.fn(),
+    });
+    expect(result.current.scheme).toBe("dark");
     mockColorScheme.value = "light";
   });
 
-  it("defaults to 'system' outside a provider", () => {
-    const seen: Seen = {};
-    renderTree(<Probe report={(s) => Object.assign(seen, s)} />);
-    expect(seen.ctx?.preference).toBe("system");
+  it("defaults to 'system' outside a provider", async () => {
+    const { result } = await renderHook(useTheme);
+    expect(result.current.ctx.preference).toBe("system");
   });
 });
