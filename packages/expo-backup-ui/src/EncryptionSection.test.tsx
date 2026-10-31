@@ -1,20 +1,22 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see __mocks__/renderHook.ts */
-import { Switch, TextInput } from "react-native";
-import { act } from "react-test-renderer";
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+} from "@testing-library/react-native";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { BackupError } from "@forthtilliath/expo-backup/errors";
 
 import { createFakeManager } from "./__mocks__/fakeManager.js";
-import { renderHook } from "./__mocks__/renderHook.js";
 import {
   allText,
-  hasButton,
+  elementsOfType,
+  flush,
   press,
-  render,
   spyOnAlerts,
 } from "./__mocks__/screen.js";
-import { propsOf } from "./__mocks__/testInstance.js";
 import { BackupScreen } from "./BackupScreen.js";
 import { errorMessage } from "./dialogs.js";
 import { useAutoBackup } from "./hooks.js";
@@ -24,41 +26,47 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+const showCode = () =>
+  screen.queryByRole("button", { name: "Afficher la clé de secours" });
+
 describe("EncryptionSection", () => {
-  it("is hidden when encryption is off", () => {
-    const tree = render(<BackupScreen manager={createFakeManager().manager} />);
-    expect(allText(tree)).not.toContain("Chiffrement");
+  it("is hidden when encryption is off", async () => {
+    await render(<BackupScreen manager={createFakeManager().manager} />);
+    expect(allText()).not.toContain("Chiffrement");
   });
 
   it("toggles encryption in optional mode", async () => {
     const { manager, setState } = createFakeManager({ encryption: "optional" });
-    const tree = render(<BackupScreen manager={manager} />);
-    expect(hasButton(tree, "Afficher la clé de secours")).toBe(false);
-    await act(async () => {
-      propsOf<{ onValueChange: (value: boolean) => void }>(
-        tree.root.findByType(Switch),
-      ).onValueChange(true);
-      await Promise.resolve();
-    });
+    await render(<BackupScreen manager={manager} />);
+    expect(showCode()).not.toBeOnTheScreen();
+
+    const [nativeSwitch] = elementsOfType("Switch");
+    if (!nativeSwitch) throw new Error("expected the encryption switch");
+    await fireEvent(nativeSwitch, "valueChange", true);
+    await flush();
     expect(manager.setEncryptionEnabled).toHaveBeenCalledWith(true);
-    act(() => {
+
+    await act(() => {
       setState({ encryptionEnabled: true });
     });
-    expect(hasButton(tree, "Afficher la clé de secours")).toBe(true);
-    await press(tree, "Chiffrer mes sauvegardes");
+    expect(showCode()).toBeOnTheScreen();
+    await fireEvent.press(
+      screen.getByRole("switch", { name: "Chiffrer mes sauvegardes" }),
+    );
+    await flush();
     expect(manager.setEncryptionEnabled).toHaveBeenLastCalledWith(false);
   });
 
   it("shows the recovery code on demand in required mode", async () => {
     const { manager } = createFakeManager({ encryption: "required" });
-    const tree = render(<BackupScreen manager={manager} />);
-    expect(allText(tree)).toContain("toujours chiffrées");
-    expect(tree.root.findAllByType(Switch)).toHaveLength(0);
-    expect(allText(tree)).not.toContain("ABCDE-FGHJK");
-    await press(tree, "Afficher la clé de secours");
-    expect(allText(tree)).toContain("ABCDE-FGHJK");
-    await press(tree, "Fermer");
-    expect(allText(tree)).not.toContain("ABCDE-FGHJK");
+    await render(<BackupScreen manager={manager} />);
+    expect(allText()).toContain("toujours chiffrées");
+    expect(screen.queryByRole("switch")).not.toBeOnTheScreen();
+    expect(allText()).not.toContain("ABCDE-FGHJK");
+    await press("Afficher la clé de secours");
+    expect(allText()).toContain("ABCDE-FGHJK");
+    await press("Fermer");
+    expect(allText()).not.toContain("ABCDE-FGHJK");
   });
 
   it("adds a recovery code typed in", async () => {
@@ -67,15 +75,14 @@ describe("EncryptionSection", () => {
     manager.addRecoveryCode.mockRejectedValueOnce(
       new BackupError("invalid-recovery-code"),
     );
-    const tree = render(<BackupScreen manager={manager} />);
+    await render(<BackupScreen manager={manager} />);
     const enter = async (code: string) => {
-      await press(tree, "Saisir une clé de secours");
-      act(() => {
-        propsOf<{ onChangeText: (text: string) => void }>(
-          tree.root.findByType(TextInput),
-        ).onChangeText(code);
-      });
-      await press(tree, "Valider");
+      await press("Saisir une clé de secours");
+      await fireEvent.changeText(
+        screen.getByPlaceholderText("XXXXX-XXXXX-…"),
+        code,
+      );
+      await press("Valider");
     };
     await enter("typo");
     expect(alerts.last()?.[1]).toBe(
@@ -86,9 +93,9 @@ describe("EncryptionSection", () => {
     expect(alerts.last()?.[0]).toBe("Clé de secours ajoutée.");
   });
 
-  it("lets labels be overridden, errors included", () => {
+  it("lets labels be overridden, errors included", async () => {
     const { manager } = createFakeManager({ encryption: "required" });
-    const tree = render(
+    await render(
       <BackupScreen
         manager={manager}
         labels={{
@@ -97,7 +104,7 @@ describe("EncryptionSection", () => {
         }}
       />,
     );
-    expect(allText(tree)).toContain("Protection");
+    expect(allText()).toContain("Protection");
   });
 });
 
@@ -109,15 +116,15 @@ describe("helpers", () => {
     expect(errorMessage("weird", t)).toBe(t.errors.unknown);
   });
 
-  it("useAutoBackup starts the manager and stops it on unmount", () => {
+  it("useAutoBackup starts the manager and stops it on unmount", async () => {
     const { manager } = createFakeManager();
     const stop = vi.fn();
     manager.start.mockReturnValue(stop);
-    const { unmount } = renderHook(() => {
+    const { unmount } = await renderHook(() => {
       useAutoBackup(manager);
     });
     expect(manager.start).toHaveBeenCalledTimes(1);
-    unmount();
+    await unmount();
     expect(stop).toHaveBeenCalled();
   });
 });
