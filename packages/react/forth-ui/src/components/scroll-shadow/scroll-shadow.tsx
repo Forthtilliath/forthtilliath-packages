@@ -33,13 +33,7 @@ export function ScrollShadow({
   const [atBottom, setAtBottom] = React.useState(false);
 
   function updateEdges(el: HTMLDivElement) {
-    // Also called from the onScroll handler below (a normal event, not an
-    // effect) — these two disables only cover the mount-time effect call,
-    // reading the element's scroll geometry that isn't known until after
-    // the first paint.
-    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setAtTop(el.scrollTop <= 0);
-    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 1);
   }
 

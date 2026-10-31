@@ -30,7 +30,6 @@ export function useThrottle<T>(value: T, limitMs: number): T {
       lastRanAtRef.current = Date.now();
       // Leading edge: the limit has already elapsed, so this change must
       // apply right away rather than waiting for a trailing timeout.
-      // eslint-disable-next-line @eslint-react/set-state-in-effect
       setThrottled(value);
       return;
     }
