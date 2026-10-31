@@ -1,10 +1,19 @@
+import { renderHook } from "@testing-library/react-native";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { renderHook } from "../__mocks__/renderHook.js";
 
 import { useDebouncedChange } from "./useDebouncedChange.js";
 
 const DELAY_MS = 5 * 60 * 1000;
+
+/** Watches the `values` handed as props, so `rerender(next)` changes them. */
+function renderDebounced(values: unknown[], callback: () => void) {
+  return renderHook(
+    (current: unknown[]) => {
+      useDebouncedChange(current, DELAY_MS, callback);
+    },
+    { initialProps: values },
+  );
+}
 
 describe("useDebouncedChange", () => {
   beforeEach(() => {
@@ -15,37 +24,27 @@ describe("useDebouncedChange", () => {
     vi.useRealTimers();
   });
 
-  it("doesn't fire while a value is undefined", () => {
+  it("doesn't fire while a value is undefined", async () => {
     const callback = vi.fn();
-    const values: unknown[] = [undefined, undefined];
-    renderHook(() => {
-      useDebouncedChange(values, DELAY_MS, callback);
-    });
+    await renderDebounced([undefined, undefined], callback);
 
     vi.advanceTimersByTime(DELAY_MS);
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it("doesn't fire on the first render once all values are defined", () => {
+  it("doesn't fire on the first render once all values are defined", async () => {
     const callback = vi.fn();
-    const values: unknown[] = [1, 2];
-    renderHook(() => {
-      useDebouncedChange(values, DELAY_MS, callback);
-    });
+    await renderDebounced([1, 2], callback);
 
     vi.advanceTimersByTime(DELAY_MS);
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it("fires callback delayMs after a change", () => {
+  it("fires callback delayMs after a change", async () => {
     const callback = vi.fn();
-    let values: unknown[] = [1, 2];
-    const { rerender } = renderHook(() => {
-      useDebouncedChange(values, DELAY_MS, callback);
-    });
+    const { rerender } = await renderDebounced([1, 2], callback);
 
-    values = [3, 2];
-    rerender();
+    await rerender([3, 2]);
 
     vi.advanceTimersByTime(DELAY_MS - 1);
     expect(callback).not.toHaveBeenCalled();
@@ -54,19 +53,14 @@ describe("useDebouncedChange", () => {
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
-  it("restarts the delay when a new change comes in before delayMs", () => {
+  it("restarts the delay when a new change comes in before delayMs", async () => {
     const callback = vi.fn();
-    let values: unknown[] = [1, 2];
-    const { rerender } = renderHook(() => {
-      useDebouncedChange(values, DELAY_MS, callback);
-    });
+    const { rerender } = await renderDebounced([1, 2], callback);
 
-    values = [3, 2];
-    rerender();
+    await rerender([3, 2]);
     vi.advanceTimersByTime(DELAY_MS - 60_000);
 
-    values = [3, 4];
-    rerender();
+    await rerender([3, 4]);
     vi.advanceTimersByTime(DELAY_MS - 60_000);
     expect(callback).not.toHaveBeenCalled();
 

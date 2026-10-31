@@ -1,6 +1,5 @@
+import { renderHook } from "@testing-library/react-native";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { renderHook } from "../__mocks__/renderHook.js";
 
 import { usePressRepeat } from "./usePressRepeat.js";
 
@@ -13,9 +12,9 @@ describe("usePressRepeat", () => {
     vi.useRealTimers();
   });
 
-  it("runs at once, repeats after the delay, then speeds up", () => {
+  it("runs at once, repeats after the delay, then speeds up", async () => {
     const action = vi.fn();
-    const { result } = renderHook(() => usePressRepeat());
+    const { result } = await renderHook(() => usePressRepeat());
 
     result.current.start(action);
     expect(action).toHaveBeenCalledTimes(1);
@@ -30,9 +29,9 @@ describe("usePressRepeat", () => {
     expect(action.mock.calls.length - beforeFast).toBe(10);
   });
 
-  it("stops on stop() and on unmount", () => {
+  it("stops on stop() and on unmount", async () => {
     const action = vi.fn();
-    const { result, unmount } = renderHook(() => usePressRepeat());
+    const { result, unmount } = await renderHook(() => usePressRepeat());
 
     result.current.start(action);
     result.current.stop();
@@ -40,14 +39,14 @@ describe("usePressRepeat", () => {
     expect(action).toHaveBeenCalledTimes(1);
 
     result.current.start(action);
-    unmount();
+    await unmount();
     vi.advanceTimersByTime(5000);
     expect(action).toHaveBeenCalledTimes(2);
   });
 
-  it("follows custom timings", () => {
+  it("follows custom timings", async () => {
     const action = vi.fn();
-    const { result } = renderHook(() =>
+    const { result } = await renderHook(() =>
       usePressRepeat({ initialDelay: 100, interval: 50 }),
     );
 
