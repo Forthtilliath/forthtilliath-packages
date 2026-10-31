@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Alert, Pressable, Text } from "react-native";
-import { act, create } from "react-test-renderer";
+import { Alert } from "react-native";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Imported directly (not via the bare "expo-image-picker" specifier
@@ -8,17 +7,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 // of the real package's. Vitest's resolve.alias makes both resolve to the
 // same file at runtime, so this is still the identical module instance.
 import * as ImagePicker from "../../__mocks__/expo-image-picker.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { PhotoPicker } from "./PhotoPicker.js";
-
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
 
 interface ActionSheetButton {
   text?: string;
@@ -34,18 +24,31 @@ function lastAlertButtons(alertSpy: {
 // PhotoPicker's action-sheet buttons fire-and-forget their async work (to
 // satisfy Alert's void-returning onPress type), so tests flush a real
 // macrotask tick afterwards to let it settle before asserting.
-function flushAsync() {
-  return new Promise((resolve) => setTimeout(resolve, 0));
-}
-
 async function pressActionSheetButton(
   alertSpy: { mock: { calls: unknown[][] } },
   label: string,
 ) {
-  lastAlertButtons(alertSpy)
-    ?.find((b) => b.text === label)
-    ?.onPress?.();
-  await flushAsync();
+  await act(async () => {
+    lastAlertButtons(alertSpy)
+      ?.find((b) => b.text === label)
+      ?.onPress?.();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+}
+
+const addButton = () =>
+  screen.getByRole("button", { name: "Ajouter une photo of the item" });
+
+function renderPicker(props: Partial<Parameters<typeof PhotoPicker>[0]> = {}) {
+  return render(
+    <PhotoPicker
+      photoUri={null}
+      onChange={vi.fn()}
+      savePhoto={vi.fn()}
+      photoLabel="of the item"
+      {...props}
+    />,
+  );
 }
 
 describe("PhotoPicker", () => {
@@ -53,52 +56,27 @@ describe("PhotoPicker", () => {
     vi.clearAllMocks();
   });
 
-  it("shows the placeholder when there is no photo", () => {
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri={null}
-        onChange={vi.fn()}
-        savePhoto={vi.fn()}
-        photoLabel="of the item"
-      />,
-    );
-    const texts = tree.root.findAllByType(Text);
-    expect(texts.some((t) => t.props.children === "Ajouter une photo")).toBe(
-      true,
-    );
+  it("shows the placeholder when there is no photo", async () => {
+    await renderPicker();
+    expect(screen.getByText("Ajouter une photo")).toBeOnTheScreen();
+    expect(screen.queryByText("Retirer la photo")).not.toBeOnTheScreen();
   });
 
-  it("shows the preview and a remove link when there is a photo", () => {
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri="file://photo.jpg"
-        onChange={vi.fn()}
-        savePhoto={vi.fn()}
-        photoLabel="of the item"
-      />,
-    );
-    const texts = tree.root.findAllByType(Text);
-    expect(texts.some((t) => t.props.children === "Retirer la photo")).toBe(
-      true,
-    );
+  it("shows the preview and a remove link when there is a photo", async () => {
+    await renderPicker({ photoUri: "file://photo.jpg" });
+    expect(
+      screen.getByRole("button", { name: "Photo of the item. Modifier." }),
+    ).toBeOnTheScreen();
+    expect(
+      screen.getByRole("button", { name: "Retirer la photo" }),
+    ).toBeOnTheScreen();
   });
 
-  it("opens an action sheet on press", () => {
+  it("opens an action sheet on press", async () => {
     const alertSpy = vi.spyOn(Alert, "alert");
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri={null}
-        onChange={vi.fn()}
-        savePhoto={vi.fn()}
-        photoLabel="of the item"
-      />,
-    );
+    await renderPicker();
 
-    act(() => {
-      propsOf<{ onPress: () => void }>(
-        tree.root.findByType(Pressable),
-      ).onPress();
-    });
+    await fireEvent.press(addButton());
 
     expect(alertSpy).toHaveBeenCalledWith(
       "Photo of the item",
@@ -118,23 +96,10 @@ describe("PhotoPicker", () => {
     });
     const savePhoto = vi.fn().mockResolvedValue("file://saved.jpg");
     const onChange = vi.fn();
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri={null}
-        onChange={onChange}
-        savePhoto={savePhoto}
-        photoLabel="of the item"
-      />,
-    );
+    await renderPicker({ onChange, savePhoto });
 
-    act(() => {
-      propsOf<{ onPress: () => void }>(
-        tree.root.findByType(Pressable),
-      ).onPress();
-    });
-    await act(async () => {
-      await pressActionSheetButton(alertSpy, "Prendre une photo");
-    });
+    await fireEvent.press(addButton());
+    await pressActionSheetButton(alertSpy, "Prendre une photo");
 
     expect(savePhoto).toHaveBeenCalledWith("file://raw.jpg");
     expect(onChange).toHaveBeenCalledWith("file://saved.jpg");
@@ -145,23 +110,10 @@ describe("PhotoPicker", () => {
     ImagePicker.requestCameraPermissionsAsync.mockResolvedValue({
       granted: false,
     });
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri={null}
-        onChange={vi.fn()}
-        savePhoto={vi.fn()}
-        photoLabel="of the item"
-      />,
-    );
+    await renderPicker();
 
-    act(() => {
-      propsOf<{ onPress: () => void }>(
-        tree.root.findByType(Pressable),
-      ).onPress();
-    });
-    await act(async () => {
-      await pressActionSheetButton(alertSpy, "Prendre une photo");
-    });
+    await fireEvent.press(addButton());
+    await pressActionSheetButton(alertSpy, "Prendre une photo");
 
     expect(ImagePicker.launchCameraAsync).not.toHaveBeenCalled();
   });
@@ -174,23 +126,10 @@ describe("PhotoPicker", () => {
     });
     const savePhoto = vi.fn().mockResolvedValue("file://saved.jpg");
     const onChange = vi.fn();
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri={null}
-        onChange={onChange}
-        savePhoto={savePhoto}
-        photoLabel="of the item"
-      />,
-    );
+    await renderPicker({ onChange, savePhoto });
 
-    act(() => {
-      propsOf<{ onPress: () => void }>(
-        tree.root.findByType(Pressable),
-      ).onPress();
-    });
-    await act(async () => {
-      await pressActionSheetButton(alertSpy, "Choisir dans la galerie");
-    });
+    await fireEvent.press(addButton());
+    await pressActionSheetButton(alertSpy, "Choisir dans la galerie");
 
     expect(
       ImagePicker.requestMediaLibraryPermissionsAsync,
@@ -199,22 +138,13 @@ describe("PhotoPicker", () => {
     expect(onChange).toHaveBeenCalledWith("file://saved.jpg");
   });
 
-  it("calls onChange(null) when removing the photo", () => {
+  it("calls onChange(null) when removing the photo", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
-      <PhotoPicker
-        photoUri="file://photo.jpg"
-        onChange={onChange}
-        savePhoto={vi.fn()}
-        photoLabel="of the item"
-      />,
-    );
+    await renderPicker({ photoUri: "file://photo.jpg", onChange });
 
-    act(() => {
-      const removeButton = tree.root.findAllByType(Pressable)[1];
-      if (removeButton)
-        propsOf<{ onPress: () => void }>(removeButton).onPress();
-    });
+    await fireEvent.press(
+      screen.getByRole("button", { name: "Retirer la photo" }),
+    );
 
     expect(onChange).toHaveBeenCalledWith(null);
   });

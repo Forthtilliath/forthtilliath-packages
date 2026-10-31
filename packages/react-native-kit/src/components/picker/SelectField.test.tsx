@@ -1,14 +1,5 @@
-import { Pressable } from "react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
-
-import {
-  findText,
-  parentOf,
-  press,
-  renderTree,
-  styleOf,
-  textValues,
-} from "../../__mocks__/renderTree.js";
 
 import { OptionsModal } from "./OptionsModal.js";
 import { SelectField } from "./SelectField.js";
@@ -18,11 +9,20 @@ const options = [
   { value: 2, label: "Février" },
 ];
 
+/** The open modal, and the full-screen backdrop it is made of. */
+function openModal() {
+  const modal = screen.root;
+  const [backdrop] = modal?.children ?? [];
+  if (modal?.type !== "Modal" || typeof backdrop !== "object")
+    throw new Error("expected an open modal and its backdrop");
+  return { modal, backdrop };
+}
+
 describe("OptionsModal", () => {
-  it("selects the tapped option, then closes", () => {
+  it("selects the tapped option, then closes", async () => {
     const onSelect = vi.fn();
     const onClose = vi.fn();
-    const tree = renderTree(
+    await render(
       <OptionsModal
         visible
         onClose={onClose}
@@ -30,14 +30,14 @@ describe("OptionsModal", () => {
         onSelect={onSelect}
       />,
     );
-    press(parentOf(findText(tree, "Février")));
+    await fireEvent.press(screen.getByRole("button", { name: "Février" }));
     expect(onSelect).toHaveBeenCalledWith(2);
     expect(onClose).toHaveBeenCalledOnce();
   });
 
-  it("closes on a backdrop tap", () => {
+  it("closes on a backdrop tap and on Android's back button", async () => {
     const onClose = vi.fn();
-    const tree = renderTree(
+    await render(
       <OptionsModal
         visible
         onClose={onClose}
@@ -45,16 +45,15 @@ describe("OptionsModal", () => {
         onSelect={vi.fn()}
       />,
     );
-    const [backdrop] = tree.root.findAllByType(Pressable);
-    if (!backdrop) throw new Error("expected the backdrop");
-    press(backdrop);
-    expect(onClose).toHaveBeenCalledOnce();
+    await fireEvent.press(openModal().backdrop);
+    await fireEvent(openModal().modal, "requestClose");
+    expect(onClose).toHaveBeenCalledTimes(2);
   });
 });
 
 describe("SelectField", () => {
-  it("shows the caption and current value, options hidden", () => {
-    const tree = renderTree(
+  it("shows the caption and current value, options hidden", async () => {
+    await render(
       <SelectField
         label="Mois"
         valueLabel="Janvier"
@@ -62,12 +61,16 @@ describe("SelectField", () => {
         onSelect={vi.fn()}
       />,
     );
-    expect(textValues(tree)).toEqual(["Mois", "Janvier", "▾"]);
+    expect(screen.getByText("Mois")).toBeOnTheScreen();
+    expect(
+      screen.getByRole("button", { name: "Mois : Janvier" }),
+    ).toBeOnTheScreen();
+    expect(screen.queryByText("Février")).not.toBeOnTheScreen();
   });
 
-  it("opens the options and forwards the choice", () => {
+  it("opens the options and forwards the choice", async () => {
     const onSelect = vi.fn();
-    const tree = renderTree(
+    await render(
       <SelectField
         label="Mois"
         valueLabel="Janvier"
@@ -75,14 +78,16 @@ describe("SelectField", () => {
         onSelect={onSelect}
       />,
     );
-    press(parentOf(findText(tree, "Janvier")));
-    press(parentOf(findText(tree, "Février")));
+    await fireEvent.press(
+      screen.getByRole("button", { name: "Mois : Janvier" }),
+    );
+    await fireEvent.press(screen.getByRole("button", { name: "Février" }));
     expect(onSelect).toHaveBeenCalledWith(2);
-    expect(textValues(tree)).not.toContain("Février");
+    expect(screen.queryByText("Février")).not.toBeOnTheScreen();
   });
 
-  it("forwards nested OptionsModal styles and merges its own", () => {
-    const tree = renderTree(
+  it("forwards nested OptionsModal styles and merges its own", async () => {
+    await render(
       <SelectField
         label="Mois"
         valueLabel="Janvier"
@@ -94,12 +99,10 @@ describe("SelectField", () => {
         }}
       />,
     );
-    expect(styleOf(parentOf(findText(tree, "Janvier")))).toMatchObject({
-      borderRadius: 8,
-      borderColor: "#333333",
-    });
-    press(parentOf(findText(tree, "Janvier")));
-    expect(styleOf(findText(tree, "Février"))).toMatchObject({
+    const button = screen.getByRole("button", { name: "Mois : Janvier" });
+    expect(button).toHaveStyle({ borderRadius: 8, borderColor: "#333333" });
+    await fireEvent.press(button);
+    expect(screen.getByText("Février")).toHaveStyle({
       fontSize: 16,
       color: "#eeeeee",
     });

@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-
-import { Pressable } from "react-native";
-import { act, create } from "react-test-renderer";
-import { Ionicons } from "@expo/vector-icons";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Imported directly (not via the bare "expo-speech-recognition" specifier
@@ -15,30 +11,16 @@ import {
   ExpoSpeechRecognitionModule,
   resetSpeechEventListeners,
 } from "../../__mocks__/expo-speech-recognition.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
+import { screenIcons } from "../../__mocks__/screenQueries.js";
 
 import { VoiceSearchButton } from "./VoiceSearchButton.js";
-
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
 
 // handlePress fires and forgets its async work (to satisfy Pressable's
 // void-returning onPress type), so tests flush a real macrotask tick
 // afterwards to let it settle before asserting.
-function flushAsync(): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, 0));
-}
-
-async function press(tree: ReturnType<typeof create>) {
-  act(() => {
-    propsOf<{ onPress: () => void }>(tree.root.findByType(Pressable)).onPress();
-  });
-  await act(() => flushAsync());
+async function press(name = "Recherche vocale") {
+  await fireEvent.press(screen.getByRole("button", { name }));
+  await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
 }
 
 describe("VoiceSearchButton", () => {
@@ -47,20 +29,18 @@ describe("VoiceSearchButton", () => {
     vi.clearAllMocks();
   });
 
-  it("shows the inactive mic icon by default", () => {
-    const tree = renderTree(<VoiceSearchButton onResult={vi.fn()} />);
-    expect(tree.root.findByType(Ionicons).props.name).toBe("mic-outline");
+  it("shows the inactive mic icon by default", async () => {
+    await render(<VoiceSearchButton onResult={vi.fn()} />);
+    expect(screenIcons()).toEqual(["mic-outline"]);
   });
 
   it("requests permission and starts recognition on press when not listening", async () => {
     ExpoSpeechRecognitionModule.requestPermissionsAsync.mockResolvedValue({
       granted: true,
     });
-    const tree = renderTree(
-      <VoiceSearchButton onResult={vi.fn()} lang="fr-FR" />,
-    );
+    await render(<VoiceSearchButton onResult={vi.fn()} lang="fr-FR" />);
 
-    await press(tree);
+    await press();
 
     expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith({
       lang: "fr-FR",
@@ -73,10 +53,10 @@ describe("VoiceSearchButton", () => {
       granted: true,
     });
 
-    await press(renderTree(<VoiceSearchButton onResult={vi.fn()} />));
-    await press(
-      renderTree(<VoiceSearchButton onResult={vi.fn()} locale="en" />),
-    );
+    const { rerender } = await render(<VoiceSearchButton onResult={vi.fn()} />);
+    await press();
+    await rerender(<VoiceSearchButton onResult={vi.fn()} locale="en" />);
+    await press("Voice search");
 
     expect(ExpoSpeechRecognitionModule.start.mock.calls).toEqual([
       [{ lang: "fr-FR", interimResults: false }],
@@ -84,25 +64,25 @@ describe("VoiceSearchButton", () => {
     ]);
   });
 
-  it("localizes its default accessibility label", () => {
-    const label = (locale?: "fr" | "en") =>
-      propsOf<{ accessibilityLabel: string }>(
-        renderTree(
-          <VoiceSearchButton onResult={vi.fn()} locale={locale} />,
-        ).root.findByType(Pressable),
-      ).accessibilityLabel;
+  it("localizes its default accessibility label", async () => {
+    const { rerender } = await render(<VoiceSearchButton onResult={vi.fn()} />);
+    expect(
+      screen.getByRole("button", { name: "Recherche vocale" }),
+    ).toBeOnTheScreen();
 
-    expect(label()).toBe("Recherche vocale");
-    expect(label("en")).toBe("Voice search");
+    await rerender(<VoiceSearchButton onResult={vi.fn()} locale="en" />);
+    expect(
+      screen.getByRole("button", { name: "Voice search" }),
+    ).toBeOnTheScreen();
   });
 
   it("does not start recognition if permission is denied", async () => {
     ExpoSpeechRecognitionModule.requestPermissionsAsync.mockResolvedValue({
       granted: false,
     });
-    const tree = renderTree(<VoiceSearchButton onResult={vi.fn()} />);
+    await render(<VoiceSearchButton onResult={vi.fn()} />);
 
-    await press(tree);
+    await press();
 
     expect(ExpoSpeechRecognitionModule.start).not.toHaveBeenCalled();
   });
@@ -112,15 +92,18 @@ describe("VoiceSearchButton", () => {
       granted: true,
     });
     const onResult = vi.fn();
-    const tree = renderTree(<VoiceSearchButton onResult={onResult} />);
+    await render(<VoiceSearchButton onResult={onResult} />);
 
-    await press(tree);
-    act(() => {
+    await press();
+    await act(() => {
       emitSpeechEvent("start");
     });
-    expect(tree.root.findByType(Ionicons).props.name).toBe("mic");
+    expect(screenIcons()).toEqual(["mic"]);
+    expect(
+      screen.getByRole("button", { name: "Arrêter la recherche vocale" }),
+    ).toBeOnTheScreen();
 
-    act(() => {
+    await act(() => {
       emitSpeechEvent("result", { results: [{ transcript: "pomme" }] });
     });
     expect(onResult).toHaveBeenCalledWith("pomme");
@@ -130,22 +113,22 @@ describe("VoiceSearchButton", () => {
     ExpoSpeechRecognitionModule.requestPermissionsAsync.mockResolvedValue({
       granted: true,
     });
-    const tree = renderTree(<VoiceSearchButton onResult={vi.fn()} />);
+    await render(<VoiceSearchButton onResult={vi.fn()} />);
 
-    await press(tree);
-    act(() => {
+    await press();
+    await act(() => {
       emitSpeechEvent("start");
     });
-    await press(tree);
+    await press("Arrêter la recherche vocale");
 
     expect(ExpoSpeechRecognitionModule.stop).toHaveBeenCalledTimes(1);
   });
 
-  it("ignores a result event for an instance that never requested one (cross-talk isolation)", () => {
+  it("ignores a result event for an instance that never requested one (cross-talk isolation)", async () => {
     const onResult = vi.fn();
-    renderTree(<VoiceSearchButton onResult={onResult} />);
+    await render(<VoiceSearchButton onResult={onResult} />);
 
-    act(() => {
+    await act(() => {
       emitSpeechEvent("result", { results: [{ transcript: "pomme" }] });
     });
 
