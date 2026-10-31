@@ -1,24 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import type { StyleProp, TextStyle, ViewStyle } from "react-native";
-import { AccessibilityInfo, Animated, Pressable, Text } from "react-native";
+import { AccessibilityInfo, Animated } from "react-native";
 
 import { useReducedMotion } from "../../hooks/useReducedMotion.js";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
-import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 import {
   registerToastHost,
   type ToastHideReason,
   type ToastRequest,
 } from "./toast.js";
+import { ToastBar, type ToastHostStyles } from "./ToastBar.js";
 
-/** Per-slot style overrides for {@link ToastHost}, each merged after its default. */
-export interface ToastHostStyles {
-  /** The floating bar (absolute-positioned near the bottom). */
-  toast?: StyleProp<ViewStyle>;
-  message?: StyleProp<TextStyle>;
-  action?: StyleProp<TextStyle>;
-}
+export type { ToastHostStyles } from "./ToastBar.js";
 
 export interface ToastHostProps {
   /**
@@ -42,37 +35,6 @@ export interface ToastHostProps {
 const dismissHints: Record<KitLocale, string> = {
   fr: "Masque le message",
   en: "Hides the message",
-};
-
-const defaultStyles = {
-  toast: {
-    position: "absolute",
-    left: 16,
-    right: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: "#1f1f1f",
-    elevation: 6,
-    shadowColor: "#000000",
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-  } satisfies ViewStyle,
-  message: {
-    color: "#ffffff",
-    fontSize: 15,
-    lineHeight: 21,
-    paddingVertical: 12,
-  } satisfies TextStyle,
-  action: {
-    color: "#7cc0ff",
-    fontSize: 15,
-    fontWeight: "700",
-    paddingVertical: 12,
-  } satisfies TextStyle,
 };
 
 const DEFAULT_DURATION_MS = 3500;
@@ -113,7 +75,6 @@ export function ToastHost({
   styles,
 }: ToastHostProps) {
   const resolvedLocale = useKitLocale(locale);
-  const merged = mergeSlotStyles(defaultStyles, styles);
   const reducedMotion = useReducedMotion();
   const [toast, setToast] = useState<ToastRequest | null>(null);
   const [opacity] = useState(() => new Animated.Value(0));
@@ -128,24 +89,18 @@ export function ToastHost({
     let current: ToastRequest | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
-    const animate = (toValue: number, onEnd?: () => void) => {
-      Animated.timing(opacity, {
-        toValue,
-        duration: fadeRef.current,
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) onEnd?.();
-      });
-    };
-
     const end = (reason: ToastHideReason) => {
       clearTimeout(timer);
       const ended = current;
       if (!ended) return;
       current = null;
       ended.onHide?.(reason);
-      animate(0, () => {
-        if (current === null) setToast(null);
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: fadeRef.current,
+        useNativeDriver: true,
+      }).start(({ finished }) => {
+        if (finished && current === null) setToast(null);
       });
     };
 
@@ -155,7 +110,6 @@ export function ToastHost({
         current?.onHide?.("replaced");
         current = next;
         setToast(next);
-        animate(1);
         const duration =
           next.durationMs ??
           (next.action ? DEFAULT_ACTION_DURATION_MS : DEFAULT_DURATION_MS);
@@ -184,41 +138,16 @@ export function ToastHost({
 
   if (!toast) return null;
 
-  const translateY = opacity.interpolate({
-    inputRange: [0, 1],
-    outputRange: [16, 0],
-  });
-
   return (
-    <Animated.View
-      style={[
-        merged.toast,
-        { bottom: bottomOffset, opacity, transform: [{ translateY }] },
-      ]}
-      accessibilityLiveRegion="polite"
-    >
-      <Pressable
-        style={{ flex: 1 }}
-        onPress={() => endRef.current?.("dismissed")}
-        accessibilityRole="button"
-        accessibilityHint={dismissHint ?? dismissHints[resolvedLocale]}
-      >
-        <Text style={merged.message} numberOfLines={maxLines}>
-          {toast.message}
-        </Text>
-      </Pressable>
-      {toast.action && (
-        <Pressable
-          onPress={() => {
-            toast.action?.onPress();
-            endRef.current?.("action");
-          }}
-          hitSlop={8}
-          accessibilityRole="button"
-        >
-          <Text style={merged.action}>{toast.action.label}</Text>
-        </Pressable>
-      )}
-    </Animated.View>
+    <ToastBar
+      toast={toast}
+      opacity={opacity}
+      fadeRef={fadeRef}
+      endRef={endRef}
+      bottomOffset={bottomOffset}
+      maxLines={maxLines}
+      dismissHint={dismissHint ?? dismissHints[resolvedLocale]}
+      styles={styles}
+    />
   );
 }
