@@ -156,7 +156,7 @@ import { UiLocaleProvider } from "@forthtilliath/forth-ui/locale";
 <Spinner locale="en" />;
 ```
 
-`UI_MESSAGES` (same entry point) holds every label, grouped by component.
+`UI_MESSAGES` (same entry point) holds every label, grouped by component. For a component of your own that should follow the same language, the entry point also exports `useUiLocale(locale?)` (the prop, else the provider, else French), `useUiMessages(locale?)` (the matching `UiMessages`), `UiLocaleContext` and `DEFAULT_UI_LOCALE` (`"fr"`).
 Components rendered from shadcn-ui as-is (e.g. a Dialog's close button) keep
 shadcn's English text.
 
@@ -166,30 +166,30 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 
 ### Layout
 
-| Component           | Import                       | Description                                                                   |
-| ------------------- | ---------------------------- | ----------------------------------------------------------------------------- |
-| `Accordion`         | `components/accordion`       | A vertically stacked set of interactive headings that each reveal a section.  |
-| `BentoGrid`         | `components/bento-grid`      | A CSS-grid layout for unevenly-sized cards ("bento box" layouts).             |
-| `Collapsible`       | `components/collapsible`     | An interactive component which expands/collapses a single panel.              |
-| `Grid`, `Grid.Item` | `components/grid`            | CSS-grid layout helpers with a built-in debug overlay.                        |
-| `InfiniteScroll`    | `components/infinite-scroll` | Calls `onLoadMore` once a sentinel scrolls into view.                         |
-| `Marquee`           | `components/marquee`         | Infinitely scrolls its children (a logo wall, a ticker).                      |
-| `Reparent`          | `components/reparent`        | Moves children between different container elements at different breakpoints. |
-| `Repeat`            | `components/repeat`          | Repeats a component a specified number of times.                              |
-| `ScrollShadow`      | `components/scroll-shadow`   | A vertically-scrollable container with fade-out edge shadows.                 |
-| `Separator`         | `components/separator`       | Visually or semantically separates content.                                   |
-| `Spacer`            | `components/spacer`          | Adds space between components — a flexible filler or a fixed gap.             |
-| `Stepper`           | `components/stepper`         | A numbered sequence of steps for a multi-stage flow.                          |
+| Component                                                 | Import                       | Description                                                                   |
+| --------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------- |
+| `Accordion` (`AccordionTrigger`)                          | `components/accordion`       | A vertically stacked set of interactive headings that each reveal a section.  |
+| `BentoGrid`, `BentoGridItem`                              | `components/bento-grid`      | A CSS-grid layout for unevenly-sized cards ("bento box" layouts).             |
+| `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` | `components/collapsible`     | An interactive component which expands/collapses a single panel.              |
+| `Grid`, `Grid.Item` (`GridItem`)                          | `components/grid`            | CSS-grid layout helpers with a built-in debug overlay.                        |
+| `InfiniteScroll`                                          | `components/infinite-scroll` | Calls `onLoadMore` once a sentinel scrolls into view.                         |
+| `Marquee`                                                 | `components/marquee`         | Infinitely scrolls its children (a logo wall, a ticker).                      |
+| `Reparent`                                                | `components/reparent`        | Moves children between different container elements at different breakpoints. |
+| `Repeat`                                                  | `components/repeat`          | Repeats a component a specified number of times.                              |
+| `ScrollShadow`                                            | `components/scroll-shadow`   | A vertically-scrollable container with fade-out edge shadows.                 |
+| `Separator`                                               | `components/separator`       | Visually or semantically separates content.                                   |
+| `Spacer`                                                  | `components/spacer`          | Adds space between components — a flexible filler or a fixed gap.             |
+| `Stepper`                                                 | `components/stepper`         | A numbered sequence of steps for a multi-stage flow.                          |
 
 ### Navigation
 
-| Component                    | Import                  | Description                                                               |
-| ---------------------------- | ----------------------- | ------------------------------------------------------------------------- |
-| `Breadcrumb`                 | `components/breadcrumb` | Displays the path to the current resource using a hierarchy of links.     |
-| `Link`, `LinkPreview`        | `components/link`       | A styled hyperlink, plus a hover-triggered metadata preview card.         |
-| `Navbar`                     | `components/navbar`     | A fixed, floating page header that shrinks on scroll, plus a mobile menu. |
-| `Pagination`                 | `components/pagination` | Navigates between pages, computing visible page numbers and ellipses.     |
-| `Scrollspy` (`useScrollspy`) | `components/scrollspy`  | Tracks which element id is currently scrolled into view.                  |
+| Component                           | Import                  | Description                                                               |
+| ----------------------------------- | ----------------------- | ------------------------------------------------------------------------- |
+| `Breadcrumb`                        | `components/breadcrumb` | Displays the path to the current resource using a hierarchy of links.     |
+| `Link`, `LinkPreview`               | `components/link`       | A styled hyperlink, plus a hover-triggered metadata preview card.         |
+| `Navbar`, `NavbarMobileMenu`        | `components/navbar`     | A fixed, floating page header that shrinks on scroll, plus a mobile menu. |
+| `Pagination` (`getPaginationRange`) | `components/pagination` | Navigates between pages, computing visible page numbers and ellipses.     |
+| `Scrollspy` (`useScrollspy`)        | `components/scrollspy`  | Tracks which element id is currently scrolled into view.                  |
 
 ### Buttons & Actions
 
@@ -201,22 +201,22 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 
 ### Forms
 
-| Component                 | Import                      | Description                                                              |
-| ------------------------- | --------------------------- | ------------------------------------------------------------------------ |
-| `CheckboxGroup`           | `components/checkbox`       | A group of checkboxes sharing a single array value.                      |
-| `ColorPicker`             | `components/color-picker`   | A color swatch + hex input, synced with the native color picker.         |
-| `Combobox`, `MultiSelect` | `components/combobox`       | An autocomplete/searchable select, and its multi-value variant.          |
-| `DatePicker`              | `components/date-picker`    | A single-date picker built on a `Popover` + `Calendar` recipe.           |
-| `Dropzone`                | `components/dropzone`       | A drag-and-drop file upload zone, listing accepted files below.          |
-| `Field`                   | `components/field`          | Wires a label, description and error message to a single form control.   |
-| `ImageInput`              | `components/image-input`    | A click-to-upload image picker with a live preview.                      |
-| `NumberInput`             | `components/number-input`   | A numeric input with increment/decrement stepper buttons.                |
-| `PasswordInput`           | `components/password-input` | A password `Input` with a show/hide toggle, plus a strength meter.       |
-| `RadioCard`               | `components/radio`          | A card-style `RadioGroup` item — the whole card is the clickable target. |
-| `Rating`                  | `components/rating`         | A star rating control with keyboard navigation and hover preview.        |
-| `SubmitButton`            | `components/submit-button`  | A submit `Button` that shows its own loading state via `useFormStatus`.  |
-| `TagsInput`               | `components/tags-input`     | A flexible input for adding/removing multiple tags.                      |
-| `ToggleSwitch`            | `components/toggle-switch`  | An on/off switch with an optional visible label and description.         |
+| Component                                | Import                      | Description                                                              |
+| ---------------------------------------- | --------------------------- | ------------------------------------------------------------------------ |
+| `CheckboxGroup`                          | `components/checkbox`       | A group of checkboxes sharing a single array value.                      |
+| `ColorPicker`                            | `components/color-picker`   | A color swatch + hex input, synced with the native color picker.         |
+| `Combobox`, `MultiSelect`                | `components/combobox`       | An autocomplete/searchable select, and its multi-value variant.          |
+| `DatePicker`                             | `components/date-picker`    | A single-date picker built on a `Popover` + `Calendar` recipe.           |
+| `Dropzone`                               | `components/dropzone`       | A drag-and-drop file upload zone, listing accepted files below.          |
+| `Field`                                  | `components/field`          | Wires a label, description and error message to a single form control.   |
+| `ImageInput`                             | `components/image-input`    | A click-to-upload image picker with a live preview.                      |
+| `NumberInput`                            | `components/number-input`   | A numeric input with increment/decrement stepper buttons.                |
+| `PasswordInput`, `PasswordStrengthMeter` | `components/password-input` | A password `Input` with a show/hide toggle, plus a strength meter.       |
+| `RadioCard`                              | `components/radio`          | A card-style `RadioGroup` item — the whole card is the clickable target. |
+| `Rating`                                 | `components/rating`         | A star rating control with keyboard navigation and hover preview.        |
+| `SubmitButton`                           | `components/submit-button`  | A submit `Button` that shows its own loading state via `useFormStatus`.  |
+| `TagsInput`                              | `components/tags-input`     | A flexible input for adding/removing multiple tags.                      |
+| `ToggleSwitch`                           | `components/toggle-switch`  | An on/off switch with an optional visible label and description.         |
 
 ### Feedback
 
@@ -234,30 +234,30 @@ Grouped the same way as the Storybook sidebar (`forth-ui/<Category>/...`).
 
 ### Overlays
 
-| Component        | Import                       | Description                                                                         |
-| ---------------- | ---------------------------- | ----------------------------------------------------------------------------------- |
-| `CommandPalette` | `components/command-palette` | A global command menu (Cmd/Ctrl+K to open).                                         |
-| `useConfirm`     | `components/confirm-dialog`  | An imperative `await confirm({...})` alternative to hand-wiring an `AlertDialog`.   |
-| `CopyMenuItem`   | `components/copy-menu-item`  | A `DropdownMenuItem` that copies a value and briefly shows a checkmark.             |
-| `Dropdrawer`     | `components/dropdrawer`      | A menu that renders as a `DropdownMenu` on desktop and a bottom `Drawer` on mobile. |
+| Component                             | Import                       | Description                                                                         |
+| ------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------- |
+| `CommandPalette`                      | `components/command-palette` | A global command menu (Cmd/Ctrl+K to open).                                         |
+| `ConfirmDialogProvider`, `useConfirm` | `components/confirm-dialog`  | An imperative `await confirm({...})` alternative to hand-wiring an `AlertDialog`.   |
+| `CopyMenuItem`                        | `components/copy-menu-item`  | A `DropdownMenuItem` that copies a value and briefly shows a checkmark.             |
+| `Dropdrawer`                          | `components/dropdrawer`      | A menu that renders as a `DropdownMenu` on desktop and a bottom `Drawer` on mobile. |
 
 ### Data Display
 
-| Component                      | Import                        | Description                                                              |
-| ------------------------------ | ----------------------------- | ------------------------------------------------------------------------ |
-| `Avatar`, `AvatarGroup`        | `components/avatar`           | An image with a fallback, status/badge indicators, and stacked grouping. |
-| `ColumnMenu` (`useDndSensors`) | `components/column-menu`      | A dropdown to show/hide and reorder (drag and drop) a table's columns.   |
-| `DescriptionList`              | `components/description-list` | A description list, with terms and descriptions.                         |
-| `FileList`                     | `components/file-list`        | Displays a list of files with name, size, and upload progress.           |
-| `GradientFrame`                | `components/gradient-frame`   | A visual laid on an offset, gradient-filled frame.                       |
-| `IconBubble`                   | `components/icon-bubble`      | An icon inside a round, tinted bubble.                                   |
-| `Kbd`                          | `components/kbd`              | Displays which key or combination of keys performs a given action.       |
-| `QrCode`                       | `components/qr-code`          | Generates a QR code from a string, rendered as inline SVG.               |
-| `RelativeTime`                 | `components/relative-time`    | Displays a live-updating time, defaulting to the local timezone.         |
-| `Sortable`                     | `components/sortable`         | A drag-to-reorder list built on native HTML5 drag events.                |
-| `ThemeImage`                   | `components/theme-image`      | An image with a light and a dark version (`as={Image}` for Next.js).     |
-| `Timeline`                     | `components/timeline`         | A vertical sequence of dated events, connected by a line.                |
-| `Tree`                         | `components/tree`             | A hierarchical, expandable/collapsible list of nodes.                    |
+| Component                                                                                                                                                                                                                                      | Import                        | Description                                                              |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------ |
+| `Avatar`, `AvatarGroup`                                                                                                                                                                                                                        | `components/avatar`           | An image with a fallback, status/badge indicators, and stacked grouping. |
+| `ColumnMenu` (`useDndSensors`, `DEFAULT_COLUMN_MENU_LABELS`)                                                                                                                                                                                   | `components/column-menu`      | A dropdown to show/hide and reorder (drag and drop) a table's columns.   |
+| `DescriptionList`, `DescriptionGroup`, `DescriptionTerm`, `DescriptionDetail`                                                                                                                                                                  | `components/description-list` | A description list, with terms and descriptions.                         |
+| `FileList` and its parts (`FileListItem`, `FileListHeader`, `FileListIcon`, `FileListInfo`, `FileListName`, `FileListDescription`, `FileListDescriptionSeparator`, `FileListActions`, `FileListAction`, `FileListContent`, `FileListProgress`) | `components/file-list`        | Displays a list of files with name, size, and upload progress.           |
+| `GradientFrame`                                                                                                                                                                                                                                | `components/gradient-frame`   | A visual laid on an offset, gradient-filled frame.                       |
+| `IconBubble`                                                                                                                                                                                                                                   | `components/icon-bubble`      | An icon inside a round, tinted bubble.                                   |
+| `Kbd`, `KbdGroup`                                                                                                                                                                                                                              | `components/kbd`              | Displays which key or combination of keys performs a given action.       |
+| `QrCode`                                                                                                                                                                                                                                       | `components/qr-code`          | Generates a QR code from a string, rendered as inline SVG.               |
+| `RelativeTime`                                                                                                                                                                                                                                 | `components/relative-time`    | Displays a live-updating time, defaulting to the local timezone.         |
+| `Sortable`                                                                                                                                                                                                                                     | `components/sortable`         | A drag-to-reorder list built on native HTML5 drag events.                |
+| `ThemeImage`                                                                                                                                                                                                                                   | `components/theme-image`      | An image with a light and a dark version (`as={Image}` for Next.js).     |
+| `Timeline`                                                                                                                                                                                                                                     | `components/timeline`         | A vertical sequence of dated events, connected by a line.                |
+| `Tree`                                                                                                                                                                                                                                         | `components/tree`             | A hierarchical, expandable/collapsible list of nodes.                    |
 
 ### Code & Content
 

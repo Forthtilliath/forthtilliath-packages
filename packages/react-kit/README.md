@@ -48,6 +48,8 @@ import {
   SlotOrCallback,
   type SlotOrCallbackProps,
 } from "@forthtilliath/react-kit/slot-or-callback";
+import { FocusOnMount } from "@forthtilliath/react-kit/focus-on-mount";
+import { JsonLd } from "@forthtilliath/react-kit/json-ld";
 ```
 
 ### `useKeyListener(config, onKeyDown)`
@@ -228,6 +230,40 @@ function declares parameters:
 
 ```tsx
 <SlotOrCallback args={[user]}>{(u) => <p>Hello {u.name}</p>}</SlotOrCallback>
+```
+
+### `FocusOnMount`
+
+A `<div role="region">` that takes focus when it mounts, without scrolling
+the page — to move keyboard and screen-reader focus to content that just
+appeared (search results, an error summary), so it gets announced. `label`
+becomes its accessible name:
+
+```tsx
+{
+  results && (
+    <FocusOnMount label="Search results">
+      <p>{results.length} results found</p>
+    </FocusOnMount>
+  );
+}
+```
+
+### `JsonLd`
+
+Injects a JSON-LD `<script type="application/ld+json">` block (structured
+data for search engines). `<` is escaped in the serialized JSON, so a value
+containing `</script>` can't close the tag early; still build `data`
+server-side from trusted values:
+
+```tsx
+<JsonLd
+  data={{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Acme",
+  }}
+/>
 ```
 
 ## Scripts

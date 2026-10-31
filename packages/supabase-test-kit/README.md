@@ -21,12 +21,12 @@ whose security lives in RLS policies and SQL functions:
 npm install --save-dev @forthtilliath/supabase-test-kit @supabase/supabase-js pg vitest
 ```
 
-| Entry point                               | Needs                   | Exports                                                                                                                                  |
-| ----------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `@forthtilliath/supabase-test-kit`        | `@supabase/supabase-js` | `resolveLocalSupabaseEnv`, `createTestClients`, `createTestUsers`, `supabaseTestConfig`, `findSecurityViolations`, `diffCatalogs`, types |
-| `@forthtilliath/supabase-test-kit/pg`     | `pg`                    | `pgQuery`, `readSchemaCatalog`, `readTables`, `readPolicies`, `findUnsafeSecurityDefiners`, `findPlpgsqlErrors`                          |
-| `@forthtilliath/supabase-test-kit/vitest` | `pg`, `vitest`          | `defineSchemaSecurityTests`                                                                                                              |
-| `@forthtilliath/supabase-test-kit/sql/*`  | —                       | `schema-catalog.sql`, `assert-service-role.sql`                                                                                          |
+| Entry point                               | Needs                   | Exports                                                                                                                                                                                             |
+| ----------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@forthtilliath/supabase-test-kit`        | `@supabase/supabase-js` | `resolveLocalSupabaseEnv`, `readLocalSupabaseStatus`, `createTestClients`, `createTestUsers`, `totpCode`, `supabaseTestConfig`, `findSecurityViolations`, `diffCatalogs`, `serializeCatalog`, types |
+| `@forthtilliath/supabase-test-kit/pg`     | `pg`                    | `pgQuery`, `readSchemaCatalog`, `readTables`, `readPolicies`, `findUnsafeSecurityDefiners`, `findPlpgsqlErrors`                                                                                     |
+| `@forthtilliath/supabase-test-kit/vitest` | `pg`, `vitest`          | `defineSchemaSecurityTests`                                                                                                                                                                         |
+| `@forthtilliath/supabase-test-kit/sql/*`  | —                       | `schema-catalog.sql`, `assert-service-role.sql`                                                                                                                                                     |
 
 `pg` and `vitest` are optional peer dependencies, only needed by the entries
 that use them. The two CLIs need neither.
