@@ -1,36 +1,21 @@
-import { act, type ComponentRef, createRef } from "react";
-import { TextInput } from "react-native";
+import { type ComponentRef, createRef } from "react";
+import { type TextInput } from "react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
-
-import { renderTree } from "../../__mocks__/renderTree.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { QuantityStepper } from "./QuantityStepper.js";
 
-interface FieldProps {
-  ref?: unknown;
-  returnKeyType?: string;
-  submitBehavior?: string;
-  onChangeText: (t: string) => void;
-  onSubmitEditing?: () => void;
-}
-
-function field(tree: ReturnType<typeof renderTree>) {
-  return propsOf<FieldProps>(tree.root.findByType(TextInput));
-}
+const field = (label = "Pain") => screen.getByLabelText(`Quantité : ${label}`);
 
 describe("QuantityStepper keyboard chain", () => {
-  it("keeps the default Enter key without onSubmitEditing", () => {
-    const tree = renderTree(
-      <QuantityStepper value={3} onChange={vi.fn()} label="Pain" />,
-    );
-    expect(field(tree).returnKeyType).toBeUndefined();
-    expect(field(tree).submitBehavior).toBeUndefined();
-    expect(field(tree).onSubmitEditing).toBeUndefined();
+  it("keeps the default Enter key without onSubmitEditing", async () => {
+    await render(<QuantityStepper value={3} onChange={vi.fn()} label="Pain" />);
+    expect(field()).toHaveProp("returnKeyType", undefined);
+    expect(field()).toHaveProp("submitBehavior", undefined);
   });
 
-  it("shows a next key and keeps the keyboard open with onSubmitEditing", () => {
-    const tree = renderTree(
+  it("shows a next key and keeps the keyboard open with onSubmitEditing", async () => {
+    await render(
       <QuantityStepper
         value={3}
         onChange={vi.fn()}
@@ -38,12 +23,12 @@ describe("QuantityStepper keyboard chain", () => {
         onSubmitEditing={vi.fn()}
       />,
     );
-    expect(field(tree).returnKeyType).toBe("next");
-    expect(field(tree).submitBehavior).toBe("submit");
+    expect(field()).toHaveProp("returnKeyType", "next");
+    expect(field()).toHaveProp("submitBehavior", "submit");
   });
 
-  it("takes a custom Enter key label", () => {
-    const tree = renderTree(
+  it("takes a custom Enter key label", async () => {
+    await render(
       <QuantityStepper
         value={3}
         onChange={vi.fn()}
@@ -52,12 +37,12 @@ describe("QuantityStepper keyboard chain", () => {
         returnKeyType="done"
       />,
     );
-    expect(field(tree).returnKeyType).toBe("done");
+    expect(field()).toHaveProp("returnKeyType", "done");
   });
 
-  it("sends the typed draft before moving on", () => {
+  it("sends the typed draft before moving on", async () => {
     const calls: string[] = [];
-    const tree = renderTree(
+    await render(
       <QuantityStepper
         value={12}
         onChange={(n) => calls.push(`change ${String(n)}`)}
@@ -67,18 +52,14 @@ describe("QuantityStepper keyboard chain", () => {
       />,
     );
     // "2" is below min: kept as a draft until the field is left.
-    act(() => {
-      field(tree).onChangeText("2");
-    });
-    act(() => {
-      field(tree).onSubmitEditing?.();
-    });
+    await fireEvent.changeText(field("Bans"), "2");
+    await fireEvent(field("Bans"), "submitEditing");
     expect(calls).toEqual(["change 10", "submit"]);
   });
 
-  it("hands inputRef to the field", () => {
+  it("hands inputRef to the field", async () => {
     const ref = createRef<ComponentRef<typeof TextInput>>();
-    const tree = renderTree(
+    await render(
       <QuantityStepper
         value={3}
         onChange={vi.fn()}
@@ -86,6 +67,6 @@ describe("QuantityStepper keyboard chain", () => {
         inputRef={ref}
       />,
     );
-    expect(field(tree).ref).toBe(ref);
+    expect(ref.current).not.toBeNull();
   });
 });

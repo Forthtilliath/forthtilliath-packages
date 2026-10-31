@@ -1,51 +1,28 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import { useState } from "react";
-import { Pressable, Text, TextInput } from "react-native";
-import { act } from "react-test-renderer";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { press, renderTree, styleOf } from "../../__mocks__/renderTree.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { QuantityStepper } from "./QuantityStepper.js";
 
-function buttons(tree: ReturnType<typeof renderTree>) {
-  const [minus, plus] = tree.root.findAllByType(Pressable);
-  if (!minus || !plus) throw new Error("expected the − and + buttons");
-  return { minus, plus };
-}
-
-function type(tree: ReturnType<typeof renderTree>, text: string) {
-  act(() => {
-    propsOf<{ onChangeText: (t: string) => void }>(
-      tree.root.findByType(TextInput),
-    ).onChangeText(text);
-  });
-}
-
-function blur(tree: ReturnType<typeof renderTree>) {
-  act(() => {
-    propsOf<{ onBlur: () => void }>(tree.root.findByType(TextInput)).onBlur();
-  });
-}
-
-function fieldText(tree: ReturnType<typeof renderTree>) {
-  return propsOf<{ value: string }>(tree.root.findByType(TextInput)).value;
-}
+const minus = (label = "Pain") =>
+  screen.getByRole("button", { name: `Retirer : ${label}` });
+const plus = (label = "Pain") =>
+  screen.getByRole("button", { name: `Ajouter : ${label}` });
+const field = (label = "Pain") => screen.getByLabelText(`Quantité : ${label}`);
 
 describe("QuantityStepper", () => {
-  it("steps down and up", () => {
+  it("steps down and up", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <QuantityStepper value={3} onChange={onChange} label="Pain" />,
     );
-    press(buttons(tree).minus);
-    press(buttons(tree).plus);
+    await fireEvent.press(minus());
+    await fireEvent.press(plus());
     expect(onChange.mock.calls).toEqual([[2], [4]]);
   });
 
-  it("caps the font scaling of −, + and the field", () => {
-    const tree = renderTree(
+  it("caps the font scaling of −, + and the field", async () => {
+    await render(
       <QuantityStepper
         value={3}
         onChange={vi.fn()}
@@ -53,45 +30,39 @@ describe("QuantityStepper", () => {
         maxFontSizeMultiplier={1.3}
       />,
     );
-    const capped = [
-      ...tree.root.findAllByType(Text),
-      tree.root.findByType(TextInput),
-    ].map(
-      (node) =>
-        propsOf<{ maxFontSizeMultiplier?: number }>(node).maxFontSizeMultiplier,
-    );
-    expect(capped).toEqual([1.3, 1.3, 1.3]);
+    for (const node of [screen.getByText("−"), screen.getByText("+"), field()])
+      expect(node).toHaveProp("maxFontSizeMultiplier", 1.3);
   });
 
-  it("disables and dims − at zero", () => {
-    const tree = renderTree(
-      <QuantityStepper value={0} onChange={vi.fn()} label="Pain" />,
-    );
-    const { minus } = buttons(tree);
-    expect(propsOf<{ disabled: boolean }>(minus).disabled).toBe(true);
-    expect(styleOf(minus)).toMatchObject({ opacity: 0.35, width: 40 });
-  });
-
-  it("keeps digits only and clamps typed values to max", () => {
+  it("disables and dims − at zero", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
+      <QuantityStepper value={0} onChange={onChange} label="Pain" />,
+    );
+    expect(minus()).toBeDisabled();
+    expect(minus()).toHaveStyle({ opacity: 0.35, width: 40 });
+    await fireEvent.press(minus());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("keeps digits only and clamps typed values to max", async () => {
+    const onChange = vi.fn();
+    await render(
       <QuantityStepper value={0} onChange={onChange} label="Pain" max={50} />,
     );
-    type(tree, "1a2");
-    type(tree, "75");
-    type(tree, "");
+    await fireEvent.changeText(field(), "1a2");
+    await fireEvent.changeText(field(), "75");
+    await fireEvent.changeText(field(), "");
     expect(onChange.mock.calls).toEqual([[12], [50]]);
-    expect(fieldText(tree)).toBe("");
-    blur(tree);
+    expect(field()).toHaveDisplayValue("");
+    await fireEvent(field(), "blur");
     expect(onChange).toHaveBeenLastCalledWith(0);
-    expect(
-      propsOf<{ maxLength: number }>(tree.root.findByType(TextInput)).maxLength,
-    ).toBe(2);
+    expect(field()).toHaveProp("maxLength", 2);
   });
 
-  it("clamps to a custom min and disables + at max", () => {
+  it("clamps to a custom min and disables + at max", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    const { rerender } = await render(
       <QuantityStepper
         value={1}
         onChange={onChange}
@@ -100,24 +71,21 @@ describe("QuantityStepper", () => {
         max={5}
       />,
     );
-    expect(propsOf<{ disabled: boolean }>(buttons(tree).minus).disabled).toBe(
-      true,
-    );
-    type(tree, "");
-    blur(tree);
+    expect(minus("Bans")).toBeDisabled();
+    await fireEvent.changeText(field("Bans"), "");
+    await fireEvent(field("Bans"), "blur");
     expect(onChange).toHaveBeenLastCalledWith(1);
 
-    const full = renderTree(
+    await rerender(
       <QuantityStepper value={5} onChange={vi.fn()} label="Bans" max={5} />,
     );
-    const { plus } = buttons(full);
-    expect(propsOf<{ disabled: boolean }>(plus).disabled).toBe(true);
-    expect(styleOf(plus)).toMatchObject({ opacity: 0.35 });
+    expect(plus("Bans")).toBeDisabled();
+    expect(plus("Bans")).toHaveStyle({ opacity: 0.35 });
   });
 
-  it("lets a number starting below min be typed, clamped on blur", () => {
+  it("lets a number starting below min be typed, clamped on blur", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <QuantityStepper
         value={10}
         onChange={onChange}
@@ -126,20 +94,20 @@ describe("QuantityStepper", () => {
         max={99}
       />,
     );
-    type(tree, "2");
+    await fireEvent.changeText(field("Points"), "2");
     expect(onChange).not.toHaveBeenCalled();
-    expect(fieldText(tree)).toBe("2");
-    type(tree, "25");
+    expect(field("Points")).toHaveDisplayValue("2");
+    await fireEvent.changeText(field("Points"), "25");
     expect(onChange).toHaveBeenLastCalledWith(25);
 
-    type(tree, "3");
-    blur(tree);
+    await fireEvent.changeText(field("Points"), "3");
+    await fireEvent(field("Points"), "blur");
     expect(onChange).toHaveBeenLastCalledWith(10);
   });
 
-  it("jumps by longPressStep on long press, clamped", () => {
+  it("jumps by longPressStep on long press, clamped", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <QuantityStepper
         value={3}
         onChange={onChange}
@@ -148,28 +116,23 @@ describe("QuantityStepper", () => {
         longPressStep={5}
       />,
     );
-    const longPress = (button: ReturnType<typeof buttons>["plus"]) => {
-      act(() => {
-        propsOf<{ onLongPress: () => void }>(button).onLongPress();
-      });
-    };
-    longPress(buttons(tree).plus);
-    longPress(buttons(tree).minus);
+    await fireEvent(plus("Bans"), "longPress");
+    await fireEvent(minus("Bans"), "longPress");
     expect(onChange.mock.calls).toEqual([[6], [0]]);
   });
 
-  it("ignores long presses without longPressStep", () => {
-    const tree = renderTree(
-      <QuantityStepper value={3} onChange={vi.fn()} label="Pain" />,
+  it("ignores long presses without longPressStep", async () => {
+    const onChange = vi.fn();
+    await render(
+      <QuantityStepper value={3} onChange={onChange} label="Pain" />,
     );
-    expect(
-      propsOf<{ onLongPress?: unknown }>(buttons(tree).plus).onLongPress,
-    ).toBeUndefined();
+    await fireEvent(plus(), "longPress");
+    expect(onChange).not.toHaveBeenCalled();
   });
 
-  it("allows negatives below a negative min, sign included", () => {
+  it("allows negatives below a negative min, sign included", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <QuantityStepper
         value={0}
         onChange={onChange}
@@ -177,32 +140,30 @@ describe("QuantityStepper", () => {
         min={-50}
       />,
     );
-    const field = tree.root.findByType(TextInput);
-    expect(propsOf<{ keyboardType: string }>(field).keyboardType).toBe(
-      "numeric",
-    );
-    expect(propsOf<{ maxLength: number }>(field).maxLength).toBe(3);
-    press(buttons(tree).minus);
+    const input = () => field("Pénalités");
+    expect(input()).toHaveProp("keyboardType", "numeric");
+    expect(input()).toHaveProp("maxLength", 3);
+    await fireEvent.press(minus("Pénalités"));
     expect(onChange).toHaveBeenLastCalledWith(-1);
 
-    type(tree, "-");
-    expect(fieldText(tree)).toBe("-");
-    type(tree, "-1a3");
+    await fireEvent.changeText(input(), "-");
+    expect(input()).toHaveDisplayValue("-");
+    await fireEvent.changeText(input(), "-1a3");
     expect(onChange).toHaveBeenLastCalledWith(-13);
-    type(tree, "-");
-    blur(tree);
+    await fireEvent.changeText(input(), "-");
+    await fireEvent(input(), "blur");
     expect(onChange).toHaveBeenLastCalledWith(0);
-    type(tree, "-80");
-    blur(tree);
+    await fireEvent.changeText(input(), "-80");
+    await fireEvent(input(), "blur");
     expect(onChange).toHaveBeenLastCalledWith(-50);
   });
 
-  it("drops the sign when negatives are not allowed", () => {
+  it("drops the sign when negatives are not allowed", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <QuantityStepper value={0} onChange={onChange} label="Pain" />,
     );
-    type(tree, "-7");
+    await fireEvent.changeText(field(), "-7");
     expect(onChange).toHaveBeenLastCalledWith(7);
   });
 
@@ -228,54 +189,41 @@ describe("QuantityStepper", () => {
       );
     }
 
-    function hold(button: ReturnType<typeof buttons>["plus"], ms: number) {
-      act(() => {
-        propsOf<{ onPressIn: () => void }>(button).onPressIn();
-      });
-      act(() => {
+    async function advance(ms: number) {
+      await act(() => {
         vi.advanceTimersByTime(ms);
-      });
-      act(() => {
-        propsOf<{ onPressOut: () => void }>(button).onPressOut();
       });
     }
 
-    it("repeats while held and stops on release", () => {
-      const tree = renderTree(<Controlled initial={0} />);
-      expect(propsOf<{ onPress?: unknown }>(buttons(tree).plus).onPress).toBe(
-        undefined,
-      );
-      hold(buttons(tree).plus, 450 + 180 * 3);
-      expect(fieldText(tree)).toBe("4");
-      act(() => {
-        vi.advanceTimersByTime(5000);
-      });
-      expect(fieldText(tree)).toBe("4");
+    it("repeats while held and stops on release", async () => {
+      await render(<Controlled initial={0} />);
+      // Taps do nothing: the step comes from pressIn.
+      await fireEvent.press(plus("Points"));
+      expect(field("Points")).toHaveDisplayValue("0");
+      await fireEvent(plus("Points"), "pressIn");
+      await advance(450 + 180 * 3);
+      await fireEvent(plus("Points"), "pressOut");
+      expect(field("Points")).toHaveDisplayValue("4");
+      await advance(5000);
+      expect(field("Points")).toHaveDisplayValue("4");
     });
 
-    it("stops at the bound", () => {
-      const tree = renderTree(<Controlled initial={-2} min={-3} />);
-      act(() => {
-        propsOf<{ onPressIn: () => void }>(buttons(tree).minus).onPressIn();
-      });
-      act(() => {
-        vi.advanceTimersByTime(3000);
-      });
-      expect(fieldText(tree)).toBe("-3");
+    it("stops at the bound", async () => {
+      await render(<Controlled initial={-2} min={-3} />);
+      await fireEvent(minus("Points"), "pressIn");
+      await advance(3000);
+      expect(field("Points")).toHaveDisplayValue("-3");
       expect(vi.getTimerCount()).toBe(0);
     });
   });
 
-  it("labels the controls in French by default, English with locale", () => {
-    const fr = renderTree(
+  it("labels the controls in French by default, English with locale", async () => {
+    const { rerender } = await render(
       <QuantityStepper value={1} onChange={vi.fn()} label="Pain" />,
     );
-    expect(
-      propsOf<{ accessibilityLabel: string }>(buttons(fr).plus)
-        .accessibilityLabel,
-    ).toBe("Ajouter : Pain");
+    expect(plus()).toBeOnTheScreen();
 
-    const en = renderTree(
+    await rerender(
       <QuantityStepper
         value={1}
         onChange={vi.fn()}
@@ -284,13 +232,12 @@ describe("QuantityStepper", () => {
       />,
     );
     expect(
-      propsOf<{ accessibilityLabel: string }>(buttons(en).minus)
-        .accessibilityLabel,
-    ).toBe("Decrease: Bread");
+      screen.getByRole("button", { name: "Decrease: Bread" }),
+    ).toBeOnTheScreen();
   });
 
-  it("accepts custom screen-reader labels", () => {
-    const tree = renderTree(
+  it("accepts custom screen-reader labels", async () => {
+    await render(
       <QuantityStepper
         value={1}
         onChange={vi.fn()}
@@ -299,12 +246,8 @@ describe("QuantityStepper", () => {
       />,
     );
     expect(
-      propsOf<{ accessibilityLabel: string }>(buttons(tree).plus)
-        .accessibilityLabel,
-    ).toBe("Un Pain de plus");
-    expect(
-      propsOf<{ accessibilityLabel: string }>(buttons(tree).minus)
-        .accessibilityLabel,
-    ).toBe("Retirer : Pain");
+      screen.getByRole("button", { name: "Un Pain de plus" }),
+    ).toBeOnTheScreen();
+    expect(minus()).toBeOnTheScreen();
   });
 });

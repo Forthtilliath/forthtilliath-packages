@@ -1,14 +1,5 @@
-import { Pressable } from "react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
-
-import {
-  findText,
-  parentOf,
-  press,
-  renderTree,
-  styleOf,
-} from "../../__mocks__/renderTree.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { CheckboxGroup } from "./CheckboxGroup.js";
 
@@ -18,35 +9,37 @@ const options = [
   { value: "armada", label: "Armada" },
 ] as const;
 
+const chip = (name: string) => screen.getByRole("checkbox", { name });
+
 describe("CheckboxGroup", () => {
-  it("checks an option at the end of the list", () => {
+  it("checks an option at the end of the list", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <CheckboxGroup
         options={options}
         values={["cities"]}
         onChange={onChange}
       />,
     );
-    press(parentOf(findText(tree, "Leaders")));
+    await fireEvent.press(chip("Leaders"));
     expect(onChange).toHaveBeenCalledWith(["cities", "leaders"]);
   });
 
-  it("unchecks a checked option", () => {
+  it("unchecks a checked option", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <CheckboxGroup
         options={options}
         values={["leaders", "cities"]}
         onChange={onChange}
       />,
     );
-    press(parentOf(findText(tree, "Leaders")));
+    await fireEvent.press(chip("Leaders"));
     expect(onChange).toHaveBeenCalledWith(["cities"]);
   });
 
-  it("announces each chip as a checkbox with its state", () => {
-    const tree = renderTree(
+  it("announces each chip as a checkbox with its state", async () => {
+    await render(
       <CheckboxGroup
         label="Extensions"
         options={options}
@@ -54,28 +47,14 @@ describe("CheckboxGroup", () => {
         onChange={vi.fn()}
       />,
     );
-    const chips = tree.root.findAllByType(Pressable).map((p) =>
-      propsOf<{
-        accessibilityRole: string;
-        accessibilityState: { checked: boolean };
-        accessibilityLabel: string;
-      }>(p),
-    );
-    expect(chips.map((c) => c.accessibilityRole)).toEqual([
-      "checkbox",
-      "checkbox",
-      "checkbox",
-    ]);
-    expect(chips.map((c) => c.accessibilityState.checked)).toEqual([
-      false,
-      false,
-      true,
-    ]);
-    expect(chips[2]?.accessibilityLabel).toBe("Armada");
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
+    expect(chip("Leaders")).not.toBeChecked();
+    expect(chip("Cités")).not.toBeChecked();
+    expect(chip("Armada")).toBeChecked();
   });
 
-  it("styles checked chips, with overrides", () => {
-    const tree = renderTree(
+  it("styles checked chips, with overrides", async () => {
+    await render(
       <CheckboxGroup
         options={options}
         values={["cities"]}
@@ -86,13 +65,11 @@ describe("CheckboxGroup", () => {
         }}
       />,
     );
-    expect(styleOf(parentOf(findText(tree, "Cités")))).toMatchObject({
+    expect(chip("Cités")).toHaveStyle({
       backgroundColor: "#c9a227",
       borderColor: "#2563eb",
     });
-    expect(styleOf(findText(tree, "Cités"))).toMatchObject({ color: "#000" });
-    expect(styleOf(findText(tree, "Leaders"))).toMatchObject({
-      color: "#6b7280",
-    });
+    expect(screen.getByText("Cités")).toHaveStyle({ color: "#000" });
+    expect(screen.getByText("Leaders")).toHaveStyle({ color: "#6b7280" });
   });
 });
