@@ -1,5 +1,12 @@
 # @forthtilliath/react-native-kit
 
+## 0.22.1
+
+### Patch Changes
+
+- 5151a88: `ToastHost` announces each toast to TalkBack with `announceForAccessibility` instead of a live region, which TalkBack doesn't always read for a view that just appeared.
+- f4f5b6b: `ToastHost` keeps the delay asked for unless Android's accessibility setting returns a longer finite one: a mock answering `false` (React Native's Jest preset) or any other value no longer hides the toast at once.
+
 ## 0.22.0
 
 ### Minor Changes
