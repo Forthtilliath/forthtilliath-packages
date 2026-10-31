@@ -85,6 +85,20 @@ describe("ToastHost", () => {
     spy.mockRestore();
   });
 
+  it("keeps the delay asked for when the platform answers anything else", async () => {
+    const spy = vi.spyOn(AccessibilityInfo, "getRecommendedTimeoutMillis");
+    for (const answer of [false, 0, 100, Number.NaN, Infinity]) {
+      spy.mockResolvedValue(answer as number);
+      await render(<ToastHost />);
+      await show("Stable");
+      await advance(3400);
+      expect(screen.getByText("Stable")).toBeOnTheScreen();
+      await advance(100);
+      expect(screen.queryByText("Stable")).not.toBeOnTheScreen();
+    }
+    spy.mockRestore();
+  });
+
   it("closes on a tap of the message", async () => {
     const onHide = vi.fn();
     await render(<ToastHost />);
