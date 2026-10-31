@@ -1,8 +1,7 @@
-import { Pressable, Text, View } from "react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { press, renderTree, styleOf } from "../../__mocks__/renderTree.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
+import { screenTexts } from "../../__mocks__/screenQueries.js";
 
 import { BackgroundPicker } from "./BackgroundPicker.js";
 import { findBackground } from "./findBackground.js";
@@ -18,47 +17,39 @@ const OPTIONS = [
   },
 ];
 
+const radio = (name: string) => screen.getByRole("radio", { name });
+
 describe("BackgroundPicker", () => {
-  it("draws one radio per option, the chosen one checked", () => {
-    const tree = renderTree(
+  it("draws one radio per option, the chosen one checked", async () => {
+    await render(
       <BackgroundPicker options={OPTIONS} value="felt" onChange={vi.fn()} />,
     );
-    const radios = tree.root.findAllByType(Pressable);
-    expect(
-      radios.map(
-        (r) =>
-          propsOf<{ accessibilityState: { checked: boolean } }>(r)
-            .accessibilityState.checked,
-      ),
-    ).toEqual([false, true]);
-    expect(
-      tree.root.findAllByType(Text).map((t) => t.props.children as string),
-    ).toEqual(["Bleu nuit", "Tapis vert"]);
+    expect(screen.getAllByRole("radio")).toHaveLength(2);
+    expect(radio("Bleu nuit")).not.toBeChecked();
+    expect(radio("Tapis vert")).toBeChecked();
+    expect(screenTexts()).toEqual(["Bleu nuit", "Tapis vert"]);
   });
 
-  it("paints each swatch with its page and card colours", () => {
-    const tree = renderTree(
+  it("paints each swatch with its page and card colours", async () => {
+    await render(
       <BackgroundPicker options={OPTIONS} value="night" onChange={vi.fn()} />,
     );
-    const [, felt] = tree.root.findAllByType(Pressable);
-    if (!felt) throw new Error("expected two options");
-    const [swatch, card] = felt.findAllByType(View);
-    if (!swatch || !card) throw new Error("expected a swatch and a card");
-    expect(styleOf(swatch)).toMatchObject({ backgroundColor: "#0b1f15" });
-    expect(styleOf(card)).toMatchObject({
+    const [swatch, card] = radio("Tapis vert").queryAll(
+      (node) => node.type === "View",
+    );
+    expect(swatch).toHaveStyle({ backgroundColor: "#0b1f15" });
+    expect(card).toHaveStyle({
       backgroundColor: "#112c1e",
       borderColor: "#315c45",
     });
   });
 
-  it("hands the pressed option to onChange", () => {
+  it("hands the pressed option to onChange", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <BackgroundPicker options={OPTIONS} value="night" onChange={onChange} />,
     );
-    const [, felt] = tree.root.findAllByType(Pressable);
-    if (!felt) throw new Error("expected two options");
-    press(felt);
+    await fireEvent.press(radio("Tapis vert"));
     expect(onChange).toHaveBeenCalledWith(OPTIONS[1]);
   });
 });

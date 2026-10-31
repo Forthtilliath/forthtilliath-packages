@@ -1,23 +1,16 @@
-import { ScrollView } from "react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import {
-  findText,
-  parentOf,
-  press,
-  renderTree,
-  styleOf,
-  textValues,
-} from "../../__mocks__/renderTree.js";
+import { screenElements, screenTexts } from "../../__mocks__/screenQueries.js";
 
 import { ErrorFallback } from "./ErrorFallback.js";
 
 const error = new Error("boom");
 
 describe("ErrorFallback", () => {
-  it("shows the French texts and the error message by default", () => {
-    const tree = renderTree(<ErrorFallback error={error} retry={vi.fn()} />);
-    expect(textValues(tree)).toEqual([
+  it("shows the French texts and the error message by default", async () => {
+    await render(<ErrorFallback error={error} retry={vi.fn()} />);
+    expect(screenTexts()).toEqual([
       "😕",
       "Une erreur est survenue",
       "Désolé, quelque chose s'est mal passé. Réessaie ci-dessous.",
@@ -26,8 +19,8 @@ describe("ErrorFallback", () => {
     ]);
   });
 
-  it("switches to English with locale, and accepts custom texts", () => {
-    const tree = renderTree(
+  it("switches to English with locale, and accepts custom texts", async () => {
+    await render(
       <ErrorFallback
         error={error}
         retry={vi.fn()}
@@ -35,7 +28,7 @@ describe("ErrorFallback", () => {
         labels={{ hint: "Your data is safe." }}
       />,
     );
-    expect(textValues(tree)).toEqual([
+    expect(screenTexts()).toEqual([
       "😕",
       "Something went wrong",
       "Your data is safe.",
@@ -44,30 +37,30 @@ describe("ErrorFallback", () => {
     ]);
   });
 
-  it("retries on the button", () => {
+  it("retries on the button", async () => {
     const retry = vi.fn();
-    const tree = renderTree(<ErrorFallback error={error} retry={retry} />);
-    press(parentOf(findText(tree, "Réessayer")));
+    await render(<ErrorFallback error={error} retry={retry} />);
+    await fireEvent.press(screen.getByRole("button", { name: "Réessayer" }));
     expect(retry).toHaveBeenCalledOnce();
   });
 
-  it("can hide the details box", () => {
-    const tree = renderTree(
+  it("can hide the details box", async () => {
+    await render(
       <ErrorFallback error={error} retry={vi.fn()} showDetails={false} />,
     );
-    expect(tree.root.findAllByType(ScrollView)).toHaveLength(0);
-    expect(textValues(tree)).not.toContain("boom");
+    expect(screenElements("ScrollView")).toHaveLength(0);
+    expect(screen.queryByText("boom")).not.toBeOnTheScreen();
   });
 
-  it("merges style overrides slot by slot", () => {
-    const tree = renderTree(
+  it("merges style overrides slot by slot", async () => {
+    await render(
       <ErrorFallback
         error={error}
         retry={vi.fn()}
         styles={{ title: { color: "#fafafa" } }}
       />,
     );
-    expect(styleOf(findText(tree, "Une erreur est survenue"))).toMatchObject({
+    expect(screen.getByText("Une erreur est survenue")).toHaveStyle({
       fontSize: 20,
       textAlign: "center",
       color: "#fafafa",
