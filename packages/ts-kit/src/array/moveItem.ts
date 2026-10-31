@@ -14,6 +14,14 @@
  * moveItem(list, 0, -1) === list; // => true
  */
 export function moveItem<T>(items: T[], from: number, offset: number): T[];
+/**
+ * Read-only overload of {@link moveItem}: same behavior, for a `readonly`
+ * array.
+ * @param items - The array to copy.
+ * @param from - The position of the element to move.
+ * @param offset - How many places to move it (negative = towards the start).
+ * @returns A new read-only array with the element moved, or `items` itself.
+ */
 export function moveItem<T>(
   items: readonly T[],
   from: number,

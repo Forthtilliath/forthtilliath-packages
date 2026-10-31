@@ -1,3 +1,4 @@
+/** Options of {@link pluralize}. */
 export interface PluralizeOptions {
   /** An explicit plural form (overrides the default suffix rules). */
   plural?: string;

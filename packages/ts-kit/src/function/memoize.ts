@@ -1,11 +1,19 @@
+/**
+ * The function returned by {@link memoize}: same signature as the original,
+ * plus its `cache`.
+ */
 export interface MemoizedFunction<Args extends unknown[], R> {
   (...args: Args): R;
   /** The underlying cache, exposed for inspection or manual clearing. */
   cache: Map<string, R>;
 }
 
+/** Options of {@link memoize}. */
 export interface MemoizeOptions<Args extends unknown[]> {
-  /** Computes the cache key for a set of arguments (defaults to `JSON.stringify`). */
+  /**
+   * Computes the cache key for a set of arguments (defaults to
+   * `JSON.stringify`).
+   */
   getKey?: (...args: Args) => string;
   /**
    * Max number of cached results; beyond it, the least recently used one is

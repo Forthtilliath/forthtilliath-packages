@@ -1,7 +1,10 @@
+/** A calendar day, as returned by {@link dateInTimeZone}. */
 export interface CalendarDate {
+  /** Full year, e.g. `2026`. */
   year: number;
   /** 1–12. */
   month: number;
+  /** Day of the month, 1–31. */
   day: number;
   /** `YYYY-MM-DD`. */
   iso: string;

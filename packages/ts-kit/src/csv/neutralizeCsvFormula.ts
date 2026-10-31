@@ -24,6 +24,7 @@ export function neutralizeCsvFormula(value: string): string {
   return `'${value}`;
 }
 
+/** Options shared by the CSV helpers that write user text into a cell. */
 export interface CsvFormulaOptions {
   /**
    * Prefixes with `'` the text cells a spreadsheet would run as formulas (see

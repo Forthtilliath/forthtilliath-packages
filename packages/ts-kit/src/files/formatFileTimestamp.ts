@@ -1,3 +1,4 @@
+/** Options of {@link formatFileTimestamp}. */
 export interface FormatFileTimestampOptions {
   /** Append the seconds (`HHMMSS` instead of `HHMM`). Default: `false`. */
   seconds?: boolean;

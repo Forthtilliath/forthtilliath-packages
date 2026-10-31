@@ -4,6 +4,7 @@
  * provide one (some React Native polyfills).
  *
  * Internal helper — not part of the package's public barrel.
+ * @internal
  */
 export function abortReason(signal: AbortSignal): unknown {
   return (

@@ -1,3 +1,4 @@
+/** Options of {@link sanitizeIntegerInput}. */
 export interface SanitizeIntegerInputOptions {
   /**
    * Keep a leading minus sign.
@@ -16,7 +17,8 @@ export interface SanitizeIntegerInputOptions {
  *
  * @param raw - The field's text, as `onChangeText` gives it.
  * @param options - See {@link SanitizeIntegerInputOptions}.
- * @returns The text with only digits, and a minus sign in first position if allowed.
+ * @returns The text with only digits, and a minus sign in first position if
+ *   allowed.
  * @example
  * sanitizeIntegerInput("1 250"); // => "1250"
  * sanitizeIntegerInput("-"); // => "-"

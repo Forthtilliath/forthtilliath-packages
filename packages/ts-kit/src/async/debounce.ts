@@ -1,3 +1,7 @@
+/**
+ * The function returned by {@link debounce}: call it like the original (its
+ * result is dropped), and control the pending call with `cancel` / `flush`.
+ */
 export interface DebouncedFunction<Args extends unknown[]> {
   (...args: Args): void;
   /** Cancels a pending invocation, if any. */
