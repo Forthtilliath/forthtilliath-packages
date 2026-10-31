@@ -40,13 +40,23 @@ const dismissHints: Record<KitLocale, string> = {
 const DEFAULT_DURATION_MS = 3500;
 const DEFAULT_ACTION_DURATION_MS = 5000;
 
-/** The delay asked for, lengthened by Android's accessibility "Time to take action". */
+/**
+ * The delay asked for, lengthened by Android's accessibility "Time to take
+ * action" — never shortened: anything but a longer finite number (a mock
+ * answering `false`, a platform without the setting) keeps `ms`.
+ */
 async function recommendedTimeout(ms: number): Promise<number> {
   if (typeof AccessibilityInfo.getRecommendedTimeoutMillis !== "function") {
     return ms;
   }
   try {
-    return await AccessibilityInfo.getRecommendedTimeoutMillis(ms);
+    const recommended: unknown =
+      await AccessibilityInfo.getRecommendedTimeoutMillis(ms);
+    return typeof recommended === "number" &&
+      Number.isFinite(recommended) &&
+      recommended > ms
+      ? recommended
+      : ms;
   } catch {
     return ms;
   }
