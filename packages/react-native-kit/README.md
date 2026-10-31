@@ -1,6 +1,6 @@
 # @forthtilliath/react-native-kit
 
-Small React Native building blocks — components, hooks, and a framework-agnostic util — with no opinion on your app's theme, distributed one file per export (grouped under `components/{picker,theme,list,settings}/`, `hooks/`, `utils/helpers/`) so consumers only pull in what they use. Update-checking UI (`ChangelogNotes`, `UpdateAvailableBanner`, `useUpdateCheck`) lives in the sibling `@forthtilliath/expo-release-updates-ui` package instead.
+Small React Native building blocks — components, hooks, and a framework-agnostic util — with no opinion on your app's theme, distributed one file per export (grouped under `components/{form,layout,feedback,list,overlay,picker,theme,settings}/`, `hooks/`, `utils/{helpers,files,calendar}/`) so consumers only pull in what they use. Update-checking UI (`ChangelogNotes`, `UpdateAvailableBanner`, `useUpdateCheck`) lives in the sibling `@forthtilliath/expo-release-updates-ui` package instead.
 
 ## Install
 
@@ -18,7 +18,7 @@ Or, from within this monorepo, as a workspace dependency:
 }
 ```
 
-`react` and `react-native` are the only required peer dependencies — install them in the consuming app if not already present. Every other peer dependency is **optional**, needed only if you import the components that use them: `@expo/vector-icons` (`Thumbnail`, `PickerModal`, `SwipeableRow`, the settings screens…), `expo-image-picker` (`PhotoPicker`), `expo-speech-recognition` (`VoiceSearchButton`/`PickerModal`), `react-native-gesture-handler` (`DragHandle`, `SwipeableRow`), `react-native-reanimated` (`SwipeableRow`) and `@forthtilliath/expo-release-updates-ui` (`UpdateSettingsScreen`). Package managers no longer install them for you, so a native module (and the Android permissions it declares, e.g. `CAMERA` for `expo-image-picker`) only ends up in your APK if you add it yourself.
+`react` and `react-native` are the only required peer dependencies — install them in the consuming app if not already present. Every other peer dependency is **optional**, needed only if you import the components that use them: `@expo/vector-icons` (`Thumbnail`, `PickerModal`, `SwipeableRow`, `ReorderList`, the settings screens…), `expo-file-system` (`pickTextFile`, app files), `expo-image-picker` (`PhotoPicker`), `expo-speech-recognition` (`VoiceSearchButton`/`PickerModal`), `react-native-gesture-handler` (`DragHandle`, `SwipeableRow`), `react-native-reanimated` (`SwipeableRow`) and `@forthtilliath/expo-release-updates-ui` (`UpdateSettingsScreen`). Package managers no longer install them for you, so a native module (and the Android permissions it declares, e.g. `CAMERA` for `expo-image-picker`) only ends up in your APK if you add it yourself.
 
 ## Usage
 
@@ -398,13 +398,358 @@ import { useResolvedScheme } from "@forthtilliath/react-native-kit/components/th
 const colors = Colors[useResolvedScheme()];
 ```
 
+### Forms, layout and feedback
+
+The everyday building blocks most apps rewrote on their own (buttons, fields, section titles, empty lists, toasts…). Each screenshot shows the component twice: with its neutral defaults, then in an app's dark palette through `colors` / `styles` — produced by [`apps/rn-gallery`](../../apps/rn-gallery#readme).
+
+Theming follows one rule everywhere: a `colors` object for the few colors a component derives its variants from, and a `styles` prop whose slots are each merged **after** their default (overriding `button.borderRadius` keeps the rest of the slot). Wrap them once per app in thin adapters that pass your palette:
+
+```tsx
+// ui/Button.tsx — the app's own Button, 5 lines
+import {
+  Button as KitButton,
+  type ButtonProps,
+} from "@forthtilliath/react-native-kit/components/form/Button";
+
+export function Button(props: ButtonProps) {
+  const c = useColors();
+  return (
+    <KitButton
+      colors={{
+        primary: c.primary,
+        onPrimary: c.onPrimary,
+        secondary: c.card,
+        onSecondary: c.text,
+        border: c.border,
+        danger: c.danger,
+        onDanger: c.onPrimary,
+      }}
+      {...props}
+    />
+  );
+}
+```
+
+#### `<Button label onPress />`
+
+![Button: five variants, three sizes, loading and disabled states, icons](docs/screenshots/button.png)
+
+Five variants, three sizes, an optional icon, a loading state — and **no double submission**: when `onPress` returns a promise, the button shows a spinner and ignores presses until it settles (a ref also blocks a second tap arriving before the re-render). A rejection goes to `onError`; without it, it stays unhandled as it would have without the button.
+
+```tsx
+import { Button } from "@forthtilliath/react-native-kit/components/form/Button";
+
+<Button label="Enregistrer" onPress={async () => { await save(); router.back(); }} onError={showError} />
+<Button label="Supprimer" variant="danger" onPress={() => confirmDestructive("Supprimer ?", remove)} />
+<Button label="Suivant" iconPosition="end" icon={(color) => <Ionicons name="arrow-forward" size={20} color={color} />} />
+// A gradient background (Android draws SVG gradients badly inside a button):
+<Button label="Jouer" background={<Image source={gradient} style={StyleSheet.absoluteFill} resizeMode="stretch" />} />
+```
+
+| Prop                                                                                    | Type                                                           | Default     | Notes                                                                                                    |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------- |
+| `label`                                                                                 | `string`                                                       | —           | Also its spoken name, unless `accessibilityLabel` is set.                                                |
+| `onPress`                                                                               | `() => void \| Promise<unknown>`                               | —           | A returned promise turns the button busy until it settles.                                               |
+| `onError`                                                                               | `(error) => void`                                              | —           | Receives a rejection of `onPress`'s promise.                                                             |
+| `variant`                                                                               | `"primary" \| "secondary" \| "outline" \| "ghost" \| "danger"` | `"primary"` |                                                                                                          |
+| `size`                                                                                  | `"sm" \| "md" \| "lg"`                                         | `"md"`      | 36 / 48 / 56 dp high. 48 dp is Android's minimum touch target: give `sm` a `hitSlop` if it stands alone. |
+| `disabled`, `loading`                                                                   | `boolean`                                                      | `false`     | Both ignore presses; `loading` shows a spinner and is announced as busy.                                 |
+| `icon`                                                                                  | `ReactNode \| (color) => ReactNode`                            | —           | The function form receives the label color of the current variant.                                       |
+| `iconPosition`                                                                          | `"start" \| "end"`                                             | `"start"`   |                                                                                                          |
+| `fullWidth`                                                                             | `boolean`                                                      | `false`     | `alignSelf: "stretch"`.                                                                                  |
+| `background`                                                                            | `ReactNode`                                                    | —           | Drawn under the label, filling the button, clipped to its corners.                                       |
+| `colors`                                                                                | `ButtonColors`                                                 | neutral     | `primary`, `onPrimary`, `secondary`, `onSecondary`, `border`, `danger`, `onDanger`.                      |
+| `styles`                                                                                | `ButtonStyles`                                                 | —           | Slots `button`, `pressed`, `disabled`, `content`, `label`.                                               |
+| `accessibilityLabel`, `accessibilityHint`, `maxFontSizeMultiplier`, `hitSlop`, `testID` |                                                                |             | Passed through.                                                                                          |
+
+#### `<TextField label />` and `<IntegerField label value onChange />`
+
+![TextField with hint, error and required marker; IntegerField with a negative value](docs/screenshots/text-field.png)
+
+`TextField` is a `TextInput` with its label, an optional hint and an error: the label is its spoken name (" \*" and "obligatoire" / "required" with `required`), the hint or the error its spoken hint, and the error is **announced by TalkBack as soon as it appears** (`accessibilityLiveRegion`). The border thickens on focus and turns red on error. Every other `TextInput` prop goes through — set `maxLength` on every free-text field.
+
+`IntegerField` types like plain text: a lone "-" before a negative number stays (instead of becoming 0), an emptied field stays empty while typing, pasted junk is cleaned (`1 250 pts` → 1250). Each valid value within `min`…`max` goes to `onChange`; on blur, an out-of-range value is clamped and an unfinished one shows the last valid value again. The keyboard is `numeric` when negatives are allowed (`min < 0`; Android's `number-pad` has no minus key), `number-pad` otherwise. Built on `sanitizeIntegerInput` / `parseIntegerInput` from `@forthtilliath/ts-kit`.
+
+```tsx
+import { IntegerField } from "@forthtilliath/react-native-kit/components/form/IntegerField";
+import { TextField } from "@forthtilliath/react-native-kit/components/form/TextField";
+
+<TextField label="Nom du joueur" value={name} onChangeText={setName} maxLength={30} required
+  error={name.trim() ? null : "Le nom est obligatoire."} />
+<IntegerField label="Points de merveille" value={points} onChange={setPoints} min={-30} max={99} />
+```
+
+| Prop (`TextField`) | Type              | Notes                                                                                                              |
+| ------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `label`            | `string`          | Shown above, read as the input's name (the visible label itself is hidden from TalkBack).                          |
+| `hint`             | `string`          | Under the input; its spoken hint.                                                                                  |
+| `error`            | `string \| null`  | Replaces the hint, red border, announced when it appears. Falsy = no error.                                        |
+| `required`         | `boolean`         | " \*" after the label, ", obligatoire" (", required") after the spoken name.                                       |
+| `inputRef`         | `Ref<TextInput>`  | Focus it, or chain fields with `onSubmitEditing`.                                                                  |
+| `locale`           | `"fr" \| "en"`    | Language of the spoken "required".                                                                                 |
+| `colors`           | `TextFieldColors` | `text`, `label`, `placeholder`, `background`, `border` (keep ≥ 3:1 with the background), `borderFocused`, `error`. |
+| `styles`           | `TextFieldStyles` | Slots `container`, `label`, `input`, `inputFocused`, `inputError`, `hint`, `error`.                                |
+
+`IntegerField` takes the same props (except `value`/`onChangeText`/`keyboardType`), plus `value: number`, `onChange(value)`, `min` (`-Infinity`) and `max` (`Infinity`); `maxLength` defaults to 17 (beyond, a number is no longer exact).
+
+#### `<SectionTitle title />` and `<Section title>…</Section>`
+
+![SectionTitle with aside, rule and leading mark; Section around a SegmentedToggle](docs/screenshots/section-title.png)
+
+A section heading in small grey capitals, announced as a header. `aside` shows a summary on the right ("4 sélectionnés"; a string or any node), `rule` draws a line to the right edge, `leading` a decorative mark before the title (hidden from screen readers), `uppercase={false}` keeps the case. `Section` is the same title followed by its content, spaced by `gap` (8).
+
+```tsx
+import { Section } from "@forthtilliath/react-native-kit/components/layout/Section";
+import { SectionTitle } from "@forthtilliath/react-native-kit/components/layout/SectionTitle";
+
+<SectionTitle title="Merveilles" rule leading={<View style={diamond} />} styles={{ title: { color: c.gold } }} />
+<Section title="Durée" aside={durationLabel} titleStyles={{ title: { color: c.muted } }}>
+  <SegmentedToggle options={DURATIONS} value={duration} onChange={setDuration} />
+</Section>
+```
+
+Style slots (`styles` on `SectionTitle`, `titleStyles` on `Section`): `container`, `title`, `aside`, `rule`. `Section` also takes `style` for its own block.
+
+#### `<EmptyState message />`
+
+![EmptyState with icon, title, message and action](docs/screenshots/empty-state.png)
+
+What an empty list shows: an icon in a circle (hidden from screen readers), an optional title (a header), the explanation, and the action that fills the list — a kit `Button`, so `action` takes all of its props.
+
+```tsx
+import { EmptyState } from "@forthtilliath/react-native-kit/components/feedback/EmptyState";
+
+<FlatList
+  data={players}
+  ListEmptyComponent={
+    <EmptyState
+      icon={<Ionicons name="people-outline" size={36} color={c.muted} />}
+      title="Aucun joueur"
+      message="Ajoute les joueurs une fois : ils seront proposés à chaque partie."
+      action={{
+        label: "Créer un joueur",
+        onPress: () => router.push("/players/new"),
+        fullWidth: true,
+        colors: buttonColors,
+      }}
+    />
+  }
+/>;
+```
+
+Style slots: `container`, `iconWrap`, `title`, `message`.
+
+#### `showToast(message, options?)` + `<ToastHost />`
+
+![ToastHost: a plain toast, and an undo toast in an app's colors](docs/screenshots/toast.png)
+
+Short messages at the bottom of the screen, called from anywhere — a store action, an event handler — without passing state around. Mount a `ToastHost` at the root of the app (it survives navigation: an undo offered on a screen you just left stays), and another inside each `Modal` that needs one: **the most recently mounted host receives the toasts**. One toast at a time (a new one replaces it), announced by TalkBack, faded in and out (instantly when Android animations are removed), closed by a tap.
+
+The delay (3.5 s, or 5 s with an action) goes through Android's accessibility **"Time to take action"** setting: users who asked for more time get it.
+
+```tsx
+import { showToast } from "@forthtilliath/react-native-kit/components/feedback/toast";
+import { ToastHost } from "@forthtilliath/react-native-kit/components/feedback/ToastHost";
+
+// app/_layout.tsx, last child so it draws on top
+<ToastHost
+  bottomOffset={insets.bottom + TAB_BAR_HEIGHT}
+  styles={{
+    toast: { backgroundColor: c.text },
+    message: { color: c.background },
+  }}
+/>;
+
+showToast("Partie enregistrée");
+
+// Undo after an immediate delete: commit for good unless the user undid it.
+removePlayer(player.id);
+showToast(`« ${player.name} » supprimé`, {
+  action: { label: "Annuler", onPress: () => restorePlayer(player) },
+  onHide: (reason) => {
+    if (reason !== "action") deletePhoto(player.photoUri);
+  },
+});
+```
+
+| `showToast` option | Type                 | Notes                                                                                                                                   |
+| ------------------ | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `action`           | `{ label, onPress }` | A button on the right; pressing it calls `onPress` then closes the toast.                                                               |
+| `durationMs`       | `number`             | 3500, or 5000 with an `action` — lengthened by the accessibility setting.                                                               |
+| `onHide`           | `(reason) => void`   | Once, with `"timeout"`, `"action"`, `"dismissed"` (tapped), `"replaced"` (a newer toast) or `"hidden"` (`hideToast()`, host unmounted). |
+
+`showToast` returns the toast's id, or `null` when no host is mounted (nothing shown). `hideToast()` closes the toast of every host.
+
+| `ToastHost` prop        | Type              | Default | Notes                                                                   |
+| ----------------------- | ----------------- | ------- | ----------------------------------------------------------------------- |
+| `bottomOffset`          | `number`          | `24`    | Add the bottom safe-area inset, a tab bar, a floating button to clear.  |
+| `maxLines`              | `number`          | `3`     | Longer messages end with an ellipsis.                                   |
+| `fadeMs`                | `number`          | `200`   | 0 when Android animations are removed.                                  |
+| `locale`, `dismissHint` |                   |         | Spoken hint of the message ("Masque le message" / "Hides the message"). |
+| `styles`                | `ToastHostStyles` | —       | Slots `toast`, `message`, `action`.                                     |
+
+`UndoToast` stays available for a host that manages its own state; `ToastHost` replaces the hand-written "pending undo + timer + bar" pattern.
+
+#### `<ReorderList items keyExtractor getLabel onChange />`
+
+![ReorderList with positions and arrows, then with avatars in an app's colors](docs/screenshots/reorder-list.png)
+
+Reorders a list with ▲ / ▼ buttons instead of drag and drop: usable with TalkBack and inside a `ScrollView`, no gesture library. Each arrow is named after its item ("Monter Marie" / "Move Marie up"), the first ▲ and last ▼ are disabled, and since rows are keyed, the screen-reader focus follows the item it just moved. `onChange` receives the reordered copy (and `{ from, to }`). Needs `@expo/vector-icons`.
+
+```tsx
+import { ReorderList } from "@forthtilliath/react-native-kit/components/list/ReorderList";
+
+<ReorderList
+  items={players}
+  keyExtractor={(p) => p.id}
+  getLabel={(p) => p.name}
+  onChange={(next) => setPlayerOrder(next.map((p) => p.id))}
+  onMoveFeedback={selectFeedback}
+  renderItem={(p) => <PlayerChip player={p} />}
+  styles={{ row: { backgroundColor: c.card }, arrowColor: c.text }}
+/>;
+```
+
+Also: `showPosition` (`true`), `locale`, `labels` (`moveUp(label)`, `moveDown(label)`), style slots `list`, `row`, `position`, `label`, `arrow`, `arrowDisabled` and `arrowColor`.
+
+#### `<BottomSheet title subtitle headerAction showHandle showCloseButton>`
+
+![BottomSheet header: grab bar, title, subtitle, action and close button](docs/screenshots/bottom-sheet-header.png)
+
+`BottomSheet` can draw its own header — grab bar, title (a header), subtitle, a text action and a × close button — **above** the scrolling content, so it stays visible. All optional and off by default: existing sheets don't change. The header alone is exported as `BottomSheetHeader` (`components/overlay/BottomSheetHeader`) for sheets built by hand.
+
+```tsx
+<BottomSheet
+  visible={open}
+  onClose={close}
+  bottomInset={insets.bottom}
+  title="Filtres"
+  subtitle={`${count} jeux correspondent`}
+  headerAction={{ label: "Réinitialiser", onPress: resetFilters }}
+  showHandle
+  showCloseButton
+  headerStyles={{
+    title: { color: c.text },
+    action: { color: c.primary },
+    close: { backgroundColor: c.primarySoft },
+  }}
+>
+  <Filters />
+</BottomSheet>
+```
+
+`closeLabel` names the × button ("Fermer" / "Close", `locale`). Header style slots: `handle`, `header`, `title`, `subtitle`, `action`, `close`, `closeIcon`.
+
+#### `<Reveal index>`
+
+Fades its content in while sliding it up, delayed by `index × staggerMs` (90) — to reveal a ranking one row after the other. Runs on the native thread, once; `emphasis` adds a slight bounce and zoom (the winner). When the user asked Android to remove animations, the content is shown right away.
+
+```tsx
+import { Reveal } from "@forthtilliath/react-native-kit/components/layout/Reveal";
+
+{
+  ranking.map((entry, index) => (
+    <Reveal key={entry.id} index={index} emphasis={index === 0}>
+      <RankingRow entry={entry} />
+    </Reveal>
+  ));
+}
+```
+
+Also: `durationMs` (260), `distance` (16 dp), `style`.
+
+#### `useReducedMotion()`
+
+`true` when the user asked for fewer animations (Android: Accessibility ▸ Remove animations), updated live. Native transitions follow that setting on their own; `Animated` ones don't — skip or shorten them.
+
+```tsx
+import { useReducedMotion } from "@forthtilliath/react-native-kit/hooks/useReducedMotion";
+
+const reducedMotion = useReducedMotion();
+Animated.timing(scale, {
+  toValue: 1,
+  duration: reducedMotion ? 0 : 250,
+  useNativeDriver: true,
+}).start();
+```
+
+#### `usePersistHydrated(stores)`
+
+`true` once every store has been read back from storage. Until then a persisted store holds its **initial** state: wait for this before acting on saved values (a "last checked" date, a dismissed version, a setting), or the app acts as if nothing was saved. Takes any store with Zustand's `persist` API (`hasHydrated`, `onFinishHydration`), without depending on Zustand. Keep the array stable (a module constant).
+
+```tsx
+import { usePersistHydrated } from "@forthtilliath/react-native-kit/hooks/usePersistHydrated";
+
+const STORES = [useSettingsStore, useUpdateStore] as const;
+
+const hydrated = usePersistHydrated(STORES);
+<UpdateNotifier enabled={hydrated} {...updateProps} />;
+```
+
+#### `createThemedStyles(usePalette, factory)` + `createPaletteMemo(usePalette, factory)`
+
+`StyleSheet.create` in the colors of the current theme, declared once at module level: the returned hook builds **one style sheet per palette**, the first time it's used, then shares it between every instance and every render — instead of a `useMemo(() => StyleSheet.create(…), [colors])` in each mounted component. `createPaletteMemo` does the same for any value (chart colors, icon colors…). The cache is keyed by the palette object: keep palettes as constants.
+
+```tsx
+import {
+  createThemedStyles,
+  type NamedStyles,
+} from "@forthtilliath/react-native-kit/components/theme/createThemedStyles";
+import { useResolvedScheme } from "@forthtilliath/react-native-kit/components/theme/themePreferenceContext";
+
+// ui/theme.ts — once per app
+export const useColors = () =>
+  useResolvedScheme() === "dark" ? darkColors : lightColors;
+export const themedStyles = <T extends NamedStyles<T>>(
+  factory: (c: Palette) => T,
+) => createThemedStyles(useColors, factory);
+
+// any component
+const useStyles = themedStyles((c) => ({
+  card: { backgroundColor: c.card, borderColor: c.border, borderWidth: 1 },
+  title: { color: c.text, fontWeight: "700" },
+}));
+
+function Card() {
+  const styles = useStyles();
+  return <View style={styles.card}>…</View>;
+}
+```
+
+#### `pickTextFile(options?)`
+
+Opens the system file picker (local files, Drive, Downloads…) and reads the chosen text file straight from its `content://` URI — no copy, **no storage permission**. The size is checked **before** reading (a huge file is refused without being loaded into memory), and the length again after, for providers that report no size. Returns `null` if the user cancels, `{ ok: true, text, name }`, or `{ ok: false, reason: "too-large" | "unreadable", error }` with a message ready to show. Needs `expo-file-system` (SDK 54+).
+
+Pair it with `parseUntrustedJson` from `@forthtilliath/ts-kit` for a complete import that never applies anything half-checked:
+
+```ts
+import { parseUntrustedJson } from "@forthtilliath/ts-kit/security/parseUntrustedJson";
+import { pickTextFile } from "@forthtilliath/react-native-kit/utils/files/pickTextFile";
+
+const picked = await pickTextFile({ maxBytes: 2_000_000 });
+if (!picked) return; // cancelled
+if (!picked.ok) return Alert.alert("Import impossible", picked.error);
+const result = parseUntrustedJson(picked.text, backupSchema, {
+  maxLength: 2_000_000,
+});
+if (!result.ok) return Alert.alert("Import impossible", result.error);
+await restore(result.data);
+```
+
+| Option      | Type                            | Default                                                                                                                   |
+| ----------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `mimeTypes` | `string[]`                      | `["application/json", "text/plain", "application/octet-stream"]` (a `.json` may be any of them depending on the provider) |
+| `maxBytes`  | `number`                        | `5_000_000`                                                                                                               |
+| `locale`    | `"fr" \| "en"`                  | `"fr"`                                                                                                                    |
+| `labels`    | `{ tooLarge(max), unreadable }` | French or English messages                                                                                                |
+
 ### Overlays and pickers
 
 Every component below has neutral default colors and a `styles` prop whose slots are each merged **after** their default (a partial override keeps the rest of the slot) — pass the app's palette there.
 
 | Component                                                               | Import path                         | What it is                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------------------------------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<BottomSheet visible onClose bottomInset?>`                            | `components/overlay/BottomSheet`    | Modal sliding up from the bottom, content scrollable past 85 % of the screen. Pass `useSafeAreaInsets().bottom` as `bottomInset` with Android edge-to-edge.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `<BottomSheet visible onClose bottomInset?>`                            | `components/overlay/BottomSheet`    | Modal sliding up from the bottom, content scrollable past 85 % of the screen. Pass `useSafeAreaInsets().bottom` as `bottomInset` with Android edge-to-edge. Optional header (title, action, close button): see [above](#bottomsheet-title-subtitle-headeraction-showhandle-showclosebutton).                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `<OptionsModal visible onClose options onSelect>`                       | `components/picker/OptionsModal`    | Centered popup listing `{ value, label }` options; a tap selects and closes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `<SelectField label valueLabel options onSelect>`                       | `components/picker/SelectField`     | Native-looking "select": captioned button + `OptionsModal` (styled through `styles.optionsModal`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `<SegmentedToggle options value onChange label?>`                       | `components/picker/SegmentedToggle` | Row of equal-width buttons, one active (Calendar / List…), announced as a radio group; each option may carry a smaller `hint` line under its label.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
