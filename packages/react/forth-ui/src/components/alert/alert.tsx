@@ -10,6 +10,10 @@ import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import type { AlertVariants } from "./variants.js";
 import { alertVariants } from "./variants.js";
 
+/**
+ * Props of `Alert`: those of a `<div>`, the {@link AlertVariants}, and the
+ * dismiss (`dismissible`, `open`, `onOpenChange`) and `action` options.
+ */
 export type AlertProps = React.ComponentProps<"div"> &
   AlertVariants & {
     /**
@@ -41,7 +45,8 @@ export type AlertProps = React.ComponentProps<"div"> &
 /**
  * Displays a callout for user attention.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/alert
  * @see https://ktui.io/docs/alert
  * @see https://ktui.io/docs/dismiss

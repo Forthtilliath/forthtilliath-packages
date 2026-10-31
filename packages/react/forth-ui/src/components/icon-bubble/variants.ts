@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
+/** Classes of an icon bubble, per `size` (`sm`, `default`, `lg`). */
 export const iconBubbleVariants = cva(
   "bg-primary/15 text-primary grid shrink-0 place-items-center rounded-full",
   {
@@ -24,4 +25,5 @@ export const ICON_BUBBLE_ICON_SIZES = {
   lg: 20,
 } as const;
 
+/** The variant props of {@link iconBubbleVariants}. */
 export type IconBubbleVariants = VariantProps<typeof iconBubbleVariants>;

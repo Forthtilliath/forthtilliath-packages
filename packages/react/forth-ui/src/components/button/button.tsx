@@ -7,6 +7,10 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import type { ButtonSizeVariants } from "./variants.js";
 import { buttonSizeVariants } from "./variants.js";
 
+/**
+ * Props of `Button`: those of shadcn-ui's `Button` (its `size` replaced by the
+ * {@link ButtonSizeVariants}), plus `loading`.
+ */
 export type ButtonProps = Omit<
   React.ComponentProps<typeof ButtonPrimitive>,
   "size"
@@ -26,7 +30,8 @@ export type ButtonProps = Omit<
 /**
  * Displays a button or a component that looks like a button.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/button
  * @see https://ktui.io/docs/button
  * @see https://ui.aceternity.com/components/stateful-button

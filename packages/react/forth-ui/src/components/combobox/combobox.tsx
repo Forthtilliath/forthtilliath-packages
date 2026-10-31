@@ -21,19 +21,39 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import { Button } from "../button/index.js";
 
+/** One option of a {@link Combobox} or {@link MultiSelect}. */
 export interface ComboboxOption {
+  /**
+   * Text shown in the list and in the trigger, also what the search filters on.
+   */
   label: string;
+  /** Unique value, reported by `onValueChange`. */
   value: string;
+  /** Shown but not selectable. */
   disabled?: boolean;
 }
 
+/** Props of {@link Combobox}. */
 export interface ComboboxProps {
+  /** The choices, in display order. */
   options: ComboboxOption[];
+  /** The selected value (`""` or `undefined` for none). */
   value?: string;
+  /**
+   * Called with the chosen value — or `""` when the selected option is chosen
+   * again (deselection).
+   */
   onValueChange?: (value: string) => void;
+  /**
+   * Trigger text while nothing is selected, and default accessible name.
+   * Defaults to the locale's.
+   */
   placeholder?: string;
+  /** Shown when no option matches the search. Defaults to the locale's. */
   emptyMessage?: string;
+  /** Disables the trigger. */
   disabled?: boolean;
+  /** Classes of the trigger button. */
   className?: string;
   /** `id` of the trigger — set by `Field`, or for a `<label htmlFor>`. */
   id?: string;
@@ -42,7 +62,11 @@ export interface ComboboxProps {
    * Defaults to the placeholder, unless a `<label>` targets `id`.
    */
   ariaLabel?: string;
+  /**
+   * Ids of the elements describing the field (hint, error) — set by `Field`.
+   */
   "aria-describedby"?: string;
+  /** Marks the field as invalid — set by `Field` when it has an error. */
   "aria-invalid"?: boolean;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -57,7 +81,8 @@ export interface ComboboxProps {
  * that every consumer re-assembles by hand. This wraps that recipe into a
  * `options`/`value`/`onValueChange`-driven component.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/combobox
  * @see https://www.kibo-ui.com/components/combobox
  *

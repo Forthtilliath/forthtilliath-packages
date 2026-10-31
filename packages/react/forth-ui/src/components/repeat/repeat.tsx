@@ -1,5 +1,6 @@
 import React from "react";
 
+/** Props of `Repeat`. */
 export interface RepeatProps {
   /**
    * Number of times to repeat the content
@@ -20,10 +21,13 @@ export interface RepeatProps {
  *
  * @param {RepeatProps} props - The props for the Repeat component.
  * @param {number} props.count - The number of times to repeat the component.
- * @param {(index: number) => React.Key} [props.keyItem] - A function to generate a unique key for each item.
- * @param {(index: number) => React.ReactNode} props.renderItem - A function to render each item.
+ * @param {(index: number) => React.Key} [props.keyItem] - A function to
+ *   generate a unique key for each item.
+ * @param {(index: number) => React.ReactNode} props.renderItem - A function to
+ *   render each item.
  *
- * @returns {React.ReactNode[]} An array of React components, each rendered with the renderItem function.
+ * @returns {React.ReactNode[]} An array of React components, each rendered with
+ *   the renderItem function.
  */
 export function Repeat({
   count,

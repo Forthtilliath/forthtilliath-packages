@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** Props of `ScrollShadow`. */
 export type ScrollShadowProps = React.ComponentProps<"div"> & {
   /** Size of the fade gradient, in pixels. @default 40 */
   shadowSize?: number;

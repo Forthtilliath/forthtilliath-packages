@@ -7,6 +7,10 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import type { ProgressVariants } from "./variants.js";
 import { progressVariants } from "./variants.js";
 
+/**
+ * Props of `Progress`: those of shadcn-ui's `Progress` (`value` from 0 to 100)
+ * and the {@link ProgressVariants}.
+ */
 export type ProgressProps = React.ComponentProps<typeof ProgressPrimitive> &
   ProgressVariants & {
     /**
@@ -24,7 +28,8 @@ export type ProgressProps = React.ComponentProps<typeof ProgressPrimitive> &
 /**
  * Displays an indicator showing the completion progress of a task.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/progress
  * @see https://ktui.io/docs/progress
  *

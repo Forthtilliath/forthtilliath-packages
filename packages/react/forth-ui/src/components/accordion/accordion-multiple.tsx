@@ -5,6 +5,11 @@ import { Items } from "./accordion-items.js";
 import type { MultipleProps } from "./types.js";
 import { accordionRootVariants } from "./variants.js";
 
+/**
+ * The `Accordion` in `multiple` mode: several items can be open at once.
+ * @param props - See {@link MultipleProps}.
+ * @internal
+ */
 export function AccordionMultiple({
   className,
   variant,

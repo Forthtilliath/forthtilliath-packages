@@ -21,6 +21,7 @@ import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import type { PaginationRangeOptions } from "./pagination-range.js";
 import { getPaginationRange } from "./pagination-range.js";
 
+/** Props of `Pagination`. */
 export type PaginationProps = Omit<PaginationRangeOptions, "page"> & {
   /** The current page, 1-indexed. */
   page: number;
@@ -42,7 +43,8 @@ export type PaginationProps = Omit<PaginationRangeOptions, "page"> & {
  * Pagination is unopinionated markup only and leaves that range
  * computation to every consumer, so this wraps it with the missing piece.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/pagination
  * @see https://ktui.io/docs/pagination
  *

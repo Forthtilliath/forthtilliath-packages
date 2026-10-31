@@ -5,7 +5,9 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import type { AvatarProps } from "./avatar.js";
 import { Avatar } from "./avatar.js";
 
+/** Props of `AvatarGroup`: those of a `<div>`, the avatars, and `max`. */
 export type AvatarGroupProps = React.ComponentProps<"div"> & {
+  /** The avatars to show, overlapping, in order. */
   avatars: AvatarProps[];
   /**
    * Maximum number of avatars to display before collapsing the rest into a
@@ -19,15 +21,18 @@ const RING_CLASS = "ring-2 ring-background hover:z-10";
 /**
  * A component to group multiple avatars together.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/avatar
  * @see https://www.kibo-ui.com/components/avatar-stack
  * @see https://www.shadcnui-blocks.com/components/avatar
  *
  * @param {AvatarGroupProps} props The props for the component.
  * @param {AvatarProps[]} props.avatars The avatars to be grouped together.
- * @param {number} [props.max] Collapse avatars beyond this count into a "+N" bubble.
- * @param {React.ComponentProps<'div'>} props The props for the outer div element.
+ * @param {number} [props.max] Collapse avatars beyond this count into a "+N"
+ *   bubble.
+ * @param {React.ComponentProps<'div'>} props The props for the outer div
+ *   element.
  * @returns {JSX.Element} The component.
  */
 export function AvatarGroup({

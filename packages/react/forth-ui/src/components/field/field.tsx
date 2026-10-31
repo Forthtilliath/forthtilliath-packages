@@ -8,10 +8,20 @@ interface FieldControlProps {
   "aria-invalid"?: boolean;
 }
 
+/** Props of {@link Field}. */
 export interface FieldProps {
+  /** Label of the control, linked to it with `htmlFor`. */
   label?: React.ReactNode;
+  /** Help text under the control, referenced by `aria-describedby`. */
   description?: React.ReactNode;
+  /**
+   * Error message shown under the control and announced with it
+   * (`aria-describedby`); while set, the control also gets `aria-invalid`.
+   */
   error?: React.ReactNode;
+  /**
+   * Adds a red `*` after the label (it doesn't validate anything by itself).
+   */
   required?: boolean;
   /**
    * `vertical` (label above the control, e.g. Input/Textarea/Select) or
@@ -19,8 +29,12 @@ export interface FieldProps {
    * @default "vertical"
    */
   orientation?: "vertical" | "horizontal";
+  /** Classes of the component's root element. */
   className?: string;
-  /** The form control — its `id`/`aria-describedby`/`aria-invalid` are wired up automatically. */
+  /**
+   * The form control — its `id`/`aria-describedby`/`aria-invalid` are wired up
+   * automatically.
+   */
   children: React.ReactElement<FieldControlProps>;
 }
 
@@ -31,7 +45,8 @@ export interface FieldProps {
  * applied to every control type) into one control-agnostic component,
  * independent of any form library.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://shuip.xyz/components/input-field
  * @see https://shuip.xyz/components/checkbox-field
  * @see https://shuip.xyz/components/radio-field

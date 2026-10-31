@@ -10,6 +10,7 @@ import {
   toggleSwitchTrackVariants,
 } from "./variants.js";
 
+/** Props of `ToggleSwitch`. */
 export type ToggleSwitchProps = Omit<
   React.ComponentProps<"button">,
   "children" | "className" | "onChange" | "onClick" | "role" | "type" | "value"
@@ -26,11 +27,13 @@ export type ToggleSwitchProps = Omit<
     /**
      * Custom classes for each part of the component.
      *
-     * - `root` is the `<button role="switch">` element — a `group/toggle-switch`
+     * - `root` is the `<button role="switch">` element — a
+     *   `group/toggle-switch`
      *   carrying `data-state="checked" | "unchecked"`, so any part can be
      *   styled per state (`group-data-[state=checked]/toggle-switch:...`).
      * - `track` / `thumb` are the switch itself.
-     * - `text` wraps the label and description (only when a description is set).
+     * - `text` wraps the label and description (only when a description is
+     *   set).
      * - `label` / `description` are the text elements.
      */
     className?: Partial<

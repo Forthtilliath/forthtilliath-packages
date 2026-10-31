@@ -2,6 +2,15 @@ import type React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/**
+ * The grid of a bento layout: 3 columns, 12 rem rows, holding `BentoGridItem`s.
+ * @param props - Any `<div>` prop.
+ * @example
+ * <BentoGrid>
+ *   <BentoGridItem colSpan={2} rowSpan={2}>Main</BentoGridItem>
+ *   <BentoGridItem>Side</BentoGridItem>
+ * </BentoGrid>
+ */
 export function BentoGrid({
   className,
   ...props
@@ -15,6 +24,10 @@ export function BentoGrid({
   );
 }
 
+/**
+ * Props of {@link BentoGridItem}: those of a `<div>`, plus its column and row
+ * spans.
+ */
 export type BentoGridItemProps = React.ComponentProps<"div"> & {
   /** Columns (out of the grid's 3) this item spans. @default 1 */
   colSpan?: 1 | 2 | 3;
@@ -44,7 +57,8 @@ const ROW_SPAN_CLASSES: Record<
  * lightweight layout helper (`grid`+`col-span`/`row-span`), not a
  * dependency-driven masonry/packing algorithm.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.aceternity.com/components/bento-grid
  * @see https://blocks.mvp-subha.me/docs/grids/bento
  *

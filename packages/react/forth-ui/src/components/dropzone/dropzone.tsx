@@ -18,16 +18,25 @@ import {
   FileListName,
 } from "../file-list/index.js";
 
+/** Props of {@link Dropzone}. */
 export interface DropzoneProps {
+  /** Controlled list of accepted files. */
   value?: File[];
+  /** Initial files when uncontrolled. */
   defaultValue?: File[];
+  /** Called with the whole new list after a drop, a pick or a removal. */
   onValueChange?: (files: File[]) => void;
+  /** Accepted types, as for `<input type="file">` (e.g. `"image/*,.pdf"`). */
   accept?: string;
+  /** Accept several files. Defaults to `true`. */
   multiple?: boolean;
+  /** Maximum number of files kept; extra ones are dropped. */
   maxFiles?: number;
   /** Maximum size per file, in bytes. Oversized files are silently dropped. */
   maxSize?: number;
+  /** Disables the zone and the file picker. */
   disabled?: boolean;
+  /** Classes of the drop area. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -56,7 +65,8 @@ function fileKey(file: File) {
  * A drag-and-drop file upload zone, listing accepted files below via
  * `FileList`.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/dropzone
  * @see https://ui.aceternity.com/components/file-upload
  *

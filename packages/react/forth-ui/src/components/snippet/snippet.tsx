@@ -14,16 +14,23 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
+/** One tab of a {@link Snippet} (e.g. one package manager). */
 export interface SnippetItem {
+  /** Unique id of the tab. */
   value: string;
+  /** Tab title, e.g. `"pnpm"`. */
   label: React.ReactNode;
+  /** The code shown and copied, e.g. `"pnpm add forth-ui"`. */
   code: string;
 }
 
+/** Props of {@link Snippet}. */
 export interface SnippetProps {
+  /** The tabs, in display order. */
   items: SnippetItem[];
   /** @default items[0]?.value */
   defaultValue?: string;
+  /** Classes of the bordered frame. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -38,7 +45,8 @@ const COPY_FEEDBACK_MS = 2000;
  * Displays and copies code in a tabbed interface — the "npm install /
  * yarn add / pnpm add" pattern.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/snippet
  *
  * @version 0.1.0

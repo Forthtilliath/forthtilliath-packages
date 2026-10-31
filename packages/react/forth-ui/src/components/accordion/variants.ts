@@ -1,6 +1,11 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
+/**
+ * Classes of the accordion root: `variant` (`default`, `outline`, `box`,
+ * `contained`, `box-contained`, `tabs`, `highlight-active`) and `size` (`sm`,
+ * `default`, `lg`).
+ */
 export const accordionRootVariants = cva(
   "max-w-lg my-4 w-full text-foreground",
   {
@@ -27,6 +32,10 @@ export const accordionRootVariants = cva(
   },
 );
 
+/**
+ * Classes of each item, per `variant` and `size` (same values as {@link
+ * accordionRootVariants}).
+ */
 export const accordionItemVariants = cva("", {
   variants: {
     variant: {
@@ -53,6 +62,10 @@ export const accordionItemVariants = cva("", {
   },
 });
 
+/**
+ * Classes of each trigger: `variant`, `size`, `disabled`, and
+ * `chevronAlignment` (`right`, the default, or `left`).
+ */
 export const accordionTriggerVariants = cva(
   "hover:no-underline group items-center",
   {
@@ -90,6 +103,7 @@ export const accordionTriggerVariants = cva(
   },
 );
 
+/** Classes of each item's content, per `variant` and `size`. */
 export const accordionContentVariants = cva("", {
   variants: {
     variant: {

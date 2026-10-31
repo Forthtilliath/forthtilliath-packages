@@ -14,19 +14,34 @@ import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 import { Badge } from "../badge/index.js";
 import { Button } from "../button/index.js";
 
+/** One notification of a {@link NotificationCenter}. */
 export interface NotificationItem {
+  /** Unique id, passed back to `onNotificationClick`. */
   id: string;
+  /** Main line. */
   title: React.ReactNode;
+  /** Secondary text under the title. */
   description?: React.ReactNode;
+  /** When it happened, already formatted (e.g. with `RelativeTime`). */
   date?: React.ReactNode;
+  /** Read notifications are dimmed and don't count in the badge. */
   read?: boolean;
 }
 
+/** Props of {@link NotificationCenter}. */
 export interface NotificationCenterProps {
+  /** The notifications, most recent first. */
   notifications: NotificationItem[];
+  /**
+   * Called with a notification's id when it is clicked (e.g. mark it read,
+   * navigate).
+   */
   onNotificationClick?: (id: string) => void;
+  /** Shows a "mark all as read" action while some are unread, calling this. */
   onMarkAllRead?: () => void;
+  /** Shown when the list is empty. Defaults to the locale's. */
   emptyMessage?: string;
+  /** Classes of the popover panel. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest

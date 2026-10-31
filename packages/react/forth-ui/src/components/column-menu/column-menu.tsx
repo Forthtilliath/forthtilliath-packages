@@ -17,7 +17,9 @@ import type { ColumnMenuColumn, ColumnMenuLabels } from "./types.js";
 import { DEFAULT_COLUMN_MENU_LABELS } from "./types.js";
 import { useDndSensors } from "./use-dnd-sensors.js";
 
+/** Props of {@link ColumnMenu}. */
 export interface ColumnMenuProps<C extends ColumnMenuColumn> {
+  /** The columns, in their current order and visibility. */
   columns: C[];
   /** Restored by the reset button. */
   defaultColumns: C[];

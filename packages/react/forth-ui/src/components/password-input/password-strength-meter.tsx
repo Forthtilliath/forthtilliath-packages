@@ -1,7 +1,13 @@
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** Props of {@link PasswordStrengthMeter}. */
 export interface PasswordStrengthMeterProps {
+  /**
+   * The password to score, usually the value of the `PasswordInput` it sits
+   * under.
+   */
   password: string;
+  /** Classes of the component's root element. */
   className?: string;
 }
 

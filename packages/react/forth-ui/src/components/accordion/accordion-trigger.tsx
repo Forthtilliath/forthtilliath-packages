@@ -7,6 +7,10 @@ import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/**
+ * Props of the trigger of an accordion item: Radix's trigger props, plus the
+ * chevron options and the accordion's variants.
+ */
 export type AccordionTriggerProps = React.ComponentProps<
   typeof AccordionPrimitive.Trigger
 > & {

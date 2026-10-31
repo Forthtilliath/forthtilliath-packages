@@ -11,15 +11,23 @@ import {
   CollapsibleTrigger,
 } from "../collapsible/index.js";
 
+/** One node of a {@link Tree}: a leaf, or a branch when it has `children`. */
 export interface TreeNode {
+  /** Text of the node. */
   label: React.ReactNode;
+  /** Icon shown before the label (a folder, a file…). */
   icon?: React.ReactNode;
+  /** Child nodes; a node with children expands and collapses. */
   children?: TreeNode[];
 }
 
+/** Props of {@link Tree}. */
 export interface TreeProps {
+  /** The root nodes. */
   data: TreeNode[];
+  /** Start with every branch open. Defaults to `false`. */
   defaultExpanded?: boolean;
+  /** Classes of the root list. */
   className?: string;
 }
 
@@ -28,7 +36,8 @@ export interface TreeProps {
  * nested categories) — built on forth-ui's own `Collapsible` for each
  * branch's expand animation rather than reimplementing it.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://originui.com/tree
  * @see https://www.hextaui.com/docs/ui/components/tree
  *

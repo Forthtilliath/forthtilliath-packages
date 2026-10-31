@@ -2,6 +2,7 @@ import type React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** Props of `Marquee`. */
 export type MarqueeProps = React.ComponentProps<"div"> & {
   /** Duration for one full loop, in seconds. @default 20 */
   duration?: number;
@@ -14,7 +15,8 @@ export type MarqueeProps = React.ComponentProps<"div"> & {
  * Infinitely scrolls its children (a logo wall, a ticker) — two duplicated
  * tracks looped via a pure CSS keyframe, no animation library.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.hextaui.com/docs/ui/components/marquee
  * @see https://www.kibo-ui.com/components/marquee
  *

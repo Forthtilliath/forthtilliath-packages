@@ -2,11 +2,20 @@
 
 import * as React from "react";
 
+/** Props of {@link CountAnimation}. */
 export interface CountAnimationProps {
+  /**
+   * Number to count to; changing it animates from the current displayed value.
+   */
   value: number;
   /** Animation duration, in ms. @default 1000 */
   duration?: number;
+  /**
+   * `Intl.NumberFormat` options of the displayed number (currency, percent,
+   * decimals…), in the browser's locale.
+   */
   formatOptions?: Intl.NumberFormatOptions;
+  /** Classes of the number's element. */
   className?: string;
 }
 
