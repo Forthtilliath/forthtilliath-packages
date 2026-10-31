@@ -1,9 +1,18 @@
+/**
+ * An `Array` subclass with better-typed searches: `includes` narrows the
+ * searched value's type when it is found (the built-in one does not), `indexOf`
+ * / `lastIndexOf` accept any value, `filter(Boolean)` drops `null` /
+ * `undefined` from the type, and `toArray` returns a plain array. Build it like
+ * an array: `new FArray("a", "b")` or `FArray.from(iterable)`.
+ */
 export class FArray<T> extends Array<T> {
   /**
-   * Similar to `Array.includes`, but narrows the type of `searchElement` to `Include & T` if it is included in the array.
+   * Similar to `Array.includes`, but narrows the type of `searchElement` to
+   * `Include & T` if it is included in the array.
    *
    * @param searchElement The value to search for.
-   * @param fromIndex The position in this array at which to begin searching for searchElement.
+   * @param fromIndex The position in this array at which to begin searching for
+   *   searchElement.
    * @returns true if the value is found, otherwise false.
    *
    * @example
@@ -59,7 +68,8 @@ export class FArray<T> extends Array<T> {
    * `T`, exactly like `Array.includes` before the override above).
    *
    * @param searchElement The value to search for — no longer restricted to `T`.
-   * @param fromIndex The position in this array at which to begin searching for searchElement.
+   * @param fromIndex The position in this array at which to begin searching for
+   *   searchElement.
    * @returns The index of the first match, or -1 if not found.
    *
    * @example
@@ -88,7 +98,8 @@ export class FArray<T> extends Array<T> {
    * instead of rejecting it at compile-time. See {@link FArray.indexOf}.
    *
    * @param searchElement The value to search for — no longer restricted to `T`.
-   * @param fromIndex The position in this array at which to start searching backwards. Defaults to the last index, like the native method.
+   * @param fromIndex The position in this array at which to start searching
+   *   backwards. Defaults to the last index, like the native method.
    * @returns The index of the last match, or -1 if not found.
    */
   lastIndexOf(searchElement: unknown, fromIndex?: number): number {

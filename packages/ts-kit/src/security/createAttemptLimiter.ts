@@ -1,11 +1,20 @@
 /** Where the failure counter is kept — e.g. expo-secure-store on Android. */
 export interface AttemptLimiterStorage {
+  /** Reads the stored value, `null` when absent. */
   getItem: (key: string) => Promise<string | null>;
+  /** Writes the value. */
   setItem: (key: string, value: string) => Promise<void>;
+  /** Removes the value. */
   deleteItem: (key: string) => Promise<void>;
 }
 
+/** Options of {@link createAttemptLimiter}. */
 export interface AttemptLimiterOptions {
+  /**
+   * Where the failure counter is persisted. Prefer a secure store (e.g.
+   * `expo-secure-store`) so the counter can't be reset by clearing plain app
+   * storage.
+   */
   storage: AttemptLimiterStorage;
   /** Storage key of the failure counter. */
   key: string;
@@ -21,8 +30,15 @@ export interface AttemptLimiterOptions {
   now?: () => number;
 }
 
+/**
+ * Outcome of {@link AttemptLimiter.attempt}: `ok: true` when `verify` passed;
+ * otherwise `lockedUntil`, the timestamp until which no new attempt is allowed
+ * (0 when none is imposed yet), whether `verify` failed or a delay was already
+ * running.
+ */
 export type AttemptResult = { ok: true } | { ok: false; lockedUntil: number };
 
+/** The limiter returned by {@link createAttemptLimiter}. */
 export interface AttemptLimiter {
   /**
    * Runs `verify` (e.g. compares a PIN) unless a delay is running, and

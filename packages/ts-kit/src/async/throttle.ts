@@ -1,3 +1,7 @@
+/**
+ * The function returned by {@link throttle}: call it like the original (its
+ * result is dropped); `cancel` drops the pending trailing call.
+ */
 export interface ThrottledFunction<Args extends unknown[]> {
   (...args: Args): void;
   /** Cancels any pending trailing invocation. */

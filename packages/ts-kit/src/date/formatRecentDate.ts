@@ -3,6 +3,7 @@ import { startOfDay } from "./startOfDay.js";
 /** Languages {@link formatRecentDate} has wording for. */
 export type RecentDateLocale = "fr" | "en";
 
+/** Options of {@link formatRecentDate}. */
 export interface FormatRecentDateOptions {
   /** Reference "now" (defaults to the current time). */
   now?: Date;
@@ -42,7 +43,8 @@ const DAY_MS = 24 * 60 * 60 * 1000;
  *
  * @param date - The moment to describe.
  * @param options - See {@link FormatRecentDateOptions}.
- * @returns E.g. `"aujourd'hui à 21:42"`, `"hier à 08:05"`, `"le 11 octobre 2026"`.
+ * @returns E.g. `"aujourd'hui à 21:42"`, `"hier à 08:05"`, `"le 11 octobre
+ *   2026"`.
  * @example
  * formatRecentDate(lastBackupAt); // => "hier à 21:42"
  * formatRecentDate(lastBackupAt, { locale: "en" }); // => "yesterday at 9:42 PM"

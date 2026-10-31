@@ -1,3 +1,7 @@
+/**
+ * A history filter: everything, today only, or the last 7 / 30 days (rolling
+ * windows ending now).
+ */
 export type PeriodFilter = "all" | "today" | "7d" | "30d";
 
 /**

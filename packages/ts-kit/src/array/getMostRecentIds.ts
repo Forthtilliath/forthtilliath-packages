@@ -1,5 +1,14 @@
+/**
+ * One dated occurrence of an entity, as read by {@link getMostRecentIds} (e.g.
+ * a weighing row with its food id).
+ */
 export interface RecentIdRow {
+  /**
+   * Id of the entity, or `null` when the reference was deleted since (the row
+   * is then skipped).
+   */
   id: number | null;
+  /** When it happened: an ISO date or any string `new Date()` can parse. */
   occurredAt: string;
 }
 

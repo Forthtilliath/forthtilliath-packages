@@ -1,5 +1,10 @@
+/**
+ * A date in any form `new Date()` accepts: a `Date`, an ISO string or a
+ * timestamp in milliseconds.
+ */
 export type DateInput = Date | string | number;
 
+/** Options of {@link sortUpcomingFirst}. */
 export interface SortUpcomingFirstOptions {
   /** Instant separating upcoming from past items. Defaults to now. */
   now?: DateInput;

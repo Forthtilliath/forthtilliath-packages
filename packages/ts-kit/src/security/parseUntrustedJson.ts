@@ -8,6 +8,10 @@ import type {
 export type UntrustedJsonFailure =
   "empty" | "too-long" | "malformed" | "invalid";
 
+/**
+ * Result of {@link parseUntrustedJson}: the validated data, or why the text was
+ * refused with a message ready to display.
+ */
 export type UntrustedJsonResult<T> =
   | { ok: true; data: T }
   | {
@@ -15,25 +19,36 @@ export type UntrustedJsonResult<T> =
       reason: UntrustedJsonFailure;
       /** A message ready to show the user (French by default). */
       error: string;
-      /** First schema issue's path, keys as given (`["players", 2, "name"]`). */
+      /**
+       * First schema issue's path, keys as given (`["players", 2, "name"]`).
+       */
       path?: PropertyKey[];
       /** Every issue the schema reported (`reason: "invalid"` only). */
       issues?: readonly StandardSchemaIssue[];
       /**
        * The parsed but **unvalidated** value (`reason: "invalid"` only) — e.g.
-       * to read a `version` field and say "update the app". Never use it as data.
+       * to read a `version` field and say "update the app". Never use it as
+       * data.
        */
       raw?: unknown;
     };
 
+/**
+ * The user-facing messages of {@link parseUntrustedJson}, one per failure
+ * reason.
+ */
 export interface UntrustedJsonMessages {
+  /** Shown when the text is empty or blank. */
   empty: string;
+  /** Shown when the text exceeds `maxLength` (it is then never parsed). */
   tooLong: string;
+  /** Shown when the text is not valid JSON. */
   malformed: string;
   /** `where` is the described path, `""` for the root value. */
   invalid: (where: string) => string;
 }
 
+/** Options of {@link parseUntrustedJson}. */
 export interface ParseUntrustedJsonOptions {
   /**
    * Longest text accepted, in characters, checked **before** `JSON.parse`: a

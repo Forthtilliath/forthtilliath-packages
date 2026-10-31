@@ -5,11 +5,18 @@
 // (heading / bullet item / plain text), without pulling in a full Markdown
 // dependency for this narrow use case.
 
+/** A run of text inside a line, bold or not (from `**…**`). */
 export interface ChangelogSegment {
+  /** The text, without the `**` markers. */
   text: string;
+  /** Whether the run was wrapped in `**…**`. */
   bold: boolean;
 }
 
+/**
+ * One line of release notes, as parsed by {@link parseChangelogNotes}: a
+ * `###`-style heading, a `- ` list item, or a plain paragraph.
+ */
 export type ChangelogBlock =
   | { type: "heading"; text: string }
   | { type: "item"; segments: ChangelogSegment[] }
@@ -39,6 +46,19 @@ function parseInlineSegments(text: string): ChangelogSegment[] {
 // written with "###" (e.g. "## What's new" on a hand-written GitHub release).
 const headingPattern = /^#{1,6}\s+/;
 
+/**
+ * Parses release notes written in a small Markdown subset (headings
+ * `#`…`######`, `- ` items and `**bold**`) into blocks a native screen can
+ * render without a Markdown engine. Blank lines are dropped; any other syntax
+ * is kept as plain text.
+ * @param notes - The raw notes, e.g. a GitHub release body or a CHANGELOG
+ *   section.
+ * @returns One block per non-empty line, in order.
+ * @example
+ * parseChangelogNotes("### Added\n- **Dark** theme");
+ * // => [{ type: "heading", text: "Added" },
+ * //     { type: "item", segments: [{ text: "Dark", bold: true }, { text: " theme", bold: false }] }]
+ */
 export function parseChangelogNotes(notes: string): ChangelogBlock[] {
   return notes
     .split("\n")

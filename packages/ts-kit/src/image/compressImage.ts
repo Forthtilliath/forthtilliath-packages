@@ -1,3 +1,4 @@
+/** Options of {@link compressImage}. */
 export interface CompressImageOptions {
   /** Images wider than this are scaled down, keeping their aspect ratio. */
   maxWidth?: number;
@@ -6,7 +7,8 @@ export interface CompressImageOptions {
 }
 
 /**
- * Compresses an image in the browser via the Canvas API and converts it to WebP.
+ * Compresses an image in the browser via the Canvas API and converts it to
+ * WebP.
  * Non-image files are returned unchanged.
  */
 export async function compressImage(

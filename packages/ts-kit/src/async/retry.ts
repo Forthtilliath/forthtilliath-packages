@@ -1,12 +1,19 @@
 import { abortReason } from "./abortReason.js";
 import { sleep } from "./sleep.js";
 
+/**
+ * Options of {@link retry}. The delay before attempt `n + 1` is `delayMs ×
+ * backoffFactor^(n - 1)`, capped by `maxDelayMs`.
+ */
 export interface RetryOptions {
   /** Maximum number of attempts, including the first one (default: 3). */
   attempts?: number;
   /** Base delay in milliseconds before retrying (default: 200). */
   delayMs?: number;
-  /** Backoff multiplier applied to `delayMs` after each failed attempt (default: 2). */
+  /**
+   * Backoff multiplier applied to `delayMs` after each failed attempt (default:
+   * 2).
+   */
   backoffFactor?: number;
   /** Upper bound for a single delay between two attempts (default: none). */
   maxDelayMs?: number;

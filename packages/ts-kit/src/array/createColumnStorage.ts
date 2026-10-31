@@ -1,11 +1,23 @@
 /** Minimal shape of a toggleable, reorderable column. */
 export interface StorableColumn {
+  /** Stable identifier of the column, matched against `defaults` on read. */
   key: string;
+  /** Whether the column is shown. */
   visible: boolean;
 }
 
+/** The (de)serializer returned by {@link createColumnStorage}. */
 export interface ColumnStorage<T extends StorableColumn> {
+  /**
+   * Turns the current columns into a compact JSON string (only `key` and
+   * `visible`, in display order), ready for `localStorage`.
+   */
   serialize: (columns: readonly T[]) => string;
+  /**
+   * Rebuilds the full columns from a stored string: unknown keys dropped,
+   * missing columns appended, `defaults` returned for invalid JSON. Never
+   * throws.
+   */
   deserialize: (raw: string) => T[];
 }
 
