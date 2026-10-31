@@ -1,7 +1,7 @@
 {
   "name": "@forthtilliath/expo-config-plugins",
   "version": "0.2.0",
-  "description": "Expo config plugins for sideloaded Android apps: release signing with your own key, ARM-only native code, short CMake paths on Windows, one JVM target for Kotlin.",
+  "description": "Expo config plugins for sideloaded Android apps: release signing with your own key, ARM-only native code, short CMake paths on Windows, one JVM target for Kotlin, permissions removed from release builds.",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -31,6 +31,7 @@
     "./withAndroidAbis": "./dist/withAndroidAbis.js",
     "./withShortCxxPath": "./dist/withShortCxxPath.js",
     "./withKotlinJvmTarget": "./dist/withKotlinJvmTarget.js",
+    "./withReleaseRemovedPermissions": "./dist/withReleaseRemovedPermissions.js",
     "./transforms": "./dist/transforms.js",
     "./package.json": "./package.json"
   },
