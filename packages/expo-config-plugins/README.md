@@ -68,9 +68,25 @@ Some native modules (e.g. `expo-dynamic-app-icon`) compile their Kotlin code for
 | ----------- | -------- | ------- |
 | `jvmTarget` | `string` | `"17"`  |
 
+## `withReleaseRemovedPermissions` — a release APK that can't go online
+
+For an app that works fully offline (personal, health or intimate data), removing the `INTERNET` permission from the **release** APK makes Android itself guarantee that nothing can leave the phone — whatever a dependency (an SDK, a library's telemetry) tries. Debug builds keep the permission: Metro needs the network.
+
+```json
+"@forthtilliath/expo-config-plugins/withReleaseRemovedPermissions"
+```
+
+The plugin writes `android/app/src/release/AndroidManifest.xml`, merged by Gradle over the main manifest and every library's, with `tools:node="remove"` on each permission: it's dropped whoever declared it. It refuses to overwrite a release manifest it didn't generate, and fails the prebuild on anything but permission names (they end up in XML). Check the result with `aapt dump permissions app-release.apk`.
+
+| Option        | Type       | Default        | Notes                                                                                     |
+| ------------- | ---------- | -------------- | ----------------------------------------------------------------------------------------- |
+| `permissions` | `string[]` | `["INTERNET"]` | Short (`ACCESS_NETWORK_STATE`) or full (`com.google.android.gms.permission.AD_ID`) names. |
+
+Remove it the day a feature really needs the network (update check, Drive backup…): without `INTERNET`, every request fails.
+
 ## Testing your own setup
 
-The transforms behind the plugins are exported as pure functions from `@forthtilliath/expo-config-plugins/transforms` (`applyReleaseSigning`, `applyAndroidAbis`, `applyShortCxxPath`, `applyKotlinJvmTarget`).
+The transforms behind the plugins are exported as pure functions from `@forthtilliath/expo-config-plugins/transforms` (`applyReleaseSigning`, `applyAndroidAbis`, `applyShortCxxPath`, `applyKotlinJvmTarget`, `buildReleaseRemovedPermissionsManifest`).
 
 ## Scripts
 
