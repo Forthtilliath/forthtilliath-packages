@@ -75,5 +75,7 @@ overrides:
   undici@>=8.0.0 <8.12.2: ^8.12.3
   # angular-eslint > @angular/cli (zod 3, used by @expo/cli, has no fix)
   zod@>=4.0.0 <4.6.6: ^4.6.7
+  # expo > @expo/cli, @expo/code-signing-certificates
+  node-forge@<1.4.1: ^1.4.2
   # expo > @expo/config-plugins > xcode, which only calls uuid.v4()
   uuid@<11.1.1: ^11.1.1
