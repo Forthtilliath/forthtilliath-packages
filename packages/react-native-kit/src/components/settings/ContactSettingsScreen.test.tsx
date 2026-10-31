@@ -1,64 +1,47 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Linking, Pressable, Text } from "react-native";
-import { act, create } from "react-test-renderer";
+import { Linking } from "react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
-
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { ContactSettingsScreen } from "./ContactSettingsScreen.js";
 
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
+const emailButton = () =>
+  screen.getByRole("button", { name: "Envoyer un email à dev@example.com" });
 
 describe("ContactSettingsScreen", () => {
-  it("shows the email and the default hints", () => {
-    const tree = renderTree(<ContactSettingsScreen email="dev@example.com" />);
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children)
-      .flat();
-    expect(texts).toContain("✉️ dev@example.com");
-    expect(texts).toContain("Une question, un bug, une suggestion ?");
+  it("shows the email and the default hints", async () => {
+    await render(<ContactSettingsScreen email="dev@example.com" />);
+    expect(screen.getByText("✉️ dev@example.com")).toBeOnTheScreen();
+    expect(
+      screen.getByText("Une question, un bug, une suggestion ?"),
+    ).toBeOnTheScreen();
   });
 
-  it("opens a mailto: link when the email button is pressed", () => {
+  it("opens a mailto: link when the email button is pressed", async () => {
     const openURLSpy = vi
       .spyOn(Linking, "openURL")
       .mockResolvedValue(undefined);
-    const tree = renderTree(<ContactSettingsScreen email="dev@example.com" />);
+    await render(<ContactSettingsScreen email="dev@example.com" />);
 
-    act(() => {
-      propsOf<{ onPress: () => void }>(
-        tree.root.findByType(Pressable),
-      ).onPress();
-    });
+    await fireEvent.press(emailButton());
 
     expect(openURLSpy).toHaveBeenCalledWith("mailto:dev@example.com");
     openURLSpy.mockRestore();
   });
 
-  it("accepts custom labels", () => {
-    const tree = renderTree(
+  it("accepts custom labels", async () => {
+    await render(
       <ContactSettingsScreen
         email="dev@example.com"
         labels={{ hint: "Got a question?", footer: "Thanks!" }}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("Got a question?");
-    expect(texts).toContain("Thanks!");
+    expect(screen.getByText("Got a question?")).toBeOnTheScreen();
+    expect(screen.getByText("Thanks!")).toBeOnTheScreen();
   });
 
-  it("switches to a rows layout with the email first when `actions` is given", () => {
+  it("switches to a rows layout with the email first when `actions` is given", async () => {
     const share = vi.fn();
-    const tree = renderTree(
+    await render(
       <ContactSettingsScreen
         email="dev@example.com"
         actions={[
@@ -66,18 +49,12 @@ describe("ContactSettingsScreen", () => {
         ]}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("Me contacter");
-    expect(texts).toContain("Partager l'app");
-    expect(texts).not.toContain("✉️ dev@example.com");
+    expect(emailButton()).toHaveTextContent("Me contacter", { exact: false });
+    expect(screen.queryByText("✉️ dev@example.com")).not.toBeOnTheScreen();
 
-    const [, shareRow] = tree.root.findAllByType(Pressable);
-    if (!shareRow) throw new Error("expected a share row");
-    act(() => {
-      propsOf<{ onPress: () => void }>(shareRow).onPress();
-    });
+    await fireEvent.press(
+      screen.getByRole("button", { name: "Partager l'app" }),
+    );
     expect(share).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,36 +1,17 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Pressable, Text } from "react-native";
-import { act, create } from "react-test-renderer";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "../../__mocks__/testInstance.js";
-
-import { SwitchRow } from "./SwitchRow.js";
 import { UpdateSettingsScreen } from "./UpdateSettingsScreen.js";
 
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
-
-async function flushAsync(): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, 0));
-}
-
-function texts(tree: ReturnType<typeof create>) {
-  return tree.root
-    .findAllByType(Text)
-    .map((t) => propsOf<{ children: unknown }>(t).children)
-    .flat();
+/** Lets the checks started on mount (or on a change) answer. */
+function settle() {
+  return act(() => new Promise((resolve) => setTimeout(resolve, 0)));
 }
 
 describe("UpdateSettingsScreen", () => {
   it("checks for an update on mount and shows 'up to date' when there is none", async () => {
     const checkForUpdate = vi.fn().mockResolvedValue(null);
-    const tree = renderTree(
+    await render(
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={checkForUpdate}
@@ -38,19 +19,18 @@ describe("UpdateSettingsScreen", () => {
         downloadAndInstallApk={vi.fn()}
       />,
     );
-
-    await act(async () => {
-      await flushAsync();
-    });
+    await settle();
 
     expect(checkForUpdate).toHaveBeenCalledTimes(1);
-    expect(texts(tree)).toContain("Tu as déjà la dernière version.");
-    expect(texts(tree)).toContain("1.0.0");
+    expect(
+      screen.getByText("Tu as déjà la dernière version."),
+    ).toBeOnTheScreen();
+    expect(screen.getByText(/1\.0\.0/)).toBeOnTheScreen();
   });
 
   it("shows the available release and lets the user install it", async () => {
     const downloadAndInstallApk = vi.fn().mockResolvedValue(undefined);
-    const tree = renderTree(
+    await render(
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={vi.fn().mockResolvedValue({
@@ -63,27 +43,17 @@ describe("UpdateSettingsScreen", () => {
         downloadAndInstallApk={downloadAndInstallApk}
       />,
     );
+    await settle();
 
-    await act(async () => {
-      await flushAsync();
-    });
+    expect(screen.getByText("Version 1.1.0 disponible")).toBeOnTheScreen();
+    expect(screen.getByText("New stuff.")).toBeOnTheScreen();
 
-    expect(texts(tree)).toContain("Version 1.1.0 disponible");
-    expect(texts(tree)).toContain("New stuff.");
-
-    const installButton = tree.root
-      .findAllByType(Pressable)
-      .find(
-        (p) =>
-          propsOf<{ accessibilityLabel?: string }>(p).accessibilityLabel ===
-          "Télécharger et installer la version 1.1.0",
-      );
-    if (!installButton) throw new Error("expected an install button");
-
-    await act(async () => {
-      propsOf<{ onPress: () => void }>(installButton).onPress();
-      await flushAsync();
-    });
+    await fireEvent.press(
+      screen.getByRole("button", {
+        name: "Télécharger et installer la version 1.1.0",
+      }),
+    );
+    await settle();
 
     expect(downloadAndInstallApk).toHaveBeenCalledWith(
       "https://example.com/app.apk",
@@ -93,7 +63,7 @@ describe("UpdateSettingsScreen", () => {
   });
 
   it("shows an error message when the check fails", async () => {
-    const tree = renderTree(
+    await render(
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={vi.fn().mockRejectedValue(new Error("network"))}
@@ -101,16 +71,15 @@ describe("UpdateSettingsScreen", () => {
         downloadAndInstallApk={vi.fn()}
       />,
     );
+    await settle();
 
-    await act(async () => {
-      await flushAsync();
-    });
-
-    expect(texts(tree)).toContain("Impossible de vérifier les mises à jour.");
+    expect(
+      screen.getByText("Impossible de vérifier les mises à jour."),
+    ).toBeOnTheScreen();
   });
 
   it("shows release history when fetchReleaseHistory is passed", async () => {
-    const tree = renderTree(
+    await render(
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={vi.fn().mockResolvedValue(null)}
@@ -123,18 +92,15 @@ describe("UpdateSettingsScreen", () => {
           ])}
       />,
     );
+    await settle();
 
-    await act(async () => {
-      await flushAsync();
-    });
-
-    expect(texts(tree)).toContain("Historique des versions");
-    expect(texts(tree)).toContain("Initial release.");
+    expect(screen.getByText("Historique des versions")).toBeOnTheScreen();
+    expect(screen.getByText("Initial release.")).toBeOnTheScreen();
   });
 
   it("checks stable releases only and shows no switch by default", async () => {
     const checkForUpdate = vi.fn().mockResolvedValue(null);
-    const tree = renderTree(
+    await render(
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={checkForUpdate}
@@ -142,19 +108,16 @@ describe("UpdateSettingsScreen", () => {
         downloadAndInstallApk={vi.fn()}
       />,
     );
-
-    await act(async () => {
-      await flushAsync();
-    });
+    await settle();
 
     expect(checkForUpdate).toHaveBeenCalledWith({ includePrereleases: false });
-    expect(tree.root.findAllByType(SwitchRow)).toHaveLength(0);
+    expect(screen.queryByRole("switch")).not.toBeOnTheScreen();
   });
 
   it("offers test versions through the switch and checks again", async () => {
     const checkForUpdate = vi.fn().mockResolvedValue(null);
     const onIncludePrereleasesChange = vi.fn();
-    const screen = (includePrereleases: boolean) => (
+    const updateScreen = (includePrereleases: boolean) => (
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={checkForUpdate}
@@ -164,24 +127,18 @@ describe("UpdateSettingsScreen", () => {
         onIncludePrereleasesChange={onIncludePrereleasesChange}
       />
     );
-    const tree = renderTree(screen(false));
-    await act(async () => {
-      await flushAsync();
-    });
+    const { rerender } = await render(updateScreen(false));
+    await settle();
 
-    const toggle = tree.root.findByType(SwitchRow);
-    expect(propsOf<{ label: string }>(toggle).label).toBe(
-      "Recevoir les versions de test",
-    );
-    act(() => {
-      propsOf<{ onChange: (value: boolean) => void }>(toggle).onChange(true);
+    const toggle = screen.getByRole("switch", {
+      name: "Recevoir les versions de test",
     });
+    expect(toggle).not.toBeChecked();
+    await fireEvent.press(toggle);
     expect(onIncludePrereleasesChange).toHaveBeenCalledWith(true);
 
-    await act(async () => {
-      tree.update(screen(true));
-      await flushAsync();
-    });
+    await rerender(updateScreen(true));
+    await settle();
     expect(checkForUpdate).toHaveBeenCalledTimes(2);
     expect(checkForUpdate).toHaveBeenLastCalledWith({
       includePrereleases: true,
@@ -198,7 +155,7 @@ describe("UpdateSettingsScreen", () => {
         }),
       )
       .mockResolvedValueOnce(null);
-    const screen = (includePrereleases: boolean) => (
+    const updateScreen = (includePrereleases: boolean) => (
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={checkForUpdate}
@@ -208,23 +165,25 @@ describe("UpdateSettingsScreen", () => {
         onIncludePrereleasesChange={vi.fn()}
       />
     );
-    const tree = renderTree(screen(true));
+    const { rerender } = await render(updateScreen(true));
 
-    await act(async () => {
-      tree.update(screen(false));
-      await flushAsync();
-    });
+    await rerender(updateScreen(false));
+    await settle();
     await act(async () => {
       answerFirst({ version: "1.1.0-alpha.1", notes: "", apkUrl: "x" });
-      await flushAsync();
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
-    expect(texts(tree)).toContain("Tu as déjà la dernière version.");
-    expect(texts(tree)).not.toContain("Version 1.1.0-alpha.1 disponible");
+    expect(
+      screen.getByText("Tu as déjà la dernière version."),
+    ).toBeOnTheScreen();
+    expect(
+      screen.queryByText("Version 1.1.0-alpha.1 disponible"),
+    ).not.toBeOnTheScreen();
   });
 
   it("doesn't show a history section when fetchReleaseHistory is omitted", async () => {
-    const tree = renderTree(
+    await render(
       <UpdateSettingsScreen
         currentVersion="1.0.0"
         checkForUpdate={vi.fn().mockResolvedValue(null)}
@@ -232,11 +191,8 @@ describe("UpdateSettingsScreen", () => {
         downloadAndInstallApk={vi.fn()}
       />,
     );
+    await settle();
 
-    await act(async () => {
-      await flushAsync();
-    });
-
-    expect(texts(tree)).not.toContain("Historique des versions");
+    expect(screen.queryByText("Historique des versions")).not.toBeOnTheScreen();
   });
 });
