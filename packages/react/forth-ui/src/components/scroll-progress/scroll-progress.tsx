@@ -32,7 +32,6 @@ export function ScrollProgress({ className, target }: ScrollProgressProps) {
       const scrollHeight = el
         ? el.scrollHeight - el.clientHeight
         : document.documentElement.scrollHeight - window.innerHeight;
-      // eslint-disable-next-line @eslint-react/set-state-in-effect -- also called from a real scroll event listener, not just the effect below; this disable only covers the mount-time initial read of the current scroll position
       setProgress(scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0);
     }
 
