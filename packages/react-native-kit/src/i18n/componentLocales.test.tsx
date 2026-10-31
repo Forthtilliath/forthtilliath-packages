@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
 import type { ReactElement } from "react";
-import { Text } from "react-native";
-import { act, create } from "react-test-renderer";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "../__mocks__/testInstance.js";
+import { ExpoSpeechRecognitionModule } from "../__mocks__/expo-speech-recognition.js";
+import { screenTexts } from "../__mocks__/screenQueries.js";
 import { PhotoPicker } from "../components/picker/PhotoPicker.js";
 import { PickerModal } from "../components/picker/PickerModal.js";
-import { VoiceSearchButton } from "../components/picker/VoiceSearchButton.js";
 import { AboutSettingsScreen } from "../components/settings/AboutSettingsScreen.js";
 import { BackupSettingsScreen } from "../components/settings/BackupSettingsScreen.js";
 import { ContactSettingsScreen } from "../components/settings/ContactSettingsScreen.js";
@@ -19,15 +17,10 @@ import { ThemeToggle } from "../components/theme/ThemeToggle.js";
 
 import { KitLocaleProvider } from "./KitLocaleProvider.js";
 
-// Every string rendered in a <Text>, to check a component's built-in labels.
-function texts(element: ReactElement): unknown[] {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree.root
-    .findAllByType(Text)
-    .map((t) => propsOf<{ children: unknown }>(t).children);
+/** Every string the element renders in a <Text>. */
+async function texts(element: ReactElement) {
+  await render(element);
+  return screenTexts();
 }
 
 // One row per component: how to render it, one French and one English label.
@@ -146,40 +139,43 @@ const cases: [
   ],
 ];
 
-it("PickerModal hands its locale down to voice search", () => {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(
-      <PickerModal
-        visible
-        title="Pick"
-        items={[]}
-        onSelect={vi.fn()}
-        onClose={vi.fn()}
-        locale="en"
-      />,
-    );
+it("PickerModal hands its locale down to voice search", async () => {
+  ExpoSpeechRecognitionModule.requestPermissionsAsync.mockResolvedValue({
+    granted: true,
   });
-  expect(
-    propsOf<{ locale?: string }>(tree.root.findByType(VoiceSearchButton))
-      .locale,
-  ).toBe("en");
+  await render(
+    <PickerModal
+      visible
+      title="Pick"
+      items={[]}
+      onSelect={vi.fn()}
+      onClose={vi.fn()}
+      locale="en"
+    />,
+  );
+  await fireEvent.press(
+    screen.getByRole("button", { name: "Dictate the search" }),
+  );
+  await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
+  expect(ExpoSpeechRecognitionModule.start).toHaveBeenLastCalledWith(
+    expect.objectContaining({ lang: "en-US" }),
+  );
 });
 
-describe.each(cases)("%s built-in labels", (_name, render, fr, en) => {
-  it("are French by default", () => {
-    expect(texts(render())).toContain(fr);
+describe.each(cases)("%s built-in labels", (_name, build, fr, en) => {
+  it("are French by default", async () => {
+    expect(await texts(build())).toContain(fr);
   });
 
-  it("are English with locale='en'", () => {
-    const rendered = texts(render("en"));
+  it("are English with locale='en'", async () => {
+    const rendered = await texts(build("en"));
     expect(rendered).toContain(en);
     expect(rendered).not.toContain(fr);
   });
 
-  it("follow the nearest KitLocaleProvider", () => {
+  it("follow the nearest KitLocaleProvider", async () => {
     expect(
-      texts(<KitLocaleProvider locale="en">{render()}</KitLocaleProvider>),
+      await texts(<KitLocaleProvider locale="en">{build()}</KitLocaleProvider>),
     ).toContain(en);
   });
 });
