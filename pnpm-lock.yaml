@@ -772,9 +772,6 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.18
-      '@types/react-test-renderer':
-        specifier: ^19.1.0
-        version: 19.1.0
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 5.0.5(@vitest/browser@5.0.5)(vitest@5.0.5)
@@ -820,9 +817,6 @@ importers:
       react-native-worklets:
         specifier: 0.10.1
         version: 0.10.1(@babel/core@7.29.7)(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(react-native@0.86.0(@babel/core@7.29.7)(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)
-      react-test-renderer:
-        specifier: 19.2.3
-        version: 19.2.3(react@19.2.8)
       size-limit:
         specifier: 'catalog:'
         version: 14.1.0
