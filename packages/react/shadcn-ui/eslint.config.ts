@@ -11,6 +11,11 @@ const config: Linter.Config[] = [
     // breaks Fast Refresh's "one component per file" assumption, but it's
     // the upstream shadcn CLI convention, not a bug in this code.
     files: ["src/components/**/*.tsx"],
+    // These files stay verbatim copies, so an eslint-disable comment the
+    // lint plugins stop needing after an update can't be removed here.
+    linterOptions: {
+      reportUnusedDisableDirectives: "off",
+    },
     rules: {
       "react-refresh/only-export-components": "off",
       // These components map over static, caller-provided arrays (accordion
