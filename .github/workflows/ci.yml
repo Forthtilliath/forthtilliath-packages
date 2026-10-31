@@ -1,9 +1,11 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
+  # Pull requests only: their check already runs on the merge with main, so a
+  # second run after the merge would only repeat it. No paths-ignore: `ci` is
+  # a required check, a docs-only PR must still report it.
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
@@ -14,7 +16,10 @@ concurrency:
 
 jobs:
   ci:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    # A real run takes about 4 min 30.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
