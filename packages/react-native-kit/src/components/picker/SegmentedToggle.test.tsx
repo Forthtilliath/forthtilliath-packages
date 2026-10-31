@@ -1,13 +1,5 @@
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
-
-import {
-  findText,
-  parentOf,
-  press,
-  renderTree,
-  styleOf,
-} from "../../__mocks__/renderTree.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { SegmentedToggle } from "./SegmentedToggle.js";
 
@@ -16,39 +8,33 @@ const options = [
   { value: "list", label: "Liste" },
 ] as const;
 
+const radio = (name: string) => screen.getByRole("radio", { name });
+
 describe("SegmentedToggle", () => {
-  it("marks only the active option as selected and styles it", () => {
-    const tree = renderTree(
+  it("marks only the active option as selected and styles it", async () => {
+    await render(
       <SegmentedToggle options={options} value="list" onChange={vi.fn()} />,
     );
-    const list = parentOf(findText(tree, "Liste"));
-    const calendar = parentOf(findText(tree, "Calendrier"));
-    expect(
-      propsOf<{ accessibilityState: { selected: boolean } }>(list)
-        .accessibilityState.selected,
-    ).toBe(true);
-    expect(
-      propsOf<{ accessibilityState: { selected: boolean } }>(calendar)
-        .accessibilityState.selected,
-    ).toBe(false);
-    expect(styleOf(list)).toMatchObject({ backgroundColor: "#2563eb" });
-    expect(styleOf(calendar).backgroundColor).toBeUndefined();
-    expect(styleOf(findText(tree, "Liste"))).toMatchObject({
-      color: "#ffffff",
+    expect(radio("Liste")).toBeSelected();
+    expect(radio("Calendrier")).not.toBeSelected();
+    expect(radio("Liste")).toHaveStyle({ backgroundColor: "#2563eb" });
+    expect(radio("Calendrier")).not.toHaveStyle({
+      backgroundColor: "#2563eb",
     });
+    expect(screen.getByText("Liste")).toHaveStyle({ color: "#ffffff" });
   });
 
-  it("reports the tapped value", () => {
+  it("reports the tapped value", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <SegmentedToggle options={options} value="list" onChange={onChange} />,
     );
-    press(parentOf(findText(tree, "Calendrier")));
+    await fireEvent.press(radio("Calendrier"));
     expect(onChange).toHaveBeenCalledWith("calendar");
   });
 
-  it("announces options as radios, hint included", () => {
-    const tree = renderTree(
+  it("announces options as radios, hint included", async () => {
+    await render(
       <SegmentedToggle
         label="Format"
         options={[
@@ -59,26 +45,20 @@ describe("SegmentedToggle", () => {
         onChange={vi.fn()}
       />,
     );
-    const duo = propsOf<{
-      accessibilityRole: string;
-      accessibilityState: { checked: boolean };
-      accessibilityLabel: string;
-    }>(parentOf(findText(tree, "Duos")));
-    expect(duo.accessibilityRole).toBe("radio");
-    expect(duo.accessibilityState.checked).toBe(true);
-    expect(duo.accessibilityLabel).toBe("Duos, 2 × 2");
-    expect(
-      propsOf<{ accessibilityLabel: string }>(parentOf(findText(tree, "Trios")))
-        .accessibilityLabel,
-    ).toBe("Trios");
-    expect(styleOf(findText(tree, "2 × 2"))).toMatchObject({
+    expect(screen.getByLabelText("Format")).toHaveProp(
+      "accessibilityRole",
+      "radiogroup",
+    );
+    expect(radio("Duos, 2 × 2")).toBeChecked();
+    expect(radio("Trios")).not.toBeChecked();
+    expect(screen.getByText("2 × 2")).toHaveStyle({
       fontSize: 12,
       color: "#dbeafe",
     });
   });
 
-  it("applies active overrides on top of the base slot", () => {
-    const tree = renderTree(
+  it("applies active overrides on top of the base slot", async () => {
+    await render(
       <SegmentedToggle
         options={options}
         value="list"
@@ -86,7 +66,7 @@ describe("SegmentedToggle", () => {
         styles={{ buttonActive: { backgroundColor: "#0000ff" } }}
       />,
     );
-    expect(styleOf(parentOf(findText(tree, "Liste")))).toMatchObject({
+    expect(radio("Liste")).toHaveStyle({
       flex: 1,
       borderRadius: 8,
       backgroundColor: "#0000ff",

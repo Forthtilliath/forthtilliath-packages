@@ -1,34 +1,18 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Alert, Pressable, Text } from "react-native";
-import { act, create } from "react-test-renderer";
+import { Alert, Text } from "react-native";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // See PhotoPicker.test.tsx for why the stub is imported directly.
 import * as ImagePicker from "../../__mocks__/expo-image-picker.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
 
 import { PhotoPicker } from "./PhotoPicker.js";
-
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
 
 function flushAsync() {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-function openPicker(tree: ReturnType<typeof create>) {
-  const [picker] = tree.root.findAllByType(Pressable);
-  if (!picker) throw new Error("expected the picker");
-  act(() => {
-    propsOf<{ onPress: () => void }>(picker).onPress();
-  });
-  return picker;
-}
+const picker = () =>
+  screen.getByRole("button", { name: "Ajouter une photo du joueur" });
 
 async function chooseFromLibrary(alertSpy: { mock: { calls: unknown[][] } }) {
   const buttons = alertSpy.mock.calls.at(-1)?.[2] as
@@ -48,11 +32,11 @@ describe("PhotoPicker options", () => {
     });
   });
 
-  it("renders a custom preview instead of the default ones", () => {
+  it("renders a custom preview instead of the default ones", async () => {
     const renderPreview = vi.fn((uri: string | null) => (
       <Text>{uri ?? "initiales"}</Text>
     ));
-    const tree = renderTree(
+    await render(
       <PhotoPicker
         photoUri={null}
         onChange={vi.fn()}
@@ -61,11 +45,8 @@ describe("PhotoPicker options", () => {
         renderPreview={renderPreview}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("initiales");
-    expect(texts).not.toContain("Ajouter une photo");
+    expect(screen.getByText("initiales")).toBeOnTheScreen();
+    expect(screen.queryByText("Ajouter une photo")).not.toBeOnTheScreen();
     expect(renderPreview).toHaveBeenCalledWith(null, false);
   });
 
@@ -74,7 +55,7 @@ describe("PhotoPicker options", () => {
     const error = new Error("disk full");
     const onError = vi.fn();
     const onChange = vi.fn();
-    const tree = renderTree(
+    await render(
       <PhotoPicker
         photoUri={null}
         onChange={onChange}
@@ -84,7 +65,7 @@ describe("PhotoPicker options", () => {
       />,
     );
 
-    openPicker(tree);
+    await fireEvent.press(picker());
     await chooseFromLibrary(alertSpy);
 
     expect(onError).toHaveBeenCalledWith(error);
@@ -94,7 +75,7 @@ describe("PhotoPicker options", () => {
 
   it("alerts on a failed save without onError", async () => {
     const alertSpy = vi.spyOn(Alert, "alert");
-    const tree = renderTree(
+    await render(
       <PhotoPicker
         photoUri={null}
         onChange={vi.fn()}
@@ -103,7 +84,7 @@ describe("PhotoPicker options", () => {
       />,
     );
 
-    openPicker(tree);
+    await fireEvent.press(picker());
     await chooseFromLibrary(alertSpy);
 
     expect(alertSpy).toHaveBeenLastCalledWith(
@@ -115,7 +96,7 @@ describe("PhotoPicker options", () => {
   it("calls onOpen when the choice opens, not while saving", async () => {
     const alertSpy = vi.spyOn(Alert, "alert");
     const onOpen = vi.fn();
-    const tree = renderTree(
+    await render(
       <PhotoPicker
         photoUri={null}
         onChange={vi.fn()}
@@ -125,10 +106,10 @@ describe("PhotoPicker options", () => {
       />,
     );
 
-    openPicker(tree);
+    await fireEvent.press(picker());
     expect(onOpen).toHaveBeenCalledTimes(1);
     await chooseFromLibrary(alertSpy);
-    openPicker(tree);
+    await fireEvent.press(picker());
     expect(onOpen).toHaveBeenCalledTimes(1);
   });
 
@@ -143,7 +124,7 @@ describe("PhotoPicker options", () => {
     );
     const onChange = vi.fn();
     const renderPreview = vi.fn(() => null);
-    const tree = renderTree(
+    await render(
       <PhotoPicker
         photoUri={null}
         onChange={onChange}
@@ -153,11 +134,12 @@ describe("PhotoPicker options", () => {
       />,
     );
 
-    openPicker(tree);
+    await fireEvent.press(picker());
     await chooseFromLibrary(alertSpy);
     expect(renderPreview).toHaveBeenLastCalledWith(null, true);
-    const picker = openPicker(tree);
-    expect(propsOf<{ disabled: boolean }>(picker).disabled).toBe(true);
+    expect(picker()).toBeDisabled();
+    expect(picker()).toBeBusy();
+    await fireEvent.press(picker());
     expect(alertSpy).toHaveBeenCalledTimes(1);
 
     await act(async () => {

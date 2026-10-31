@@ -1,39 +1,19 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- react-test-renderer is deprecated upstream with no drop-in replacement for RN component trees yet; matches the version glucodose itself uses. */
-import { Pressable, Text, TextInput, View } from "react-native";
-import { act, create } from "react-test-renderer";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "../../__mocks__/testInstance.js";
+import { screenTexts } from "../../__mocks__/screenQueries.js";
 
 import { type PickerItem, PickerModal } from "./PickerModal.js";
-
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
 
 function item(id: number, label: string, group?: string): PickerItem {
   return { id, label, group };
 }
 
-// react-test-renderer types a TestInstance's `.props` as `any` — boundary
-// cast once here instead of at every `.map()` call site below.
-function textOf(instance: { props: { children?: unknown } }): string {
-  return instance.props.children as string;
-}
-
-function typeIn(tree: ReturnType<typeof create>, text: string) {
-  propsOf<{ onChangeText: (value: string) => void }>(
-    tree.root.findByType(TextInput),
-  ).onChangeText(text);
-}
+const search = () => screen.getByLabelText("Rechercher");
 
 describe("PickerModal", () => {
-  it("renders nothing when not visible", () => {
-    const tree = renderTree(
+  it("renders nothing when not visible", async () => {
+    await render(
       <PickerModal
         visible={false}
         title="Pick"
@@ -42,11 +22,11 @@ describe("PickerModal", () => {
         onClose={vi.fn()}
       />,
     );
-    expect(tree.toJSON()).toBeNull();
+    expect(screen.toJSON()).toBeNull();
   });
 
-  it("lists items flat, without a section header, when none have a group", () => {
-    const tree = renderTree(
+  it("lists items flat, without a section header, when none have a group", async () => {
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -55,13 +35,13 @@ describe("PickerModal", () => {
         onClose={vi.fn()}
       />,
     );
-    const texts = tree.root.findAllByType(Text).map(textOf);
-    expect(texts).toContain("Apple");
-    expect(texts).toContain("Pear");
+    expect(screen.getByRole("button", { name: "Apple" })).toBeOnTheScreen();
+    expect(screen.getByRole("button", { name: "Pear" })).toBeOnTheScreen();
+    expect(screenTexts()).not.toContain("");
   });
 
-  it("groups items into sections by title, sorted alphabetically", () => {
-    const tree = renderTree(
+  it("groups items into sections by title, sorted alphabetically", async () => {
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -70,15 +50,13 @@ describe("PickerModal", () => {
         onClose={vi.fn()}
       />,
     );
-    const texts = tree.root.findAllByType(Text).map(textOf);
-    const fruitIndex = texts.indexOf("Fruit");
-    const vegetableIndex = texts.indexOf("Vegetable");
-    expect(fruitIndex).toBeGreaterThanOrEqual(0);
-    expect(fruitIndex).toBeLessThan(vegetableIndex);
+    const texts = screenTexts();
+    expect(texts).toContain("Fruit");
+    expect(texts.indexOf("Fruit")).toBeLessThan(texts.indexOf("Vegetable"));
   });
 
-  it("respects an explicit groupOrder over alphabetical order", () => {
-    const tree = renderTree(
+  it("respects an explicit groupOrder over alphabetical order", async () => {
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -88,12 +66,12 @@ describe("PickerModal", () => {
         groupOrder={["Vegetable", "Fruit"]}
       />,
     );
-    const texts = tree.root.findAllByType(Text).map(textOf);
+    const texts = screenTexts();
     expect(texts.indexOf("Vegetable")).toBeLessThan(texts.indexOf("Fruit"));
   });
 
-  it("filters by a case-insensitive substring match by default", () => {
-    const tree = renderTree(
+  it("filters by a case-insensitive substring match by default", async () => {
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -102,17 +80,14 @@ describe("PickerModal", () => {
         onClose={vi.fn()}
       />,
     );
-    act(() => {
-      typeIn(tree, "app");
-    });
-    const texts = tree.root.findAllByType(Text).map(textOf);
-    expect(texts).toContain("Apple");
-    expect(texts).not.toContain("Pear");
+    await fireEvent.changeText(search(), "app");
+    expect(screen.getByText("Apple")).toBeOnTheScreen();
+    expect(screen.queryByText("Pear")).not.toBeOnTheScreen();
   });
 
-  it("uses a custom filterItems function when provided", () => {
+  it("uses a custom filterItems function when provided", async () => {
     const filterItems = vi.fn((items: PickerItem[]) => items.slice(0, 1));
-    const tree = renderTree(
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -122,21 +97,18 @@ describe("PickerModal", () => {
         filterItems={filterItems}
       />,
     );
-    act(() => {
-      typeIn(tree, "anything");
-    });
+    await fireEvent.changeText(search(), "anything");
     expect(filterItems).toHaveBeenCalledWith(
       [item(1, "Apple"), item(2, "Pear")],
       "anything",
     );
-    const texts = tree.root.findAllByType(Text).map(textOf);
-    expect(texts).toContain("Apple");
-    expect(texts).not.toContain("Pear");
+    expect(screen.getByText("Apple")).toBeOnTheScreen();
+    expect(screen.queryByText("Pear")).not.toBeOnTheScreen();
   });
 
-  it("calls onSelect with the tapped item and clears the search", () => {
+  it("calls onSelect with the tapped item and clears the search", async () => {
     const onSelect = vi.fn();
-    const tree = renderTree(
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -145,25 +117,16 @@ describe("PickerModal", () => {
         onClose={vi.fn()}
       />,
     );
-    act(() => {
-      typeIn(tree, "app");
-    });
-
-    const rows = tree.root.findAllByType(Pressable);
-    const appleRow = rows.find((r) => r.props.accessibilityLabel === "Apple");
-    act(() => {
-      if (appleRow) propsOf<{ onPress: () => void }>(appleRow).onPress();
-    });
+    await fireEvent.changeText(search(), "app");
+    await fireEvent.press(screen.getByRole("button", { name: "Apple" }));
 
     expect(onSelect).toHaveBeenCalledWith(item(1, "Apple"));
-    expect(
-      propsOf<{ value: string }>(tree.root.findByType(TextInput)).value,
-    ).toBe("");
+    expect(search()).toHaveDisplayValue("");
   });
 
-  it("shows extraActions above the results, even during a non-matching search", () => {
+  it("shows extraActions above the results, even during a non-matching search", async () => {
     const onExtraPress = vi.fn();
-    const tree = renderTree(
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -173,23 +136,15 @@ describe("PickerModal", () => {
         extraActions={[{ label: "Add a new item", onPress: onExtraPress }]}
       />,
     );
-    act(() => {
-      typeIn(tree, "nothing matches this");
-    });
-
-    const rows = tree.root.findAllByType(Pressable);
-    const extraRow = rows.find(
-      (r) => r.props.accessibilityLabel === "Add a new item",
+    await fireEvent.changeText(search(), "nothing matches this");
+    await fireEvent.press(
+      screen.getByRole("button", { name: "Add a new item" }),
     );
-    expect(extraRow).toBeDefined();
-    act(() => {
-      if (extraRow) propsOf<{ onPress: () => void }>(extraRow).onPress();
-    });
     expect(onExtraPress).toHaveBeenCalledTimes(1);
   });
 
-  it("shows the default empty message, overridable via emptyMessage", () => {
-    const withDefault = renderTree(
+  it("shows the default empty message, overridable via emptyMessage", async () => {
+    const { rerender } = await render(
       <PickerModal
         visible
         title="Pick"
@@ -198,11 +153,9 @@ describe("PickerModal", () => {
         onClose={vi.fn()}
       />,
     );
-    expect(withDefault.root.findAllByType(Text).map(textOf)).toContain(
-      "Aucun résultat.",
-    );
+    expect(screen.getByText("Aucun résultat.")).toBeOnTheScreen();
 
-    const withCustom = renderTree(
+    await rerender(
       <PickerModal
         visible
         title="Pick"
@@ -212,14 +165,12 @@ describe("PickerModal", () => {
         emptyMessage="Nothing here."
       />,
     );
-    expect(withCustom.root.findAllByType(Text).map(textOf)).toContain(
-      "Nothing here.",
-    );
+    expect(screen.getByText("Nothing here.")).toBeOnTheScreen();
   });
 
-  it("calls onClose when the close button is pressed", () => {
+  it("calls onClose when the close button is pressed", async () => {
     const onClose = vi.fn();
-    const tree = renderTree(
+    await render(
       <PickerModal
         visible
         title="Pick"
@@ -228,17 +179,12 @@ describe("PickerModal", () => {
         onClose={onClose}
       />,
     );
-    const closeButton = tree.root
-      .findAllByType(Pressable)
-      .find((p) => p.props.accessibilityLabel === "Fermer");
-    act(() => {
-      if (closeButton) propsOf<{ onPress: () => void }>(closeButton).onPress();
-    });
+    await fireEvent.press(screen.getByRole("button", { name: "Fermer" }));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it("resets to initialQuery each time it becomes visible", () => {
-    const tree = renderTree(
+  it("resets to initialQuery each time it becomes visible", async () => {
+    const { rerender } = await render(
       <PickerModal
         visible={false}
         title="Pick"
@@ -248,35 +194,16 @@ describe("PickerModal", () => {
         initialQuery="app"
       />,
     );
-    act(() => {
-      tree.update(
-        <PickerModal
-          visible
-          title="Pick"
-          items={[item(1, "Apple")]}
-          onSelect={vi.fn()}
-          onClose={vi.fn()}
-          initialQuery="app"
-        />,
-      );
-    });
-    expect(
-      propsOf<{ value: string }>(tree.root.findByType(TextInput)).value,
-    ).toBe("app");
-  });
-});
-
-describe("PickerModal without groups", () => {
-  it("never renders a View-only section header when no item has a group", () => {
-    const tree = renderTree(
+    await rerender(
       <PickerModal
         visible
         title="Pick"
         items={[item(1, "Apple")]}
         onSelect={vi.fn()}
         onClose={vi.fn()}
+        initialQuery="app"
       />,
     );
-    expect(tree.root.findAllByType(View).length).toBeGreaterThan(0);
+    expect(search()).toHaveDisplayValue("app");
   });
 });
