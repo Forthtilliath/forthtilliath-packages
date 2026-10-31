@@ -17,12 +17,19 @@ import {
 } from "@/components/forth-ui/locale/locale";
 import { Button } from "@/components/forth-ui/button";
 
+/** Props of {@link DatePicker}. */
 export interface DatePickerProps {
+  /** Controlled date (`undefined` for none). */
   value?: Date;
+  /** Initial date when uncontrolled. */
   defaultValue?: Date;
+  /** Called with the picked date, or `undefined` when it is cleared. */
   onValueChange?: (date: Date | undefined) => void;
+  /** Trigger text while no date is chosen. Defaults to the locale's. */
   placeholder?: string;
+  /** Disables the trigger. */
   disabled?: boolean;
+  /** Classes of the trigger button. */
   className?: string;
   /** Passed through to `Date.prototype.toLocaleDateString`. */
   formatOptions?: Intl.DateTimeFormatOptions;
@@ -43,7 +50,8 @@ const DEFAULT_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
  * one every consumer reassembles by hand. Wraps that recipe into a
  * `value`/`onValueChange` component.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/date-picker
  * @see https://www.hextaui.com/docs/ui/components/date-picker
  *

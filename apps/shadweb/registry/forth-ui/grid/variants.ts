@@ -1,6 +1,10 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
+/**
+ * Classes of a {@link Grid}: `cols` (1–12, default 12) and `spacing` (gap,
+ * default `md`).
+ */
 export const gridVariants = cva("grid", {
   variants: {
     cols: {
@@ -32,8 +36,12 @@ export const gridVariants = cva("grid", {
   },
 });
 
+/** The variant props of {@link gridVariants}. */
 export type GridVariants = VariantProps<typeof gridVariants>;
 
+/**
+ * Classes of a `GridItem`: how many columns it spans (`cols`, `default` = 1).
+ */
 export const gridItemVariants = cva("flex justify-center items-center", {
   variants: {
     cols: {
@@ -62,8 +70,13 @@ export const gridItemVariants = cva("flex justify-center items-center", {
   },
 });
 
+/** The variant props of {@link gridItemVariants}. */
 export type GridItemVariants = VariantProps<typeof gridItemVariants>;
 
+/**
+ * Classes of the debug outline of a `GridItem`, shown while `active`.
+ * @internal
+ */
 export const gridItemDebugVariants = cva(
   [
     "absolute inset-0 z-[999] pointer-events-none",
@@ -83,4 +96,8 @@ export const gridItemDebugVariants = cva(
     },
   },
 );
+/**
+ * The variant props of {@link gridItemDebugVariants}.
+ * @internal
+ */
 export type GridItemDebugVariants = VariantProps<typeof gridItemDebugVariants>;

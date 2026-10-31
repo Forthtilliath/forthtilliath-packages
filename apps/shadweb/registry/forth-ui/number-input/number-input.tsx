@@ -12,6 +12,7 @@ import {
 } from "@/components/forth-ui/locale/locale";
 import { Button } from "@/components/forth-ui/button";
 
+/** Props of `NumberInput`. */
 export type NumberInputProps = Omit<
   React.ComponentProps<"input">,
   "type" | "value" | "defaultValue" | "onChange"
@@ -49,7 +50,8 @@ function roundToStep(value: number, step: number): number {
  * is only clamped when the field loses focus or on Enter — so `600` can be
  * typed with `min={128}` without the first `6` jumping to `128`.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.heroui.com/docs/components/number-input
  *
  * @version 0.1.0

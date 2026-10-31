@@ -16,7 +16,9 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** Props of `ModeToggle`. */
 export interface ModeToggleProps {
+  /** Classes of the trigger button. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest

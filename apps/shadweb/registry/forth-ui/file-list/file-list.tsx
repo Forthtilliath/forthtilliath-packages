@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
  * progress — a composable set of primitives, not a single all-in-one prop
  * API (matches the source's own composition style).
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui-x.junwen-k.dev/docs/components/file-list
  *
  * @version 0.1.0
@@ -25,6 +26,11 @@ export function FileList({ className, ...props }: React.ComponentProps<"ul">) {
   );
 }
 
+/**
+ * One file of a {@link FileList}: a bordered `<li>` stacking a header and
+ * optional content (progress…).
+ * @param props - Any `<li>` prop.
+ */
 export function FileListItem({
   className,
   ...props
@@ -41,6 +47,10 @@ export function FileListItem({
   );
 }
 
+/**
+ * The row of a file: icon, info, actions.
+ * @param props - Any `<div>` prop.
+ */
 export function FileListHeader({
   className,
   ...props
@@ -54,6 +64,10 @@ export function FileListHeader({
   );
 }
 
+/**
+ * Box for the file type icon (an `svg` child is sized for you).
+ * @param props - Any `<div>` prop.
+ */
 export function FileListIcon({
   className,
   ...props
@@ -70,6 +84,10 @@ export function FileListIcon({
   );
 }
 
+/**
+ * Column holding the name and description, taking the remaining width.
+ * @param props - Any `<div>` prop.
+ */
 export function FileListInfo({
   className,
   ...props
@@ -83,6 +101,10 @@ export function FileListInfo({
   );
 }
 
+/**
+ * The file name, truncated with an ellipsis when too long.
+ * @param props - Any `<p>` prop.
+ */
 export function FileListName({
   className,
   ...props
@@ -96,6 +118,11 @@ export function FileListName({
   );
 }
 
+/**
+ * Secondary line (size, type, status…), with parts separated by {@link
+ * FileListDescriptionSeparator}.
+ * @param props - Any `<p>` prop.
+ */
 export function FileListDescription({
   className,
   ...props
@@ -112,6 +139,10 @@ export function FileListDescription({
   );
 }
 
+/**
+ * A middle dot between two parts of a description, hidden from screen readers.
+ * @param props - Any `<span>` prop.
+ */
 export function FileListDescriptionSeparator({
   className,
   ...props
@@ -128,6 +159,10 @@ export function FileListDescriptionSeparator({
   );
 }
 
+/**
+ * Row of action buttons at the end of the header.
+ * @param props - Any `<div>` prop.
+ */
 export function FileListActions({
   className,
   ...props
@@ -141,6 +176,11 @@ export function FileListActions({
   );
 }
 
+/**
+ * An icon button of the actions row (remove, retry…). Give it an `aria-label`:
+ * it has no visible text.
+ * @param props - Any `<button>` prop (`type="button"` by default).
+ */
 export function FileListAction({
   className,
   ...props
@@ -158,6 +198,10 @@ export function FileListAction({
   );
 }
 
+/**
+ * Area under the header, e.g. for a {@link FileListProgress}.
+ * @param props - Any `<div>` prop.
+ */
 export function FileListContent({
   className,
   ...props
@@ -167,6 +211,10 @@ export function FileListContent({
   );
 }
 
+/**
+ * Props of {@link FileListProgress}: those of shadcn-ui's `Progress` (`value`
+ * from 0 to 100…).
+ */
 export type FileListProgressProps = React.ComponentProps<typeof Progress>;
 
 /**

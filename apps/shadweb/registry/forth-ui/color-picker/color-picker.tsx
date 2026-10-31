@@ -10,13 +10,24 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** Props of {@link ColorPicker}. */
 export interface ColorPickerProps {
+  /** Controlled color, as `#rrggbb`. */
   value?: string;
+  /** Initial color when uncontrolled. Defaults to `"#000000"`. */
   defaultValue?: string;
+  /**
+   * Called with a `#rrggbb` color, from the swatch, or from the text field once
+   * it holds a complete hex value.
+   */
   onValueChange?: (value: string) => void;
+  /** Disables the swatch and the text field. */
   disabled?: boolean;
+  /** Classes of the row holding the swatch and the text field. */
   className?: string;
-  /** Accessible name for the color swatch, which otherwise has no visible text. */
+  /**
+   * Accessible name for the color swatch, which otherwise has no visible text.
+   */
   ariaLabel?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest

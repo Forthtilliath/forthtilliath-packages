@@ -27,16 +27,31 @@ import { Badge } from "@/components/forth-ui/badge";
 
 import type { ComboboxOption } from "./combobox";
 
+/**
+ * One option of a {@link MultiSelect} (same shape as {@link ComboboxOption}).
+ */
 export type MultiSelectOption = ComboboxOption;
 
+/** Props of {@link MultiSelect}. */
 export interface MultiSelectProps {
+  /** The choices, in display order. */
   options: MultiSelectOption[];
+  /** Controlled selection, in selection order. */
   value?: string[];
+  /** Initial selection when uncontrolled. */
   defaultValue?: string[];
+  /** Called with the whole new selection on every toggle or chip removal. */
   onValueChange?: (value: string[]) => void;
+  /**
+   * Trigger text while nothing is selected, and default accessible name.
+   * Defaults to the locale's.
+   */
   placeholder?: string;
+  /** Shown when no option matches the search. Defaults to the locale's. */
   emptyMessage?: string;
+  /** Disables the trigger and the chips' remove buttons. */
   disabled?: boolean;
+  /** Classes of the trigger. */
   className?: string;
   /** `id` of the trigger — set by `Field`, or for a `<label htmlFor>`. */
   id?: string;
@@ -45,7 +60,11 @@ export interface MultiSelectProps {
    * Defaults to the placeholder, unless a `<label>` targets `id`.
    */
   ariaLabel?: string;
+  /**
+   * Ids of the elements describing the field (hint, error) — set by `Field`.
+   */
   "aria-describedby"?: string;
+  /** Marks the field as invalid — set by `Field` when it has an error. */
   "aria-invalid"?: boolean;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -61,7 +80,8 @@ export interface MultiSelectProps {
  * gap shadcn-extension's Multi Select fills specifically for multi-value
  * selection.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/combobox
  * @see https://shadcn-extension.vercel.app/docs/multi-select
  *

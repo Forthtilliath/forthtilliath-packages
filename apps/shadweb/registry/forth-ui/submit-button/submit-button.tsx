@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom";
 import type { ButtonProps } from "@/components/forth-ui/button";
 import { Button } from "@/components/forth-ui/button";
 
+/** Props of `SubmitButton`. */
 export type SubmitButtonProps = Omit<ButtonProps, "type" | "loading">;
 
 /**

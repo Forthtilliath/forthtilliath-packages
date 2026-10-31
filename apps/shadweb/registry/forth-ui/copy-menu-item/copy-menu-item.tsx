@@ -6,6 +6,7 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 import { useCopyToClipboard } from "@forthtilliath/react-kit/useCopyToClipboard";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
+/** Props of `CopyMenuItem`. */
 export type CopyMenuItemProps = Omit<
   React.ComponentProps<typeof DropdownMenuItem>,
   "children"

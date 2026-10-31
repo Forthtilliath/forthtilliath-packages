@@ -10,14 +10,23 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** Props of {@link Rating}. */
 export interface RatingProps {
+  /** Controlled rating (0 for none). */
   value?: number;
+  /** Initial rating when uncontrolled. */
   defaultValue?: number;
+  /** Called with the chosen number of stars. */
   onValueChange?: (value: number) => void;
+  /** Number of stars. Defaults to `5`. */
   max?: number;
+  /** Greys the stars out and ignores input. */
   disabled?: boolean;
+  /** Displays the rating without letting it change (e.g. an average). */
   readOnly?: boolean;
+  /** Size of the stars: `sm`, `default` or `lg`. */
   size?: "sm" | "default" | "lg";
+  /** Classes of the star row. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest

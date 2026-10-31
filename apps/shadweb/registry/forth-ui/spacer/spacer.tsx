@@ -2,6 +2,7 @@ import type React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** Props of `Spacer`. */
 export type SpacerProps = React.ComponentProps<"div"> & {
   /**
    * A fixed gap, in Tailwind's spacing scale (e.g. `4` = 1rem). Omit for a

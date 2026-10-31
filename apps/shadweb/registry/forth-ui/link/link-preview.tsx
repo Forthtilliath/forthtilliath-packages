@@ -7,17 +7,30 @@ import {
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
 
+/**
+ * What the preview card shows, supplied by the caller (fetched server-side,
+ * from a CMS…).
+ */
 export interface LinkPreviewMetadata {
+  /** Title of the page. */
   title: React.ReactNode;
+  /** Summary under the title. */
   description?: React.ReactNode;
+  /** URL of a cover image shown at the top of the card. */
   image?: string;
+  /** URL of the site's icon, shown next to the URL. */
   favicon?: string;
+  /** Address shown at the bottom of the card. */
   url?: string;
 }
 
+/** Props of {@link LinkPreview}. */
 export interface LinkPreviewProps {
+  /** What the card shows. */
   metadata: LinkPreviewMetadata;
+  /** The trigger, usually a {@link Link}. */
   children: React.ReactNode;
+  /** Classes of the card. */
   className?: string;
 }
 
@@ -33,7 +46,8 @@ export interface LinkPreviewProps {
  * to your own metadata source (a server action, a cached lookup, etc.) and
  * pass the result in as `metadata`.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/hover-card
  * @see https://www.kibo-ui.com/components/glimpse
  * @see https://ui.aceternity.com/components/link-preview

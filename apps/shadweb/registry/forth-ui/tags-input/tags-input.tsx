@@ -10,14 +10,27 @@ import {
 } from "@/components/forth-ui/locale/locale";
 import { Badge } from "@/components/forth-ui/badge";
 
+/** Props of {@link TagsInput}. */
 export interface TagsInputProps {
+  /** Controlled tags. */
   value?: string[];
+  /** Initial tags when uncontrolled. */
   defaultValue?: string[];
+  /**
+   * Called with the whole new list after a tag is added or removed. Typed text
+   * is trimmed; empty and duplicate tags are ignored.
+   */
   onValueChange?: (value: string[]) => void;
+  /**
+   * Shown in the empty field while there is no tag yet. Defaults to the
+   * locale's.
+   */
   placeholder?: string;
+  /** Disables the field and the tags' remove buttons. */
   disabled?: boolean;
   /** Maximum number of tags allowed. */
   max?: number;
+  /** Classes of the component's root element. */
   className?: string;
   /** `id` of the text input, e.g. for a `<label htmlFor>`. */
   id?: string;
@@ -38,7 +51,8 @@ export interface TagsInputProps {
  * the current text as a tag, `Backspace` on an empty input removes the
  * last one. Renders tags as forth-ui's own dismissible `Badge`.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.hextaui.com/docs/ui/components/tag-input
  * @see https://www.kibo-ui.com/components/tags
  *

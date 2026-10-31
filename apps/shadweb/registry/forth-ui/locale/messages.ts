@@ -4,24 +4,39 @@ import type { UiLocale } from "./locale";
 export interface UiMessages {
   /** Alert and Banner close button. */
   dismiss: string;
+  /** Status names read by screen readers on an Avatar's status dot. */
   avatar: { online: string; offline: string; away: string; busy: string };
+  /** Accessible name of a removable Badge's remove button. */
   badge: { remove: string };
+  /** Accessible name of the "…" button revealing collapsed Breadcrumb items. */
   breadcrumb: { showHidden: string };
+  /** CodeBlock's copy button, before and after copying. */
   codeBlock: { copy: string; copied: string };
+  /** ColorPicker's trigger and hexadecimal input. */
   colorPicker: { choose: string; hex: string };
   /** Combobox and MultiSelect. */
   combobox: { placeholder: string };
+  /** Placeholder of the CommandPalette search field. */
   commandPalette: { placeholder: string };
+  /** Default buttons of a ConfirmDialog. */
   confirmDialog: { cancel: string; confirm: string };
+  /** DatePicker's trigger while no date is chosen. */
   datePicker: { placeholder: string };
+  /** Accessible name of the button removing a file from a Dropzone's list. */
   dropzone: { removeFile: string };
   /** Combobox, MultiSelect and CommandPalette. */
   emptyResults: string;
+  /** Accessible name of the button clearing an ImageInput. */
   imageInput: { remove: string };
+  /** ModeToggle's trigger and its three choices. */
   modeToggle: { toggle: string; light: string; dark: string; system: string };
+  /** Navbar's mobile menu button and the menu's accessible name. */
   navbar: { toggleMenu: string; menu: string };
+  /** NotificationCenter's panel title and empty state. */
   notificationCenter: { title: string; empty: string };
+  /** Accessible names of NumberInput's − and + buttons. */
   numberInput: { decrement: string; increment: string };
+  /** Pagination's links: visible texts and accessible names. */
   pagination: {
     first: string;
     previous: string;
@@ -30,11 +45,17 @@ export interface UiMessages {
     nextLabel: string;
     last: string;
   };
+  /** Accessible names of PasswordInput's show / hide button. */
   passwordInput: { show: string; hide: string };
+  /** Accessible name of a QrCode, from its encoded value. */
   qrCode: { label: (value: string) => string };
+  /** Accessible name of each Rating star, from its value. */
   rating: { stars: (count: number) => string };
+  /** Snippet's copy button, before and after copying. */
   snippet: { copy: string; copied: string };
+  /** Text read by screen readers on a Spinner. */
   spinner: { loading: string };
+  /** TagsInput's placeholder and the accessible name of its field. */
   tagsInput: { placeholder: string; label: string };
 }
 

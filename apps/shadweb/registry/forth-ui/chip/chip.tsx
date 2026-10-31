@@ -5,6 +5,7 @@ import { Avatar } from "@/components/forth-ui/avatar";
 import type { BadgeProps } from "@/components/forth-ui/badge";
 import { Badge } from "@/components/forth-ui/badge";
 
+/** Props of `Chip`. */
 export type ChipProps = BadgeProps & {
   /**
    * Renders a small `Avatar` before the content — for "person/entity chip"
@@ -22,7 +23,8 @@ export type ChipProps = BadgeProps & {
  * A compact, interactive element for displaying status, categories, or
  * filters — `Badge` with an optional avatar slot for tagging people/entities.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://v2.heroui.com/docs/components/chip
  *
  * @version 0.1.0

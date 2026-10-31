@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const TICK_MS = 1000;
 
+/** Props of `RelativeTime`. */
 export interface RelativeTimeProps {
   /**
    * Controlled time. Omit for an auto-updating live clock (ticks every
@@ -21,6 +22,7 @@ export interface RelativeTimeProps {
   label?: React.ReactNode;
   /** Passed through to `Intl.DateTimeFormat`. */
   formatOptions?: Intl.DateTimeFormatOptions;
+  /** Classes of the `<time>` element. */
   className?: string;
 }
 
@@ -35,7 +37,8 @@ const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = {
  * unless given a fixed `date`/`timeZone`, e.g. for showing several
  * teammates' local times side by side.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/relative-time
  *
  * @version 0.1.0

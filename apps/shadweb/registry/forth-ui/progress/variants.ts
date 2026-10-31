@@ -4,6 +4,10 @@ import { cva } from "class-variance-authority";
 // shadcn-ui's own Progress hardcodes the indicator's color with no prop to
 // override it — targeted here via its `data-slot="progress-indicator"`
 // attribute from the outer className instead of forking the primitive.
+/**
+ * Classes of a progress bar: `variant` (color: `default`, `primary`, `success`,
+ * `warning`, `info`, `destructive`) and `size` (height: `sm`, `default`, `lg`).
+ */
 export const progressVariants = cva("", {
   variants: {
     variant: {
@@ -29,4 +33,5 @@ export const progressVariants = cva("", {
   },
 });
 
+/** The variant props of {@link progressVariants}. */
 export type ProgressVariants = VariantProps<typeof progressVariants>;

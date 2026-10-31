@@ -3,6 +3,12 @@ import { cva } from "class-variance-authority";
 
 // Tailwind's scanner needs literal class strings in source — no
 // runtime-templated `bg-${color}-600` here, it wouldn't be picked up.
+/**
+ * Classes of a banner: `variant` (color: `default`, `primary`, `success`,
+ * `warning`, `info`, `destructive`), `look` (`solid` — the default, `soft`,
+ * `outline`), `inset` (rounded, inside the page margins) and `sticky` (stays at
+ * the top while scrolling).
+ */
 export const bannerVariants = cva(
   "relative flex w-full items-center justify-center gap-x-3 px-4 py-2.5 text-sm [&>svg]:size-4 [&>svg]:shrink-0",
   {
@@ -120,4 +126,5 @@ export const bannerVariants = cva(
   },
 );
 
+/** The variant props of {@link bannerVariants}. */
 export type BannerVariants = VariantProps<typeof bannerVariants>;

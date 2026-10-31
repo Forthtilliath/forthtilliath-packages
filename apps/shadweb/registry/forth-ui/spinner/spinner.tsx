@@ -13,8 +13,15 @@ import {
 import type { SpinnerSizeVariants } from "./variants";
 import { spinnerSizeVariants } from "./variants";
 
+/**
+ * Look of a spinner: `default` (rotating icon), `ring`, `bars` or `ellipsis`.
+ */
 export type SpinnerVariant = "default" | "ring" | "bars" | "ellipsis";
 
+/**
+ * Props of {@link Spinner}: those of a `<span>`, its `size`, `variant` and
+ * `locale`.
+ */
 export type SpinnerProps = React.ComponentProps<"span"> &
   SpinnerSizeVariants & {
     /**
@@ -31,7 +38,8 @@ export type SpinnerProps = React.ComponentProps<"span"> &
 /**
  * An accessible loading indicator, in one of a few visual styles.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/spinner
  * @see https://www.shadcnui-blocks.com/components/spinner
  *

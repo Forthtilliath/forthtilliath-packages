@@ -1,5 +1,8 @@
+/** Options of {@link getPaginationRange}. */
 export interface PaginationRangeOptions {
+  /** The current page, from 1. */
   page: number;
+  /** Number of pages. */
   totalPages: number;
   /** Pages shown on each side of the current page. @default 1 */
   siblingCount?: number;
@@ -7,6 +10,10 @@ export interface PaginationRangeOptions {
   boundaryCount?: number;
 }
 
+/**
+ * One slot of the pagination: a page number, or an ellipsis (start or end,
+ * distinct so each can have its own React key).
+ */
 export type PaginationRangeItem = number | "ellipsis-start" | "ellipsis-end";
 
 function range(start: number, end: number) {

@@ -9,6 +9,12 @@ import {
   accordionTriggerVariants,
 } from "./variants";
 
+/**
+ * Renders the `items` of an `Accordion` (trigger, icon, chevron and content of
+ * each), shared by its single and multiple modes.
+ * @param props - The accordion's item options.
+ * @internal
+ */
 export function Items({
   hideChevron,
   chevronAlignment,

@@ -13,6 +13,11 @@ import {
 import type { BannerVariants } from "./variants";
 import { bannerVariants } from "./variants";
 
+/**
+ * Props of `Banner`: those of a `<div>`, the {@link BannerVariants}, the
+ * dismiss (`dismissible`, `open`, `onOpenChange`) and `action` options, and
+ * `hideOnScroll`.
+ */
 export type BannerProps = React.ComponentProps<"div"> &
   BannerVariants & {
     /**
@@ -53,7 +58,8 @@ const HIDE_ON_SCROLL_THRESHOLD = 40;
  * A full-width, page-level announcement bar — as opposed to `Alert`, which
  * is an inline callout within page content.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/banner
  * @see https://ui.aceternity.com/components/sticky-banner
  *

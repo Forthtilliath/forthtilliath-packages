@@ -14,8 +14,14 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** Props of {@link CodeBlock}. */
 export interface CodeBlockProps {
+  /** The source code to highlight and copy. */
   code: string;
+  /**
+   * Shiki language used for highlighting (`"tsx"`, `"bash"`…), also shown as a
+   * badge. Defaults to `"text"`: no highlighting, no badge.
+   */
   language?: BundledLanguage | SpecialLanguage;
   /** Shown in the header, before the language badge. */
   filename?: string;
@@ -23,7 +29,9 @@ export interface CodeBlockProps {
    * @default { light: "github-light", dark: "github-dark" }
    */
   theme?: { light: BundledTheme; dark: BundledTheme };
+  /** Numbers each line. */
   showLineNumbers?: boolean;
+  /** Classes of the component's root element. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -39,7 +47,8 @@ const COPY_FEEDBACK_MS = 2000;
  * A syntax-highlighted code block with a copy-to-clipboard button, an
  * optional filename/language header, and optional line numbers.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/code-block
  * @see https://ui.aceternity.com/components/code-block
  *

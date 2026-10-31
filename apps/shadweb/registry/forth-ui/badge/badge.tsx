@@ -14,6 +14,11 @@ import {
 import type { BadgeVariants } from "./variants";
 import { badgeVariants, dotVariants } from "./variants";
 
+/**
+ * Props of `Badge`: those of shadcn-ui's `Badge`, the {@link BadgeVariants},
+ * the leading `dot` (optionally `pulse`-ing) and the remove button
+ * (`dismissible`, `open`, `onOpenChange`).
+ */
 export type BadgeProps = Omit<
   React.ComponentProps<typeof BadgePrimitive>,
   "variant"
@@ -57,7 +62,8 @@ export type BadgeProps = Omit<
 /**
  * Displays a badge or a component that looks like a badge.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/badge
  * @see https://ktui.io/docs/badge
  * @see https://www.shadcnui-blocks.com/components/badge

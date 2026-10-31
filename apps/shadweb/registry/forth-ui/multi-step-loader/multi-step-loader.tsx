@@ -7,10 +7,13 @@ import { cn } from "@/lib/utils";
 
 import { Spinner } from "@/components/forth-ui/spinner";
 
+/** One message of a {@link MultiStepLoader}. */
 export interface LoadingState {
+  /** The message, e.g. "Uploading files…". */
   text: string;
 }
 
+/** Props of {@link MultiStepLoader}. */
 export interface MultiStepLoaderProps {
   /** The sequence of messages to display, one at a time. */
   loadingStates: LoadingState[];
@@ -32,6 +35,7 @@ export interface MultiStepLoaderProps {
    * state per upload/step actually completing).
    */
   value?: number;
+  /** Classes of the overlay. */
   className?: string;
 }
 
@@ -40,7 +44,8 @@ export interface MultiStepLoaderProps {
  * for operations that take long enough that a single spinner reads as
  * stuck (multi-stage setup wizards, long uploads, batch processing).
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.aceternity.com/components/multi-step-loader
  *
  * @version 0.1.0

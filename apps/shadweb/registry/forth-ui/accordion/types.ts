@@ -88,10 +88,12 @@ interface BaseProps {
 }
 
 type OmittedProps = "type" | "defaultValue" | "collapsible";
+/** Props of an `Accordion` where one item at most is open (the default). */
 export type SingleProps = BaseProps &
   Omit<AccordionSingleProps, OmittedProps> & {
     /**
-     * Set the ``type`` prop to ``multiple`` to enable opening multiple items at once.
+     * Set the ``type`` prop to ``multiple`` to enable opening multiple items at
+     * once.
      * @default false
      */
     multiple?: false;
@@ -103,6 +105,9 @@ export type SingleProps = BaseProps &
      */
     collapsible?: boolean;
   };
+/**
+ * Props of an `Accordion` with `multiple`: several items can be open at once.
+ */
 export type MultipleProps = BaseProps &
   Omit<AccordionMultipleProps, OmittedProps> & {
     multiple: true;
@@ -115,4 +120,8 @@ export type MultipleProps = BaseProps &
     collapsible?: true;
   };
 
+/**
+ * Props of `Accordion`: {@link SingleProps}, or {@link MultipleProps} with
+ * `multiple`.
+ */
 export type AccordionProps = SingleProps | MultipleProps;
