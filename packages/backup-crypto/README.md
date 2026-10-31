@@ -69,6 +69,28 @@ A keyring keeps every key an app ever encrypted with, so files written before a 
 | `sameKeyring(a, b)`                               | Nothing to save or upload                             |
 | `serializeKeyring` / `parseKeyring`               | JSON form (contains the raw keys — store it securely) |
 
+### API reference
+
+All functions are pure (no I/O); the keyring helpers return new objects.
+
+| Export                                                                  | Module         |                                                                                               |
+| ----------------------------------------------------------------------- | -------------- | --------------------------------------------------------------------------------------------- |
+| `generateBackupKey(randomBytes?)`                                       | `backupKey`    | A new random 256-bit key (`BACKUP_KEY_LENGTH` = 32 bytes)                                     |
+| `getBackupKeyId(key)`                                                   | `backupKey`    | Short non-secret id (16 hex chars) of a key, stored in each envelope                          |
+| `encodeBackupKey(key)` / `decodeBackupKey(text)`                        | `backupKey`    | Base64 form of a key, for storage; decoding throws `corrupted` for anything but a 256-bit key |
+| `defaultRandomBytes(length)`                                            | `backupKey`    | `crypto.getRandomValues`, or throws `no-random-source`                                        |
+| `encryptBackup(text, key, { app?, randomBytes? })`                      | `envelope`     | The JSON envelope to write as is                                                              |
+| `decryptBackup(content, key)`                                           | `envelope`     | Plaintext; throws `unknown-key` or `corrupted`                                                |
+| `isEncryptedBackup(content)`                                            | `envelope`     | Whether a file is an envelope (of any version)                                                |
+| `readEncryptedBackup(content)`                                          | `envelope`     | Validated header (`app`, `keyId`, `version`…) without decrypting                              |
+| `ENCRYPTED_BACKUP_FORMAT` / `ENCRYPTED_BACKUP_VERSION`                  | `envelope`     | `format` field of an envelope / version this package writes                                   |
+| `emptyKeyring`, `getCurrentKey(keyring)`, `findKeyringKey(keyring, id)` | `keyring`      | Keyring basics                                                                                |
+| `decryptBackupWithKeyring(content, keyring)`                            | `keyring`      | Decrypts with whichever key wrote the file                                                    |
+| `BACKUP_KEYRING_FORMAT`                                                 | `keyring`      | `format` field of a serialized keyring                                                        |
+| `formatRecoveryCode(key)` / `parseRecoveryCode(code)`                   | `recoveryCode` | Human-friendly form of a key, with a checksum                                                 |
+
+Everything is exported from the package root; each module is also importable on its own (`@forthtilliath/backup-crypto/keyring`…).
+
 ### Errors
 
 Everything throws a `BackupCryptoError` with a `code`: `not-encrypted`, `unsupported-version`, `unknown-key` (ask for the recovery code of the device that wrote it), `corrupted` (truncated or tampered with), `invalid-recovery-code` (typo), `no-random-source`.

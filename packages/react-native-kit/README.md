@@ -55,6 +55,8 @@ import { KitLocaleProvider } from "@forthtilliath/react-native-kit/i18n/KitLocal
 
 A component's own `locale` prop wins over the provider, and its `labels` prop still overrides individual strings on top of either. The locale also drives `VoiceSearchButton`'s speech-recognition language (`fr-FR` / `en-US`) and `UpdateSettingsScreen`'s date format, unless `lang` / `dateLocale` are passed. `confirmDestructive`, being a plain function, can't read the provider: pass it `{ locale }`.
 
+For an app's own components that should follow the same language, `@forthtilliath/react-native-kit/i18n/locale` exports what the kit uses itself: `useKitLocale(locale?)` (the prop, else the provider, else French), `KitLocaleContext`, `DEFAULT_KIT_LOCALE` (`"fr"`) and `KIT_LOCALE_TAGS` (`{ fr: "fr-FR", en: "en-US" }`, for `Intl` dates and speech recognition).
+
 ### `<Thumbnail photoUri={...} placeholderIcon="..." />`
 
 List-row thumbnail: the photo if there is one, otherwise a placeholder icon.

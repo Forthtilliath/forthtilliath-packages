@@ -86,7 +86,7 @@ Remove it the day a feature really needs the network (update check, Drive backup
 
 ## Testing your own setup
 
-The transforms behind the plugins are exported as pure functions from `@forthtilliath/expo-config-plugins/transforms` (`applyReleaseSigning`, `applyAndroidAbis`, `applyShortCxxPath`, `applyKotlinJvmTarget`, `buildReleaseRemovedPermissionsManifest`).
+The transforms behind the plugins are exported as pure functions from `@forthtilliath/expo-config-plugins/transforms` (`applyReleaseSigning`, `applyAndroidAbis`, `applyShortCxxPath`, `applyKotlinJvmTarget`, `buildReleaseRemovedPermissionsManifest`), along with `ARM_ABIS` (`["armeabi-v7a", "arm64-v8a"]`, the default of `withAndroidAbis`).
 
 ## Scripts
 

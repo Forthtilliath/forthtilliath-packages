@@ -58,4 +58,27 @@ The encryption section only appears when the manager's encryption isn't `off`: a
 
 A failing automatic backup is spelled out on the screen: what went wrong and what to do, since when uploads fail, and the technical cause (selectable, to send to the developer). Linking an account whose first upload fails says so instead of "enabled", and "Back up now" confirms or explains.
 
-Also exported: `useBackupState(manager)` (the manager's state, re-rendering on change), `useCloudBackupProblem(manager)` (a failure to warn about outside the screen, see `getCloudBackupProblem` in expo-backup), `errorMessage(error, labels)` and `codeMessage(labels, code, detail)`.
+Also exported:
+
+| Export                                                              |                                                                                                                 |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `useAutoBackup(manager)`                                            | Starts the manager for the component's lifetime (mount once, in the root layout)                                |
+| `useBackupState(manager)`                                           | The manager's state, re-rendering on change                                                                     |
+| `useCloudBackupProblem(manager, options?)`                          | A failure to warn about outside the screen (banner, tab badge), see `getCloudBackupProblem` in expo-backup      |
+| `errorMessage(error, labels)` / `codeMessage(labels, code, detail)` | The user-facing text of an error / of an error code, in the labels' language                                    |
+| `resolveLabels(locale, overrides)` / `defaultLabels`                | The screen's complete texts (to reuse them outside the screen, e.g. in a banner) / the built-in ones per locale |
+
+#### Warning outside the screen
+
+```tsx
+const problem = useCloudBackupProblem(backup);
+const t = resolveLabels("fr", undefined);
+{
+  problem && (
+    <Banner
+      text={codeMessage(t, problem.code, problem.detail)}
+      onPress={() => router.push("/settings/backup")}
+    />
+  );
+}
+```
