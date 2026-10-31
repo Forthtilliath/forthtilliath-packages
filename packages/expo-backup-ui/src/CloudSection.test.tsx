@@ -1,18 +1,10 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see __mocks__/renderHook.ts */
-import { act } from "react-test-renderer";
+import { act, render, screen } from "@testing-library/react-native";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { BackupError } from "@forthtilliath/expo-backup/errors";
 
 import { createFakeManager } from "./__mocks__/fakeManager.js";
-import {
-  allText,
-  flush,
-  hasButton,
-  press,
-  render,
-  spyOnAlerts,
-} from "./__mocks__/screen.js";
+import { allText, flush, press, spyOnAlerts } from "./__mocks__/screen.js";
 import { BackupScreen } from "./BackupScreen.js";
 
 afterEach(() => {
@@ -29,8 +21,8 @@ describe("CloudSection — not linked", () => {
       status: "connected",
       email: "me@example.com",
     });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Connecter Google Drive");
+    await render(<BackupScreen manager={manager} />);
+    await press("Connecter Google Drive");
     expect(alerts.last()?.[0]).toBe("Sauvegarde automatique activée");
   });
 
@@ -45,8 +37,8 @@ describe("CloudSection — not linked", () => {
       });
       return Promise.resolve({ status: "connected", email: "me@example.com" });
     });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Connecter Google Drive");
+    await render(<BackupScreen manager={manager} />);
+    await press("Connecter Google Drive");
     expect(alerts.last()).toEqual([
       "Compte relié, mais l'envoi a échoué",
       expect.stringMatching(
@@ -64,13 +56,13 @@ describe("CloudSection — not linked", () => {
       remote: { items: ["x"] },
     };
     manager.connectCloud.mockResolvedValue(conflict);
-    const tree = render(
+    await render(
       <BackupScreen
         manager={manager}
         describeBackup={(data) => `${data.items.length} item`}
       />,
     );
-    await press(tree, "Connecter Google Drive");
+    await press("Connecter Google Drive");
     expect(alerts.last()?.[1]).toContain("1 item");
     await alerts.tap("Google Drive");
     expect(manager.resolveConflict).toHaveBeenCalledWith(conflict, "cloud");
@@ -84,8 +76,8 @@ describe("CloudSection — not linked", () => {
       email: "e",
       remote: { items: [] },
     });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Connecter Google Drive");
+    await render(<BackupScreen manager={manager} />);
+    await press("Connecter Google Drive");
     await alerts.tap("Annuler");
     expect(manager.cancelConflict).toHaveBeenCalled();
     expect(manager.resolveConflict).not.toHaveBeenCalled();
@@ -97,8 +89,8 @@ describe("CloudSection — not linked", () => {
     manager.connectCloud.mockRejectedValue(
       new BackupError("oauth-misconfigured"),
     );
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Connecter Google Drive");
+    await render(<BackupScreen manager={manager} />);
+    await press("Connecter Google Drive");
     expect(alerts.last()).toEqual(["Erreur", expect.stringContaining("SHA-1")]);
   });
 
@@ -106,34 +98,36 @@ describe("CloudSection — not linked", () => {
     const alerts = spyOnAlerts();
     const { manager } = createFakeManager();
     manager.connectCloud.mockResolvedValue({ status: "cancelled" });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Connecter Google Drive");
+    await render(<BackupScreen manager={manager} />);
+    await press("Connecter Google Drive");
     expect(alerts.spy).not.toHaveBeenCalled();
   });
 
-  it("can be hidden", () => {
+  it("can be hidden", async () => {
     const { manager } = createFakeManager();
-    const tree = render(<BackupScreen manager={manager} cloud={false} />);
-    expect(hasButton(tree, "Connecter Google Drive")).toBe(false);
+    await render(<BackupScreen manager={manager} cloud={false} />);
+    expect(
+      screen.queryByRole("button", { name: "Connecter Google Drive" }),
+    ).not.toBeOnTheScreen();
   });
 });
 
 describe("CloudSection — linked", () => {
-  it("shows the account, the pending upload and the last error", () => {
+  it("shows the account, the pending upload and the last error", async () => {
     const { manager, setState } = createFakeManager({
       state: { ...linked, cloudPending: true, lastCloudBackupAt: 0 },
     });
-    const tree = render(<BackupScreen manager={manager} />);
-    expect(allText(tree)).toContain("me@example.com");
-    expect(allText(tree)).toContain("envoi en attente");
-    act(() => {
+    await render(<BackupScreen manager={manager} />);
+    expect(allText()).toContain("me@example.com");
+    expect(allText()).toContain("envoi en attente");
+    await act(() => {
       setState({ cloudError: "network" });
     });
-    expect(allText(tree)).toContain("Pas de connexion internet.");
-    expect(allText(tree)).not.toContain("envoi en attente");
+    expect(allText()).toContain("Pas de connexion internet.");
+    expect(allText()).not.toContain("envoi en attente");
   });
 
-  it("shows since when uploads fail and the technical detail", () => {
+  it("shows since when uploads fail and the technical detail", async () => {
     const { manager } = createFakeManager({
       state: {
         ...linked,
@@ -142,7 +136,8 @@ describe("CloudSection — linked", () => {
         cloudFailingSince: 0,
       },
     });
-    const text = allText(render(<BackupScreen manager={manager} />));
+    await render(<BackupScreen manager={manager} />);
+    const text = allText();
     expect(text).toContain("stockage Google est plein");
     expect(text).toContain("Les envois échouent depuis le");
     expect(text).toContain(
@@ -150,20 +145,19 @@ describe("CloudSection — linked", () => {
     );
   });
 
-  it("falls back to the generic message for a code it doesn't know", () => {
+  it("falls back to the generic message for a code it doesn't know", async () => {
     const { manager } = createFakeManager({
       state: { ...linked, cloudError: "from-a-newer-version" as "unknown" },
     });
-    expect(allText(render(<BackupScreen manager={manager} />))).toContain(
-      "Une erreur inattendue est survenue.",
-    );
+    await render(<BackupScreen manager={manager} />);
+    expect(allText()).toContain("Une erreur inattendue est survenue.");
   });
 
   it("uploads on demand and confirms", async () => {
     const alerts = spyOnAlerts();
     const { manager } = createFakeManager({ state: linked });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Sauvegarder maintenant");
+    await render(<BackupScreen manager={manager} />);
+    await press("Sauvegarder maintenant");
     expect(manager.syncNow).toHaveBeenCalled();
     expect(alerts.last()?.[0]).toBe("Sauvegarde envoyée");
   });
@@ -175,8 +169,8 @@ describe("CloudSection — linked", () => {
       setState({ cloudError: "reconnect-required" });
       return Promise.resolve(false);
     });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Sauvegarder maintenant");
+    await render(<BackupScreen manager={manager} />);
+    await press("Sauvegarder maintenant");
     expect(alerts.last()).toEqual([
       "La sauvegarde n'a pas pu être envoyée",
       expect.stringContaining("Déconnecter"),
@@ -188,10 +182,8 @@ describe("CloudSection — linked", () => {
     const onRestored = vi.fn();
     const { manager } = createFakeManager({ state: linked });
     manager.fetchCloudBackup.mockResolvedValue({ items: ["a"] });
-    const tree = render(
-      <BackupScreen manager={manager} onRestored={onRestored} />,
-    );
-    await press(tree, "Restaurer depuis Google Drive");
+    await render(<BackupScreen manager={manager} onRestored={onRestored} />);
+    await press("Restaurer depuis Google Drive");
     await alerts.tap("Restaurer");
     expect(manager.restore).toHaveBeenCalledWith(
       { items: ["a"] },
@@ -205,19 +197,19 @@ describe("CloudSection — linked", () => {
     const alerts = spyOnAlerts();
     const { manager } = createFakeManager({ state: linked });
     manager.fetchCloudBackup.mockResolvedValue(null);
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Restaurer depuis Google Drive");
+    await render(<BackupScreen manager={manager} />);
+    await press("Restaurer depuis Google Drive");
     expect(alerts.last()?.[0]).toBe("Aucune sauvegarde");
   });
 
   it("disconnects only after confirmation", async () => {
     const alerts = spyOnAlerts();
     const { manager } = createFakeManager({ state: linked });
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Déconnecter");
+    await render(<BackupScreen manager={manager} />);
+    await press("Déconnecter");
     await alerts.tap("Annuler");
     expect(manager.disconnectCloud).not.toHaveBeenCalled();
-    await press(tree, "Déconnecter");
+    await press("Déconnecter");
     await alerts.tap("Déconnecter");
     expect(manager.disconnectCloud).toHaveBeenCalled();
   });
@@ -233,9 +225,9 @@ describe("CloudSection — linked", () => {
           };
         }),
     );
-    const tree = render(<BackupScreen manager={manager} />);
-    await press(tree, "Sauvegarder maintenant");
-    await press(tree, "Sauvegarder maintenant");
+    await render(<BackupScreen manager={manager} />);
+    await press("Sauvegarder maintenant");
+    await press("Sauvegarder maintenant");
     expect(manager.syncNow).toHaveBeenCalledTimes(1);
     finish();
     await flush();
