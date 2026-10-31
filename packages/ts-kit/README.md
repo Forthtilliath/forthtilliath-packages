@@ -254,6 +254,22 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
 - `formatDuration(ms)` — human-readable duration ("1d 1h 1m 1s").
 - `padNumber(n, total, minWidth?)` — zero-pads `n` to the width of `total`
   (at least `minWidth`, default 2) so numbered file names sort correctly.
+- `sanitizeIntegerInput(raw, { allowNegative? })` — cleans a whole-number
+  field keystroke by keystroke: digits only, plus a minus sign in first
+  position (`allowNegative`, default `true`). A lone `"-"` survives, so a
+  negative number types normally (Android's `number-pad` has no minus key:
+  use `keyboardType="numeric"`).
+- `parseIntegerInput(raw)` — the integer a field's text stands for, or `null`
+  while it isn't one yet (`""`, `"-"`, `"1-2"`, `"1.5"`, beyond
+  `Number.MAX_SAFE_INTEGER`): keep the last valid value instead of writing
+  `0` over the text.
+
+```ts
+const cleaned = sanitizeIntegerInput(text);
+const value = parseIntegerInput(cleaned);
+setDraft(cleaned);
+if (value !== null) onChange(value);
+```
 
 `sum` and `avg` used to live in `maths/`; those deep imports still work
 (deprecated).
@@ -283,6 +299,40 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
   ends the wait early — the failure count still grows, and each new failure
   imposes the longest delay again. Keep the secret itself out of reach
   (stored hashed, in the Android Keystore through expo-secure-store).
+- `parseUntrustedJson(text, schema, { maxLength?, locale?, messages?, describePath? })`
+  — reads JSON that comes from outside the app (imported file, pasted text,
+  QR code…) **all or nothing**: the first problem rejects the whole text.
+  Checks, in order: empty → longer than `maxLength` (1,000,000 characters by
+  default, checked _before_ `JSON.parse`) → malformed → drops every
+  `__proto__` / `constructor` / `prototype` key → validates with `schema`,
+  any [Standard Schema](https://standardschema.dev) (zod 3.24+/4, Valibot,
+  ArkType — no dependency added). Returns `{ ok: true, data }` or
+  `{ ok: false, reason, error, path?, issues?, raw? }`: `reason` is
+  `"empty" | "too-long" | "malformed" | "invalid"`, `error` a French message
+  ready to show (`locale: "en"` for English, `messages` to override each
+  one), `path` the first issue's path (`["players", 2, "name"]`, shown as
+  « players › n° 3 › name »; `describePath` to name fields), `raw` the
+  parsed but unvalidated value (to read a `version` and say "update the
+  app" — never use it as data). Synchronous schemas only.
+
+```ts
+import { parseUntrustedJson } from "@forthtilliath/ts-kit/security/parseUntrustedJson";
+import { z } from "zod";
+
+// Bound everything: lengths, ranges, enums, array sizes.
+const gameSchema = z.object({
+  name: z.string().trim().min(1).max(60),
+  players: z.array(z.string().max(30)).min(1).max(12),
+  rounds: z.number().int().min(1).max(50),
+});
+
+const result = parseUntrustedJson(text, gameSchema, {
+  maxLength: 50_000, // a real game weighs a few KB
+  describePath: (path) => FIELD_NAMES[String(path.at(-1))] ?? path.join(" › "),
+});
+if (!result.ok) return Alert.alert("Import impossible", result.error);
+addGame(result.data); // typed as z.infer<typeof gameSchema>
+```
 
 ### `string`
 
