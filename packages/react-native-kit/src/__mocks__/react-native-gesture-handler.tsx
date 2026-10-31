@@ -15,24 +15,16 @@ export interface SwipeableProps {
   ref?: React.Ref<SwipeableHandle>;
 }
 
-// DragHandle uses gesture-handler's Pressable; a plain host element is enough
-// for tree assertions, like react-native's own Pressable stub.
-export function Pressable({
-  children,
-  ...rest
-}: { children?: React.ReactNode } & Record<string, unknown>) {
-  return React.createElement("GHPressable", rest, children);
-}
+// DragHandle uses gesture-handler's Pressable, which renders like
+// react-native's own (an accessible View): reuse that stub.
+export { Pressable } from "react-native";
 
 export function Swipeable({
   children,
   renderRightActions,
   ref,
 }: SwipeableProps) {
-  React.useImperativeHandle(ref, () => ({
-    // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional no-op stub
-    close() {},
-  }));
+  React.useImperativeHandle(ref, () => ({ close: () => undefined }));
   return React.createElement(
     React.Fragment,
     null,
