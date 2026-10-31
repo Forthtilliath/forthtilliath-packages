@@ -29,12 +29,22 @@ export async function pgQuery<T>(dbUrl: string, sql: string): Promise<T[]> {
   }
 }
 
-/** The schema fingerprint (`sql/schema-catalog.sql`), sorted. */
+/**
+ * Reads the schema fingerprint (`sql/schema-catalog.sql`) of a database.
+ *
+ * @param dbUrl - The connection string (see `resolveLocalSupabaseEnv().dbUrl`).
+ * @returns The fingerprint rows, sorted.
+ */
 export function readSchemaCatalog(dbUrl: string): Promise<CatalogRow[]> {
   return pgQuery(dbUrl, readFileSync(SCHEMA_CATALOG_SQL_PATH, "utf8"));
 }
 
-/** The tables of the public schema and their RLS flag. */
+/**
+ * Lists the tables of the public schema with their RLS flag.
+ *
+ * @param dbUrl - The connection string.
+ * @returns One row per table.
+ */
 export function readTables(dbUrl: string): Promise<TableRow[]> {
   return pgQuery(
     dbUrl,
@@ -44,7 +54,12 @@ export function readTables(dbUrl: string): Promise<TableRow[]> {
   );
 }
 
-/** The policies of the public schema. */
+/**
+ * Lists the RLS policies of the public schema (from `pg_policies`).
+ *
+ * @param dbUrl - The connection string.
+ * @returns One row per policy.
+ */
 export function readPolicies(dbUrl: string): Promise<PolicyRow[]> {
   return pgQuery(
     dbUrl,

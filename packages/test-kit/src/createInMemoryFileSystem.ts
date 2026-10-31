@@ -1,11 +1,25 @@
+/**
+ * The fake file system returned by {@link createInMemoryFileSystem}. Paths are
+ * plain map keys: no directories, no normalization.
+ */
 export interface InMemoryFileSystem {
   /** The underlying store — inspect or seed it directly if needed. */
   files: Map<string, string>;
+  /** Whether a file is stored at `path`. */
   exists: (path: string) => boolean;
+  /**
+   * Resolves the content stored at `path`; rejects with `Error("File not found:
+   * <path>")` when there is none.
+   */
   readFile: (path: string) => Promise<string>;
+  /** Stores `content` at `path`, replacing any previous content. */
   writeFile: (path: string, content: string) => Promise<void>;
+  /** Removes the file at `path`. */
   deleteFile: (path: string) => Promise<void>;
-  /** Clears every file, optionally reseeding with a fresh set — handy in a `beforeEach`. */
+  /**
+   * Clears every file, optionally reseeding with a fresh set — handy in a
+   * `beforeEach`.
+   */
   reset: (initialFiles?: Record<string, string>) => void;
 }
 

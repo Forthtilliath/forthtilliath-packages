@@ -7,21 +7,39 @@
  */
 export type TableAccess = "public" | "authenticated" | "restricted";
 
+/** One RLS policy, as read from `pg_policies` (see `readPolicies`). */
 export interface PolicyRow {
+  /** The table the policy applies to. */
   table: string;
+  /** The policy's name. */
   name: string;
   /** `SELECT`, `INSERT`, `UPDATE`, `DELETE` or `ALL`. */
   cmd: string;
+  /**
+   * The roles it applies to (`{public}` means everyone, `anon` signed-out
+   * visitors, `authenticated` signed-in users).
+   */
   roles: string[];
+  /** The `USING` condition (rows visible / affected), `null` when absent. */
   qual: string | null;
+  /**
+   * The `WITH CHECK` condition (rows that may be written), `null` when absent.
+   */
   with_check: string | null;
 }
 
+/** One table of the schema and its RLS flag (see `readTables`). */
 export interface TableRow {
+  /** The table's name. */
   name: string;
+  /** Whether row-level security is enabled on it. */
   rls: boolean;
 }
 
+/**
+ * The intended access rules {@link findSecurityViolations} checks the schema
+ * against.
+ */
 export interface SecurityRulesOptions {
   /** Every table of the schema, classified: an unlisted table is reported. */
   tableAccess: Record<string, TableAccess>;
@@ -35,7 +53,15 @@ export interface SecurityRulesOptions {
   authFunctions?: string[];
 }
 
+/**
+ * What {@link findSecurityViolations} found; every list empty means the schema
+ * follows the rules.
+ */
 export interface SecurityViolations {
+  /**
+   * Tables with row-level security disabled: anyone with the anon key reads and
+   * writes them freely.
+   */
   tablesWithoutRls: string[];
   /** Tables missing from `tableAccess`. */
   unclassifiedTables: string[];

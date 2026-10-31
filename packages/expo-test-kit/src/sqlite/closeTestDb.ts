@@ -6,6 +6,12 @@ import { tempFilesByDb, type TestDb } from "./createTestDb.js";
 // test runner ne se termine pas proprement) et supprime le fichier temporaire
 // (et ses éventuels compagnons -wal/-shm) pour ne pas accumuler des bases de
 // test dans le dossier temp à chaque exécution.
+/**
+ * Closes a database made by {@link createTestDb} and deletes its temporary
+ * files (`.sqlite`, `-wal`, `-shm`), best effort: a file Windows still locks is
+ * left to the OS temp cleanup. Call it in `afterAll`.
+ * @param db - The database to close.
+ */
 export function closeTestDb(db: TestDb<Record<string, unknown>>) {
   db.$client.close();
 

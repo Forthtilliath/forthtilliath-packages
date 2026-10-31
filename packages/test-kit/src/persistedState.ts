@@ -3,13 +3,23 @@
  * React Native's `AsyncStorage` as by the web's `localStorage`.
  */
 export interface KeyValueStorage {
+  /**
+   * Reads the raw string stored under `key` (`null` when absent), synchronously
+   * or not.
+   */
   getItem: (key: string) => string | null | Promise<string | null>;
+  /** Writes the raw string under `key`. */
   setItem: (key: string, value: string) => unknown;
 }
 
 /** What Zustand's `persist` middleware writes under its storage key. */
 export interface PersistedState<T = unknown> {
+  /** The persisted slice of the store (what `partialize` kept). */
   state: T;
+  /**
+   * The store's `version` option at write time, compared on rehydration to run
+   * `migrate`.
+   */
   version: number;
 }
 

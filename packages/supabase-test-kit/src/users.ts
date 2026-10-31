@@ -1,18 +1,28 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { randomUUID } from "node:crypto";
 
+/** A throwaway account made by {@link TestUsers.create}. */
 export interface TestUser {
+  /** The account's id (`auth.users.id`). */
   id: string;
+  /** Its generated email, on the reserved `.invalid` domain. */
   email: string;
+  /** Its generated password, to sign in with `createTestClients().signIn`. */
   password: string;
 }
 
+/** Options of {@link TestUsers.create}. */
 export interface CreateTestUserOptions {
   /** Stored in `raw_user_meta_data`, e.g. for a `handle_new_user` trigger. */
   userMetadata?: Record<string, unknown>;
+  /**
+   * Stored in `raw_app_meta_data` (only the service role can set it), e.g. a
+   * role read by RLS policies.
+   */
   appMetadata?: Record<string, unknown>;
 }
 
+/** Options of {@link createTestUsers}. */
 export interface TestUsersOptions {
   /** Returns a service role client (see `createTestClients().admin`). */
   admin: () => Pick<SupabaseClient, "auth">;
@@ -25,6 +35,7 @@ export interface TestUsersOptions {
   beforeDelete?: (ids: string[]) => Promise<void>;
 }
 
+/** The account factory returned by {@link createTestUsers}. */
 export interface TestUsers {
   /** Creates a confirmed account with a random email and password. */
   create: (options?: CreateTestUserOptions) => Promise<TestUser>;
