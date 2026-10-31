@@ -14,7 +14,10 @@ interface TestIo {
   err: string[];
 }
 
-/** A fake `CliIo` recording the console output. Test helper, not exported. */
+/**
+ * A fake `CliIo` recording the console output. Test helper, not exported.
+ * @internal
+ */
 export function createTestIo(
   result: CommandResult,
   files: Record<string, string> = {},

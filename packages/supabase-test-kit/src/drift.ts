@@ -6,6 +6,11 @@ import type { CliIo } from "./cliIo.js";
 import { failureCode, supabaseCli } from "./cliIo.js";
 import { SCHEMA_CATALOG_SQL_PATH } from "./paths.js";
 
+/**
+ * Where `supabase-db-drift` reads the fingerprint snapshot by default, relative
+ * to the project root (the file `defineSchemaSecurityTests` writes).
+ * @internal
+ */
 export const DEFAULT_SNAPSHOT = "tests/db/__snapshots__/schema-catalog.json";
 
 const USAGE = `Usage: supabase-db-drift (--project-ref <ref> | --local) [--snapshot <path>] [--catalog <sql>]
@@ -23,6 +28,7 @@ Compares a database schema with the snapshot built from the migrations
  *
  * @param stdout - The CLI output.
  * @returns The query rows, or `null` if no result can be read.
+ * @internal
  */
 export function parseQueryOutput(
   stdout: string,
@@ -57,7 +63,9 @@ function printSection(io: CliIo, title: string, lines: string[]): void {
  *
  * @param argv - The command line arguments.
  * @param io - Process, file system and console access.
- * @returns The exit code: 0 without drift, 1 on drift or failure, 2 on usage error.
+ * @returns The exit code: 0 without drift, 1 on drift or failure, 2 on usage
+ *   error.
+ * @internal
  */
 export function runDrift(argv: string[], io: CliIo): number {
   let values;

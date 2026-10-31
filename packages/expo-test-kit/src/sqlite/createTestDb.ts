@@ -5,6 +5,10 @@ import { randomUUID } from "node:crypto";
 import os from "node:os";
 import path from "node:path";
 
+/**
+ * A Drizzle database on libsql (Node), shaped like the app's `expo-sqlite` one,
+ * with `$client` to close it.
+ */
 export type TestDb<TSchema extends Record<string, unknown>> =
   LibSQLDatabase<TSchema> & {
     $client: Client;
@@ -13,6 +17,10 @@ export type TestDb<TSchema extends Record<string, unknown>> =
 // Chemin du fichier temporaire associé à chaque instance, pour le nettoyer
 // dans closeTestDb() sans changer la forme de la valeur retournée par
 // createTestDb() (qui doit rester une TestDb utilisable directement).
+/**
+ * Temporary file of each test database, so {@link closeTestDb} can delete it.
+ * @internal
+ */
 export const tempFilesByDb = new WeakMap<object, string>();
 
 // Base SQLite en mémoire (libsql) utilisable dans les tests pour exercer la
@@ -22,6 +30,21 @@ export const tempFilesByDb = new WeakMap<object, string>();
 // libsql de drizzle est en mode "async" comme celui d'expo-sqlite : les
 // transactions avec callback `async (tx) => {...}` fonctionnent donc à
 // l'identique en test et en production.
+/**
+ * Creates a real SQLite database for tests, in a temporary file, with the app's
+ * Drizzle `schema` and its migrations applied — so queries, constraints and
+ * foreign keys behave as on the device (`expo-sqlite` itself only runs on a
+ * device). Foreign keys are enforced.
+ * @param schema - The app's Drizzle schema module (`import * as schema from
+ *   "../db/schema"`).
+ * @param migrationsFolder - The folder `drizzle-kit generate` writes to, e.g.
+ *   `"./drizzle"`.
+ * @returns The database; close it with {@link closeTestDb}.
+ * @example
+ * let testDb: TestDb<typeof schema>;
+ * beforeAll(async () => { testDb = await createTestDb(schema, "./drizzle"); });
+ * afterAll(() => closeTestDb(testDb));
+ */
 export async function createTestDb<TSchema extends Record<string, unknown>>(
   schema: TSchema,
   migrationsFolder: string,

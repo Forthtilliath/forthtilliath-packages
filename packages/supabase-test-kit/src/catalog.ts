@@ -4,11 +4,30 @@
  * constraint.
  */
 export interface CatalogRow {
+  /**
+   * What the element is: `table`, `column`, `policy`, `trigger`, `function` or
+   * `constraint`.
+   */
   kind: string;
+  /**
+   * Name of the element, unique within its `kind`: `profiles` for a table,
+   * `profiles.email` for a column, `profiles.<policy>` for a policy, `name(arg
+   * types)` for a function.
+   */
   name: string;
+  /**
+   * Comparable definition: column type and nullability, RLS flags, policy
+   * command / roles / conditions, trigger definition, an md5 of a function body
+   * with its security settings, constraint definition. Two schemas match when
+   * every definition matches.
+   */
   definition: string;
 }
 
+/**
+ * Result of {@link diffCatalogs}: what differs between the expected and the
+ * actual schema, keyed by `"<kind> <name>"`.
+ */
 export interface CatalogDiff {
   /** In the expected schema only: a migration not applied? */
   missing: string[];

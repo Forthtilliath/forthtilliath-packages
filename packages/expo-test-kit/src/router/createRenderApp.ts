@@ -5,6 +5,10 @@ interface RenderedRouter<SearchParams> {
   getSearchParams: () => SearchParams;
 }
 
+/**
+ * The test-runner and router functions {@link createRenderApp} needs, injected
+ * so the kit works with Jest and Vitest alike.
+ */
 export interface RenderAppDeps<SearchParams> {
   /** `renderRouter` from `expo-router/testing-library`. */
   renderRouter: (
@@ -19,8 +23,12 @@ export interface RenderAppDeps<SearchParams> {
   advanceTimersByTimeAsync: (ms: number) => PromiseLike<unknown>;
 }
 
+/** Options of {@link createRenderApp}. */
 export interface RenderAppOptions {
-  /** The routes folder, relative to the test runner's root. @defaultValue "./app" */
+  /**
+   * The routes folder, relative to the test runner's root. @defaultValue
+   * "./app"
+   */
   appDir?: string;
   /** Fake time advanced for the first render to settle. @defaultValue 100 */
   settleMs?: number;
@@ -45,7 +53,8 @@ export interface RenderAppOptions {
  * // test/renderApp.ts
  * import { router } from "expo-router";
  * import { act, renderRouter } from "expo-router/testing-library";
- * import { createRenderApp } from "@forthtilliath/expo-test-kit/router/createRenderApp";
+ * import { createRenderApp } from
+ * "@forthtilliath/expo-test-kit/router/createRenderApp";
  *
  * export const renderApp = createRenderApp({
  *   renderRouter,

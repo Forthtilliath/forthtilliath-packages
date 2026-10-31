@@ -3,6 +3,11 @@ import { parseArgs } from "node:util";
 import type { CliIo } from "./cliIo.js";
 import { failureCode, supabaseCli } from "./cliIo.js";
 
+/**
+ * Where `supabase-gen-types` writes the generated types by default, relative to
+ * the project root.
+ * @internal
+ */
 export const DEFAULT_TYPES_OUTPUT = "src/types/database.ts";
 
 const USAGE = `Usage: supabase-gen-types (--project-id <id> | --local) [--output <path>] [--schema <schemas>]
@@ -19,6 +24,7 @@ schema: public). The file is only replaced when the generation succeeds.`;
  * @param argv - The command line arguments.
  * @param io - Process, file system and console access.
  * @returns The exit code: 0 on success, 1 on failure, 2 on usage error.
+ * @internal
  */
 export function runGenTypes(argv: string[], io: CliIo): number {
   let values;

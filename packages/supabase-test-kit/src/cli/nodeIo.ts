@@ -3,6 +3,12 @@ import { readFileSync, renameSync, writeFileSync } from "node:fs";
 
 import type { CliIo } from "../cliIo.js";
 
+/**
+ * The real {@link CliIo} of the command-line tools: `child_process.spawnSync`
+ * through the shell, `node:fs`, `console` and `process.env`. Tests pass a fake
+ * instead.
+ * @internal
+ */
 export const nodeIo: CliIo = {
   run: (command, { input } = {}) => {
     const result = spawnSync(command, {

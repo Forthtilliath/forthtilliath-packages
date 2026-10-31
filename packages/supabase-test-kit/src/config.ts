@@ -1,9 +1,19 @@
 import { fileURLToPath } from "node:url";
 
+/**
+ * The Vitest `test` options returned by {@link supabaseTestConfig}, to spread
+ * into `defineConfig({ test: { … } })`.
+ */
 export interface SupabaseTestConfig {
+  /** Node: the tests talk to a real Supabase over the network. */
   environment: "node";
+  /**
+   * `false`: test files share one database, so they run one after the other.
+   */
   fileParallelism: boolean;
+  /** Per-test timeout in ms, sized for real network round trips. */
   testTimeout: number;
+  /** Per-hook timeout in ms (`beforeAll` creating accounts and data). */
   hookTimeout: number;
   /** Replace it with your own list including it, not without it. */
   globalSetup: string[];

@@ -1,3 +1,4 @@
+/** Options of {@link createMockResponse}. */
 export interface MockResponseOptions {
   /** HTTP status code (200–599). Defaults to 200. */
   status?: number;
@@ -10,7 +11,10 @@ export interface MockResponseOptions {
   headers?: Record<string, string>;
 }
 
-/** @deprecated `createMockResponse` now returns a real `Response`: use `Response`. */
+/**
+ * @deprecated `createMockResponse` now returns a real `Response`: use
+ * `Response`.
+ */
 export type MockResponse = Response;
 
 // Statuses the Fetch spec forbids a body for (the constructor throws).

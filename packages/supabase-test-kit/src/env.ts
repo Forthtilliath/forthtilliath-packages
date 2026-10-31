@@ -1,11 +1,17 @@
 import { spawnSync } from "node:child_process";
 
+/**
+ * The local Supabase the tests run against, as resolved by {@link
+ * resolveLocalSupabaseEnv}.
+ */
 export interface LocalSupabaseEnv {
   /** API URL (`http://127.0.0.1:54321`). */
   url: string;
   /** Direct Postgres connection string, as superuser. */
   dbUrl: string;
+  /** Public (anon) key: clients act as a signed-out visitor, subject to RLS. */
   anonKey: string;
+  /** Service role key: bypasses RLS. Local only — never a hosted project's. */
   serviceRoleKey: string;
 }
 

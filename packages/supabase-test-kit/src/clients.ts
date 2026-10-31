@@ -9,11 +9,18 @@ const CLIENT_OPTIONS = {
   auth: { persistSession: false, autoRefreshToken: false },
 };
 
+/**
+ * Email and password of an account, e.g. one made by
+ * `createTestUsers().create()`.
+ */
 export interface Credentials {
+  /** The account's email. */
   email: string;
+  /** The account's password. */
   password: string;
 }
 
+/** The client factories returned by {@link createTestClients}. */
 export interface TestClients<Database> {
   /** Service role client: bypasses RLS, to prepare and check data. */
   admin: () => SupabaseClient<Database>;

@@ -11,6 +11,10 @@ import {
 import type { SecurityRulesOptions, SecurityViolations } from "./security.js";
 import { findSecurityViolations } from "./security.js";
 
+/**
+ * Options of {@link defineSchemaSecurityTests}: the security rules, plus where
+ * the database and the snapshot are.
+ */
 export interface SchemaSecurityTestsOptions extends SecurityRulesOptions {
   /** Direct Postgres connection string (see `resolveLocalSupabaseEnv`). */
   dbUrl: string;
