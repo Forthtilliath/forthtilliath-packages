@@ -17,6 +17,8 @@ function hostComponent(name: string) {
   };
 }
 
+export * from "./react-native-extra.js";
+
 export const Text = hostComponent("Text");
 export const View = hostComponent("View");
 export const ScrollView = hostComponent("ScrollView");
