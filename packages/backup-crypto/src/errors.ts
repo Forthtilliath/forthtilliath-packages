@@ -18,6 +18,11 @@ export type BackupCryptoErrorCode =
   | "invalid-recovery-code"
   | "no-random-source";
 
+/**
+ * The only error this package throws: `code` says what went wrong (see {@link
+ * BackupCryptoErrorCode}), so the app can show the right message — e.g. ask for
+ * the recovery key on `unknown-key`.
+ */
 export class BackupCryptoError extends Error {
   readonly code: BackupCryptoErrorCode;
 

@@ -6,7 +6,10 @@ import { ActionButton } from "./ActionButton.js";
 import { askConfirmation, errorMessage } from "./dialogs.js";
 import type { BackupUi } from "./useBackupUi.js";
 
-/** Export to a file through the share sheet, import one back, undo the last restore. */
+/**
+ * Export to a file through the share sheet, import one back, undo the last restore.
+ * @internal
+ */
 export function FileSection<T>({ ui }: { ui: BackupUi<T> }) {
   const { manager, state, t, styles, busy, run } = ui;
 

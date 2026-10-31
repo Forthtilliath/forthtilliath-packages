@@ -28,7 +28,14 @@ export function defaultRandomBytes(length: number): Uint8Array {
   return webCrypto.getRandomValues(new Uint8Array(length));
 }
 
-/** Generates a new random 256-bit backup key. */
+/**
+ * Generates a new random 256-bit backup key.
+ *
+ * @param randomBytes - Source of randomness. Defaults to
+ *   `crypto.getRandomValues`; pass
+ *   expo-crypto's `getRandomBytes` where the global is missing.
+ * @returns The 32-byte key. Keep it secret (secure store, private cloud file).
+ */
 export function generateBackupKey(
   randomBytes: RandomBytes = defaultRandomBytes,
 ): Uint8Array {
@@ -59,7 +66,10 @@ export function encodeBackupKey(key: Uint8Array): string {
   return base64.encode(key);
 }
 
-/** Reverse of {@link encodeBackupKey}. Throws `corrupted` on anything else than a 256-bit key. */
+/**
+ * Reverse of {@link encodeBackupKey}. Throws `corrupted` on anything else than
+ * a 256-bit key.
+ */
 export function decodeBackupKey(encoded: string): Uint8Array {
   let key: Uint8Array;
   try {

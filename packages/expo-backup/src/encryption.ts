@@ -26,13 +26,34 @@ import { BackupError, normalizeBackupError } from "./errors.js";
  */
 export type EncryptionMode = "off" | "optional" | "required";
 
+/**
+ * Backup encryption of one app: its keyring in the secure store, and the encode
+ * / decode steps around every backup.
+ * @internal
+ */
 export interface Encryption {
+  /**
+   * Whether new backups are encrypted: always in `required` mode, never in
+   * `off`, the user's choice in `optional`.
+   */
   isActive: () => boolean;
-  /** Encrypts `plaintext` with the current key (generated on first use) when active. */
+  /**
+   * Encrypts `plaintext` with the current key (generated on first use) when
+   * active.
+   */
   encode: (plaintext: string) => Promise<string>;
-  /** Decrypts an encrypted backup with whichever known key wrote it; plain JSON passes through. */
+  /**
+   * Decrypts an encrypted backup with whichever known key wrote it; plain JSON
+   * passes through.
+   */
   decode: (content: string) => Promise<string>;
+  /**
+   * Reads the keyring from the secure store (empty when none was saved yet).
+   */
   loadKeyring: () => Promise<BackupKeyring>;
+  /**
+   * Writes the keyring to the secure store and notifies the change listener.
+   */
   saveKeyring: (keyring: BackupKeyring) => Promise<void>;
   /** The current key as a recovery code, generating the key if needed. */
   getRecoveryCode: () => Promise<string>;
@@ -42,12 +63,27 @@ export interface Encryption {
    * `recovery-code-mismatch` instead of adding it.
    */
   addRecoveryCode: (code: string, expectedKeyId?: string) => Promise<void>;
-  /** The keyring with a current key added when encryption is active and it had none. */
+  /**
+   * The keyring with a current key added when encryption is active and it had
+   * none.
+   */
   ensureKeyIfActive: (keyring: BackupKeyring) => BackupKeyring;
-  /** Called whenever the local keyring changes, so it can be escrowed to the cloud. */
+  /**
+   * Called whenever the local keyring changes, so it can be escrowed to the
+   * cloud.
+   */
   onKeyringChange: (listener: () => void) => void;
 }
 
+/**
+ * Creates the {@link Encryption} of an app. Keys live in the Android
+ * Keystore-backed secure store (excluded from Android's automatic backup): they
+ * only leave the device through the private Drive copy or the recovery code.
+ * @param options - `appId` (names the secure-store entry), the encryption
+ *   `mode`, and `isEnabled`, the user's choice read in `optional` mode.
+ * @returns The encryption helpers.
+ * @internal
+ */
 export function createEncryption({
   appId,
   mode,

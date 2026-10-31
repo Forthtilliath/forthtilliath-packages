@@ -10,7 +10,10 @@ interface ModalProps {
   styles: MergedStyles;
 }
 
-/** Shows the recovery code, selectable so it can be copied to a password manager. */
+/**
+ * Shows the recovery code, selectable so it can be copied to a password manager.
+ * @internal
+ */
 export function RecoveryCodeDisplayModal({
   code,
   onClose,
@@ -41,6 +44,7 @@ export function RecoveryCodeDisplayModal({
 /**
  * Asks for a recovery code. Android has no `Alert.prompt`, hence a modal.
  * `error` shows why the previous attempt was refused.
+ * @internal
  */
 export function RecoveryCodeInputModal({
   visible,

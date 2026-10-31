@@ -21,17 +21,38 @@ function pad(value: number) {
   return value.toString().padStart(2, "0");
 }
 
+/**
+ * Default name of a manually exported backup:
+ * `<appId>-backup-YYYY-MM-DD-HHmm.json`, in local time, so files sort
+ * chronologically.
+ * @param appId - The app's backup id.
+ * @param date - When the export is made.
+ * @returns The file name.
+ */
 export function defaultExportFileName(appId: string, date: Date): string {
   const day = `${date.getFullYear().toString()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   return `${appId}-backup-${day}-${pad(date.getHours())}${pad(date.getMinutes())}.json`;
 }
 
+/**
+ * The file half of a backup manager (see {@link createFileBackup}).
+ * @internal
+ */
 export interface FileBackup<T> {
+  /** Writes the backup to a file and opens the share sheet. */
   exportToFile: () => Promise<void>;
+  /**
+   * Opens the file picker and reads the chosen backup (size-checked, decrypted,
+   * validated) without applying it.
+   */
   pickBackupFile: () => Promise<PickResult<T>>;
 }
 
-/** The manual half of the manager: a file handed to the share sheet, read back through the file picker. */
+/**
+ * The manual half of the manager: a file handed to the share sheet, read back
+ * through the file picker.
+ * @internal
+ */
 export function createFileBackup<T>(ctx: ManagerContext<T>): FileBackup<T> {
   const { config, store, encryption } = ctx;
 

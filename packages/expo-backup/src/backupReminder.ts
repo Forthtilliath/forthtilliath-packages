@@ -4,25 +4,44 @@
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * When {@link shouldShowBackupReminder} should remind: whichever of the two
+ * thresholds is reached first.
+ */
 export interface BackupReminderRule {
   /** Remind once the oldest unsaved item is this old. @defaultValue 7 */
   afterDays?: number;
-  /** Remind as soon as this many items are unsaved, however recent. @defaultValue 5 */
+  /**
+   * Remind as soon as this many items are unsaved, however recent.
+   * @defaultValue 5
+   */
   afterCount?: number;
 }
 
+/**
+ * Input of {@link shouldShowBackupReminder}: the app's item dates, the backup
+ * state and the thresholds.
+ */
 export interface BackupReminderInput extends BackupReminderRule {
-  /** Date (epoch ms) of each item: creation, or last change if items can be edited. */
+  /**
+   * Date (epoch ms) of each item: creation, or last change if items can be
+   * edited.
+   */
   itemDates: readonly number[];
   /** Last successful backup (file or cloud), `null` if never. */
   lastBackupAt: number | null;
-  /** End of a "Later" snooze (see {@link snoozeBackupReminder}), `null` if none. */
+  /**
+   * End of a "Later" snooze (see {@link snoozeBackupReminder}), `null` if none.
+   */
   snoozedUntil: number | null;
   /** @defaultValue Date.now() */
   now?: number;
 }
 
-/** Dates of the items changed after the last backup — all of them if there was none. */
+/**
+ * Dates of the items changed after the last backup — all of them if there was
+ * none.
+ */
 export function getUnsavedDates(
   itemDates: readonly number[],
   lastBackupAt: number | null,

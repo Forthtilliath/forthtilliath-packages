@@ -2,24 +2,45 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 /** Per-slot overrides, merged on top of the defaults (not replacing them). */
 export interface BackupScreenStyles {
+  /** The screen's root view. */
   container?: StyleProp<ViewStyle>;
+  /** Each card (Drive, file, encryption). */
   section?: StyleProp<ViewStyle>;
+  /** Title of a card. */
   sectionTitle?: StyleProp<TextStyle>;
+  /** Explanatory text of a card. */
   hint?: StyleProp<TextStyle>;
+  /** Status line (last backup, linked account). */
   status?: StyleProp<TextStyle>;
+  /** Failure message of the Drive card. */
   errorText?: StyleProp<TextStyle>;
+  /** Primary (filled) buttons. */
   button?: StyleProp<ViewStyle>;
+  /** Their label. */
   buttonText?: StyleProp<TextStyle>;
+  /** Secondary (outlined) buttons, on top of `button`. */
   secondaryButton?: StyleProp<ViewStyle>;
+  /** Their label. */
   secondaryButtonText?: StyleProp<TextStyle>;
+  /**
+   * Text-only buttons (disconnect, enter a recovery code…), on top of `button`.
+   */
   ghostButton?: StyleProp<ViewStyle>;
+  /** Their label. */
   ghostButtonText?: StyleProp<TextStyle>;
+  /** Added to a button while it is disabled or another action runs. */
   buttonDisabled?: StyleProp<ViewStyle>;
+  /** Row of the encryption switch. */
   switchRow?: StyleProp<ViewStyle>;
+  /** Label of the switch. */
   switchLabel?: StyleProp<TextStyle>;
+  /** Dimmed background behind the recovery code windows. */
   modalBackdrop?: StyleProp<ViewStyle>;
+  /** Card of those windows. */
   modalCard?: StyleProp<ViewStyle>;
+  /** The recovery code itself (large, monospaced, selectable). */
   recoveryCode?: StyleProp<TextStyle>;
+  /** The recovery code input. */
   input?: StyleProp<TextStyle>;
   /** Not a style: color of the spinners. */
   activityIndicatorColor?: string;
@@ -34,6 +55,10 @@ type Slot = Exclude<
 
 const primary = "#2563eb";
 
+/**
+ * Default style of each slot (white cards, blue primary buttons).
+ * @internal
+ */
 export const defaultStyles: Record<Slot, ViewStyle | TextStyle> = {
   container: { gap: 16 },
   section: {
@@ -100,15 +125,27 @@ export const defaultStyles: Record<Slot, ViewStyle | TextStyle> = {
   },
 };
 
+/**
+ * Blue of the default primary buttons, also the default spinner color.
+ * @internal
+ */
 export const PRIMARY_COLOR = primary;
 
+/**
+ * Each slot as `[default, override]`, ready for a `style` prop.
+ * @internal
+ */
 export type MergedStyles = Record<Slot, StyleProp<ViewStyle | TextStyle>[]> & {
   /** Undefined: white on primary buttons, primary color elsewhere. */
   activityIndicatorColor: string | undefined;
   placeholderTextColor: string;
 };
 
-/** Each slot as `[default, override]`, so overriding one property keeps the rest. */
+/**
+ * Each slot as `[default, override]`, so overriding one property keeps the
+ * rest.
+ * @internal
+ */
 export function mergeStyles(
   overrides: BackupScreenStyles | undefined,
 ): MergedStyles {

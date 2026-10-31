@@ -23,7 +23,10 @@ export function codeMessage(
   return detail ? `${message}\n\n${t.errorDetail(detail)}` : message;
 }
 
-/** User-facing text of any error: localized for the package's own, as is for the app's. */
+/**
+ * User-facing text of any error: localized for the package's own, as is for the
+ * app's.
+ */
 export function errorMessage(error: unknown, t: BackupScreenLabels): string {
   // The app's own errors (`parse`…) are already meant for the user: no detail.
   if (error instanceof BackupError)
@@ -32,11 +35,21 @@ export function errorMessage(error: unknown, t: BackupScreenLabels): string {
   return t.errors.unknown;
 }
 
+/**
+ * Alerts an error with {@link errorMessage}, under the `errorTitle` label.
+ * @param error - Any error (the package's own codes are localized).
+ * @param t - The screen's labels.
+ * @internal
+ */
 export function showError(error: unknown, t: BackupScreenLabels): void {
   Alert.alert(t.errorTitle, errorMessage(error, t));
 }
 
-/** Resolves to true only if the user taps `confirmLabel` (not on cancel or dismiss). */
+/**
+ * Resolves to true only if the user taps `confirmLabel` (not on cancel or
+ * dismiss).
+ * @internal
+ */
 export function askConfirmation(
   t: BackupScreenLabels,
   title: string,
@@ -73,7 +86,11 @@ export function askConfirmation(
   });
 }
 
-/** Which backup to keep when linking an account that already holds one; null if cancelled. */
+/**
+ * Which backup to keep when linking an account that already holds one; null if
+ * cancelled.
+ * @internal
+ */
 export function askConflictChoice(
   t: BackupScreenLabels,
   description: string,

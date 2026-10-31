@@ -9,11 +9,24 @@ import {
 import { decryptBackup, readEncryptedBackup } from "./envelope.js";
 import { BackupCryptoError } from "./errors.js";
 
+/**
+ * Value of the `format` field of a serialized keyring (see {@link
+ * serializeKeyring}).
+ */
 export const BACKUP_KEYRING_FORMAT = "forthtilliath.backup-keyring";
 const BACKUP_KEYRING_VERSION = 1;
 
+/** One key of a keyring. */
 export interface BackupKeyringEntry {
+  /**
+   * {@link getBackupKeyId} of `key`: short, non-secret, stored in every
+   * envelope it encrypts.
+   */
   id: string;
+  /**
+   * The raw 32-byte key. Secret: keep it in a secure store or a private cloud
+   * file.
+   */
   key: Uint8Array;
   /** Epoch ms. */
   createdAt: number;
@@ -25,12 +38,29 @@ export interface BackupKeyringEntry {
  * use `currentId`. Immutable: every helper returns a new keyring.
  */
 export interface BackupKeyring {
+  /**
+   * Id of the key new backups are encrypted with, `null` while the keyring is
+   * empty.
+   */
   currentId: string | null;
+  /**
+   * Every key known on this device — older ones are kept to decrypt older
+   * backups.
+   */
   keys: readonly BackupKeyringEntry[];
 }
 
+/**
+ * A keyring with no key, the starting point before {@link ensureCurrentKey}.
+ */
 export const emptyKeyring: BackupKeyring = { currentId: null, keys: [] };
 
+/**
+ * Looks a key up by id.
+ * @param keyring - The keyring to search.
+ * @param id - A key id, e.g. an envelope's `keyId`.
+ * @returns The entry, or `undefined` when this keyring doesn't have it.
+ */
 export function findKeyringKey(
   keyring: BackupKeyring,
   id: string,
@@ -38,6 +68,11 @@ export function findKeyringKey(
   return keyring.keys.find((entry) => entry.id === id);
 }
 
+/**
+ * Returns the key new backups should be encrypted with.
+ * @param keyring - The keyring.
+ * @returns The current entry, or `undefined` when the keyring has none.
+ */
 export function getCurrentKey(
   keyring: BackupKeyring,
 ): BackupKeyringEntry | undefined {
@@ -120,7 +155,9 @@ interface SerializedKeyring {
   keys: { key: string; createdAt: number }[];
 }
 
-/** JSON form, for a secure store or a private cloud file. Contains the raw keys. */
+/**
+ * JSON form, for a secure store or a private cloud file. Contains the raw keys.
+ */
 export function serializeKeyring(keyring: BackupKeyring): string {
   const serialized: SerializedKeyring = {
     format: BACKUP_KEYRING_FORMAT,
