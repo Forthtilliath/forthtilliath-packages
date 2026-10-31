@@ -1,7 +1,12 @@
 import { compareVersions } from "./compareVersions.js";
 
+/**
+ * The GitHub repository whose releases carry the APK, and how to reach its API.
+ */
 export interface GithubRepoRef {
+  /** User or organization owning the repo, e.g. `"Forthtilliath"`. */
   owner: string;
+  /** Repository name, e.g. `"glucodose"`. */
   repo: string;
   /**
    * A GitHub token, sent as a `Bearer` token. Required for private repos;
@@ -19,9 +24,16 @@ export interface GithubRepoRef {
   signal?: AbortSignal;
 }
 
+/** The newest release found by {@link fetchLatestRelease}. */
 export interface LatestRelease {
+  /**
+   * The release tag without its leading `v` (`v1.4.0` → `"1.4.0"`), to compare
+   * with the installed version (`compareVersions`).
+   */
   version: string;
+  /** The release body (Markdown), e.g. to show with `ChangelogNotes`. */
   notes: string;
+  /** Download URL of the release's `.apk` asset. */
   apkUrl: string;
   /**
    * SHA-256 of the `.apk` (64 lowercase hex digits), as computed by GitHub
@@ -32,6 +44,7 @@ export interface LatestRelease {
   apkSha256?: string;
 }
 
+/** Options of {@link fetchLatestRelease}. */
 export interface FetchLatestReleaseOptions extends GithubRepoRef {
   /**
    * Also consider pre-releases. GitHub's `/releases/latest` only ever returns
@@ -52,9 +65,13 @@ export interface FetchLatestReleaseOptions extends GithubRepoRef {
   requireVerifiedApk?: boolean;
 }
 
+/** One release in {@link fetchReleaseHistory}. */
 export interface ReleaseHistoryEntry {
+  /** The tag without its leading `v`. */
   version: string;
+  /** The release body (Markdown). */
   notes: string;
+  /** When it was published (ISO 8601). */
   publishedAt: string;
 }
 
@@ -80,7 +97,9 @@ const MAX_PER_PAGE = 100;
 /** Enough to skip a few releases without an APK (notes only, drafts). */
 const PRERELEASE_SCAN = 10;
 const SHA256_DIGEST = /^sha256:([0-9a-f]{64})$/i;
-/** Release notes longer than this are cut: rendered as is, they'd stall the UI. */
+/**
+ * Release notes longer than this are cut: rendered as is, they'd stall the UI.
+ */
 const MAX_NOTES_LENGTH = 100_000;
 /** Tags, asset names, URLs, dates: anything longer is treated as missing. */
 const MAX_FIELD_LENGTH = 2_048;

@@ -49,10 +49,23 @@ interface DigestFile {
   digest?: (algorithm: "SHA-256") => Promise<string>;
 }
 
+/**
+ * Options of {@link downloadAndInstallApk}. For a GitHub release, pass
+ * `expectedSha256: release.apkSha256` and `allowedUrlPrefix:
+ * releaseDownloadUrlPrefix(repo)`.
+ */
 export interface DownloadAndInstallApkOptions {
+  /**
+   * `https://` URL of the APK, e.g. `apkUrl` from `fetchLatestRelease`. Checked
+   * against `allowedHosts` / `allowedUrlPrefix` before anything is downloaded.
+   */
   apkUrl: string;
   /** Temp filename in the cache directory, e.g. "myapp-update.apk". */
   fileName: string;
+  /**
+   * Called during the download with the fraction received, from 0 to 1 (only
+   * when the server sends a `Content-Length`).
+   */
   onProgress?: (fraction: number) => void;
   /**
    * MD5 checksum the downloaded file is expected to match (case-insensitive),

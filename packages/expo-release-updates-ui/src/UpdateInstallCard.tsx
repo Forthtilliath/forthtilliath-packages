@@ -4,33 +4,66 @@ import { Pressable, Text, View } from "react-native";
 import type { UpdateBannerLocale } from "./UpdateAvailableBanner.js";
 import type { ApkInstallState } from "./useApkInstall.js";
 
+/**
+ * Style overrides of {@link UpdateInstallCard}, each merged over its default.
+ */
 export interface UpdateInstallCardStyles {
+  /** The card around everything. */
   container?: StyleProp<ViewStyle>;
+  /** The "Downloading version X… N%" line. */
   title?: StyleProp<TextStyle>;
+  /** The line under it, explaining Android will ask for confirmation. */
   hint?: StyleProp<TextStyle>;
+  /** The failure message. */
   error?: StyleProp<TextStyle>;
+  /** The row holding Close and Retry. */
   actions?: StyleProp<ViewStyle>;
+  /** The Retry button. */
   retryButton?: StyleProp<ViewStyle>;
+  /** Its label. */
   retryButtonText?: StyleProp<TextStyle>;
+  /** The Close button. */
   closeButton?: StyleProp<ViewStyle>;
+  /** Its label. */
   closeButtonText?: StyleProp<TextStyle>;
 }
 
+/** Text overrides of {@link UpdateInstallCard}, whatever the `locale`. */
 export interface UpdateInstallCardLabels {
+  /**
+   * Builds the progress line from the version and the rounded percentage.
+   * Default: "Téléchargement de la version {version}… {percent}%".
+   */
   downloading?: (version: string, percent: number) => string;
+  /**
+   * Shown under the progress. Default: "Le téléphone va ensuite demander
+   * confirmation pour l'installer."
+   */
   hint?: string;
+  /**
+   * Builds the failure message from the version. Default: "Le téléchargement de
+   * la version {version} a échoué."
+   */
   error?: (version: string) => string;
+  /** Label of the Retry button. Default: "Réessayer" / "Retry". */
   retry?: string;
+  /** Label of the Close button. Default: "Fermer" / "Close". */
   close?: string;
 }
 
+/** Props of {@link UpdateInstallCard}. */
 export interface UpdateInstallCardProps {
+  /** The install state, from {@link useApkInstall}. */
   state: ApkInstallState;
+  /** Called by the Retry button (after a failure), e.g. `install.retry`. */
   onRetry: () => void;
+  /** Called by the Close button (after a failure), e.g. `install.reset`. */
   onClose: () => void;
+  /** Text overrides. */
   labels?: UpdateInstallCardLabels;
   /** @defaultValue "fr" */
   locale?: UpdateBannerLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: UpdateInstallCardStyles;
 }
 
@@ -85,9 +118,17 @@ const defaultLabels: Record<
   },
 };
 
-// Progress of an update started from the UI (see `useApkInstall`): a
-// non-interactive card while the APK downloads, then — only on failure — an
-// error with Retry/Close. Renders nothing while idle.
+/**
+ * Shows the progress of an update started from the UI (see
+ * {@link useApkInstall}): a non-interactive card with the percentage while the
+ * APK downloads, then — only on failure — an error with Retry and Close
+ * buttons. Renders nothing while idle (including once Android's installer
+ * has taken over).
+ *
+ * @example
+ * const install = useApkInstall(downloadAndInstall);
+ * <UpdateInstallCard state={install.state} onRetry={install.retry} onClose={install.reset} />
+ */
 export function UpdateInstallCard({
   state,
   onRetry,
