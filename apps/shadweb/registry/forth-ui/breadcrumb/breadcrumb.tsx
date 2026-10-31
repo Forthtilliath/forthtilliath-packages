@@ -22,13 +22,19 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** One level of a {@link Breadcrumb}. */
 export interface BreadcrumbEntry {
+  /** Text of the level. */
   label: React.ReactNode;
+  /** Link to the level; the last entry (the current page) usually has none. */
   href?: string;
+  /** Icon shown before the label (e.g. a home icon on the first entry). */
   icon?: React.ReactNode;
 }
 
+/** Props of {@link Breadcrumb}. */
 export interface BreadcrumbProps {
+  /** The path, from the root to the current page. */
   items: BreadcrumbEntry[];
   /**
    * Collapses items between the first and last into a dropdown "…" once
@@ -36,6 +42,7 @@ export interface BreadcrumbProps {
    * purely decorative (no dropdown behavior), unlike ktui's.
    */
   maxItems?: number;
+  /** Classes of the component's root element. */
   className?: string;
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -56,7 +63,8 @@ function EntryLink({ item }: { item: BreadcrumbEntry }) {
 /**
  * Displays the path to the current resource using a hierarchy of links.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/breadcrumb
  * @see https://ktui.io/docs/breadcrumb
  *

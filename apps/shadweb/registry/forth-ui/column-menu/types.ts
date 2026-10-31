@@ -1,7 +1,10 @@
 /** A table column the user can show/hide and reorder. */
 export interface ColumnMenuColumn<K extends string = string> {
+  /** Stable identifier of the column. */
   key: K;
+  /** Name shown in the menu. */
   label: string;
+  /** Whether the table shows it. */
   visible: boolean;
 }
 
@@ -19,6 +22,10 @@ export interface ColumnMenuLabels {
   dragHandle: (label: string) => string;
 }
 
+/**
+ * English texts of `ColumnMenu`, overridable one by one through its `labels`
+ * prop.
+ */
 export const DEFAULT_COLUMN_MENU_LABELS: ColumnMenuLabels = {
   trigger: "Columns",
   title: "Visible columns",

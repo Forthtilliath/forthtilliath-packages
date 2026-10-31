@@ -2,22 +2,33 @@ import type React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** One event of a {@link Timeline}. */
 export interface TimelineItemData {
+  /** What happened. */
   title: React.ReactNode;
+  /** Details under the title. */
   description?: React.ReactNode;
+  /** When it happened, already formatted. */
   date?: React.ReactNode;
+  /** Icon in the event's dot on the line (a plain dot when omitted). */
   icon?: React.ReactNode;
 }
 
+/** Props of {@link Timeline}. */
 export interface TimelineProps {
+  /**
+   * The events, in display order (oldest or newest first, as the page needs).
+   */
   items: TimelineItemData[];
+  /** Classes of the list. */
   className?: string;
 }
 
 /**
  * A vertical sequence of dated events, connected by a line.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://originui.com/timeline
  * @see https://ui.aceternity.com/components/timeline
  *

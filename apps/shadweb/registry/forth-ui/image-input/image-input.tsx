@@ -10,11 +10,18 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** Props of {@link ImageInput}. */
 export interface ImageInputProps {
-  /** An existing image URL to preview (e.g. editing something that already has one). */
+  /**
+   * An existing image URL to preview (e.g. editing something that already has
+   * one).
+   */
   value?: string | null;
+  /** Called with the picked image, or `null` when it is removed. */
   onFileChange?: (file: File | null) => void;
+  /** Disables picking and removing. */
   disabled?: boolean;
+  /** Classes of the component's root element. */
   className?: string;
   /** @default "16/9" */
   aspectRatio?: string;

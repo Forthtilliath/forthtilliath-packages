@@ -10,6 +10,7 @@ import {
   useUiMessages,
 } from "@/components/forth-ui/locale/locale";
 
+/** Props of `QrCode`. */
 export interface QrCodeProps extends Omit<
   React.SVGProps<SVGSVGElement>,
   "viewBox"
@@ -37,7 +38,8 @@ export interface QrCodeProps extends Omit<
  * Generates a QR code from a string, rendered as SVG (no canvas — works in
  * Server Components too).
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/qr-code
  *
  * @version 0.1.0

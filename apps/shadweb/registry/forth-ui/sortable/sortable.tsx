@@ -4,12 +4,19 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** Props of {@link Sortable}. */
 export interface SortableProps<T> {
+  /** The items, in their current order. */
   items: T[];
+  /** Called with the items in their new order after a drop. */
   onReorder: (items: T[]) => void;
+  /** Stable unique key of an item (its id). */
   getKey: (item: T) => string;
+  /** Renders the content of one row. */
   renderItem: (item: T, index: number) => React.ReactNode;
+  /** Turns dragging off. */
   disabled?: boolean;
+  /** Classes of the list. */
   className?: string;
 }
 

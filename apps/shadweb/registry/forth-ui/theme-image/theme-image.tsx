@@ -2,6 +2,7 @@ import type * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** Props of `ThemeImage`. */
 export type ThemeImageProps<C extends React.ElementType = "img"> = {
   /** Image component to render, e.g. Next.js' `Image`. @default "img" */
   as?: C;

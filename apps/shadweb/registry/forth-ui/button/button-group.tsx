@@ -2,6 +2,10 @@ import type React from "react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Props of `ButtonGroup`: those of a `<div>`, plus `vertical` to stack the
+ * buttons.
+ */
 export type ButtonGroupProps = React.ComponentProps<"div"> & {
   /**
    * Stack the buttons vertically instead of horizontally.

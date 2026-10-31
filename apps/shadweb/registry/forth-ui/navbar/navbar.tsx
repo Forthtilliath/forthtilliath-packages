@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** Props of {@link Navbar}: those of a `<header>`, plus `shrinkOffset`. */
 export type NavbarProps = React.ComponentProps<"header"> & {
   /**
    * Scroll distance (px) past which the "scrolled" styling (border,
@@ -20,7 +21,8 @@ const DEFAULT_SHRINK_OFFSET = 20;
  * background/border once the page scrolls — style the `data-scrolled`
  * attribute to customize the transition (a default is provided).
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/navigation-menu
  * @see https://ui.aceternity.com/components/resizable-navbar
  *

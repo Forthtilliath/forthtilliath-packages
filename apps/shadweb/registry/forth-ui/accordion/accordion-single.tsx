@@ -5,6 +5,11 @@ import { Items } from "./accordion-items";
 import type { SingleProps } from "./types";
 import { accordionRootVariants } from "./variants";
 
+/**
+ * The `Accordion` in single mode: opening an item closes the other one.
+ * @param props - See {@link SingleProps}.
+ * @internal
+ */
 export function AccordionSingle({
   className,
   variant,

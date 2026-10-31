@@ -3,6 +3,11 @@ import { cva } from "class-variance-authority";
 
 // Tailwind's scanner needs literal class strings in source — no
 // runtime-templated `bg-${color}-600` here, it wouldn't be picked up.
+/**
+ * Classes of an alert: `variant` (color: `default`, `primary`, `success`,
+ * `warning`, `info`, `destructive`), `look` (`solid`, `soft` — the default,
+ * `outline`) and `size` (`sm`, `default`, `lg`).
+ */
 export const alertVariants = cva(
   "relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-lg border px-4 py-3 text-sm transition-colors has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
   {
@@ -130,4 +135,5 @@ export const alertVariants = cva(
   },
 );
 
+/** The variant props of {@link alertVariants}. */
 export type AlertVariants = VariantProps<typeof alertVariants>;

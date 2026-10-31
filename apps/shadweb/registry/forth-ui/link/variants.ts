@@ -1,6 +1,11 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
+/**
+ * Classes of a {@link Link}: `variant` (`default`, `primary`, `muted`,
+ * `destructive`), `underline` (`none`, `hover` — the default, `always`) and
+ * `size` (`sm`, `default`, `lg`).
+ */
 export const linkVariants = cva(
   "focus-visible:ring-ring/50 inline-flex items-center gap-1 rounded-xs outline-none transition-colors focus-visible:ring-2",
   {
@@ -30,4 +35,5 @@ export const linkVariants = cva(
   },
 );
 
+/** The variant props of {@link linkVariants}. */
 export type LinkVariants = VariantProps<typeof linkVariants>;

@@ -4,7 +4,9 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** Props of `ScrollProgress`. */
 export interface ScrollProgressProps {
+  /** Classes of the progress bar. */
   className?: string;
   /** Tracks this element's own scroll instead of the window's. */
   target?: React.RefObject<HTMLElement | null>;

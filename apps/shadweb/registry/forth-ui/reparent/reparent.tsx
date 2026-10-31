@@ -3,6 +3,10 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 
+/**
+ * One possible container of a {@link Reparent}'s content, active while its
+ * media query matches.
+ */
 export interface ReparentTarget {
   /**
    * A CSS media query (e.g. `"(min-width: 640px)"`). Checked in array
@@ -14,8 +18,14 @@ export interface ReparentTarget {
   container: React.RefObject<HTMLElement | null>;
 }
 
+/** Props of {@link Reparent}. */
 export interface ReparentProps {
+  /** The content to move, mounted once and kept alive across moves. */
   children: React.ReactNode;
+  /**
+   * The containers, checked in order; the first whose query matches (or the one
+   * without a query) receives the content.
+   */
   targets: ReparentTarget[];
 }
 
@@ -26,7 +36,8 @@ export interface ReparentProps {
  * internal state survives the move), via a `createPortal` whose target
  * swaps based on `matchMedia`.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ktui.io/docs/reparent
  *
  * @version 0.1.0

@@ -3,6 +3,12 @@ import { cva } from "class-variance-authority";
 
 // Tailwind's scanner needs literal class strings in source — no
 // runtime-templated `bg-${color}-600` here, it wouldn't be picked up.
+/**
+ * Classes of a badge: `variant` (color: `default`, `secondary`, `primary`,
+ * `success`, `warning`, `info`, `destructive`), `look` (`solid` — the default,
+ * `soft`, `outline`), `shape` (`rounded`, `pill`, `square`) and `size` (`sm`,
+ * `default`, `lg`).
+ */
 export const badgeVariants = cva(
   "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden border px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-colors [&>svg]:pointer-events-none [&>svg]:size-3",
   {
@@ -133,8 +139,13 @@ export const badgeVariants = cva(
   },
 );
 
+/** The variant props of {@link badgeVariants}. */
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
+/**
+ * Classes of a badge's leading dot, per `variant` (same colors as {@link
+ * badgeVariants}).
+ */
 export const dotVariants = cva("size-1.5 shrink-0 rounded-full", {
   variants: {
     variant: {

@@ -6,6 +6,7 @@ import { CheckIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+/** Props of `RadioCard`. */
 export type RadioCardProps = React.ComponentProps<
   typeof RadioGroupPrimitive.Item
 > & {
@@ -22,7 +23,8 @@ export type RadioCardProps = React.ComponentProps<
  * this is built directly on the Radix primitive instead. Use it in place
  * of `RadioGroupItem` inside the same shadcn-ui `RadioGroup`.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/radio-group
  * @see https://www.kibo-ui.com/components/choicebox
  *
