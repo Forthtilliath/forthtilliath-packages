@@ -16,8 +16,11 @@ export default defineConfig({
     },
   },
   test: {
-    // react-test-renderer produces a plain JSON tree, no real DOM needed.
+    // test-renderer produces a plain JSON tree, no real DOM needed.
     environment: "node",
+    // @testing-library/react-native registers its cleanup and matchers on
+    // the global afterEach / expect.
+    globals: true,
     setupFiles: ["./vitest.setup.ts"],
   },
 });
