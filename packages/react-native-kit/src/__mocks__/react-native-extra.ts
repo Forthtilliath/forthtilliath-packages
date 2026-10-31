@@ -102,4 +102,6 @@ export const AccessibilityInfo = {
   },
   // Like Android with no accessibility timeout set: the duration asked for.
   getRecommendedTimeoutMillis: (ms: number) => Promise.resolve(ms),
+  // Tests spy on it, like on Alert.alert.
+  announceForAccessibility: (): void => undefined,
 };

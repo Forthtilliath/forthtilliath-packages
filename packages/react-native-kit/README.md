@@ -543,7 +543,7 @@ Style slots: `container`, `iconWrap`, `title`, `message`.
 
 ![ToastHost: a plain toast, and an undo toast in an app's colors](docs/screenshots/toast.png)
 
-Short messages at the bottom of the screen, called from anywhere — a store action, an event handler — without passing state around. Mount a `ToastHost` at the root of the app (it survives navigation: an undo offered on a screen you just left stays), and another inside each `Modal` that needs one: **the most recently mounted host receives the toasts**. One toast at a time (a new one replaces it), announced by TalkBack, faded in and out (instantly when Android animations are removed), closed by a tap.
+Short messages at the bottom of the screen, called from anywhere — a store action, an event handler — without passing state around. Mount a `ToastHost` at the root of the app (it survives navigation: an undo offered on a screen you just left stays), and another inside each `Modal` that needs one: **the most recently mounted host receives the toasts**. One toast at a time (a new one replaces it), announced to TalkBack explicitly (a view that just appeared isn't always read), faded in and out (instantly when Android animations are removed), closed by a tap.
 
 The delay (3.5 s, or 5 s with an action) goes through Android's accessibility **"Time to take action"** setting: users who asked for more time get it.
 

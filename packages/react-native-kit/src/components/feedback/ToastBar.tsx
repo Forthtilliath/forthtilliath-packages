@@ -93,7 +93,6 @@ export function ToastBar({
         merged.toast,
         { bottom: bottomOffset, opacity, transform: [{ translateY }] },
       ]}
-      accessibilityLiveRegion="polite"
     >
       <Pressable
         style={{ flex: 1 }}
