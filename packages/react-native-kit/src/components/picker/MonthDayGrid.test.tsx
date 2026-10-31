@@ -1,7 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { screenTexts } from "../../__mocks__/screenQueries.js";
+import {
+  flattenStyle,
+  screenElements,
+  screenTexts,
+} from "../../__mocks__/screenQueries.js";
 
 import { MonthDayGrid } from "./MonthDayGrid.js";
 
@@ -50,18 +54,9 @@ describe("MonthDayGrid", () => {
     await render(
       <MonthDayGrid days={days} selected={new Set()} onToggle={vi.fn()} />,
     );
-    const widthOf = (style: unknown) =>
-      [style]
-        .flat(Infinity)
-        .reduce<Record<string, unknown>>(
-          (flat, part) => ({ ...flat, ...(part as object | null) }),
-          {},
-        ).width;
-    const cells =
-      screen.root?.queryAll(
-        (node) =>
-          node.type === "View" && widthOf(node.props.style) === "14.28%",
-      ) ?? [];
+    const cells = screenElements("View").filter(
+      (view) => flattenStyle(view.props.style).width === "14.28%",
+    );
     // 7 headers + 3 blanks (Mon–Wed) + 31 days.
     expect(cells).toHaveLength(7 + 3 + 31);
     expect(cells.slice(7, 10).every((cell) => cell.children.length === 0)).toBe(
