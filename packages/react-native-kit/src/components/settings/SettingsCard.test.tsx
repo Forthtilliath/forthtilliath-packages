@@ -1,14 +1,7 @@
-import { Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { render, screen } from "@testing-library/react-native";
 import { describe, expect, it } from "vitest";
 
-import {
-  findText,
-  renderTree,
-  styleOf,
-  textValues,
-} from "../../__mocks__/renderTree.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
+import { screenElements, screenTexts } from "../../__mocks__/screenQueries.js";
 
 import {
   SettingsCard,
@@ -16,9 +9,15 @@ import {
   SettingsCardStatus,
 } from "./SettingsCard.js";
 
+/** Name and color of each icon on screen, in order. */
+const icons = () =>
+  screenElements("Ionicons").map(
+    (icon) => icon.props as { name: string; color: string },
+  );
+
 describe("SettingsCard", () => {
-  it("renders the header, then its content", () => {
-    const tree = renderTree(
+  it("renders the header, then its content", async () => {
+    await render(
       <SettingsCard icon="cloud-outline" title="Google Drive">
         <SettingsCardStatus icon="time-outline">
           hier à 21:42
@@ -27,31 +26,27 @@ describe("SettingsCard", () => {
       </SettingsCard>,
     );
 
-    expect(textValues(tree)).toEqual([
+    expect(screenTexts()).toEqual([
       "Google Drive",
       "hier à 21:42",
       "Copie privée",
     ]);
     expect(
-      propsOf<{ accessibilityRole: string }>(findText(tree, "Google Drive"))
-        .accessibilityRole,
-    ).toBe("header");
-    const icons = tree.root
-      .findAllByType(Ionicons)
-      .map((i) => propsOf<{ name: string; color: string }>(i));
-    expect(icons).toEqual([
+      screen.getByRole("header", { name: "Google Drive" }),
+    ).toBeOnTheScreen();
+    expect(icons()).toEqual([
       expect.objectContaining({ name: "cloud-outline", color: "#2563eb" }),
       expect.objectContaining({ name: "time-outline", color: "#6b7280" }),
     ]);
   });
 
-  it("works without a header icon", () => {
-    const tree = renderTree(<SettingsCard title="Compte" />);
-    expect(tree.root.findAllByType(Ionicons)).toHaveLength(0);
+  it("works without a header icon", async () => {
+    await render(<SettingsCard title="Compte" />);
+    expect(icons()).toHaveLength(0);
   });
 
-  it("applies colors and style overrides", () => {
-    const tree = renderTree(
+  it("applies colors and style overrides", async () => {
+    await render(
       <SettingsCard
         icon="cloud-outline"
         iconColor="#f00"
@@ -69,25 +64,17 @@ describe("SettingsCard", () => {
       </SettingsCard>,
     );
 
-    const [card] = tree.root.findAllByType(View);
-    if (!card) throw new Error("no card rendered");
-    expect(styleOf(card)).toMatchObject({
-      backgroundColor: "#222",
-      padding: 16,
-    });
-    expect(styleOf(findText(tree, "Drive"))).toMatchObject({
+    expect(screen.root).toHaveStyle({ backgroundColor: "#222", padding: 16 });
+    expect(screen.getByText("Drive")).toHaveStyle({
       color: "#fff",
       fontWeight: "700",
     });
-    expect(styleOf(findText(tree, "Relié"))).toMatchObject({ color: "#eee" });
-    expect(styleOf(findText(tree, "Aide"))).toMatchObject({
+    expect(screen.getByText("Relié")).toHaveStyle({ color: "#eee" });
+    expect(screen.getByText("Aide")).toHaveStyle({
       color: "#999",
       fontSize: 13,
     });
-    const colors = tree.root
-      .findAllByType(Ionicons)
-      .map((i) => propsOf<{ color: string }>(i).color);
-    expect(colors).toEqual(["#f00", "#0a0"]);
-    expect(tree.root.findAllByType(Text)).toHaveLength(3);
+    expect(icons().map((icon) => icon.color)).toEqual(["#f00", "#0a0"]);
+    expect(screenTexts()).toHaveLength(3);
   });
 });
