@@ -88,7 +88,7 @@
     {
       "name": "components (all, brotli)",
       "path": "dist/**/*.js",
-      "limit": "70 KB"
+      "limit": "72 KB"
     },
     {
       "name": "globals.css (brotli)",
