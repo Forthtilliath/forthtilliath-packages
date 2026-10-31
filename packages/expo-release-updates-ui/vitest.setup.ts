@@ -1,8 +1,21 @@
-declare global {
-  // eslint-disable-next-line no-var
-  var IS_REACT_ACT_ENVIRONMENT: boolean | undefined;
-}
+import { registerHooks } from "node:module";
 
-// react-test-renderer's act() warns unless this flag is set — see
-// https://react.dev/warnings/react-test-renderer for context.
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+// @testing-library/react-native is CommonJS loaded by Node, so its
+// `require("react-native")` skips Vite's alias and would reach the real
+// package, which can't load here (Flow syntax). Hand it a small stub instead.
+const reactNativeForNode = new URL(
+  "./src/__mocks__/react-native-node.cjs",
+  import.meta.url,
+).href;
+
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (
+      specifier === "react-native" &&
+      context.parentURL?.includes("/@testing-library/react-native/")
+    ) {
+      return { url: reactNativeForNode, shortCircuit: true };
+    }
+    return nextResolve(specifier, context);
+  },
+});
