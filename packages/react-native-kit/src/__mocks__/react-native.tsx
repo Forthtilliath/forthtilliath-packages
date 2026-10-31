@@ -4,92 +4,62 @@ import * as React from "react";
 // react-native's real package entry uses newer Flow syntax that
 // @babel/parser's flow plugin cannot parse (confirmed: `as Cast` casts are
 // unsupported even with parserOpts.plugins: ["flow"]), so Vitest can never
-// load the real package. Tests alias "react-native" to this minimal stub
-// instead (see vitest.config.ts resolve.alias) — components only need to
-// behave like plain host elements for react-test-renderer's tree assertions,
-// never like real native views.
-export function Text({
-  children,
-  style,
-}: {
-  children?: React.ReactNode;
-  style?: unknown;
-}) {
-  return React.createElement("Text", { style }, children);
+// load the real package. Tests alias "react-native" to this stub instead (see
+// vitest.config.ts resolve.alias). Each component renders the host element
+// the real one renders, with every prop passed through, so
+// @testing-library/react-native finds roles, labels, text and handlers the
+// way it does on a device.
+type HostProps = Record<string, unknown> & { children?: React.ReactNode };
+
+function hostComponent(name: string) {
+  return function HostComponent(props: HostProps) {
+    return React.createElement(name, props);
+  };
 }
 
-export function View({
-  children,
-  style,
-}: {
-  children?: React.ReactNode;
-  style?: unknown;
-}) {
-  return React.createElement("View", { style }, children);
+export const Text = hostComponent("Text");
+export const View = hostComponent("View");
+export const ScrollView = hostComponent("ScrollView");
+export const Image = hostComponent("Image");
+export const TextInput = hostComponent("TextInput");
+export const ActivityIndicator = hostComponent("ActivityIndicator");
+
+interface PressState {
+  pressed: boolean;
 }
 
-export function ScrollView({
-  children,
-  style,
-  contentContainerStyle,
-}: {
-  children?: React.ReactNode;
-  style?: unknown;
-  contentContainerStyle?: unknown;
-}) {
-  return React.createElement(
-    "ScrollView",
-    { style, contentContainerStyle },
-    children,
-  );
-}
-
-export function Image({
-  source,
-  style,
-}: {
-  source?: unknown;
-  style?: unknown;
-}) {
-  return React.createElement("Image", { source, style });
-}
-
+/**
+ * Like the real one: an accessible `View`, `disabled` reported in its
+ * accessibility state and declining the touch (so a press does nothing).
+ */
 export function Pressable({
   children,
   style,
-  onPress,
+  disabled,
+  accessibilityState,
   ...rest
-}: {
-  children?: React.ReactNode;
-  style?: unknown;
-  onPress?: () => void;
-} & Record<string, unknown>) {
+}: Omit<HostProps, "children"> & {
+  children?: React.ReactNode | ((state: PressState) => React.ReactNode);
+  style?: object | null | ((state: PressState) => unknown);
+  disabled?: boolean | null;
+  accessibilityState?: Record<string, unknown>;
+}) {
+  const idle = { pressed: false };
   return React.createElement(
-    "Pressable",
-    { style, onPress, ...rest },
-    children,
+    "View",
+    {
+      accessible: true,
+      ...rest,
+      accessibilityState: { ...accessibilityState, disabled: !!disabled },
+      style: typeof style === "function" ? style(idle) : style,
+      onStartShouldSetResponder: () => !disabled,
+    },
+    typeof children === "function" ? children(idle) : children,
   );
 }
 
-export function Modal({
-  visible,
-  children,
-}: {
-  visible?: boolean;
-  children?: React.ReactNode;
-}) {
-  return visible ? React.createElement(React.Fragment, null, children) : null;
-}
-
-export function TextInput({
-  value,
-  onChangeText,
-  ...rest
-}: {
-  value?: string;
-  onChangeText?: (text: string) => void;
-} & Record<string, unknown>) {
-  return React.createElement("TextInput", { value, onChangeText, ...rest });
+export function Modal({ visible = true, ...props }: HostProps) {
+  return visible ? React.createElement("Modal", { visible, ...props }) : null;
 }
 
 interface Section<T> {
@@ -149,25 +119,29 @@ export function useColorScheme() {
   return mockColorScheme.value;
 }
 
+/** Like the real one: a "switch" whose state follows `value`. */
 export function Switch({
   value,
-  onValueChange,
+  disabled,
+  accessibilityState,
   ...rest
-}: {
+}: HostProps & {
   value?: boolean;
-  onValueChange?: (value: boolean) => void;
-} & Record<string, unknown>) {
-  return React.createElement("Switch", { value, onValueChange, ...rest });
-}
-
-export function ActivityIndicator({
-  color,
-  size,
-}: {
-  color?: unknown;
-  size?: unknown;
+  disabled?: boolean;
+  accessibilityState?: Record<string, unknown>;
 }) {
-  return React.createElement("ActivityIndicator", { color, size });
+  return React.createElement("Switch", {
+    accessibilityRole: "switch",
+    ...rest,
+    value,
+    disabled,
+    accessibilityState: {
+      ...accessibilityState,
+      checked: !!value,
+      disabled: !!disabled,
+    },
+    onStartShouldSetResponder: () => !disabled,
+  });
 }
 
 export const Linking = {
