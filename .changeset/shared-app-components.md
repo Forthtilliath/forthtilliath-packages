@@ -1,5 +1,0 @@
----
-"@forthtilliath/react-native-kit": minor
----
-
-New building blocks taken from Décompte, 7 Wonders Assistant, Ensemble, GlucoDose and Onsortkoi, each documented with a screenshot: `Button` (five variants, three sizes, icon, loading, no double submission when `onPress` returns a promise), `TextField` (label, hint, error announced by TalkBack, required marker), `IntegerField` (negatives typed normally, bounds applied on blur), `SectionTitle` and `Section`, `EmptyState`, `showToast` + `ToastHost` (one host per app or modal, optional undo action, delay lengthened by Android's "Time to take action"), `ReorderList` (▲ / ▼ reordering usable with TalkBack), `Reveal`, `useReducedMotion`, `usePersistHydrated`, `createThemedStyles` / `createPaletteMemo`, and `pickTextFile` (system picker, size checked before reading). `BottomSheet` takes an optional header (`title`, `subtitle`, `headerAction`, `showHandle`, `showCloseButton`), also exported as `BottomSheetHeader`; without these props nothing changes.
