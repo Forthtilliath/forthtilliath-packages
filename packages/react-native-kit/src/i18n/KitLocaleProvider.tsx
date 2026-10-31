@@ -2,8 +2,11 @@ import type { ReactNode } from "react";
 
 import { type KitLocale, KitLocaleContext } from "./locale.js";
 
+/** Props of {@link KitLocaleProvider}. */
 export interface KitLocaleProviderProps {
+  /** Language of the built-in labels of every kit component below. */
   locale: KitLocale;
+  /** The part of the app it applies to (usually the whole app). */
   children: ReactNode;
 }
 

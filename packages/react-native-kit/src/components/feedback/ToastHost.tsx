@@ -13,6 +13,7 @@ import { ToastBar, type ToastHostStyles } from "./ToastBar.js";
 
 export type { ToastHostStyles } from "./ToastBar.js";
 
+/** Props of {@link ToastHost}. */
 export interface ToastHostProps {
   /**
    * Distance from the bottom of the host — add the bottom safe-area inset,
@@ -23,12 +24,16 @@ export interface ToastHostProps {
   bottomOffset?: number;
   /** Longer messages are cut with an ellipsis. @defaultValue 3 */
   maxLines?: number;
-  /** Fade in/out duration; 0 when Android animations are removed. @defaultValue 200 */
+  /**
+   * Fade in/out duration; 0 when Android animations are removed. @defaultValue
+   * 200
+   */
   fadeMs?: number;
   /** Language of the built-in hint. */
   locale?: KitLocale;
   /** Overrides the screen-reader hint of the message ("Masque le message"). */
   dismissHint?: string;
+  /** Style overrides of the toast, merged over the defaults. */
   styles?: ToastHostStyles;
 }
 
@@ -70,7 +75,8 @@ async function recommendedTimeout(ms: number): Promise<number> {
  *
  * @example
  * ```tsx
- * import { ToastHost } from "@forthtilliath/react-native-kit/components/feedback/ToastHost";
+ * import { ToastHost } from
+ * "@forthtilliath/react-native-kit/components/feedback/ToastHost";
  *
  * // app/_layout.tsx, last child so it draws on top
  * <ToastHost bottomOffset={insets.bottom + 64} />

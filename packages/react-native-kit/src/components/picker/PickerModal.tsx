@@ -26,10 +26,18 @@ export type {
   PickerModalStyles,
 } from "./PickerModal.styles.js";
 
+/** One choice of a {@link PickerModal}. */
 export interface PickerItem {
+  /** Unique id, handed back through `onSelect`. */
   id: number;
+  /** Main text, also what the default search matches. */
   label: string;
+  /** Secondary text under the label (e.g. "12 g of carbs per 100 g"). */
   subtitle?: string;
+  /**
+   * Photo of the item. `null` shows a placeholder icon (the item could have
+   * one); `undefined` shows no thumbnail at all.
+   */
   imageUri?: string | null;
   /**
    * Groups results into sections (e.g. food groups, ingredients vs recipes)
@@ -39,18 +47,31 @@ export interface PickerItem {
   group?: string;
 }
 
+/** Props of {@link PickerModal}. */
 export interface PickerModalProps {
+  /** Whether the modal is open. */
   visible: boolean;
+  /** Title of the modal, e.g. "Choose a food". */
   title: string;
+  /** Every choice; the search filters them. */
   items: PickerItem[];
+  /** Called with the chosen item (closing the modal is up to the caller). */
   onSelect: (item: PickerItem) => void;
+  /** Called by the close button and Android's back button. */
   onClose: () => void;
+  /** Shown when nothing matches. Defaults to the locale's. */
   emptyMessage?: string;
   /** Initial search text on open; defaults to empty. */
   initialQuery?: string;
-  /** Custom filter (e.g. relevance ranking); defaults to a case-insensitive substring match. */
+  /**
+   * Custom filter (e.g. relevance ranking); defaults to a case-insensitive
+   * substring match.
+   */
   filterItems?: (items: PickerItem[], query: string) => PickerItem[];
-  /** "Add" actions always visible at the top, even when the search matches nothing. */
+  /**
+   * "Add" actions always visible at the top, even when the search matches
+   * nothing.
+   */
   extraActions?: { label: string; onPress: () => void }[];
   /**
    * Explicit section order (e.g. "Recent" before others); sections default
@@ -58,17 +79,22 @@ export interface PickerModalProps {
    * after, alphabetically.
    */
   groupOrder?: string[];
+  /** Text overrides, whatever the `locale`. */
   labels?: PickerModalLabels;
   /**
-   * Language of the built-in labels and of voice search — French by default, or the nearest
+   * Language of the built-in labels and of voice search — French by default, or
+   * the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: PickerModalStyles;
 }
 
-// Full-screen picker: search (typed or dictated), optional sections, and
-// "add" actions always visible above the results.
+/**
+ * Full-screen picker: search (typed or dictated), optional sections, and
+ * "add" actions always visible above the results.
+ */
 export function PickerModal({
   visible,
   title,

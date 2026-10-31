@@ -4,34 +4,53 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link ErrorFallback}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link ErrorFallback}, each merged after its
+ * default.
+ */
 export interface ErrorFallbackStyles {
   /** The full-screen, centered container (its background included). */
   container?: StyleProp<ViewStyle>;
+  /** The big emoji at the top. */
   emoji?: StyleProp<TextStyle>;
+  /** The title. */
   title?: StyleProp<TextStyle>;
+  /** The explanation under it. */
   hint?: StyleProp<TextStyle>;
   /** The retry button. */
   button?: StyleProp<ViewStyle>;
+  /** The retry button's label. */
   buttonText?: StyleProp<TextStyle>;
   /** The scrollable box showing the error message. */
   detailsBox?: StyleProp<ViewStyle>;
   /** The details box's content container (its padding). */
   detailsContent?: StyleProp<ViewStyle>;
+  /** The error message in the details box. */
   detailsText?: StyleProp<TextStyle>;
 }
 
 /** The fallback's texts; each defaults to the locale's. */
 export interface ErrorFallbackLabels {
+  /** Emoji at the top. Default: 😕. */
   emoji: string;
+  /** Title. Default: "Une erreur est survenue" / "Something went wrong". */
   title: string;
+  /** Explanation under the title, inviting to retry. */
   hint: string;
+  /** Label of the retry button. Default: "Réessayer" / "Try again". */
   retry: string;
 }
 
+/**
+ * Props of {@link ErrorFallback} (Expo Router's `ErrorBoundaryProps` fit as
+ * is).
+ */
 export interface ErrorFallbackProps {
+  /** The error that was thrown; its message shows in the details box. */
   error: Error;
-  /** Re-renders the failed tree — Expo Router's `retry`, or a boundary's reset. */
+  /**
+   * Re-renders the failed tree — Expo Router's `retry`, or a boundary's reset.
+   */
   retry: () => void | Promise<void>;
   /** Overrides some or all of the texts — see {@link ErrorFallbackLabels}. */
   labels?: Partial<ErrorFallbackLabels>;
@@ -120,7 +139,8 @@ const defaultStyles = {
  * @example
  * ```tsx
  * // app/_layout.tsx
- * import { ErrorFallback } from "@forthtilliath/react-native-kit/components/feedback/ErrorFallback";
+ * import { ErrorFallback } from
+ * "@forthtilliath/react-native-kit/components/feedback/ErrorFallback";
  *
  * export function ErrorBoundary(props: ErrorBoundaryProps) {
  *   return <ErrorFallback {...props} />;

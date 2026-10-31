@@ -7,21 +7,33 @@ import { Ionicons } from "@expo/vector-icons";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
+/** Style overrides of {@link SwipeableRow}, each merged over its default. */
 export interface SwipeableRowStyles {
   /** The swipeable's outer container (clips the row while it slides). */
   container?: StyleProp<ViewStyle>;
+  /** The red delete area revealed behind the row. */
   deleteAction?: StyleProp<ViewStyle>;
+  /** Its text. */
   deleteActionText?: StyleProp<TextStyle>;
   /** Ignored with `fullSwipeToDelete`, which shows no icon. */
   deleteIconColor?: string;
 }
 
+/** Props of {@link SwipeableRow}. */
 export interface SwipeableRowProps {
+  /** The row's content. */
   children: ReactNode;
+  /**
+   * Called when the delete button is pressed, or once a full swipe is released
+   * (`fullSwipeToDelete`).
+   */
   onDelete: () => void;
   /** Accessibility label of the delete button, e.g. `"Delete « Marie »"`. */
   deleteLabel: string;
-  /** Text of the delete action. Defaults to "Supprimer" (`"Delete"` with `locale="en"`). */
+  /**
+   * Text of the delete action. Defaults to "Supprimer" (`"Delete"` with
+   * `locale="en"`).
+   */
   deleteText?: string;
   /**
    * Swiping past half the row's width and letting go deletes right away —
@@ -37,6 +49,7 @@ export interface SwipeableRowProps {
    * nearest `KitLocaleProvider`'s.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: SwipeableRowStyles;
 }
 

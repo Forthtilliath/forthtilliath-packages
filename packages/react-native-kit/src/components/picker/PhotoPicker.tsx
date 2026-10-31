@@ -18,9 +18,20 @@ export type {
   PhotoPickerStyles,
 } from "./PhotoPicker.styles.js";
 
+/** Props of {@link PhotoPicker}. */
 export interface PhotoPickerProps {
+  /** URI of the current photo, `null` for none. */
   photoUri: string | null;
+  /**
+   * Called with the saved photo's URI (from `savePhoto`), or `null` when it is
+   * removed.
+   */
   onChange: (uri: string | null) => void;
+  /**
+   * Copies the taken or picked image somewhere durable (the app's documents,
+   * resized…) and resolves to its URI — e.g. with `saveImageThumbnail`
+   * (`utils/files/imageThumbnail`).
+   */
   savePhoto: (sourceUri: string) => Promise<string>;
   /** Used as-is in titles/accessibility labels, e.g. "of the container". */
   photoLabel: string;
@@ -42,12 +53,14 @@ export interface PhotoPickerProps {
    * (from `utils/helpers/haptics`).
    */
   onOpen?: () => void;
+  /** Text overrides, whatever the `locale`. */
   labels?: PhotoPickerLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: PhotoPickerStyles;
 }
 
@@ -58,7 +71,9 @@ const PICKER_OPTIONS = {
   aspect: [1, 1],
 } satisfies ImagePicker.ImagePickerOptions;
 
-// Photo picker (camera or library) with a preview.
+/**
+ * Photo picker (camera or library) with a preview.
+ */
 export function PhotoPicker({
   photoUri,
   onChange,

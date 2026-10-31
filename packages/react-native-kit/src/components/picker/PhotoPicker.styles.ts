@@ -2,21 +2,37 @@ import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 import type { KitLocale } from "../../i18n/locale.js";
 
+/** Style overrides of {@link PhotoPicker}, each merged over its default. */
 export interface PhotoPickerStyles {
+  /** The pressable around the preview. */
   photoPicker?: StyleProp<ViewStyle>;
+  /** The square photo preview. */
   photoPreview?: StyleProp<ImageStyle>;
+  /** The dashed "add a photo" box shown without a photo. */
   photoPlaceholder?: StyleProp<ViewStyle>;
+  /** Its text. */
   photoPlaceholderText?: StyleProp<TextStyle>;
+  /** The "remove the photo" link under the preview. */
   clearLink?: StyleProp<TextStyle>;
+  /** Not a style: color of the placeholder's camera icon. */
   iconColor?: string;
 }
 
+/** Text overrides of {@link PhotoPicker}, whatever the `locale`. */
 export interface PhotoPickerLabels {
+  /** Title of the camera / library choice, from `photoLabel`. */
   photoTitle?: (photoLabel: string) => string;
+  /**
+   * What TalkBack reads on the preview when a photo is set, from `photoLabel`.
+   */
   editAccessibilityLabel?: (photoLabel: string) => string;
+  /** What TalkBack reads on the placeholder, from `photoLabel`. */
   addAccessibilityLabel?: (photoLabel: string) => string;
+  /** Text of the placeholder. Default: "Ajouter une photo" / "Add a photo". */
   addPlaceholderText?: string;
+  /** Title of the alert when the camera permission is refused. */
   cameraPermissionTitle?: string;
+  /** Message of that alert (how to allow it in the phone's settings). */
   cameraPermissionMessage?: string;
   /**
    * @deprecated Unused: choosing from the library needs no permission (the
@@ -25,15 +41,21 @@ export interface PhotoPickerLabels {
   libraryPermissionTitle?: string;
   /** @deprecated Unused — see `libraryPermissionTitle`. */
   libraryPermissionMessage?: string;
+  /** Choice opening the camera. */
   takePhoto?: string;
+  /** Choice opening the system photo picker. */
   chooseFromLibrary?: string;
+  /** Choice closing the menu. */
   cancel?: string;
+  /** The link removing the photo. */
   removePhoto?: string;
   /** Alert shown when the photo could not be taken or saved (no `onError`). */
   saveErrorTitle?: string;
+  /** Message of the save failure alert. */
   saveErrorMessage?: string;
 }
 
+/** Default style of each slot of {@link PhotoPicker}. */
 export const defaultStyles: Required<PhotoPickerStyles> = {
   photoPicker: { alignSelf: "center", marginTop: 8 },
   photoPreview: {
@@ -64,6 +86,7 @@ export const defaultStyles: Required<PhotoPickerStyles> = {
   iconColor: "#6b7280",
 };
 
+/** Built-in texts of {@link PhotoPicker}, per locale. */
 export const defaultLabels = {
   fr: {
     photoTitle: (photoLabel: string) => `Photo ${photoLabel}`,

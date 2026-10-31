@@ -12,16 +12,24 @@ import {
   useKitLocale,
 } from "../../i18n/locale.js";
 
+/** Colors of {@link VoiceSearchButton}. */
 export interface VoiceSearchButtonStyles {
+  /** Color of the microphone while idle. */
   iconColor?: string;
+  /** Color of the microphone while listening. */
   iconColorActive?: string;
 }
 
+/** Props of {@link VoiceSearchButton}. */
 export interface VoiceSearchButtonProps {
+  /** Called with the recognized text, e.g. to fill a search field. */
   onResult: (transcript: string) => void;
   /** Defaults to "Recherche vocale" (`"Voice search"` with `locale="en"`). */
   accessibilityLabel?: string;
-  /** Defaults to "Arrêter la recherche vocale" (`"Stop voice search"` with `locale="en"`). */
+  /**
+   * Defaults to "Arrêter la recherche vocale" (`"Stop voice search"` with
+   * `locale="en"`).
+   */
   stopAccessibilityLabel?: string;
   /**
    * BCP 47 language passed to the speech recognizer. Defaults to the
@@ -33,6 +41,7 @@ export interface VoiceSearchButtonProps {
    * default, or the nearest `KitLocaleProvider`'s.
    */
   locale?: KitLocale;
+  /** Color overrides. */
   styles?: VoiceSearchButtonStyles;
 }
 
@@ -52,12 +61,14 @@ const defaultStyles: Required<VoiceSearchButtonStyles> = {
   iconColorActive: "#dc2626",
 };
 
-// Microphone button to dictate a search instead of typing it. Recognition
-// events are global to the native module (not scoped to one instance): more
-// than one button can be mounted at the same time (e.g. a name field plus a
-// search picker on the same screen). `requestedRef` distinguishes the button
-// that started THIS session from other mounted instances, so only it reacts
-// to the result instead of all of them.
+/**
+ * Microphone button to dictate a search instead of typing it. Recognition
+ * events are global to the native module (not scoped to one instance): more
+ * than one button can be mounted at the same time (e.g. a name field plus a
+ * search picker on the same screen). `requestedRef` distinguishes the button
+ * that started THIS session from other mounted instances, so only it reacts
+ * to the result instead of all of them.
+ */
 export function VoiceSearchButton({
   onResult,
   accessibilityLabel: customAccessibilityLabel,

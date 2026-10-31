@@ -4,7 +4,9 @@ import { View } from "react-native";
 
 import { SectionTitle, type SectionTitleProps } from "./SectionTitle.js";
 
+/** Props of {@link Section}. */
 export interface SectionProps extends Omit<SectionTitleProps, "styles"> {
+  /** The section's content, under its title. */
   children: ReactNode;
   /** Space between the title and each child. @defaultValue 8 */
   gap?: number;
@@ -20,10 +22,12 @@ export interface SectionProps extends Omit<SectionTitleProps, "styles"> {
  *
  * @example
  * ```tsx
- * import { Section } from "@forthtilliath/react-native-kit/components/layout/Section";
+ * import { Section } from
+ * "@forthtilliath/react-native-kit/components/layout/Section";
  *
  * <Section title="Durée" aside={durationLabel}>
- *   <SegmentedToggle options={DURATIONS} value={duration} onChange={setDuration} />
+ *   <SegmentedToggle options={DURATIONS} value={duration}
+ * onChange={setDuration} />
  * </Section>
  * ```
  */

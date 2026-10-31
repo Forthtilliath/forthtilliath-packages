@@ -2,36 +2,66 @@ import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 import type { KitLocale } from "../../i18n/locale.js";
 
+/** Style overrides of {@link PickerModal}, each merged over its default. */
 export interface PickerModalStyles {
+  /** The full-screen modal's root view. */
   container?: StyleProp<ViewStyle>;
+  /** Row holding the title and the close button. */
   header?: StyleProp<ViewStyle>;
+  /** The title. */
   title?: StyleProp<TextStyle>;
+  /** The close button's text. */
   close?: StyleProp<TextStyle>;
+  /** Row holding the search field and the voice search button. */
   searchRow?: StyleProp<ViewStyle>;
+  /** The search field. */
   search?: StyleProp<TextStyle>;
+  /** Each result. */
   row?: StyleProp<ViewStyle>;
+  /** A result's photo. */
   rowThumbnail?: StyleProp<ImageStyle>;
+  /** The icon box shown for a result with `imageUri: null`. */
   rowThumbnailPlaceholder?: StyleProp<ViewStyle>;
+  /** A result's label. */
   rowLabel?: StyleProp<TextStyle>;
+  /** A result's subtitle. */
   rowSubtitle?: StyleProp<TextStyle>;
+  /** The empty message. */
   empty?: StyleProp<TextStyle>;
+  /** Section titles (grouped items, while not searching). */
   sectionHeader?: StyleProp<TextStyle>;
+  /** Container of the "add" actions above the results. */
   extraActions?: StyleProp<ViewStyle>;
+  /** Each action's label. */
   extraActionLabel?: StyleProp<TextStyle>;
+  /** Not a style: color of the actions' `+` icon. */
   extraActionIconColor?: string;
+  /** Not a style: color of the placeholder icon. */
   rowThumbnailPlaceholderIconColor?: string;
+  /** Not a style: placeholder color of the search field. */
   placeholderTextColor?: string;
 }
 
+/** Text overrides of {@link PickerModal}, whatever the `locale`. */
 export interface PickerModalLabels {
+  /** Close button. Default: "Fermer" / "Close". */
   close?: string;
+  /** Placeholder of the search field. Default: "Rechercher…" / "Search…". */
   searchPlaceholder?: string;
+  /** What TalkBack reads on the search field. */
   searchAccessibilityLabel?: string;
+  /** What TalkBack reads on the microphone button. */
   voiceSearchAccessibilityLabel?: string;
+  /** Shown when nothing matches and no `emptyMessage` is given. */
   defaultEmptyMessage?: string;
+  /**
+   * Section of the items without a `group`, when others have one. Default:
+   * "Autres" / "Other".
+   */
   otherGroupLabel?: string;
 }
 
+/** Default style of each slot of {@link PickerModal}. */
 export const defaultStyles: Required<PickerModalStyles> = {
   container: {
     flex: 1,
@@ -107,6 +137,7 @@ export const defaultStyles: Required<PickerModalStyles> = {
   placeholderTextColor: "#6b7280",
 };
 
+/** Built-in texts of {@link PickerModal}, per locale. */
 export const defaultLabels = {
   fr: {
     close: "Fermer",

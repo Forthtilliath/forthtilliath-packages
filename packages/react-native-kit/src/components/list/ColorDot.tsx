@@ -1,6 +1,7 @@
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 
+/** Props of {@link ColorDot}. */
 export interface ColorDotProps {
   /**
    * Dot color, as any React Native color string (`"#ef4444"`, `"tomato"`,
@@ -36,7 +37,8 @@ const DEFAULT_SIZE = 10;
  *
  * @example Basic usage
  * ```tsx
- * import { ColorDot } from "@forthtilliath/react-native-kit/components/list/ColorDot";
+ * import { ColorDot } from
+ * "@forthtilliath/react-native-kit/components/list/ColorDot";
  *
  * <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
  *   <ColorDot color="#ef4444" />

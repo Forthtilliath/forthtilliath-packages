@@ -4,18 +4,30 @@ import { Text, View } from "react-native";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
+/** One titled section of {@link PrivacySettingsScreen}. */
 export interface PrivacySettingsScreenSection {
+  /** Title of the section. */
   title: string;
+  /** Its paragraphs, in order. */
   paragraphs: string[];
 }
 
+/**
+ * Style overrides of {@link PrivacySettingsScreen}, each merged over its
+ * default.
+ */
 export interface PrivacySettingsScreenStyles {
+  /** The screen's root view. */
   container?: StyleProp<ViewStyle>;
+  /** Section titles. */
   title?: StyleProp<TextStyle>;
+  /** Each paragraph. */
   paragraph?: StyleProp<TextStyle>;
+  /** The thin rule between sections. */
   separator?: StyleProp<ViewStyle>;
 }
 
+/** Props of {@link PrivacySettingsScreen}. */
 export interface PrivacySettingsScreenProps {
   /**
    * Defaults to the standard "everything stays on this device" three
@@ -29,6 +41,7 @@ export interface PrivacySettingsScreenProps {
    * `KitLocaleProvider`'s. Ignored when `sections` is passed.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: PrivacySettingsScreenStyles;
 }
 
@@ -93,10 +106,12 @@ const defaultStyles: Required<PrivacySettingsScreenStyles> = {
   },
 };
 
-// Privacy section of a settings tab: a list of titled paragraph sections,
-// separated by a thin rule. Ships with the standard "everything stays local"
-// copy as a default — override `sections` entirely for an app with different
-// data handling (e.g. one that does sync to a server).
+/**
+ * Privacy section of a settings tab: a list of titled paragraph sections,
+ * separated by a thin rule. Ships with the standard "everything stays local"
+ * copy as a default — override `sections` entirely for an app with different
+ * data handling (e.g. one that does sync to a server).
+ */
 export function PrivacySettingsScreen({
   sections: customSections,
   locale,

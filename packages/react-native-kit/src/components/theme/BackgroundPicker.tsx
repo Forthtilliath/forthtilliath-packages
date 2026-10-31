@@ -8,28 +8,42 @@ import type { BackgroundOption } from "./findBackground.js";
 
 export type { BackgroundOption } from "./findBackground.js";
 
+/**
+ * Style overrides of {@link BackgroundPicker}, each merged over its default.
+ */
 export interface BackgroundPickerStyles {
   /** The wrapping row of swatches. */
   row?: StyleProp<ViewStyle>;
   /** One option: swatch + label. */
   option?: StyleProp<ViewStyle>;
+  /** The page-colored square of each option. */
   swatch?: StyleProp<ViewStyle>;
   /** Added on top of `swatch` for the chosen one. */
   swatchSelected?: StyleProp<ViewStyle>;
+  /** The small card drawn inside a swatch, in the option's card color. */
   card?: StyleProp<ViewStyle>;
   /** The round badge holding the check mark. */
   check?: StyleProp<ViewStyle>;
+  /** Each option's name. */
   label?: StyleProp<TextStyle>;
+  /** Added to the chosen option's name. */
   labelSelected?: StyleProp<TextStyle>;
+  /** Not a style: color of the check mark. */
   checkIconColor?: string;
 }
 
+/** Props of {@link BackgroundPicker}. */
 export interface BackgroundPickerProps<T extends BackgroundOption> {
+  /**
+   * The backgrounds on offer (see {@link BackgroundOption}: id, label, page and
+   * card colors).
+   */
   options: readonly T[];
   /** Id of the chosen option. */
   value: string;
   /** Receives the chosen option — add a haptic tick here if wanted. */
   onChange: (option: T) => void;
+  /** Style overrides, merged over the defaults. */
   styles?: BackgroundPickerStyles;
 }
 
@@ -74,7 +88,8 @@ const defaultStyles = {
 /**
  * Radio group of background swatches: each one draws the page and a card in
  * the colours on offer, the chosen one outlined with a check mark. Pair it
- * with `findBackground` (`./findBackground`) to read the saved id, and check each palette's
+ * with `findBackground` (`./findBackground`) to read the saved id, and check
+ * each palette's
  * contrast with `contrastRatio` from `@forthtilliath/ts-kit/color`.
  *
  * @example

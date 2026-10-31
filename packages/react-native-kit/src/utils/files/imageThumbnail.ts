@@ -2,6 +2,7 @@ import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 
 import { type PersistFileOptions, writeBase64File } from "./appFiles.js";
 
+/** Options of {@link saveImageThumbnail}. */
 export interface SaveImageThumbnailOptions extends PersistFileOptions {
   /** Width in pixels, height keeps the ratio. @defaultValue 256 */
   width?: number;

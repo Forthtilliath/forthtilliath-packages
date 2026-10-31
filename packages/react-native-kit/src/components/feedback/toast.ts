@@ -1,6 +1,11 @@
 /** A button at the right of a toast — typically "Annuler" after a deletion. */
 export interface ToastAction {
+  /** Text of the action button, e.g. "Annuler" / "Undo". */
   label: string;
+  /**
+   * Called when the action is pressed; the toast then hides with reason
+   * `"action"`.
+   */
   onPress: () => void;
 }
 
@@ -17,7 +22,11 @@ export type ToastHideReason =
   /** `hideToast()` was called, or its host unmounted. */
   | "hidden";
 
+/** Options of {@link showToast}. */
 export interface ToastOptions {
+  /**
+   * A button on the toast (e.g. undo), which lengthens its default duration.
+   */
   action?: ToastAction;
   /**
    * How long it stays, before Android's "Time to take action" setting
@@ -33,14 +42,25 @@ export interface ToastOptions {
   onHide?: (reason: ToastHideReason) => void;
 }
 
+/**
+ * A toast as handed to the host: the options plus an id and the message.
+ * @internal
+ */
 export interface ToastRequest extends ToastOptions {
+  /**
+   * Unique id of this toast, so the host can tell a new toast from the current
+   * one.
+   */
   id: number;
+  /** The text to show. */
   message: string;
 }
 
 /** What a `ToastHost` registers to receive toasts. */
 export interface ToastHostHandle {
+  /** Displays a toast, replacing the current one. */
   show: (toast: ToastRequest) => void;
+  /** Hides the current toast. */
   hide: () => void;
 }
 
@@ -52,6 +72,7 @@ let lastId = 0;
  * `Modal` that just opened) receives the toasts until it unregisters.
  *
  * @returns The function that unregisters it.
+ * @internal
  */
 export function registerToastHost(host: ToastHostHandle): () => void {
   hosts.push(host);
@@ -68,7 +89,8 @@ export function registerToastHost(host: ToastHostHandle): () => void {
  *
  * @param message - Plain text, a few words; `\n` starts a new line.
  * @param options - See {@link ToastOptions}.
- * @returns The toast's id, or `null` when no `ToastHost` is mounted (nothing shown).
+ * @returns The toast's id, or `null` when no `ToastHost` is mounted (nothing
+ *   shown).
  * @example
  * showToast("Partie enregistrée");
  * showToast(`« ${player.name} » supprimé`, {

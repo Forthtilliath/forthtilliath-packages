@@ -1,5 +1,9 @@
-/** One background on offer to `BackgroundPicker`, drawn as a page with a card on it. */
+/**
+ * One background on offer to `BackgroundPicker`, drawn as a page with a card on
+ * it.
+ */
 export interface BackgroundOption {
+  /** Stable identifier, saved as the user's choice. */
   id: string;
   /** Shown under the swatch and read by screen readers. */
   label: string;

@@ -35,7 +35,9 @@ type UpdateState =
   | { status: "downloading"; progress: number }
   | { status: "error"; message: string };
 
+/** Props of {@link UpdateSettingsScreen}. */
 export interface UpdateSettingsScreenProps {
+  /** The installed version, e.g. `Constants.expoConfig?.version`. */
   currentVersion: string;
   /**
    * Fetches the latest available release, or `null` if there is none.
@@ -70,21 +72,25 @@ export interface UpdateSettingsScreenProps {
    * locale's (`"fr-FR"`, or `"en-US"` with `locale="en"`).
    */
   dateLocale?: string;
+  /** Text overrides, whatever the `locale`. */
   labels?: UpdateSettingsScreenLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: UpdateSettingsScreenStyles;
 }
 
-// Full "check for update" screen: installed version, a manual check button,
-// the available-update box (with changelog + install button) or an
-// up-to-date/error message, download progress, and — if
-// `fetchReleaseHistory` is passed — a list of past releases. Checks
-// automatically on mount (the caller decided to navigate here, no need to make
-// them tap "check" again) and again whenever `includePrereleases` changes.
+/**
+ * Full "check for update" screen: installed version, a manual check button,
+ * the available-update box (with changelog + install button) or an
+ * up-to-date/error message, download progress, and — if
+ * `fetchReleaseHistory` is passed — a list of past releases. Checks
+ * automatically on mount (the caller decided to navigate here, no need to make
+ * them tap "check" again) and again whenever `includePrereleases` changes.
+ */
 export function UpdateSettingsScreen({
   currentVersion,
   checkForUpdate,

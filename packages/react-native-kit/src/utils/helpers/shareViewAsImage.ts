@@ -6,6 +6,7 @@ import { DEFAULT_KIT_LOCALE, type KitLocale } from "../../i18n/locale.js";
 import { isNativeModuleAvailable } from "./isNativeModuleAvailable.js";
 import { shareFile, type ShareFileOptions } from "./shareFile.js";
 
+/** Options of {@link shareViewAsImage}. */
 export type ShareViewAsImageOptions = Omit<ShareFileOptions, "mimeType"> & {
   /** Message of the error thrown when this binary can't capture views. */
   captureUnavailableMessage?: string;

@@ -2,6 +2,7 @@ import * as Sharing from "expo-sharing";
 
 import { DEFAULT_KIT_LOCALE, type KitLocale } from "../../i18n/locale.js";
 
+/** Options of {@link shareFile}. */
 export interface ShareFileOptions {
   /** E.g. `"text/calendar"`, `"image/png"`. */
   mimeType: string;

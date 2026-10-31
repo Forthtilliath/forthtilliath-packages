@@ -6,61 +6,122 @@ import type { KitLocale } from "../../i18n/locale.js";
 
 import type { SwitchRowColors, SwitchRowStyles } from "./SwitchRow.js";
 
+/**
+ * A release returned by `checkForUpdate` (the shape of `fetchLatestRelease`'s
+ * result).
+ */
 export interface UpdateSettingsScreenRelease {
+  /** Its version, compared with `currentVersion`. */
   version: string;
+  /** Its release notes (Markdown subset), shown in the update box. */
   notes: string;
+  /** Download URL of its APK, handed to `downloadAndInstallApk`. */
   apkUrl: string;
   /** SHA-256 of the APK, handed back to `downloadAndInstallApk`. */
   apkSha256?: string;
 }
 
+/**
+ * One past release of the version history (the shape of `fetchReleaseHistory`'s
+ * entries).
+ */
 export interface UpdateSettingsScreenHistoryEntry {
+  /** Its version. */
   version: string;
+  /** Its release notes (Markdown subset). */
   notes: string;
+  /**
+   * When it was published (ISO 8601), formatted with `dateLocale`; hidden when
+   * missing.
+   */
   publishedAt?: string | null;
 }
 
+/** Text overrides of {@link UpdateSettingsScreen}, whatever the `locale`. */
 export interface UpdateSettingsScreenLabels {
+  /** Caption of the installed version box. */
   installedVersionLabel?: string;
+  /** Label of the manual check button. */
   checkButton?: string;
+  /** Shown when no newer version exists. */
   upToDate?: string;
+  /** Shown when the check failed (offline…). */
   checkError?: string;
+  /** Shown when the download or the install hand-off failed. */
   downloadError?: string;
+  /** Title of the update box, from the available version. */
   availableTitle?: (version: string) => string;
+  /**
+   * Label of the install button, from the version. Default: "Télécharger et
+   * installer".
+   */
   installButton?: (version: string) => string;
+  /** What TalkBack reads on the install button, from the version. */
   installButtonAccessibilityLabel?: (version: string) => string;
+  /** Progress line, from the rounded percentage. */
   downloadingLabel?: (percent: number) => string;
+  /** Line under the progress: Android will ask for confirmation. */
   downloadingHint?: string;
+  /** Title of the version history. */
   historyTitle?: string;
+  /** Label of the "test versions" switch. */
   prereleaseLabel?: string;
+  /** Description under that switch (alpha / beta, may contain bugs). */
   prereleaseDescription?: string;
 }
 
+/**
+ * Style overrides of {@link UpdateSettingsScreen}, each merged over its
+ * default.
+ */
 export interface UpdateSettingsScreenStyles {
+  /** The screen's root view. */
   container?: StyleProp<ViewStyle>;
+  /** The installed version box. */
   infoBox?: StyleProp<ViewStyle>;
+  /** Its caption. */
   infoLabel?: StyleProp<TextStyle>;
+  /** The version number. */
   infoValue?: StyleProp<TextStyle>;
+  /** Status lines (up to date, download hint). */
   helpText?: StyleProp<TextStyle>;
+  /** Check and download errors. */
   errorText?: StyleProp<TextStyle>;
+  /** The check and install buttons. */
   button?: StyleProp<ViewStyle>;
+  /** Added to a button while a check or a download runs. */
   buttonDisabled?: StyleProp<ViewStyle>;
+  /** Their labels. */
   buttonText?: StyleProp<TextStyle>;
+  /** Not a style: color of the spinners. */
   activityIndicatorColor?: string;
+  /** The box announcing an available update. */
   updateAvailableBox?: StyleProp<ViewStyle>;
+  /** Its title. */
   updateAvailableTitle?: StyleProp<TextStyle>;
+  /** The version history section. */
   changelog?: StyleProp<ViewStyle>;
+  /** Its title. */
   changelogTitle?: StyleProp<TextStyle>;
+  /** Each past release. */
   changelogEntry?: StyleProp<ViewStyle>;
+  /** Row holding a release's version and date. */
   changelogEntryHeader?: StyleProp<ViewStyle>;
+  /** A release's version. */
   changelogVersion?: StyleProp<TextStyle>;
+  /** A release's date. */
   changelogDate?: StyleProp<TextStyle>;
+  /** Styles of every release notes block, forwarded to `ChangelogNotes`. */
   notes?: ChangelogNotesStyles;
-  /** The "test versions" switch row, shown with `onIncludePrereleasesChange`. */
+  /**
+   * The "test versions" switch row, shown with `onIncludePrereleasesChange`.
+   */
   prereleaseSwitch?: SwitchRowStyles;
+  /** Colors of the "test versions" switch. */
   prereleaseSwitchColors?: SwitchRowColors;
 }
 
+/** Built-in texts of {@link UpdateSettingsScreen}, per locale. */
 export const defaultLabels = {
   fr: {
     installedVersionLabel: "Version installée",
@@ -106,6 +167,7 @@ type LooseStyleKeys =
   | "prereleaseSwitch"
   | "prereleaseSwitchColors";
 
+/** Default style of each slot of {@link UpdateSettingsScreen}. */
 export const defaultStyles: Required<
   Omit<UpdateSettingsScreenStyles, LooseStyleKeys>
 > &

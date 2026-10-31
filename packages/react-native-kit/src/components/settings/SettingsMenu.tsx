@@ -26,6 +26,7 @@ const defaultSectionIcons: Record<
   privacy: { emoji: "🔒", icon: "lock-closed-outline" },
 };
 
+/** One row of a {@link SettingsMenu}. */
 export interface SettingsMenuItem {
   /**
    * Stable React key. Doubles as the lookup into the default icon table
@@ -42,34 +43,57 @@ export interface SettingsMenuItem {
    * for a flatter, more uniform look.
    */
   emoji?: string;
+  /** Ionicons glyph overriding the default icon (see `emoji`). */
   icon?: keyof typeof Ionicons.glyphMap;
+  /** Text of the row. */
   title: string;
+  /** Short description under the title (hidden with `showHints={false}`). */
   hint?: string;
+  /**
+   * Called when the row is pressed, e.g. `() =>
+   * router.push("/settings/backup")`.
+   */
   onPress: () => void;
 }
 
+/** Rows grouped under an optional header. */
 export interface SettingsMenuGroup {
   /** Omit for a group with no visible header (e.g. the first one). */
   title?: string;
+  /** The group's rows, in order. */
   items: SettingsMenuItem[];
 }
 
+/** Style overrides of {@link SettingsMenu}, each merged over its default. */
 export interface SettingsMenuStyles {
+  /** The menu's root view. */
   container?: StyleProp<ViewStyle>;
+  /** Group headers. */
   groupTitle?: StyleProp<TextStyle>;
+  /** Each row. */
   row?: StyleProp<ViewStyle>;
+  /** Column holding a row's title and hint. */
   titleColumn?: StyleProp<ViewStyle>;
+  /** Emoji icons. */
   emoji?: StyleProp<TextStyle>;
+  /** Not a style: color of the Ionicons glyphs. */
   iconColor?: string;
+  /** Each row's title. */
   title?: StyleProp<TextStyle>;
+  /** Each row's hint. */
   hint?: StyleProp<TextStyle>;
+  /** Not a style: color of the trailing chevrons. */
   chevronColor?: string;
 }
 
+/** Props of {@link SettingsMenu}: pass `items` or `groups`. */
 export interface SettingsMenuProps {
   /** A flat list of rows. Mutually exclusive with `groups`. */
   items?: SettingsMenuItem[];
-  /** Rows grouped under optional section headers. Mutually exclusive with `items`. */
+  /**
+   * Rows grouped under optional section headers. Mutually exclusive with
+   * `items`.
+   */
   groups?: SettingsMenuGroup[];
   /**
    * Which flavor of the default icon table to use for items that don't set
@@ -77,8 +101,12 @@ export interface SettingsMenuProps {
    * `"emoji"`.
    */
   defaultIconKind?: "emoji" | "icon";
-  /** Set to `false` to never render any item's `hint`, for a denser, icon-only-style menu. Defaults to `true`. */
+  /**
+   * Set to `false` to never render any item's `hint`, for a denser,
+   * icon-only-style menu. Defaults to `true`.
+   */
   showHints?: boolean;
+  /** Style overrides, merged over the defaults. */
   styles?: SettingsMenuStyles;
 }
 
@@ -125,12 +153,14 @@ function resolveIcon(
     : { icon: undefined, emoji: fallback.emoji };
 }
 
-// Menu screen for a settings tab: one row per section (icon + title +
-// optional hint), navigating to it on press, optionally grouped under
-// section headers (`groups` instead of `items`). Has no opinion on how
-// navigation works — each item carries its own `onPress` (e.g.
-// `() => router.push("/settings/xxx")`), so this doesn't depend on
-// expo-router or any other specific navigator.
+/**
+ * Menu screen for a settings tab: one row per section (icon + title +
+ * optional hint), navigating to it on press, optionally grouped under
+ * section headers (`groups` instead of `items`). Has no opinion on how
+ * navigation works — each item carries its own `onPress` (e.g.
+ * `() => router.push("/settings/xxx")`), so this doesn't depend on
+ * expo-router or any other specific navigator.
+ */
 export function SettingsMenu({
   items,
   groups,

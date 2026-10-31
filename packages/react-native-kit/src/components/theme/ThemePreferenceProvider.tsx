@@ -11,7 +11,9 @@ import type { ThemePreference } from "../../hooks/useEffectiveColorScheme.js";
 
 import { ThemePreferenceContext } from "./themePreferenceContext.js";
 
+/** Props of {@link ThemePreferenceProvider}. */
 export interface ThemePreferenceProviderProps {
+  /** The app (or the part of it) reading the preference. */
   children: ReactNode;
   /**
    * Reads the saved preference once, on mount. Resolve to `null` /
@@ -37,7 +39,8 @@ export interface ThemePreferenceProviderProps {
  *
  * @example
  * ```tsx
- * import { ThemePreferenceProvider } from "@forthtilliath/react-native-kit/components/theme/ThemePreferenceProvider";
+ * import { ThemePreferenceProvider } from
+ * "@forthtilliath/react-native-kit/components/theme/ThemePreferenceProvider";
  *
  * <ThemePreferenceProvider
  *   load={async () => (await getSettings()).theme}

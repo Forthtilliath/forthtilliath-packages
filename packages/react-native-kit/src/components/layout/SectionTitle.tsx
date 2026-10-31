@@ -4,10 +4,14 @@ import { Text, View } from "react-native";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link SectionTitle}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link SectionTitle}, each merged after its
+ * default.
+ */
 export interface SectionTitleStyles {
   /** The row: leading mark, title, rule, aside. */
   container?: StyleProp<ViewStyle>;
+  /** The title text. */
   title?: StyleProp<TextStyle>;
   /** The text of a string `aside`. */
   aside?: StyleProp<TextStyle>;
@@ -15,19 +19,28 @@ export interface SectionTitleStyles {
   rule?: StyleProp<ViewStyle>;
 }
 
+/** Props of {@link SectionTitle}. */
 export interface SectionTitleProps {
+  /** Text of the heading. */
   title: string;
   /**
    * Shown at the right end: a summary of the current choice ("4 joueurs"), a
    * counter, a small action… A string is styled with `styles.aside`.
    */
   aside?: ReactNode;
-  /** Decorative mark before the title (a diamond, a dot, an icon), hidden from screen readers. */
+  /**
+   * Decorative mark before the title (a diamond, a dot, an icon), hidden from
+   * screen readers.
+   */
   leading?: ReactNode;
-  /** Draws a line from the title to the right end (before `aside`). @defaultValue false */
+  /**
+   * Draws a line from the title to the right end (before `aside`).
+   * @defaultValue false
+   */
   rule?: boolean;
   /** Small capitals look. @defaultValue true */
   uppercase?: boolean;
+  /** Style overrides, merged over the defaults. */
   styles?: SectionTitleStyles;
 }
 
@@ -60,7 +73,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { SectionTitle } from "@forthtilliath/react-native-kit/components/layout/SectionTitle";
+ * import { SectionTitle } from
+ * "@forthtilliath/react-native-kit/components/layout/SectionTitle";
  *
  * <SectionTitle title="Joueurs" aside="4 sélectionnés" />
  * <SectionTitle title="Merveilles" rule leading={<View style={diamond} />} />

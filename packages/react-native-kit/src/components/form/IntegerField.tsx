@@ -5,10 +5,18 @@ import { sanitizeIntegerInput } from "@forthtilliath/ts-kit/number/sanitizeInteg
 
 import { TextField, type TextFieldProps } from "./TextField.js";
 
+/**
+ * Props of {@link IntegerField}: the {@link TextFieldProps} (except `value`,
+ * `defaultValue`, `onChange`, `onChangeText` and `keyboardType`, which it
+ * manages), plus the whole-number options.
+ */
 export interface IntegerFieldProps extends Omit<
   TextFieldProps,
   "value" | "onChange" | "onChangeText" | "keyboardType" | "defaultValue"
 > {
+  /**
+   * The current number; the field shows it, or the user's draft while typing.
+   */
   value: number;
   /** Receives each valid value, within `min`…`max`. */
   onChange: (value: number) => void;
@@ -30,9 +38,11 @@ export interface IntegerFieldProps extends Omit<
  *
  * @example
  * ```tsx
- * import { IntegerField } from "@forthtilliath/react-native-kit/components/form/IntegerField";
+ * import { IntegerField } from
+ * "@forthtilliath/react-native-kit/components/form/IntegerField";
  *
- * <IntegerField label="Points de merveille" value={points} onChange={setPoints} min={-30} max={99} />
+ * <IntegerField label="Points de merveille" value={points} onChange={setPoints}
+ * min={-30} max={99} />
  * ```
  */
 export function IntegerField({

@@ -3,7 +3,10 @@ import { Pressable, Text, View } from "react-native";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link CheckboxGroup}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link CheckboxGroup}, each merged after its
+ * default.
+ */
 export interface CheckboxGroupStyles {
   /** The wrapping row holding the chips. */
   row?: StyleProp<ViewStyle>;
@@ -17,12 +20,17 @@ export interface CheckboxGroupStyles {
   textChecked?: StyleProp<TextStyle>;
 }
 
+/** One chip of a {@link CheckboxGroup}. */
 export interface CheckboxGroupOption<T extends string> {
+  /** Value added to or removed from `values`. */
   value: T;
+  /** Text of the chip. */
   label: string;
 }
 
+/** Props of {@link CheckboxGroup}. */
 export interface CheckboxGroupProps<T extends string> {
+  /** The chips, in display order. */
   options: readonly CheckboxGroupOption<T>[];
   /** The checked values, in the order they were checked. */
   values: readonly T[];
@@ -61,11 +69,13 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { CheckboxGroup } from "@forthtilliath/react-native-kit/components/picker/CheckboxGroup";
+ * import { CheckboxGroup } from
+ * "@forthtilliath/react-native-kit/components/picker/CheckboxGroup";
  *
  * <CheckboxGroup
  *   label="Extensions"
- *   options={[{ value: "leaders", label: "Leaders" }, { value: "cities", label: "Cités" }]}
+ *   options={[{ value: "leaders", label: "Leaders" }, { value: "cities", label:
+ * "Cités" }]}
  *   values={extensions}
  *   onChange={setExtensions}
  * />

@@ -5,15 +5,22 @@ import { Text, View } from "react-native";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 import { Button, type ButtonProps } from "../form/Button.js";
 
-/** Per-slot style overrides for {@link EmptyState}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link EmptyState}, each merged after its
+ * default.
+ */
 export interface EmptyStateStyles {
+  /** The centered column holding everything. */
   container?: StyleProp<ViewStyle>;
   /** The circle behind the icon. */
   iconWrap?: StyleProp<ViewStyle>;
+  /** The heading. */
   title?: StyleProp<TextStyle>;
+  /** The explanation. */
   message?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link EmptyState}. */
 export interface EmptyStateProps {
   /** Why the list is empty, and what to do about it. */
   message: string;
@@ -27,6 +34,7 @@ export interface EmptyStateProps {
    * (`variant`, `colors`, `icon`…).
    */
   action?: ButtonProps;
+  /** Style overrides, merged over the defaults. */
   styles?: EmptyStateStyles;
 }
 
@@ -65,7 +73,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { EmptyState } from "@forthtilliath/react-native-kit/components/feedback/EmptyState";
+ * import { EmptyState } from
+ * "@forthtilliath/react-native-kit/components/feedback/EmptyState";
  *
  * <FlatList
  *   data={players}
@@ -73,8 +82,10 @@ const defaultStyles = {
  *     <EmptyState
  *       icon={<Ionicons name="people-outline" size={36} color={c.muted} />}
  *       title="Aucun joueur"
- *       message="Ajoute les joueurs une fois, ils seront proposés à chaque partie."
- *       action={{ label: "Créer un joueur", onPress: () => router.push("/players/new"), fullWidth: true }}
+ *       message="Ajoute les joueurs une fois, ils seront proposés à chaque
+ * partie."
+ *       action={{ label: "Créer un joueur", onPress: () =>
+ * router.push("/players/new"), fullWidth: true }}
  *     />
  *   }
  * />

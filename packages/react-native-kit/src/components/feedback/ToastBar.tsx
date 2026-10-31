@@ -10,7 +10,9 @@ import type { ToastHideReason, ToastRequest } from "./toast.js";
 export interface ToastHostStyles {
   /** The floating bar (absolute-positioned near the bottom). */
   toast?: StyleProp<ViewStyle>;
+  /** The message text. */
   message?: StyleProp<TextStyle>;
+  /** The action button's text. */
   action?: StyleProp<TextStyle>;
 }
 
@@ -58,7 +60,10 @@ interface ToastBarProps {
   styles?: ToastHostStyles;
 }
 
-/** The bar `ToastHost` draws for the toast on screen. */
+/**
+ * The bar `ToastHost` draws for the toast on screen.
+ * @internal
+ */
 export function ToastBar({
   toast,
   opacity,

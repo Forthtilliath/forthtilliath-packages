@@ -5,33 +5,65 @@ import { Ionicons } from "@expo/vector-icons";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
+/** An extra row of {@link ContactSettingsScreen} (share the app, donate…). */
 export interface ContactSettingsScreenAction {
+  /** Ionicons name of the row's icon. */
   icon: keyof typeof Ionicons.glyphMap;
+  /** Text of the row. */
   label: string;
+  /** Called when the row is pressed. */
   onPress: () => void;
+  /**
+   * What TalkBack reads, when the label alone isn't explicit enough. Defaults
+   * to `label`.
+   */
   accessibilityLabel?: string;
 }
 
+/**
+ * Style overrides of {@link ContactSettingsScreen}, each merged over its
+ * default.
+ */
 export interface ContactSettingsScreenStyles {
+  /** The screen's root view. */
   container?: StyleProp<ViewStyle>;
+  /** The hint above and the footer below. */
   hint?: StyleProp<TextStyle>;
+  /** The bordered `mailto:` button (single-button layout). */
   emailButton?: StyleProp<ViewStyle>;
+  /** Its text (the address). */
   emailButtonText?: StyleProp<TextStyle>;
+  /** The line above the footer. */
   separator?: StyleProp<ViewStyle>;
   /** Only used when `actions` is set (rows layout). */
   row?: StyleProp<ViewStyle>;
+  /** Each row's label (rows layout). */
   rowText?: StyleProp<TextStyle>;
+  /** Not a style: color of the rows' icons. */
   rowIconColor?: string;
 }
 
+/** Text overrides of {@link ContactSettingsScreen}, whatever the `locale`. */
 export interface ContactSettingsScreenLabels {
+  /**
+   * Line above the email. Default: "Une question, un bug, une suggestion ?".
+   */
   hint?: string;
+  /**
+   * Advice at the bottom on reporting a bug (what you were doing, what you
+   * expected).
+   */
   footer?: string;
-  /** Only used when `actions` is set — the email row's label (the button itself shows the address in the default single-button layout). */
+  /**
+   * Only used when `actions` is set — the email row's label (the button itself
+   * shows the address in the default single-button layout).
+   */
   emailRowLabel?: string;
 }
 
+/** Props of {@link ContactSettingsScreen}. */
 export interface ContactSettingsScreenProps {
+  /** Address the `mailto:` link opens. */
   email: string;
   /**
    * Extra rows below the email one (icon + label). Setting this switches
@@ -40,13 +72,16 @@ export interface ContactSettingsScreenProps {
    * `emailIcon`, label to `labels.emailRowLabel`) instead of the button.
    */
   actions?: ContactSettingsScreenAction[];
+  /** Icon of the email row (rows layout). */
   emailIcon?: keyof typeof Ionicons.glyphMap;
+  /** Text overrides, whatever the `locale`. */
   labels?: ContactSettingsScreenLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: ContactSettingsScreenStyles;
 }
 
@@ -100,9 +135,11 @@ const defaultStyles: Required<
   rowIconColor: "#111827",
 };
 
-// A mailto: button plus a short "how to report a bug" hint — the standard
-// "Contact" section of a settings tab. Pass `actions` for extra rows (share
-// the app, a donation link...), switching email + those to a rows layout.
+/**
+ * A mailto: button plus a short "how to report a bug" hint — the standard
+ * "Contact" section of a settings tab. Pass `actions` for extra rows (share
+ * the app, a donation link...), switching email + those to a rows layout.
+ */
 export function ContactSettingsScreen({
   email,
   actions,

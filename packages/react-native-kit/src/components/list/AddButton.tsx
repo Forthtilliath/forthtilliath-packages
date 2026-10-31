@@ -3,7 +3,10 @@ import { Pressable, Text } from "react-native";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link AddButton}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link AddButton}, each merged after its
+ * default.
+ */
 export interface AddButtonStyles {
   /** The dashed, full-width button. */
   button?: StyleProp<ViewStyle>;
@@ -11,9 +14,11 @@ export interface AddButtonStyles {
   text?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link AddButton}. */
 export interface AddButtonProps {
   /** Usually starts with "+", e.g. "+ Ajouter un groupe". */
   label: string;
+  /** Called on press, e.g. to open the creation screen. */
   onPress: () => void;
   /** Per-slot style overrides — see {@link AddButtonStyles}. */
   styles?: AddButtonStyles;
@@ -37,7 +42,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { AddButton } from "@forthtilliath/react-native-kit/components/list/AddButton";
+ * import { AddButton } from
+ * "@forthtilliath/react-native-kit/components/list/AddButton";
  *
  * <AddButton label="+ Ajouter un groupe" onPress={addGroup} />
  * ```

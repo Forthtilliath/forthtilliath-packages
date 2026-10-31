@@ -5,6 +5,7 @@ import {
   useEffectiveColorScheme,
 } from "../../hooks/useEffectiveColorScheme.js";
 
+/** What `useThemePreference` returns inside a `ThemePreferenceProvider`. */
 export interface ThemePreferenceContextValue {
   /** The user's choice: light, dark, or follow the system. */
   preference: ThemePreference;
@@ -22,7 +23,10 @@ export const ThemePreferenceContext =
     setPreference: () => undefined,
   });
 
-/** The theme preference and its setter, from the nearest `ThemePreferenceProvider`. */
+/**
+ * The theme preference and its setter, from the nearest
+ * `ThemePreferenceProvider`.
+ */
 export function useThemePreference(): ThemePreferenceContextValue {
   return use(ThemePreferenceContext);
 }
