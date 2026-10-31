@@ -11,14 +11,32 @@ export type DownloadAndInstallApk = (
   apkSha256?: string,
 ) => Promise<void>;
 
+/**
+ * State of {@link useApkInstall}: `idle` (nothing running, or Android's
+ * installer took over), `downloading` with a `progress` from 0 to 1, or `error`
+ * keeping what a retry needs.
+ */
 export type ApkInstallState =
   | { status: "idle" }
   | { status: "downloading"; version: string; progress: number }
   | { status: "error"; version: string; apkUrl: string; apkSha256?: string };
 
-// Tracks one APK download/install started from the UI: progress while it
-// downloads, back to idle once Android's installer has taken over, an error
-// state (keeping the URL) so the user can retry.
+/**
+ * Tracks one APK download / install started from the UI: progress while it
+ * downloads, back to idle once Android's installer has taken over, and an
+ * error state keeping the URL and checksum so the user can retry.
+ *
+ * @param downloadAndInstallApk - Downloads and installs an APK, typically a
+ *   wrapper around `downloadAndInstallApk` of
+ *   `@forthtilliath/expo-release-updates` with the app's file name and allowed
+ *   URL prefix.
+ * @returns `state` (see {@link ApkInstallState}), `start(version, apkUrl,
+ *   apkSha256?)` to begin, `retry()` after an error, and `reset()` to go back
+ *   to idle.
+ * @example
+ * const install = useApkInstall(downloadAndInstall);
+ * <Button title="Install" onPress={() => install.start(release.version, release.apkUrl, release.apkSha256)} />
+ */
 export function useApkInstall(downloadAndInstallApk: DownloadAndInstallApk) {
   const [state, setState] = useState<ApkInstallState>({ status: "idle" });
 

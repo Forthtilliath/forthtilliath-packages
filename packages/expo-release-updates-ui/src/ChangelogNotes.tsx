@@ -4,15 +4,23 @@ import { Text, View } from "react-native";
 import type { ChangelogSegment } from "@forthtilliath/expo-release-updates/parseChangelogNotes";
 import { parseChangelogNotes } from "@forthtilliath/expo-release-updates/parseChangelogNotes";
 
+/** Style overrides of {@link ChangelogNotes}, each merged over its default. */
 export interface ChangelogNotesStyles {
+  /** A `#`–`######` heading line. */
   heading?: StyleProp<TextStyle>;
+  /** The row of a `- ` list item (bullet + text side by side). */
   itemRow?: StyleProp<ViewStyle>;
+  /** The `•` of a list item. */
   bullet?: StyleProp<TextStyle>;
+  /** The text of a list item. */
   itemText?: StyleProp<TextStyle>;
+  /** A plain paragraph line. */
   text?: StyleProp<TextStyle>;
+  /** Applied on top of the surrounding text style to `**bold**` runs. */
   bold?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link ChangelogNotes}. */
 export interface ChangelogNotesProps {
   /** Raw release notes, e.g. straight from a GitHub release body. */
   notes: string;

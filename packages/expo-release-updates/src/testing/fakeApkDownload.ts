@@ -26,11 +26,29 @@ type CreateDownloadTask = (
   options: { onProgress: (event: ProgressEvent) => void },
 ) => FakeDownloadTask;
 
+/**
+ * A valid SHA-256 (64 hex digits), the digest the fake download reports by
+ * default.
+ * @internal
+ */
 export const SHA_A = "a".repeat(64);
+/**
+ * Another valid SHA-256, to simulate a mismatch.
+ * @internal
+ */
 export const SHA_B = "b".repeat(64);
+/**
+ * An APK URL under a GitHub release, accepted by the default `allowedHosts`.
+ * @internal
+ */
 export const GITHUB_APK =
   "https://github.com/acme/app/releases/download/v1.0.0/app.apk";
 
+/**
+ * Spies and switches behind the fake `expo-file-system` /
+ * `expo-intent-launcher` modules of this package's tests.
+ * @internal
+ */
 export const fakes: {
   fileExists: boolean;
   deleteDestination: Mock<() => void>;
@@ -48,6 +66,10 @@ export const fakes: {
   startActivityAsync: vi.fn<(...args: unknown[]) => Promise<void>>(),
 };
 
+/**
+ * Restores {@link fakes} to a clean state, in a `beforeEach`.
+ * @internal
+ */
 export function resetFakes() {
   fakes.fileExists = false;
   fakes.deleteDestination.mockClear();
@@ -78,6 +100,11 @@ export function mockDownloadTask(
   }));
 }
 
+/**
+ * Factory of the fake `expo-file-system` module (`File`, `Paths`) for
+ * `vi.mock`.
+ * @internal
+ */
 export function expoFileSystemModule() {
   class FakeFile {
     uri: string;
@@ -101,6 +128,10 @@ export function expoFileSystemModule() {
   return { File: FakeFile, Paths: { cache: { uri: "cache" } } };
 }
 
+/**
+ * Factory of the fake `expo-intent-launcher` module for `vi.mock`.
+ * @internal
+ */
 export function intentLauncherModule() {
   return {
     startActivityAsync: (...args: unknown[]) =>
