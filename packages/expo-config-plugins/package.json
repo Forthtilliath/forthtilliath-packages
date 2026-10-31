@@ -43,7 +43,7 @@
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
-    "expo": "~57.0.9",
+    "expo": "~57.0.31",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

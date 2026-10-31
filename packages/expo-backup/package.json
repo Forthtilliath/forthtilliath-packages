@@ -52,14 +52,14 @@
     "@forthtilliath/expo-test-kit": "workspace:*",
     "@forthtilliath/test-kit": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@react-native-google-signin/google-signin": "^16.1.5",
+    "@react-native-google-signin/google-signin": "^16.2.0",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "expo-crypto": "~57.0.4",
-    "expo-file-system": "~57.0.2",
+    "expo-file-system": "~57.0.7",
     "expo-secure-store": "~57.0.4",
-    "expo-sharing": "~57.0.23",
-    "react-native": "0.86.0",
+    "expo-sharing": "~57.0.24",
+    "react-native": "0.86.3",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
