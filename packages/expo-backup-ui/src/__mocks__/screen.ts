@@ -1,69 +1,34 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see renderHook.ts */
-import type { ReactElement } from "react";
-import { Alert, Pressable, Text } from "react-native";
-import { act, create, type ReactTestInstance } from "react-test-renderer";
+import { Alert } from "react-native";
+import { act, fireEvent, screen } from "@testing-library/react-native";
+import type { TestInstance } from "test-renderer";
 import { vi } from "vitest";
 
 import type { AlertButton } from "./react-native.js";
-import { propsOf } from "./testInstance.js";
 
-export function render(element: ReactElement) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
-
+/** Lets pending promises (and zero-delay timers) settle. */
 export async function flush(): Promise<void> {
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  });
+  await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
 }
 
-export function findButton(
-  tree: ReturnType<typeof create>,
-  label: string,
-): ReactTestInstance {
-  return tree.root.find(
-    (node) =>
-      node.type === Pressable &&
-      propsOf<{ accessibilityLabel?: string }>(node).accessibilityLabel ===
-        label,
-  );
+/** Taps the button named `label`, then lets its work settle. */
+export async function press(label: string) {
+  await fireEvent.press(screen.getByRole("button", { name: label }));
+  await flush();
 }
 
-export function hasButton(
-  tree: ReturnType<typeof create>,
-  label: string,
-): boolean {
-  try {
-    findButton(tree, label);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export async function press(tree: ReturnType<typeof create>, label: string) {
-  const button = findButton(tree, label);
-  await act(async () => {
-    propsOf<{ onPress: () => void }>(button).onPress();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  });
-}
-
-export function allText(tree: ReturnType<typeof create>): string {
-  return tree.root
-    .findAllByType(Text)
-    .map((node) => {
-      const { children } = propsOf<{ children?: unknown }>(node);
-      if (Array.isArray(children)) return children.join("");
-      return typeof children === "string" || typeof children === "number"
-        ? String(children)
-        : "";
-    })
+/** Every text on screen, one per line — for substring checks. */
+export function allText(): string {
+  const texts = screen.root?.queryAll((node) => node.type === "Text") ?? [];
+  return texts
+    .map((text) =>
+      text.children.filter((child) => typeof child === "string").join(""),
+    )
     .join("\n");
+}
+
+/** Host elements of `type` on screen (e.g. the native "Switch"). */
+export function elementsOfType(type: string): TestInstance[] {
+  return screen.root?.queryAll((node) => node.type === type) ?? [];
 }
 
 type AlertCall = [title: string, message?: string, buttons?: AlertButton[]];
