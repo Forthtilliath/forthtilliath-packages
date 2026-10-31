@@ -6,6 +6,7 @@ import { useCallback, useSyncExternalStore } from "react";
  * this exact shape. No dependency on Zustand itself.
  */
 export interface HydratableStore {
+  /** The `persist` API Zustand's `persist` middleware adds to the store. */
   persist: {
     hasHydrated: () => boolean;
     onFinishHydration: (listener: () => void) => () => void;

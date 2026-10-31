@@ -27,7 +27,9 @@ export function successFeedback(): void {
   );
 }
 
-/** An action that failed. */
+/**
+ * An action that failed: a heavier error vibration (best effort, never throws).
+ */
 export function errorFeedback(): void {
   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(
     () => {

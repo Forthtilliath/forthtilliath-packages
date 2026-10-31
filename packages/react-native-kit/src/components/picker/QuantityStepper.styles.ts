@@ -2,7 +2,10 @@ import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 import type { KitLocale } from "../../i18n/locale.js";
 
-/** Per-slot style overrides for {@link QuantityStepper}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link QuantityStepper}, each merged after its
+ * default.
+ */
 export interface QuantityStepperStyles {
   /** The row: − button, field, + button. */
   row?: StyleProp<ViewStyle>;
@@ -16,13 +19,19 @@ export interface QuantityStepperStyles {
   input?: StyleProp<TextStyle>;
 }
 
-/** Screen-reader labels of the three controls, built from the stepper's `label`. */
+/**
+ * Screen-reader labels of the three controls, built from the stepper's `label`.
+ */
 export interface QuantityStepperA11yLabels {
+  /** Spoken name of "−", from the stepper's `label`. */
   decrease: (label: string) => string;
+  /** Spoken name of "+", from the stepper's `label`. */
   increase: (label: string) => string;
+  /** Spoken name of the number field, from the stepper's `label`. */
   input: (label: string) => string;
 }
 
+/** Built-in spoken names of {@link QuantityStepper}, per locale. */
 export const defaultA11yLabels: Record<KitLocale, QuantityStepperA11yLabels> = {
   fr: {
     decrease: (label) => `Retirer : ${label}`,
@@ -36,6 +45,10 @@ export const defaultA11yLabels: Record<KitLocale, QuantityStepperA11yLabels> = {
   },
 };
 
+/**
+ * Default style of each slot of {@link QuantityStepper} (round blue buttons,
+ * centered number).
+ */
 export const defaultStyles = {
   row: {
     flexDirection: "row",

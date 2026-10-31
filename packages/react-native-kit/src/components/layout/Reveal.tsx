@@ -4,9 +4,14 @@ import { Animated } from "react-native";
 
 import { useReducedMotion } from "../../hooks/useReducedMotion.js";
 
+/** Props of {@link Reveal}. */
 export interface RevealProps {
+  /** The content to reveal. */
   children: ReactNode;
-  /** Position in a list: each item appears `staggerMs` after the previous one. @defaultValue 0 */
+  /**
+   * Position in a list: each item appears `staggerMs` after the previous one.
+   * @defaultValue 0
+   */
   index?: number;
   /** Delay between two consecutive items. @defaultValue 90 */
   staggerMs?: number;
@@ -14,8 +19,12 @@ export interface RevealProps {
   durationMs?: number;
   /** Distance slid up, in dp. @defaultValue 16 */
   distance?: number;
-  /** A livelier arrival with a slight bounce and zoom — for a winner, a highlight. */
+  /**
+   * A livelier arrival with a slight bounce and zoom — for a winner, a
+   * highlight.
+   */
   emphasis?: boolean;
+  /** Style of the animated wrapper. */
   style?: StyleProp<ViewStyle>;
 }
 
@@ -27,7 +36,8 @@ export interface RevealProps {
  *
  * @example
  * ```tsx
- * import { Reveal } from "@forthtilliath/react-native-kit/components/layout/Reveal";
+ * import { Reveal } from
+ * "@forthtilliath/react-native-kit/components/layout/Reveal";
  *
  * {ranking.map((entry, index) => (
  *   <Reveal key={entry.id} index={index} emphasis={index === 0}>

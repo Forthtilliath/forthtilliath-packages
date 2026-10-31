@@ -11,32 +11,51 @@ import { Text, TextInput, View } from "react-native";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link TextField}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link TextField}, each merged after its
+ * default.
+ */
 export interface TextFieldStyles {
   /** The column holding label, input, hint and error. */
   container?: StyleProp<ViewStyle>;
+  /** The label above the input. */
   label?: StyleProp<TextStyle>;
+  /** The input itself. */
   input?: StyleProp<TextStyle>;
   /** Added while the input has focus. */
   inputFocused?: StyleProp<TextStyle>;
   /** Added while `error` is set. */
   inputError?: StyleProp<TextStyle>;
+  /** The hint under the input. */
   hint?: StyleProp<TextStyle>;
+  /** The error message under the input. */
   error?: StyleProp<TextStyle>;
 }
 
-/** The app's palette for {@link TextField}; unset ones keep the neutral default. */
+/**
+ * The app's palette for {@link TextField}; unset ones keep the neutral default.
+ */
 export interface TextFieldColors {
+  /** Typed text. */
   text?: ColorValue;
+  /** The label. */
   label?: ColorValue;
+  /** The placeholder. */
   placeholder?: ColorValue;
+  /** The input's background. */
   background?: ColorValue;
   /** Contrast of at least 3:1 with the background (WCAG 1.4.11). */
   border?: ColorValue;
+  /** The border while the input has focus. */
   borderFocused?: ColorValue;
+  /** The error message and the border while `error` is set. */
   error?: ColorValue;
 }
 
+/**
+ * Props of {@link TextField}: those of a `TextInput` (except `style`), plus the
+ * options below.
+ */
 export interface TextFieldProps extends Omit<TextInputProps, "style"> {
   /** Shown above the input and read as its name. */
   label?: string;
@@ -47,13 +66,18 @@ export interface TextFieldProps extends Omit<TextInputProps, "style"> {
    * by TalkBack as soon as it appears. `null`/`undefined`/`""` = no error.
    */
   error?: string | null;
-  /** Adds " *" after the label, and "obligatoire" / "required" to its spoken name. */
+  /**
+   * Adds " *" after the label, and "obligatoire" / "required" to its spoken
+   * name.
+   */
   required?: boolean;
   /** Ref to the `TextInput` (focus, chaining with `onSubmitEditing`). */
   inputRef?: Ref<TextInput>;
   /** Language of the spoken "required". */
   locale?: KitLocale;
+  /** The app's palette (see {@link TextFieldColors}). */
   colors?: TextFieldColors;
+  /** Per-slot style overrides (see {@link TextFieldStyles}). */
   styles?: TextFieldStyles;
 }
 
@@ -97,7 +121,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { TextField } from "@forthtilliath/react-native-kit/components/form/TextField";
+ * import { TextField } from
+ * "@forthtilliath/react-native-kit/components/form/TextField";
  *
  * <TextField
  *   label="Nom du joueur"

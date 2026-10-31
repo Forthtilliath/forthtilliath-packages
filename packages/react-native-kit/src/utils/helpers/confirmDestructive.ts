@@ -2,9 +2,16 @@ import { Alert } from "react-native";
 
 import { DEFAULT_KIT_LOCALE, type KitLocale } from "../../i18n/locale.js";
 
+/** Options of {@link confirmDestructive}. */
 export interface ConfirmDestructiveOptions {
+  /**
+   * Message of the alert. Default: "Cette action est définitive." / "This can't
+   * be undone.".
+   */
   message?: string;
+  /** Cancel button. Default: "Annuler" / "Cancel". */
   cancelLabel?: string;
+  /** Confirm button, styled as destructive. Default: "Supprimer" / "Delete". */
   confirmLabel?: string;
   /**
    * Language of the default message/labels. Not a component, so this can't
@@ -29,8 +36,10 @@ const defaultTexts: Record<
   },
 };
 
-// Generic destructive confirmation (title + message + Cancel/Confirm), for
-// any irreversible action (deletion, reset...).
+/**
+ * Generic destructive confirmation (title + message + Cancel/Confirm), for
+ * any irreversible action (deletion, reset...).
+ */
 export function confirmDestructive(
   title: string,
   onConfirm: () => void,

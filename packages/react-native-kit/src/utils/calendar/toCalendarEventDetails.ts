@@ -1,22 +1,41 @@
-/** A calendar event as an app describes it: a day, and optional wall-clock hours. */
+/**
+ * A calendar event as an app describes it: a day, and optional wall-clock
+ * hours.
+ */
 export interface CalendarEventInput {
+  /** Title of the event in the calendar. */
   title: string;
+  /** Description of the event. Defaults to empty. */
   notes?: string;
   /** The day, `YYYY-MM-DD`. */
   date: string;
   /** `HH:MM`; without `start` and `end` the event lasts all day. */
   start?: string;
-  /** `HH:MM`; at or before `start`, the event ends the next day (night shift). */
+  /**
+   * `HH:MM`; at or before `start`, the event ends the next day (night shift).
+   */
   end?: string;
 }
 
 /** What `expo-calendar`'s `createEvent` expects. */
 export interface CalendarEventDetails {
+  /** Title of the event. */
   title: string;
+  /** Description of the event (empty string when none). */
   notes: string;
+  /** Start: local time, or UTC midnight for an all-day event. */
   startDate: Date;
+  /**
+   * End: local time (possibly the next day), or the next UTC midnight for an
+   * all-day event.
+   */
   endDate: Date;
+  /** Whether the event lasts all day. */
   allDay: boolean;
+  /**
+   * `"UTC"` for an all-day event, otherwise the `timeZone` argument (the
+   * device's by default).
+   */
   timeZone: string;
 }
 

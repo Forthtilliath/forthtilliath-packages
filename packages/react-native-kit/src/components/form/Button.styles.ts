@@ -1,8 +1,16 @@
 import type { ColorValue, StyleProp, TextStyle, ViewStyle } from "react-native";
 
+/**
+ * Look of a {@link Button}: `primary` (filled), `secondary` (soft fill),
+ * `outline`, `ghost` (text only) or `danger` (filled red).
+ */
 export type ButtonVariant =
   "primary" | "secondary" | "outline" | "ghost" | "danger";
 
+/**
+ * Size of a {@link Button}: `sm` (dense rows), `md` (48 dp, the default) or
+ * `lg`.
+ */
 export type ButtonSize = "sm" | "md" | "lg";
 
 /**
@@ -26,7 +34,9 @@ export interface ButtonColors {
   onDanger?: ColorValue;
 }
 
-/** Per-slot style overrides for {@link Button}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link Button}, each merged after its default.
+ */
 export interface ButtonStyles {
   /** The pressable itself: background, border, radius, padding, height. */
   button?: StyleProp<ViewStyle>;
@@ -36,9 +46,14 @@ export interface ButtonStyles {
   disabled?: StyleProp<ViewStyle>;
   /** The row holding the icon and the label. */
   content?: StyleProp<ViewStyle>;
+  /** The label. */
   label?: StyleProp<TextStyle>;
 }
 
+/**
+ * Neutral default palette of {@link Button} (blue primary, slate secondary, red
+ * danger).
+ */
 export const defaultButtonColors = {
   primary: "#2563eb",
   onPrimary: "#ffffff",
@@ -49,7 +64,14 @@ export const defaultButtonColors = {
   onDanger: "#ffffff",
 } satisfies Required<ButtonColors>;
 
-/** Background, border and label color of each variant. */
+/**
+ * Background, border and label color of a variant, read from the palette.
+ *
+ * @param variant - The button's variant.
+ * @param colors - The complete palette (defaults merged with the app's colors).
+ * @returns The three colors the button paints.
+ * @internal
+ */
 export function variantColors(
   variant: ButtonVariant,
   colors: Required<ButtonColors>,
@@ -88,14 +110,18 @@ export function variantColors(
   }
 }
 
-// 48 dp for "md": Android's minimum touch target. "sm" is for dense rows —
-// give it a hitSlop if it stands alone.
+/**
+ * 48 dp for "md": Android's minimum touch target. "sm" is for dense rows —
+ * give it a hitSlop if it stands alone.
+ * @internal
+ */
 export const sizeStyles = {
   sm: { minHeight: 36, paddingHorizontal: 12, gap: 6, fontSize: 14 },
   md: { minHeight: 48, paddingHorizontal: 16, gap: 8, fontSize: 16 },
   lg: { minHeight: 56, paddingHorizontal: 20, gap: 10, fontSize: 17 },
 } as const;
 
+/** Default style of each slot of {@link Button}. */
 export const defaultButtonStyles = {
   button: {
     borderRadius: 12,

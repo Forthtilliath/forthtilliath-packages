@@ -19,6 +19,7 @@ export interface UndoToastStyles {
   action?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link UndoToast}. */
 export interface UndoToastProps {
   /**
    * What just happened, phrased in the past tense — e.g.
@@ -100,7 +101,8 @@ const defaultStyles = {
  *
  * @example Minimal
  * ```tsx
- * import { UndoToast } from "@forthtilliath/react-native-kit/components/list/UndoToast";
+ * import { UndoToast } from
+ * "@forthtilliath/react-native-kit/components/list/UndoToast";
  *
  * {recentlyDeleted && (
  *   <UndoToast

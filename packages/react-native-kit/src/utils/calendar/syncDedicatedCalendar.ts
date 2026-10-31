@@ -4,14 +4,19 @@ import type { CalendarEventDetails } from "./toCalendarEventDetails.js";
 
 /** The app's own calendar on the phone. */
 export interface DedicatedCalendar {
-  /** Internal name (Android), stable: finds the calendar again on the next sync. */
+  /**
+   * Internal name (Android), stable: finds the calendar again on the next sync.
+   */
   name: string;
   /** Shown in the user's calendar app. */
   title: string;
+  /** Color of the calendar's events, e.g. `"#2563eb"`. */
   color: string;
 }
 
+/** Options of {@link syncDedicatedCalendar}. */
 export interface SyncDedicatedCalendarOptions {
+  /** The app's calendar, found by `name` or created. */
   calendar: DedicatedCalendar;
   /** Start of the period to replace (included). */
   from: Date;
@@ -21,6 +26,10 @@ export interface SyncDedicatedCalendarOptions {
   events: readonly CalendarEventDetails[];
 }
 
+/**
+ * Outcome of {@link syncDedicatedCalendar}: `denied` when calendar access was
+ * refused, `done` with the number of events written.
+ */
 export type CalendarSyncResult =
   { status: "denied" } | { status: "done"; count: number };
 
@@ -55,7 +64,8 @@ async function getOrCreateLocalCalendar({
  * first. Needs `expo-calendar` (an optional peer dependency).
  *
  * @param options - See {@link SyncDedicatedCalendarOptions}.
- * @returns `{ status: "denied" }` without the permission, else the number of events written.
+ * @returns `{ status: "denied" }` without the permission, else the number of
+ *   events written.
  */
 export async function syncDedicatedCalendar({
   calendar,

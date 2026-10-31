@@ -2,15 +2,27 @@ import { useMemo } from "react";
 
 import type { PickerItem } from "./PickerModal.js";
 
+/**
+ * One section of the results list.
+ * @internal
+ */
 export interface PickerModalSection {
+  /**
+   * Section title, `null` for the single untitled section (search, or no
+   * groups).
+   */
   title: string | null;
+  /** Its items. */
   data: PickerItem[];
 }
 
-// Sections sorted by title: stable order, independent of the source groups'
-// order. No sections during a search (results ranked by relevance, not by
-// group), nor if no item has a group (uncategorized pickers, unchanged
-// behavior).
+/**
+ * Sections sorted by title: stable order, independent of the source groups'
+ * order. No sections during a search (results ranked by relevance, not by
+ * group), nor if no item has a group (uncategorized pickers, unchanged
+ * behavior).
+ * @internal
+ */
 export function usePickerModalSections(
   filtered: PickerItem[],
   isSearching: boolean,

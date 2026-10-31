@@ -8,14 +8,20 @@ import { moveItem } from "@forthtilliath/ts-kit/array/moveItem";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link ReorderList}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link ReorderList}, each merged after its
+ * default.
+ */
 export interface ReorderListStyles {
+  /** The list. */
   list?: StyleProp<ViewStyle>;
+  /** Each row (position, content, arrows). */
   row?: StyleProp<ViewStyle>;
   /** The "1", "2"… before each item. */
   position?: StyleProp<TextStyle>;
   /** The item's label (default content). */
   label?: StyleProp<TextStyle>;
+  /** Each ▲ / ▼ button. */
   arrow?: StyleProp<ViewStyle>;
   /** Added to the arrow that can't move (first ▲, last ▼). */
   arrowDisabled?: StyleProp<ViewStyle>;
@@ -23,6 +29,7 @@ export interface ReorderListStyles {
   arrowColor?: ColorValue;
 }
 
+/** Spoken names of the arrows, whatever the `locale`. */
 export interface ReorderListLabels {
   /** Spoken name of ▲, from the item's label. */
   moveUp: (label: string) => string;
@@ -30,21 +37,35 @@ export interface ReorderListLabels {
   moveDown: (label: string) => string;
 }
 
+/** Props of {@link ReorderList}. */
 export interface ReorderListProps<T> {
+  /** The items, in their current order. */
   items: readonly T[];
+  /**
+   * Stable unique key of an item (its id): keeps the screen-reader focus on the
+   * item that moved.
+   */
   keyExtractor: (item: T) => string;
   /** The item's name: shown by default, and in the arrows' spoken names. */
   getLabel: (item: T) => string;
   /** Receives the reordered copy, and which position moved where. */
   onChange: (items: T[], move: { from: number; to: number }) => void;
-  /** Replaces the label between the position and the arrows (avatar + name…). */
+  /**
+   * Replaces the label between the position and the arrows (avatar + name…).
+   */
   renderItem?: (item: T, index: number) => ReactNode;
   /** Shows "1", "2"… before each item. @defaultValue true */
   showPosition?: boolean;
   /** Called on each move, before `onChange` — e.g. `selectFeedback`. */
   onMoveFeedback?: () => void;
+  /**
+   * Language of the arrows' spoken names — French by default, or the nearest
+   * `KitLocaleProvider`'s.
+   */
   locale?: KitLocale;
+  /** Spoken-name overrides, whatever the `locale`. */
   labels?: Partial<ReorderListLabels>;
+  /** Style overrides, merged over the defaults. */
   styles?: ReorderListStyles;
 }
 
@@ -92,7 +113,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { ReorderList } from "@forthtilliath/react-native-kit/components/list/ReorderList";
+ * import { ReorderList } from
+ * "@forthtilliath/react-native-kit/components/list/ReorderList";
  *
  * <ReorderList
  *   items={players}

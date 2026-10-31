@@ -5,11 +5,16 @@ import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 /** One choice of an {@link OptionsModal} or a `SelectField`. */
 export interface SelectOption<T extends string | number> {
+  /** Value reported by `onSelect`. */
   value: T;
+  /** Text of the option. */
   label: string;
 }
 
-/** Per-slot style overrides for {@link OptionsModal}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link OptionsModal}, each merged after its
+ * default.
+ */
 export interface OptionsModalStyles {
   /** The dimmed full-screen backdrop centering the card; tapping it closes. */
   overlay?: StyleProp<ViewStyle>;
@@ -21,11 +26,15 @@ export interface OptionsModalStyles {
   optionText?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link OptionsModal}. */
 export interface OptionsModalProps<T extends string | number> {
+  /** Whether the popup is open. */
   visible: boolean;
   /** Called on a backdrop tap, on Android's back button, and after a choice. */
   onClose: () => void;
+  /** The choices, in display order. */
   options: readonly SelectOption<T>[];
+  /** Called with the chosen value, before `onClose`. */
   onSelect: (value: T) => void;
   /** Per-slot style overrides — see {@link OptionsModalStyles}. */
   styles?: OptionsModalStyles;
@@ -57,12 +66,14 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { OptionsModal } from "@forthtilliath/react-native-kit/components/picker/OptionsModal";
+ * import { OptionsModal } from
+ * "@forthtilliath/react-native-kit/components/picker/OptionsModal";
  *
  * <OptionsModal
  *   visible={open}
  *   onClose={() => setOpen(false)}
- *   options={[{ value: "a", label: "Option A" }, { value: "b", label: "Option B" }]}
+ *   options={[{ value: "a", label: "Option A" }, { value: "b", label: "Option
+ * B" }]}
  *   onSelect={setChoice}
  * />
  * ```

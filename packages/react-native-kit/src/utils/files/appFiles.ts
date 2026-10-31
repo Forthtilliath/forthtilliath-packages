@@ -49,10 +49,14 @@ export function getFileExtension(uri: string, fallback = "jpg"): string {
   return match?.[1] ?? fallback;
 }
 
+/** Options of {@link persistFile}. */
 export interface PersistFileOptions {
   /** Persistent sub-folder, see `getAppDirectory`. */
   directory: string;
-  /** Start of the new file name (letters, digits, `_`, `-`), followed by a timestamp. */
+  /**
+   * Start of the new file name (letters, digits, `_`, `-`), followed by a
+   * timestamp.
+   */
   prefix: string;
 }
 
@@ -72,6 +76,7 @@ export async function persistFile(
   return destination.uri;
 }
 
+/** Options of {@link writeBase64File}. */
 export interface WriteBase64FileOptions extends PersistFileOptions {
   /** @defaultValue "jpg" */
   extension?: string;
@@ -110,7 +115,10 @@ export function readFileBase64(uri: string): string | null {
   }
 }
 
-/** Whether a file exists at `uri`; `false` for a malformed URI instead of throwing. */
+/**
+ * Whether a file exists at `uri`; `false` for a malformed URI instead of
+ * throwing.
+ */
 export function fileExists(uri: string): boolean {
   try {
     return new File(uri).exists;

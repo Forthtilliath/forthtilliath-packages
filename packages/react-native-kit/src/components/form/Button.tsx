@@ -26,7 +26,12 @@ export type {
   ButtonVariant,
 } from "./Button.styles.js";
 
+/** Props of {@link Button}. */
 export interface ButtonProps {
+  /**
+   * Text of the button, also its accessible name unless `accessibilityLabel` is
+   * set.
+   */
   label: string;
   /**
    * Called on press. When it returns a promise, the button shows a spinner
@@ -34,12 +39,16 @@ export interface ButtonProps {
    * any state in the caller. A rejection goes to `onError`.
    */
   onPress?: (() => void) | (() => Promise<unknown>);
-  /** Receives a rejection of `onPress`'s promise; without it, it stays unhandled. */
+  /**
+   * Receives a rejection of `onPress`'s promise; without it, it stays
+   * unhandled.
+   */
   onError?: (error: unknown) => void;
   /** @defaultValue "primary" */
   variant?: ButtonVariant;
   /** @defaultValue "md" (48 dp, Android's minimum touch target) */
   size?: ButtonSize;
+  /** Greys the button out and ignores presses. */
   disabled?: boolean;
   /** Shows a spinner and ignores presses (announced as busy). */
   loading?: boolean;
@@ -54,16 +63,19 @@ export interface ButtonProps {
   fullWidth?: boolean;
   /**
    * Drawn under the label, filling the button and clipped to its corners —
-   * e.g. a stretched gradient image (`<Image source={gradient} style={StyleSheet.absoluteFill} resizeMode="stretch" />`).
+   * e.g. a stretched gradient image (`<Image source={gradient}
+   * style={StyleSheet.absoluteFill} resizeMode="stretch" />`).
    */
   background?: ReactNode;
   /** Read by screen readers instead of `label`. */
   accessibilityLabel?: string;
+  /** What happens on press, read by screen readers after the label. */
   accessibilityHint?: string;
   /** Caps the system font scaling of the label. */
   maxFontSizeMultiplier?: number;
   /** Extends the touch area beyond the button (useful with `size="sm"`). */
   hitSlop?: number | Insets;
+  /** Test identifier of the pressable. */
   testID?: string;
   /** The app's palette — see {@link ButtonColors}. */
   colors?: ButtonColors;
@@ -87,10 +99,13 @@ function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
  *
  * @example
  * ```tsx
- * import { Button } from "@forthtilliath/react-native-kit/components/form/Button";
+ * import { Button } from
+ * "@forthtilliath/react-native-kit/components/form/Button";
  *
- * <Button label="Enregistrer" onPress={save} colors={{ primary: c.primary, onPrimary: c.onPrimary }} />
- * <Button label="Supprimer" variant="danger" onPress={() => confirmDestructive("Supprimer ?", remove)} />
+ * <Button label="Enregistrer" onPress={save} colors={{ primary: c.primary,
+ * onPrimary: c.onPrimary }} />
+ * <Button label="Supprimer" variant="danger" onPress={() =>
+ * confirmDestructive("Supprimer ?", remove)} />
  * ```
  */
 export function Button({

@@ -7,7 +7,10 @@ import { Pressable } from "react-native-gesture-handler";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link DragHandle}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link DragHandle}, each merged after its
+ * default.
+ */
 export interface DragHandleStyles {
   /** The touch target around the glyph. */
   handle?: StyleProp<ViewStyle>;
@@ -15,9 +18,14 @@ export interface DragHandleStyles {
   text?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link DragHandle}. */
 export interface DragHandleProps {
   /** Start the drag here — typically `drag` from a `DraggableFlatList` row. */
   onPressIn: () => void;
+  /**
+   * Greys the handle out and ignores the press (e.g. while another row is
+   * dragged).
+   */
   disabled?: boolean;
   /** E.g. `"Déplacer « Marie »"`. */
   accessibilityLabel: string;
@@ -36,11 +44,13 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { DragHandle } from "@forthtilliath/react-native-kit/components/list/DragHandle";
+ * import { DragHandle } from
+ * "@forthtilliath/react-native-kit/components/list/DragHandle";
  *
  * renderItem={({ item, drag, isActive }) => (
  *   <Row>
- *     <DragHandle onPressIn={drag} disabled={isActive} accessibilityLabel={`Déplacer ${item.name}`} />
+ *     <DragHandle onPressIn={drag} disabled={isActive}
+ * accessibilityLabel={`Déplacer ${item.name}`} />
  *     <Text>{item.name}</Text>
  *   </Row>
  * )}

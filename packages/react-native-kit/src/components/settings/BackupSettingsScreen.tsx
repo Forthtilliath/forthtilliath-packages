@@ -32,8 +32,12 @@ export type {
   BackupSettingsScreenStyles,
 } from "./BackupSettingsScreen.styles.js";
 
+/** Props of {@link BackupSettingsScreen}. */
 export interface BackupSettingsScreenProps {
-  /** Exports/shares the app's data however it sees fit (e.g. a JSON file via the native share sheet). */
+  /**
+   * Exports/shares the app's data however it sees fit (e.g. a JSON file via the
+   * native share sheet).
+   */
   onExport: () => Promise<void>;
   /**
    * Imports data from a file the user picks, replacing what's currently
@@ -43,7 +47,10 @@ export interface BackupSettingsScreenProps {
   onImport: () => Promise<void>;
   /** Omit entirely to not show a reminder toggle at all. */
   reminder?: BackupSettingsScreenReminder;
-  /** An info box above everything else, e.g. "Last auto-backup: ...". Omit to not show one. */
+  /**
+   * An info box above everything else, e.g. "Last auto-backup: ...". Omit to
+   * not show one.
+   */
   info?: BackupSettingsScreenInfo;
   /**
    * `"compact"` (default): one shared hint, both buttons side by side.
@@ -51,14 +58,19 @@ export interface BackupSettingsScreenProps {
    * stacked full-width.
    */
   layout?: "compact" | "sections";
-  /** Leading icon for each button. Omit either (or both) for a text-only button (default). */
+  /**
+   * Leading icon for each button. Omit either (or both) for a text-only button
+   * (default).
+   */
   icons?: BackupSettingsScreenIcons;
+  /** Text overrides, whatever the `locale`. */
   labels?: BackupSettingsScreenLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: BackupSettingsScreenStyles;
 }
 
@@ -66,11 +78,13 @@ function errorMessage(err: unknown, fallback: string) {
   return err instanceof Error ? err.message : fallback;
 }
 
-// Export/import buttons plus an optional reminder-notification toggle — the
-// standard "Backup" section of a settings tab. Deliberately just a shell:
-// what gets exported/imported is entirely app-specific (its own database
-// tables), so `onExport`/`onImport` are required props, not something this
-// package could have a sensible default for.
+/**
+ * Export/import buttons plus an optional reminder-notification toggle — the
+ * standard "Backup" section of a settings tab. Deliberately just a shell:
+ * what gets exported/imported is entirely app-specific (its own database
+ * tables), so `onExport`/`onImport` are required props, not something this
+ * package could have a sensible default for.
+ */
 export function BackupSettingsScreen({
   onExport,
   onImport,

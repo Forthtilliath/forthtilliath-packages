@@ -10,7 +10,10 @@ import {
   type SelectOption,
 } from "./OptionsModal.js";
 
-/** Per-slot style overrides for {@link SelectField}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link SelectField}, each merged after its
+ * default.
+ */
 export interface SelectFieldStyles {
   /** The outer wrapper (`flex: 1`, so two fields share a row evenly). */
   container?: StyleProp<ViewStyle>;
@@ -26,12 +29,15 @@ export interface SelectFieldStyles {
   optionsModal?: OptionsModalStyles;
 }
 
+/** Props of {@link SelectField}. */
 export interface SelectFieldProps<T extends string | number> {
   /** Caption above the button, e.g. "Mois". */
   label: string;
   /** Text of the current value, shown in the button. */
   valueLabel: string;
+  /** The choices offered in the popup. */
   options: readonly SelectOption<T>[];
+  /** Called with the chosen value. */
   onSelect: (value: T) => void;
   /** Per-slot style overrides — see {@link SelectFieldStyles}. */
   styles?: SelectFieldStyles;
@@ -68,7 +74,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { SelectField } from "@forthtilliath/react-native-kit/components/picker/SelectField";
+ * import { SelectField } from
+ * "@forthtilliath/react-native-kit/components/picker/SelectField";
  *
  * <SelectField
  *   label="Mois"

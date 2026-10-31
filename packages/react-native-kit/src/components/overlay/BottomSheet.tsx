@@ -10,7 +10,10 @@ import {
   type BottomSheetHeaderProps,
 } from "./BottomSheetHeader.js";
 
-/** Per-slot style overrides for {@link BottomSheet}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link BottomSheet}, each merged after its
+ * default.
+ */
 export interface BottomSheetStyles {
   /** The dimmed full-screen backdrop; tapping it closes the sheet. */
   overlay?: StyleProp<ViewStyle>;
@@ -20,10 +23,13 @@ export interface BottomSheetStyles {
   scroll?: StyleProp<ViewStyle>;
 }
 
+/** Props of {@link BottomSheet}. */
 export interface BottomSheetProps {
+  /** Whether the sheet is open. */
   visible: boolean;
   /** Called on a backdrop tap and on Android's back button. */
   onClose: () => void;
+  /** The sheet's content, scrollable past `maxHeight`. */
   children: ReactNode;
   /**
    * Extra space below the content, typically the bottom safe-area inset
@@ -35,7 +41,9 @@ export interface BottomSheetProps {
   bottomInset?: number;
   /** Per-slot style overrides — see {@link BottomSheetStyles}. */
   styles?: BottomSheetStyles;
-  /** A title above the content, which stays visible while the content scrolls. */
+  /**
+   * A title above the content, which stays visible while the content scrolls.
+   */
   title?: string;
   /** A quieter line under the title. */
   subtitle?: string;
@@ -43,9 +51,13 @@ export interface BottomSheetProps {
   headerAction?: BottomSheetHeaderProps["action"];
   /** Shows a grab bar at the top. @defaultValue false */
   showHandle?: boolean;
-  /** Shows a × button calling `onClose`, right of the title. @defaultValue false */
+  /**
+   * Shows a × button calling `onClose`, right of the title. @defaultValue false
+   */
   showCloseButton?: boolean;
-  /** Spoken name of the × button. @defaultValue "Fermer" ("Close" in English) */
+  /**
+   * Spoken name of the × button. @defaultValue "Fermer" ("Close" in English)
+   */
   closeLabel?: string;
   /** Language of the built-in labels. */
   locale?: KitLocale;
@@ -87,11 +99,13 @@ const backdropFill = {
  *
  * @example
  * ```tsx
- * import { BottomSheet } from "@forthtilliath/react-native-kit/components/overlay/BottomSheet";
+ * import { BottomSheet } from
+ * "@forthtilliath/react-native-kit/components/overlay/BottomSheet";
  *
  * const { bottom } = useSafeAreaInsets();
  *
- * <BottomSheet visible={open} onClose={() => setOpen(false)} bottomInset={bottom}>
+ * <BottomSheet visible={open} onClose={() => setOpen(false)}
+ * bottomInset={bottom}>
  *   <DayDetails day={day} />
  * </BottomSheet>
  *

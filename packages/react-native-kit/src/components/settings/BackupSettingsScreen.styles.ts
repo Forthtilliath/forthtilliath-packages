@@ -3,67 +3,140 @@ import type { Ionicons } from "@expo/vector-icons";
 
 import type { KitLocale } from "../../i18n/locale.js";
 
+/**
+ * The optional "backup reminder" switch of {@link BackupSettingsScreen};
+ * scheduling the notification is up to the app.
+ */
 export interface BackupSettingsScreenReminder {
+  /** Whether the reminder is on. */
   enabled: boolean;
-  /** Set while a permission request or the toggle's own persistence is in flight. */
+  /**
+   * Set while a permission request or the toggle's own persistence is in
+   * flight.
+   */
   busy?: boolean;
+  /**
+   * Called with the new value when the switch is flipped (schedule or cancel
+   * the notification, persist the choice).
+   */
   onToggle: (value: boolean) => void;
-  /** How often the reminder fires, only used to word the hint (e.g. "every 7 days"). */
+  /**
+   * How often the reminder fires, only used to word the hint (e.g. "every 7
+   * days").
+   */
   intervalDays: number;
 }
 
+/** A label / value box shown above the buttons. */
 export interface BackupSettingsScreenInfo {
+  /** Small caption, e.g. "Last backup". */
   label: string;
+  /** The information itself, e.g. a formatted date. */
   value: string;
 }
 
+/** Ionicons names of the buttons' leading icons. */
 export interface BackupSettingsScreenIcons {
+  /** Icon of the export button, e.g. `"share-outline"`. */
   export?: keyof typeof Ionicons.glyphMap;
+  /** Icon of the import button, e.g. `"download-outline"`. */
   import?: keyof typeof Ionicons.glyphMap;
 }
 
+/**
+ * Style overrides of {@link BackupSettingsScreen}, each merged over its
+ * default.
+ */
 export interface BackupSettingsScreenStyles {
+  /** The screen's root view. */
   container?: StyleProp<ViewStyle>;
+  /** The `info` box. */
   infoBox?: StyleProp<ViewStyle>;
+  /** Its caption. */
   infoLabel?: StyleProp<TextStyle>;
+  /** Its value. */
   infoValue?: StyleProp<TextStyle>;
+  /** Titles of the export and import sections (`layout="sections"`). */
   sectionTitle?: StyleProp<TextStyle>;
+  /** Explanatory texts (shared hint, or each section's help text). */
   hint?: StyleProp<TextStyle>;
+  /** Row holding both buttons side by side (`layout="compact"`). */
   row?: StyleProp<ViewStyle>;
+  /** Both buttons. */
   button?: StyleProp<ViewStyle>;
+  /** Added to a button while its action runs. */
   buttonDisabled?: StyleProp<ViewStyle>;
+  /** Both buttons' labels. */
   buttonText?: StyleProp<TextStyle>;
+  /**
+   * Not a style: color of the buttons' icons. Defaults to {@link
+   * defaultIconColor}.
+   */
   iconColor?: string;
-  /** Merged on top of `button`/`buttonText` — defaults to the same look as the export button. */
+  /**
+   * Merged on top of `button`/`buttonText` — defaults to the same look as the
+   * export button.
+   */
   importButton?: StyleProp<ViewStyle>;
+  /** Merged on top of `buttonText` for the import button. */
   importButtonText?: StyleProp<TextStyle>;
+  /** Row of the reminder switch. */
   reminderRow?: StyleProp<ViewStyle>;
+  /** Column holding the reminder's label and hint, left of the switch. */
   reminderTextColumn?: StyleProp<ViewStyle>;
+  /** The reminder's label. */
   reminderLabel?: StyleProp<TextStyle>;
+  /** The reminder's hint (its frequency). */
   reminderHint?: StyleProp<TextStyle>;
+  /**
+   * Not a style: color of the spinner shown in a button while its action runs.
+   */
   activityIndicatorColor?: string;
 }
 
+/** Text overrides of {@link BackupSettingsScreen}, whatever the `locale`. */
 export interface BackupSettingsScreenLabels {
+  /**
+   * Shared explanation of `layout="compact"` (data lives on this device only,
+   * export it regularly).
+   */
   hint?: string;
+  /** Label of the export button. Default: "⬆️ Exporter" / "⬆️ Export". */
   exportButton?: string;
+  /** Label of the import button. Default: "⬇️ Importer" / "⬇️ Import". */
   importButton?: string;
   /** Only shown in `layout="sections"`. */
   exportSectionTitle?: string;
+  /** Help text of the export section (`layout="sections"`). */
   exportHelpText?: string;
+  /** Title of the import section (`layout="sections"`). */
   importSectionTitle?: string;
+  /**
+   * Help text of the import section (`layout="sections"`): the import replaces
+   * everything.
+   */
   importHelpText?: string;
+  /** Title of the confirmation shown before `onImport`. */
   importConfirmTitle?: string;
+  /** Message of that confirmation (current data will be replaced). */
   importConfirmMessage?: string;
+  /** Its confirm button. Default: "Choisir un fichier" / "Choose a file". */
   importConfirmLabel?: string;
+  /** Its cancel button. */
   importConfirmCancelLabel?: string;
+  /** Label of the reminder switch. */
   reminderLabel?: string;
+  /** Hint under the reminder switch, from its `intervalDays`. */
   reminderHint?: (intervalDays: number) => string;
+  /** Title of the alert when `onExport` throws (the message is the error's). */
   exportErrorTitle?: string;
+  /** Title of the alert when `onImport` throws (the message is the error's). */
   importErrorTitle?: string;
+  /** Message of those alerts when the thrown value isn't an `Error`. */
   genericErrorMessage?: string;
 }
 
+/** Built-in texts of {@link BackupSettingsScreen}, per locale. */
 export const defaultLabels = {
   fr: {
     hint: "Les données sont stockées uniquement sur cet appareil et sont perdues en cas de réinstallation ou de mise à jour incompatible. Exporte-les régulièrement pour pouvoir les restaurer.",
@@ -111,6 +184,7 @@ export const defaultLabels = {
   },
 } satisfies Record<KitLocale, Required<BackupSettingsScreenLabels>>;
 
+/** Default style of each slot of {@link BackupSettingsScreen}. */
 export const defaultStyles = {
   container: {} satisfies ViewStyle,
   infoBox: {
@@ -171,4 +245,5 @@ export const defaultStyles = {
   reminderHint: { fontSize: 13, color: "#6b7280" } satisfies TextStyle,
 };
 
+/** Default color of the buttons' icons (blue). */
 export const defaultIconColor = "#2563eb";

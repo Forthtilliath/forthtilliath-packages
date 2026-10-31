@@ -7,6 +7,10 @@ import {
   type ShareViewAsImageOptions,
 } from "../utils/helpers/shareViewAsImage.js";
 
+/**
+ * Options of {@link useViewShare}: those of {@link shareViewAsImage}, plus
+ * error handling.
+ */
 export interface UseViewShareOptions extends ShareViewAsImageOptions {
   /**
    * Called when the capture or the share fails (capture missing from this
@@ -19,6 +23,7 @@ export interface UseViewShareOptions extends ShareViewAsImageOptions {
   errorMessage?: string;
 }
 
+/** What {@link useViewShare} returns. */
 export interface UseViewShareResult {
   /**
    * For the `<View>` to capture. Spelled out as `ComponentRef<typeof View>`
@@ -29,6 +34,10 @@ export interface UseViewShareResult {
   ref: RefObject<ComponentRef<typeof View> | null>;
   /** `true` while the capture runs: mount the view meanwhile. */
   capturing: boolean;
+  /**
+   * Mounts the view (`capturing`), waits for it to be drawn, captures it and
+   * opens the share sheet.
+   */
   share: () => Promise<void>;
 }
 
@@ -46,7 +55,9 @@ const defaultErrorLabels: Record<
   },
 };
 
-/** Resolves once React has rendered the last state change and native drew it. */
+/**
+ * Resolves once React has rendered the last state change and native drew it.
+ */
 function nextFrames() {
   return new Promise<void>((resolve) => {
     requestAnimationFrame(() => {

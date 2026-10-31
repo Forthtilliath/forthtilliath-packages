@@ -4,17 +4,27 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
+/** Style overrides of {@link Thumbnail}, each merged over its default. */
 export interface ThumbnailStyles {
+  /** The photo. */
   thumbnail?: StyleProp<ImageStyle>;
+  /** The icon box shown without a photo. */
   placeholder?: StyleProp<ViewStyle>;
+  /** Not a style: color of the placeholder icon. */
   iconColor?: string;
 }
 
+/** Props of {@link Thumbnail}. */
 export interface ThumbnailProps {
+  /** URI of the photo, `null` to show the placeholder icon. */
   photoUri: string | null;
-  /** Icon shown in place of a photo, e.g. "cube-outline", "restaurant-outline". */
+  /**
+   * Icon shown in place of a photo, e.g. "cube-outline", "restaurant-outline".
+   */
   placeholderIcon: keyof typeof Ionicons.glyphMap;
+  /** Side of the square, in dp. Defaults to 48. */
   size?: number;
+  /** Style overrides, merged over the defaults. */
   styles?: ThumbnailStyles;
 }
 
@@ -31,7 +41,9 @@ const defaultStyles: Required<ThumbnailStyles> = {
   iconColor: "#6b7280",
 };
 
-// List-row thumbnail (photo, or a placeholder icon when there is none).
+/**
+ * List-row thumbnail (photo, or a placeholder icon when there is none).
+ */
 export function Thumbnail({
   photoUri,
   placeholderIcon,

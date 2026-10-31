@@ -4,24 +4,44 @@ import { Ionicons } from "@expo/vector-icons";
 
 import type { PickerItem } from "./PickerModal.js";
 
+/**
+ * Merged styles of a result row.
+ * @internal
+ */
 export interface PickerModalRowStyles {
+  /** The row. */
   row: StyleProp<ViewStyle>;
+  /** The photo. */
   rowThumbnail: StyleProp<ImageStyle>;
+  /** The placeholder icon box. */
   rowThumbnailPlaceholder: StyleProp<ViewStyle>;
+  /** Color of the placeholder icon. */
   rowThumbnailPlaceholderIconColor: string;
+  /** The label. */
   rowLabel: StyleProp<TextStyle>;
+  /** The subtitle. */
   rowSubtitle: StyleProp<TextStyle>;
 }
 
+/**
+ * Props of {@link PickerModalRow}.
+ * @internal
+ */
 export interface PickerModalRowProps {
+  /** The item of this row. */
   item: PickerItem;
+  /** Merged styles. */
   styles: PickerModalRowStyles;
+  /** Called with the item when the row is pressed. */
   onSelect: (item: PickerItem) => void;
 }
 
-// One result row: thumbnail (photo, placeholder icon, or nothing depending
-// on `imageUri`), label, and optional subtitle. Extracted from PickerModal's
-// `renderItem` to keep that file under the project's 300-line-per-file rule.
+/**
+ * One result row: thumbnail (photo, placeholder icon, or nothing depending
+ * on `imageUri`), label, and optional subtitle. Extracted from PickerModal's
+ * `renderItem` to keep that file under the project's 300-line-per-file rule.
+ * @internal
+ */
 export function PickerModalRow({
   item,
   styles,

@@ -3,31 +3,49 @@ import { Pressable, Switch, Text, View } from "react-native";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link SwitchRow}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link SwitchRow}, each merged after its
+ * default.
+ */
 export interface SwitchRowStyles {
   /** The pressable row (border and background included). */
   row?: StyleProp<ViewStyle>;
   /** The column holding the label and description. */
   texts?: StyleProp<ViewStyle>;
+  /** The label. */
   label?: StyleProp<TextStyle>;
+  /** The line under it. */
   description?: StyleProp<TextStyle>;
 }
 
-/** Colors of the switch itself — React Native's `Switch` takes no `style` for them. */
+/**
+ * Colors of the switch itself — React Native's `Switch` takes no `style` for
+ * them.
+ */
 export interface SwitchRowColors {
+  /** Track color while off. */
   trackOff?: ColorValue;
+  /** Track color while on. */
   trackOn?: ColorValue;
+  /** Thumb color while off. */
   thumbOff?: ColorValue;
+  /** Thumb color while on. */
   thumbOn?: ColorValue;
 }
 
+/** Props of {@link SwitchRow}. */
 export interface SwitchRowProps {
+  /** Text of the row, also the switch's accessible name. */
   label: string;
   /** A line under the label, also read as the screen-reader hint. */
   description?: string;
+  /** Whether the switch is on. */
   value: boolean;
-  /** Receives the new value — from the switch or from a tap anywhere on the row. */
+  /**
+   * Receives the new value — from the switch or from a tap anywhere on the row.
+   */
   onChange: (value: boolean) => void;
+  /** Greys the row out and ignores presses. */
   disabled?: boolean;
   /** Switch colors; unset ones keep the platform default. */
   colors?: SwitchRowColors;
@@ -58,7 +76,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { SwitchRow } from "@forthtilliath/react-native-kit/components/settings/SwitchRow";
+ * import { SwitchRow } from
+ * "@forthtilliath/react-native-kit/components/settings/SwitchRow";
  *
  * <SwitchRow
  *   label="Équipes aléatoires"

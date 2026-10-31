@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 
-// Fires `callback` `delayMs` after the last change among `values`, ignoring
-// every render while at least one value is `undefined` (e.g. data not loaded
-// yet) and the very first render where they're all defined (so it doesn't
-// fire on mount). The delay restarts if a new value arrives before it
-// expires (a true debounce). `values` must keep the same length across
-// renders, like a regular useEffect dependency array.
+/**
+ * Fires `callback` `delayMs` after the last change among `values`, ignoring
+ * every render while at least one value is `undefined` (e.g. data not loaded
+ * yet) and the very first render where they're all defined (so it doesn't
+ * fire on mount). The delay restarts if a new value arrives before it
+ * expires (a true debounce). `values` must keep the same length across
+ * renders, like a regular useEffect dependency array.
+ */
 export function useDebouncedChange(
   values: unknown[],
   delayMs: number,

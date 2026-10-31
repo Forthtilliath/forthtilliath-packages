@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
 
-// Blocks a second call while a first one is still running (e.g. a double tap
-// on a "Save" button before it had time to disable itself, which would create
-// duplicate submissions). The lock is a ref, not the `isSaving` state: two
-// taps handled before the re-render would both still read the stale `false`.
+/**
+ * Blocks a second call while a first one is still running (e.g. a double tap
+ * on a "Save" button before it had time to disable itself, which would create
+ * duplicate submissions). The lock is a ref, not the `isSaving` state: two
+ * taps handled before the re-render would both still read the stale `false`.
+ */
 export function useSubmitGuard() {
   const [isSaving, setIsSaving] = useState(false);
   const inFlightRef = useRef(false);

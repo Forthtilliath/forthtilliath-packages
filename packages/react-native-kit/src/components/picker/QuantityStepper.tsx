@@ -24,7 +24,9 @@ export type {
   QuantityStepperStyles,
 } from "./QuantityStepper.styles.js";
 
+/** Props of {@link QuantityStepper}. */
 export interface QuantityStepperProps {
+  /** The current count. */
   value: number;
   /** Receives the new value, already clamped to `min…max`. */
   onChange: (value: number) => void;
@@ -116,13 +118,18 @@ function lengthOf(bound: number) {
  *
  * @example
  * ```tsx
- * import { QuantityStepper } from "@forthtilliath/react-native-kit/components/picker/QuantityStepper";
+ * import { QuantityStepper } from
+ * "@forthtilliath/react-native-kit/components/picker/QuantityStepper";
  *
  * <QuantityStepper value={count} onChange={setCount} label="Croissants" />
- * <QuantityStepper value={bans} onChange={setBans} label="Bannissements" min={1} max={40} longPressStep={5} />
- * <QuantityStepper value={score} onChange={setScore} label="Points" min={-Infinity} max={Infinity} step={4} repeatOnHold onStep={tapFeedback} />
- * <QuantityStepper value={red} onChange={setRed} label="Rouge" onSubmitEditing={() => blueRef.current?.focus()} />
- * <QuantityStepper value={blue} onChange={setBlue} label="Bleu" inputRef={blueRef} />
+ * <QuantityStepper value={bans} onChange={setBans} label="Bannissements"
+ * min={1} max={40} longPressStep={5} />
+ * <QuantityStepper value={score} onChange={setScore} label="Points"
+ * min={-Infinity} max={Infinity} step={4} repeatOnHold onStep={tapFeedback} />
+ * <QuantityStepper value={red} onChange={setRed} label="Rouge"
+ * onSubmitEditing={() => blueRef.current?.focus()} />
+ * <QuantityStepper value={blue} onChange={setBlue} label="Bleu"
+ * inputRef={blueRef} />
  * ```
  */
 export function QuantityStepper({

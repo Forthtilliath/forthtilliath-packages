@@ -4,13 +4,18 @@ import { Pressable, Text, View } from "react-native";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link BottomSheetHeader}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link BottomSheetHeader}, each merged after its
+ * default.
+ */
 export interface BottomSheetHeaderStyles {
   /** The grab bar above the title. */
   handle?: StyleProp<ViewStyle>;
   /** The row: titles, action, close button. */
   header?: StyleProp<ViewStyle>;
+  /** The title. */
   title?: StyleProp<TextStyle>;
+  /** The subtitle. */
   subtitle?: StyleProp<TextStyle>;
   /** The text of `action`. */
   action?: StyleProp<TextStyle>;
@@ -20,7 +25,9 @@ export interface BottomSheetHeaderStyles {
   closeIcon?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link BottomSheetHeader}. */
 export interface BottomSheetHeaderProps {
+  /** Title of the sheet. */
   title?: string;
   /** A quieter line under the title. */
   subtitle?: string;
@@ -30,9 +37,16 @@ export interface BottomSheetHeaderProps {
   showHandle?: boolean;
   /** Shows a × button calling it. */
   onClose?: () => void;
-  /** Spoken name of the × button. @defaultValue "Fermer" ("Close" in English) */
+  /**
+   * Spoken name of the × button. @defaultValue "Fermer" ("Close" in English)
+   */
   closeLabel?: string;
+  /**
+   * Language of the default `closeLabel` — French by default, or the nearest
+   * `KitLocaleProvider`'s.
+   */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: BottomSheetHeaderStyles;
 }
 

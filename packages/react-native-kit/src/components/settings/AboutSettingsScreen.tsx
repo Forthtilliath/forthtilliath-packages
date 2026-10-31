@@ -4,41 +4,68 @@ import { Text, View } from "react-native";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
+/** An extra titled section of {@link AboutSettingsScreen}. */
 export interface AboutSettingsScreenSection {
+  /** Title of the section. */
   title: string;
+  /** Its paragraphs, in order. */
   paragraphs: string[];
 }
 
+/**
+ * Style overrides of {@link AboutSettingsScreen}, each merged over its default.
+ */
 export interface AboutSettingsScreenStyles {
+  /** The screen's root view. */
   container?: StyleProp<ViewStyle>;
+  /** The app's name. */
   appName?: StyleProp<TextStyle>;
+  /** The version line. */
   version?: StyleProp<TextStyle>;
+  /** The line between the header and the text. */
   separator?: StyleProp<ViewStyle>;
+  /** Each paragraph. */
   paragraph?: StyleProp<TextStyle>;
+  /** Titles of the extra sections. */
   sectionTitle?: StyleProp<TextStyle>;
+  /** The "developed by" credit. */
   hint?: StyleProp<TextStyle>;
 }
 
+/** Text overrides of {@link AboutSettingsScreen}, whatever the `locale`. */
 export interface AboutSettingsScreenLabels {
+  /** Builds the version line. Default: "Version {version}". */
   version?: (version: string) => string;
+  /**
+   * Builds the credit line. Default: "Développée par {name}." / "Developed by
+   * {name}.".
+   */
   developedBy?: (name: string) => string;
 }
 
+/** Props of {@link AboutSettingsScreen}. */
 export interface AboutSettingsScreenProps {
+  /** The app's name, as a title. */
   appName: string;
+  /** The installed version, e.g. `Constants.expoConfig?.version`. */
   version: string;
   /** One or more paragraphs describing the app, rendered in order. */
   description: string | string[];
-  /** Extra titled sections after the description, e.g. a medical/legal disclaimer. */
+  /**
+   * Extra titled sections after the description, e.g. a medical/legal
+   * disclaimer.
+   */
   sections?: AboutSettingsScreenSection[];
   /** Omit to not show a "developed by" credit line at all. */
   developerName?: string;
+  /** Text overrides, whatever the `locale`. */
   labels?: AboutSettingsScreenLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Style overrides, merged over the defaults. */
   styles?: AboutSettingsScreenStyles;
 }
 
@@ -77,12 +104,14 @@ const defaultStyles: Required<AboutSettingsScreenStyles> = {
   hint: { fontSize: 13, color: "#6b7280" },
 };
 
-// App name, version, a short description, optional extra titled sections
-// (e.g. a medical/legal disclaimer), and an optional "developed by" credit —
-// the standard "About" section of a settings tab. `appName`/`version` are
-// required rather than defaulted from `expo-constants` so this stays
-// framework-agnostic; pass `Constants.expoConfig?.name`/`.version` from the
-// caller.
+/**
+ * App name, version, a short description, optional extra titled sections
+ * (e.g. a medical/legal disclaimer), and an optional "developed by" credit —
+ * the standard "About" section of a settings tab. `appName`/`version` are
+ * required rather than defaulted from `expo-constants` so this stays
+ * framework-agnostic; pass `Constants.expoConfig?.name`/`.version` from the
+ * caller.
+ */
 export function AboutSettingsScreen({
   appName,
   version,

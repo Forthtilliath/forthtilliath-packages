@@ -2,18 +2,22 @@ import { File } from "expo-file-system";
 
 import type { KitLocale } from "../../i18n/locale.js";
 
+/** Messages of {@link pickTextFile}, whatever the `locale`. */
 export interface PickTextFileLabels {
   /** `maxBytes` formatted ("10 Mo") is given to build the message. */
   tooLarge: (maxSize: string) => string;
+  /** Shown when the file can't be read (not text, access lost…). */
   unreadable: string;
 }
 
+/** Options of {@link pickTextFile}. */
 export interface PickTextFileOptions {
   /**
    * Types offered by the system picker. A `.json` file may be seen as any of
    * the three defaults depending on the device and the provider (Drive…).
    *
-   * @defaultValue ["application/json", "text/plain", "application/octet-stream"]
+   * @defaultValue ["application/json", "text/plain",
+   *   "application/octet-stream"]
    */
   mimeTypes?: string[];
   /**
@@ -25,9 +29,15 @@ export interface PickTextFileOptions {
   maxBytes?: number;
   /** Language of the messages. @defaultValue "fr" */
   locale?: KitLocale;
+  /** Message overrides, whatever the `locale`. */
   labels?: Partial<PickTextFileLabels>;
 }
 
+/**
+ * Outcome of {@link pickTextFile}: the file's `text` and `name`, or why it was
+ * refused with a message ready to show. Resolves to `null` instead when the
+ * user cancels the picker.
+ */
 export type PickTextFileResult =
   | { ok: true; text: string; name: string }
   | { ok: false; reason: "too-large" | "unreadable"; error: string };
@@ -54,7 +64,10 @@ function formatSize(bytes: number, locale: KitLocale): string {
   return `${number} ${unit}`;
 }
 
-/** Size in bytes, 0 if unknown: some providers report 0, the open handle may know. */
+/**
+ * Size in bytes, 0 if unknown: some providers report 0, the open handle may
+ * know.
+ */
 function fileSize(file: File): number {
   if (file.size > 0) return file.size;
   try {

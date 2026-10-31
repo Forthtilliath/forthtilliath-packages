@@ -3,7 +3,10 @@ import { Pressable, Text, View } from "react-native";
 
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link SegmentedToggle}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link SegmentedToggle}, each merged after its
+ * default.
+ */
 export interface SegmentedToggleStyles {
   /** The row holding the buttons. */
   row?: StyleProp<ViewStyle>;
@@ -21,17 +24,23 @@ export interface SegmentedToggleStyles {
   hintActive?: StyleProp<TextStyle>;
 }
 
+/** One button of a {@link SegmentedToggle}. */
 export interface SegmentedToggleOption<T extends string> {
+  /** Value reported by `onChange`. */
   value: T;
+  /** Text of the button. */
   label: string;
   /** A smaller line under the label (e.g. "2 × 2 joueurs"). */
   hint?: string;
 }
 
+/** Props of {@link SegmentedToggle}. */
 export interface SegmentedToggleProps<T extends string> {
+  /** The buttons, from left to right. */
   options: readonly SegmentedToggleOption<T>[];
   /** The active option's value. */
   value: T;
+  /** Called with the pressed option's value. */
   onChange: (value: T) => void;
   /** What the choice is about, read by screen readers on the group. */
   label?: string;
@@ -66,11 +75,13 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { SegmentedToggle } from "@forthtilliath/react-native-kit/components/picker/SegmentedToggle";
+ * import { SegmentedToggle } from
+ * "@forthtilliath/react-native-kit/components/picker/SegmentedToggle";
  *
  * <SegmentedToggle
  *   label="Affichage"
- *   options={[{ value: "calendar", label: "Calendrier" }, { value: "list", label: "Liste" }]}
+ *   options={[{ value: "calendar", label: "Calendrier" }, { value: "list",
+ * label: "Liste" }]}
  *   value={view}
  *   onChange={setView}
  * />

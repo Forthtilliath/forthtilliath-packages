@@ -7,15 +7,22 @@ import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
-/** Per-slot style overrides for {@link SettingsCard}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link SettingsCard}, each merged after its
+ * default.
+ */
 export interface SettingsCardStyles {
+  /** The card itself (border, background, padding). */
   card?: StyleProp<ViewStyle>;
   /** The row holding the icon and title. */
   header?: StyleProp<ViewStyle>;
+  /** The title. */
   title?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link SettingsCard}. */
 export interface SettingsCardProps {
+  /** Title of the card. */
   title: string;
   /** `Ionicons` glyph before the title. */
   icon?: IconName;
@@ -23,6 +30,7 @@ export interface SettingsCardProps {
   iconColor?: ColorValue;
   /** Free content: `SettingsCardStatus` lines, `SettingsCardHint`, buttons… */
   children?: ReactNode;
+  /** Style overrides, merged over the defaults. */
   styles?: SettingsCardStyles;
 }
 
@@ -59,9 +67,12 @@ const cardStyles = {
  * } from "@forthtilliath/react-native-kit/components/settings/SettingsCard";
  *
  * <SettingsCard icon="cloud-outline" title="Google Drive">
- *   <SettingsCardStatus icon="person-circle-outline">{email}</SettingsCardStatus>
- *   <SettingsCardStatus icon="time-outline">Dernier envoi : hier à 21:42</SettingsCardStatus>
- *   <SettingsCardHint>Copie privée, invisible dans ton Drive.</SettingsCardHint>
+ *   <SettingsCardStatus
+ * icon="person-circle-outline">{email}</SettingsCardStatus>
+ *   <SettingsCardStatus icon="time-outline">Dernier envoi : hier à
+ * 21:42</SettingsCardStatus>
+ *   <SettingsCardHint>Copie privée, invisible dans ton
+ * Drive.</SettingsCardHint>
  * </SettingsCard>
  * ```
  */
@@ -91,15 +102,21 @@ export function SettingsCard({
 
 /** Per-slot style overrides for {@link SettingsCardStatus}. */
 export interface SettingsCardStatusStyles {
+  /** The line (icon + text). */
   row?: StyleProp<ViewStyle>;
+  /** Its text. */
   text?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link SettingsCardStatus}. */
 export interface SettingsCardStatusProps {
+  /** `Ionicons` glyph before the text. */
   icon: IconName;
   /** E.g. green for "connected", red for an error. @defaultValue "#6b7280" */
   iconColor?: ColorValue;
+  /** The status text. */
   children: ReactNode;
+  /** Style overrides, merged over the defaults. */
   styles?: SettingsCardStatusStyles;
 }
 
@@ -112,7 +129,10 @@ const statusStyles = {
   text: { flex: 1, fontSize: 14, color: "#111111" } satisfies TextStyle,
 };
 
-/** A status line of a card: small icon, then text (linked account, last backup…). */
+/**
+ * A status line of a card: small icon, then text (linked account, last
+ * backup…).
+ */
 export function SettingsCardStatus({
   icon,
   iconColor = "#6b7280",
@@ -129,8 +149,11 @@ export function SettingsCardStatus({
   );
 }
 
+/** Props of {@link SettingsCardHint}. */
 export interface SettingsCardHintProps {
+  /** The explanatory text. */
   children: ReactNode;
+  /** Style merged over the default (small grey text). */
   style?: StyleProp<TextStyle>;
 }
 

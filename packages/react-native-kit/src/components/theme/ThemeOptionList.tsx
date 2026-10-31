@@ -9,33 +9,52 @@ import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 import { defaultThemeLabels } from "./themeLabels.js";
 import type { ThemeToggleLabels } from "./ThemeToggle.js";
 
+/** Ionicons of each row of {@link ThemeOptionList}. */
 export interface ThemeOptionListIcons {
+  /** Icon of the light row. */
   light?: keyof typeof Ionicons.glyphMap;
+  /** Icon of the dark row. */
   dark?: keyof typeof Ionicons.glyphMap;
+  /** Icon of the "follow the phone" row. */
   system?: keyof typeof Ionicons.glyphMap;
 }
 
+/** Style overrides of {@link ThemeOptionList}, each merged over its default. */
 export interface ThemeOptionListStyles {
+  /** The list. */
   container?: StyleProp<ViewStyle>;
+  /** Each row. */
   row?: StyleProp<ViewStyle>;
+  /** Added to the selected row. */
   rowActive?: StyleProp<ViewStyle>;
+  /** Each label. */
   label?: StyleProp<TextStyle>;
+  /** Added to the selected row's label. */
   labelActive?: StyleProp<TextStyle>;
+  /** Not a style: color of the icons. */
   iconColor?: string;
+  /** Not a style: color of the selected row's icon. */
   iconColorActive?: string;
+  /** Not a style: color of the checkmark. */
   checkColor?: string;
 }
 
+/** Props of {@link ThemeOptionList}. */
 export interface ThemeOptionListProps {
+  /** The current preference: `light`, `dark` or `system`. */
   value: ThemePreference;
+  /** Called with the chosen preference. */
   onChange: (preference: ThemePreference) => void;
+  /** Text overrides, whatever the `locale`. */
   labels?: ThemeToggleLabels;
   /**
    * Language of the built-in labels — French by default, or the nearest
    * `KitLocaleProvider`'s. `labels` still overrides individual strings.
    */
   locale?: KitLocale;
+  /** Icon overrides. */
   icons?: ThemeOptionListIcons;
+  /** Style overrides, merged over the defaults. */
   styles?: ThemeOptionListStyles;
 }
 
@@ -75,9 +94,11 @@ const defaultStyles = {
   checkColor: "#2563eb",
 };
 
-// Selectable list of rows (icon + label + checkmark) for a light/dark/system
-// theme preference. Same data contract as ThemeToggle, but a taller row-based
-// layout instead of a 3-way segmented control.
+/**
+ * Selectable list of rows (icon + label + checkmark) for a light/dark/system
+ * theme preference. Same data contract as ThemeToggle, but a taller row-based
+ * layout instead of a 3-way segmented control.
+ */
 export function ThemeOptionList({
   value,
   onChange,

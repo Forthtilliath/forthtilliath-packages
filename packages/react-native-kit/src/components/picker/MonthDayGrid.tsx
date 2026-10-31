@@ -7,7 +7,10 @@ import { parseIsoDate } from "@forthtilliath/ts-kit/date/parseIsoDate";
 import { type KitLocale, useKitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
 
-/** Per-slot style overrides for {@link MonthDayGrid}, each merged after its default. */
+/**
+ * Per-slot style overrides for {@link MonthDayGrid}, each merged after its
+ * default.
+ */
 export interface MonthDayGridStyles {
   /** Wraps the weekday header row and the grid. */
   container?: StyleProp<ViewStyle>;
@@ -29,12 +32,16 @@ export interface MonthDayGridStyles {
   dayTextSelected?: StyleProp<TextStyle>;
 }
 
+/** Props of {@link MonthDayGrid}. */
 export interface MonthDayGridProps {
   /** The month's days in order, as `YYYY-MM-DD` dates. */
   days: readonly string[];
   /** The selected days, as `YYYY-MM-DD` dates. */
   selected: ReadonlySet<string>;
-  /** Called with the tapped day; the host adds it to or removes it from `selected`. */
+  /**
+   * Called with the tapped day; the host adds it to or removes it from
+   * `selected`.
+   */
   onToggle: (day: string) => void;
   /** Seven column headers, Monday first. Defaults to the locale's initials. */
   weekdayLabels?: readonly string[];
@@ -91,7 +98,8 @@ const defaultStyles = {
  *
  * @example
  * ```tsx
- * import { MonthDayGrid } from "@forthtilliath/react-native-kit/components/picker/MonthDayGrid";
+ * import { MonthDayGrid } from
+ * "@forthtilliath/react-native-kit/components/picker/MonthDayGrid";
  *
  * <MonthDayGrid
  *   days={daysOfMonth}
