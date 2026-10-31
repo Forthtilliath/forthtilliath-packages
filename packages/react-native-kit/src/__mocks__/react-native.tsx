@@ -162,8 +162,7 @@ export const Alert = {
   // Tests spy on this via `vi.spyOn(Alert, "alert")` — real callers (see
   // confirmDestructive.ts) type-check against the real react-native's
   // Alert.alert, not this stub, so this can safely take no parameters.
-  // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional no-op stub
-  alert() {},
+  alert: (): void => undefined,
 };
 
 // No native module is compiled into a test run: tests add old-architecture
