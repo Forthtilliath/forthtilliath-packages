@@ -1,45 +1,31 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { act, create } from "react-test-renderer";
+import type { ReactNode } from "react";
+import { renderHook } from "@testing-library/react-native";
 import { describe, expect, it } from "vitest";
 
 import { KitLocaleProvider } from "./KitLocaleProvider.js";
 import { type KitLocale, useKitLocale } from "./locale.js";
 
-// Renders `node` and returns the locale the probe resolved.
-function resolveLocale(
-  render: (probe: React.ReactNode) => React.ReactNode,
-  own?: KitLocale,
-) {
-  let resolved: KitLocale | undefined;
-  function Probe() {
-    resolved = useKitLocale(own);
-    return null;
-  }
-  act(() => {
-    create(<>{render(<Probe />)}</>);
+/** The locale a component resolves, with its own `own` prop, under English. */
+async function resolveUnderEnglish(own?: KitLocale) {
+  const { result } = await renderHook(() => useKitLocale(own), {
+    wrapper: ({ children }: { children: ReactNode }) => (
+      <KitLocaleProvider locale="en">{children}</KitLocaleProvider>
+    ),
   });
-  return resolved;
+  return result.current;
 }
 
 describe("useKitLocale", () => {
-  it("defaults to French", () => {
-    expect(resolveLocale((probe) => probe)).toBe("fr");
+  it("defaults to French", async () => {
+    const { result } = await renderHook(() => useKitLocale());
+    expect(result.current).toBe("fr");
   });
 
-  it("uses the nearest KitLocaleProvider", () => {
-    expect(
-      resolveLocale((probe) => (
-        <KitLocaleProvider locale="en">{probe}</KitLocaleProvider>
-      )),
-    ).toBe("en");
+  it("uses the nearest KitLocaleProvider", async () => {
+    expect(await resolveUnderEnglish()).toBe("en");
   });
 
-  it("lets the component's own locale prop win over the provider", () => {
-    expect(
-      resolveLocale(
-        (probe) => <KitLocaleProvider locale="en">{probe}</KitLocaleProvider>,
-        "fr",
-      ),
-    ).toBe("fr");
+  it("lets the component's own locale prop win over the provider", async () => {
+    expect(await resolveUnderEnglish("fr")).toBe("fr");
   });
 });
