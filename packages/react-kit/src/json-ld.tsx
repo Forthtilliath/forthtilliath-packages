@@ -1,4 +1,9 @@
+/** Props of {@link JsonLd}. */
 export interface JsonLdProps {
+  /**
+   * The structured data, e.g. `{ "@context": "https://schema.org", "@type":
+   * "Organization", … }`.
+   */
   data: Record<string, unknown>;
 }
 

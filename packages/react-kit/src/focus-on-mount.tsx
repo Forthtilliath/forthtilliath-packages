@@ -2,9 +2,16 @@
 
 import { type ReactNode, useEffect, useRef } from "react";
 
+/** Props of {@link FocusOnMount}. */
 export interface FocusOnMountProps {
+  /** The content to focus and announce. */
   children: ReactNode;
+  /** Classes of the wrapping `<div role="region">`. */
   className?: string;
+  /**
+   * Accessible name of the region (`aria-label`), read by screen readers when
+   * it takes focus, e.g. `"Search results"`.
+   */
   label?: string;
 }
 

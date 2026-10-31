@@ -3,12 +3,28 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import type { PresignRequest, PresignResponse } from "./protocol.js";
 
+/**
+ * Credentials of a Cloudflare R2 API token (or any S3-compatible service), read
+ * from server-side environment variables — never sent to the browser.
+ */
 export interface R2Config {
+  /**
+   * The S3 endpoint, `https://<account id>.r2.cloudflarestorage.com` for R2.
+   */
   endpoint: string;
+  /** Access key id of the API token. */
   accessKeyId: string;
+  /** Secret access key of the API token. */
   secretAccessKey: string;
 }
 
+/**
+ * Creates the S3 client for R2: region `auto`, and automatic checksums turned
+ * off (R2 rejects the `x-amz-checksum-*` parameters a browser `PUT` would
+ * otherwise need to send).
+ * @param config - The endpoint and API token credentials.
+ * @returns An `S3Client` for {@link createPresignHandler} or any S3 command.
+ */
 export function createR2Client({
   endpoint,
   accessKeyId,
@@ -61,7 +77,9 @@ export const ACTIVE_CONTENT_TYPES: readonly string[] = [
   "text/ecmascript",
 ];
 
-/** `"Image/PNG; charset=x"` → `"image/png"`, or `null` if not a `type/subtype`. */
+/**
+ * `"Image/PNG; charset=x"` → `"image/png"`, or `null` if not a `type/subtype`.
+ */
 function normalizeContentType(contentType: string): string | null {
   // eslint-disable-next-line no-control-regex -- would end up in a signed header
   if (/[\u0000-\u001f\u007f]/.test(contentType)) return null;
@@ -83,14 +101,24 @@ function matchesContentType(
   });
 }
 
+/**
+ * A refused upload: the HTTP status and message the presign route answers with.
+ */
 export interface Rejection {
+  /**
+   * HTTP status, e.g. `401` (not signed in) or `403` (not allowed for this
+   * key).
+   */
   status: number;
+  /** Message returned as `{ error }` in the JSON body. */
   error: string;
 }
 
 /** What `authorize` gets besides the key, to decide who may upload what. */
 export interface AuthorizeContext {
-  /** The incoming presign request (cookies, headers… to identify the caller). */
+  /**
+   * The incoming presign request (cookies, headers… to identify the caller).
+   */
   request: Request;
   /** The requested content type, normalized (`"image/webp"`). */
   contentType: string;
@@ -98,8 +126,11 @@ export interface AuthorizeContext {
   size?: number;
 }
 
+/** Options of {@link createPresignHandler}. */
 export interface PresignHandlerOptions {
+  /** The S3 client, e.g. from {@link createR2Client}. */
   client: S3Client;
+  /** Name of the bucket uploads go to. */
   bucket: string;
   /**
    * Access control: returns a rejection, or `null` when the upload is
@@ -127,6 +158,11 @@ export interface PresignHandlerOptions {
   maxSizeBytes?: number;
   /** Presigned URL lifetime, in seconds. */
   expiresIn?: number;
+  /**
+   * Turns an unexpected error (signing failed, `authorize` threw…) into the
+   * response to send. Defaults to logging it with `console.error` and answering
+   * `500 { error: "Presign failed" }`.
+   */
   onError?: (error: unknown) => Response;
 }
 

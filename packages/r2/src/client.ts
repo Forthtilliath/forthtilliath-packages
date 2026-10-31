@@ -2,12 +2,20 @@ import type { PresignRequest, PresignResponse } from "./protocol.js";
 
 /** Bytes sent so far, out of `total` (the body's size). */
 export interface UploadProgress {
+  /** Bytes sent so far. */
   loaded: number;
+  /** Total bytes to send (the transformed file's size). */
   total: number;
 }
 
+/** Options of {@link uploadViaPresignedUrl}. */
 export interface UploadOptions {
+  /** The file picked by the user (an `<input type="file">` file). */
   file: File;
+  /**
+   * Object key in the bucket, e.g. `avatars/<user id>.webp`; the presign route
+   * checks it with `isSafeKey` and `authorize`.
+   */
   key: string;
   /** Presign route, called with `POST` (e.g. `/api/r2/presign-upload`). */
   endpoint: string;
@@ -24,8 +32,10 @@ export interface UploadOptions {
 }
 
 /**
- * Uploads a file straight from the browser to an S3/R2 bucket via a presigned URL.
- * The file never goes through the app server (Vercel rejects request bodies > 4.5 MB).
+ * Uploads a file straight from the browser to an S3/R2 bucket via a presigned
+ * URL.
+ * The file never goes through the app server (Vercel rejects request bodies >
+ * 4.5 MB).
  * Requires a CORS rule on the bucket allowing `PUT` from the site's origin.
  */
 export async function uploadViaPresignedUrl<
@@ -81,7 +91,10 @@ interface ProgressPut {
   onProgress: (progress: UploadProgress) => void;
 }
 
-/** A `PUT` through `XMLHttpRequest`, reporting upload progress; resolves the status. */
+/**
+ * A `PUT` through `XMLHttpRequest`, reporting upload progress; resolves the
+ * status.
+ */
 function putWithProgress({
   url,
   body,
@@ -127,7 +140,10 @@ function putWithProgress({
   });
 }
 
-/** Like `fetch` on abort: the signal's reason (when an Error), else an `AbortError`. */
+/**
+ * Like `fetch` on abort: the signal's reason (when an Error), else an
+ * `AbortError`.
+ */
 function abortReason(signal: AbortSignal | undefined): Error {
   const reason: unknown = signal?.reason;
   return reason instanceof Error
