@@ -1,4 +1,4 @@
-import { type ComponentRef, useRef, useState } from "react";
+import { type ComponentRef, type RefObject, useRef, useState } from "react";
 import { Alert, type View } from "react-native";
 
 import { type KitLocale, useKitLocale } from "../i18n/locale.js";
@@ -17,6 +17,19 @@ export interface UseViewShareOptions extends ShareViewAsImageOptions {
   errorTitle?: string;
   /** Message of the default error alert, for an error without a message. */
   errorMessage?: string;
+}
+
+export interface UseViewShareResult {
+  /**
+   * For the `<View>` to capture. Spelled out as `ComponentRef<typeof View>`
+   * so the published types don't depend on the React Native version they
+   * were built with (`View` names the component, not its instance, since
+   * RN 0.88).
+   */
+  ref: RefObject<ComponentRef<typeof View> | null>;
+  /** `true` while the capture runs: mount the view meanwhile. */
+  capturing: boolean;
+  share: () => Promise<void>;
 }
 
 const defaultErrorLabels: Record<
@@ -69,7 +82,7 @@ export function useViewShare({
   errorTitle,
   errorMessage,
   ...options
-}: UseViewShareOptions = {}) {
+}: UseViewShareOptions = {}): UseViewShareResult {
   const ref = useRef<ComponentRef<typeof View>>(null);
   const [capturing, setCapturing] = useState(false);
   // Ahead of `capturing`, which only changes on the next render.
