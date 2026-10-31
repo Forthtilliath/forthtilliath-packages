@@ -1,5 +1,18 @@
 # @forthtilliath/react-native-kit
 
+## 0.22.0
+
+### Minor Changes
+
+- 5c8e6e7: `QuantityStepper` takes `inputRef`, `onSubmitEditing` and `returnKeyType`, to chain steppers on the keyboard's Enter key: the typed value is sent first, then `onSubmitEditing` runs (e.g. focusing the next stepper through its `inputRef`), with the keyboard kept open and an Enter key reading "next" by default.
+- c6079e0: New building blocks taken from Décompte, 7 Wonders Assistant, Ensemble, GlucoDose and Onsortkoi, each documented with a screenshot: `Button` (five variants, three sizes, icon, loading, no double submission when `onPress` returns a promise), `TextField` (label, hint, error announced by TalkBack, required marker), `IntegerField` (negatives typed normally, bounds applied on blur), `SectionTitle` and `Section`, `EmptyState`, `showToast` + `ToastHost` (one host per app or modal, optional undo action, delay lengthened by Android's "Time to take action"), `ReorderList` (▲ / ▼ reordering usable with TalkBack), `Reveal`, `useReducedMotion`, `usePersistHydrated`, `createThemedStyles` / `createPaletteMemo`, and `pickTextFile` (system picker, size checked before reading). `BottomSheet` takes an optional header (`title`, `subtitle`, `headerAction`, `showHandle`, `showCloseButton`), also exported as `BottomSheetHeader`; without these props nothing changes.
+
+### Patch Changes
+
+- 825b4aa: `useViewShare` declares its result (`UseViewShareResult`): `ref` is typed `RefObject<ComponentRef<typeof View> | null>` in the published types, instead of `RefObject<View | null>` inferred from React Native 0.86's types, where `View` was the instance. Under React Native 0.88 `View` is the component, so `<View ref={ref}>` failed to type-check without a cast.
+- Updated dependencies [c6079e0]
+  - @forthtilliath/ts-kit@0.16.0
+
 ## 0.21.0
 
 ### Minor Changes

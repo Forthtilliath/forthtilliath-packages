@@ -1,5 +1,13 @@
 # @forthtilliath/forth-ui
 
+## 0.5.1
+
+### Patch Changes
+
+- dda0c5d: Dependencies moved to their latest minor versions: Radix UI primitives, lucide-react, shiki, react-hook-form, @hookform/resolvers, react-resizable-panels, tailwind-merge, input-otp and react-day-picker for the UI packages; globals and typescript-eslint for the ESLint config.
+- Updated dependencies [dda0c5d]
+  - @forthtilliath/shadcn-ui@0.4.2
+
 ## 0.5.0
 
 ### Minor Changes
