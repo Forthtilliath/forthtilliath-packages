@@ -1,72 +1,41 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- react-test-renderer is deprecated upstream with no drop-in replacement for RN component trees yet; matches the version glucodose itself uses. */
-import type { ReactElement } from "react";
-import { Text, View } from "react-native";
-import { act, create } from "react-test-renderer";
+import { render, screen } from "@testing-library/react-native";
 import { describe, expect, it } from "vitest";
 
 import { ChangelogNotes } from "./ChangelogNotes.js";
 
-// react-test-renderer needs the initial render wrapped in act() to flush
-// synchronously under React 19 — without it, create() returns a tree that
-// looks unmounted to any assertion running right after.
-function renderTree(element: ReactElement) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
-
-// Style props are now merged as arrays (default, then override) rather than
-// the override replacing the default outright — flatten to a plain object
-// for assertions, the same way React Native resolves a style array/prop.
-function flattenStyle(style: unknown): Record<string, unknown> {
-  if (Array.isArray(style)) {
-    return (style as unknown[]).reduce<Record<string, unknown>>(
-      (acc, entry) => ({ ...acc, ...flattenStyle(entry) }),
-      {},
-    );
-  }
-  return (style as Record<string, unknown> | null | undefined) ?? {};
-}
-
 describe("ChangelogNotes", () => {
-  it("renders a heading as a distinct Text node", () => {
-    const tree = renderTree(<ChangelogNotes notes="### Added" />);
-    const texts = tree.root.findAllByType(Text);
-    expect(texts.some((t) => t.props.children === "Added")).toBe(true);
+  it("renders a heading as a distinct Text node", async () => {
+    await render(<ChangelogNotes notes="### Added" />);
+    expect(screen.getByText("Added")).toBeOnTheScreen();
   });
 
-  it("renders a list item with a bullet and the item text", () => {
-    const tree = renderTree(
-      <ChangelogNotes notes="- Export history to CSV." />,
-    );
-    const rows = tree.root.findAllByType(View);
-    expect(rows).toHaveLength(1);
-    const texts = tree.root.findAllByType(Text);
-    expect(texts.some((t) => t.props.children === "•")).toBe(true);
+  it("renders a list item with a bullet and the item text", async () => {
+    await render(<ChangelogNotes notes="- Export history to CSV." />);
+    expect(screen.root?.type).toBe("View");
+    expect(screen.getByText("•")).toBeOnTheScreen();
+    expect(screen.root).toHaveTextContent("Export history to CSV.", {
+      exact: false,
+    });
   });
 
-  it("renders bold segments with a different style than the surrounding text", () => {
-    const tree = renderTree(
-      <ChangelogNotes notes="- **Broken widget**: fixed." />,
-    );
-    const texts = tree.root.findAllByType(Text);
-    const bold = texts.find((t) => t.props.children === "Broken widget");
-    const rest = texts.find((t) => t.props.children === ": fixed.");
-    expect(bold?.props.style).not.toEqual(rest?.props.style);
+  it("renders bold segments with a different style than the surrounding text", async () => {
+    await render(<ChangelogNotes notes="- **Broken widget**: fixed." />);
+    expect(screen.getByText("Broken widget")).toHaveStyle({
+      fontWeight: "700",
+    });
+    expect(screen.getByText(": fixed.")).not.toHaveStyle({
+      fontWeight: "700",
+    });
   });
 
-  it("applies custom styles over the defaults, without dropping the rest of the default style", () => {
-    const tree = renderTree(
+  it("applies custom styles over the defaults, without dropping the rest of the default style", async () => {
+    await render(
       <ChangelogNotes
         notes="### Added"
         styles={{ heading: { color: "red" } }}
       />,
     );
-    const texts = tree.root.findAllByType(Text);
-    const heading = texts.find((t) => t.props.children === "Added");
-    expect(flattenStyle(heading?.props.style)).toEqual({
+    expect(screen.getByText("Added")).toHaveStyle({
       fontSize: 13,
       fontWeight: "700",
       color: "red",
@@ -74,8 +43,8 @@ describe("ChangelogNotes", () => {
     });
   });
 
-  it("renders nothing for empty notes", () => {
-    const tree = renderTree(<ChangelogNotes notes="" />);
-    expect(tree.root.findAllByType(Text)).toHaveLength(0);
+  it("renders nothing for empty notes", async () => {
+    await render(<ChangelogNotes notes="" />);
+    expect(screen.queryByText(/./)).not.toBeOnTheScreen();
   });
 });

@@ -1,22 +1,11 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see ChangelogNotes.test.tsx */
-import { Pressable, Text } from "react-native";
-import { act, create } from "react-test-renderer";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "./__mocks__/testInstance.js";
 import { UpdateAvailableBanner } from "./UpdateAvailableBanner.js";
 
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
-
 describe("UpdateAvailableBanner", () => {
-  it("shows the version and release notes", () => {
-    const tree = renderTree(
+  it("shows the version and release notes", async () => {
+    await render(
       <UpdateAvailableBanner
         version="2.0.0"
         notes={"### Added\n- Something new."}
@@ -24,18 +13,14 @@ describe("UpdateAvailableBanner", () => {
         onDismiss={vi.fn()}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children)
-      .flat();
-    expect(texts).toContain("Version 2.0.0 disponible");
-    expect(texts).toContain("Added");
-    expect(texts).toContain("Something new.");
+    expect(screen.getByText("Version 2.0.0 disponible")).toBeOnTheScreen();
+    expect(screen.getByText("Added")).toBeOnTheScreen();
+    expect(screen.getByText("Something new.")).toBeOnTheScreen();
   });
 
-  it("calls onPress when the action button is pressed", () => {
+  it("calls onPress when the action button is pressed", async () => {
     const onPress = vi.fn();
-    const tree = renderTree(
+    await render(
       <UpdateAvailableBanner
         version="2.0.0"
         notes=""
@@ -43,19 +28,13 @@ describe("UpdateAvailableBanner", () => {
         onDismiss={vi.fn()}
       />,
     );
-    const actionButton = tree.root.findAllByType(Pressable)[1];
-    if (!actionButton) throw new Error("expected an action button");
-
-    act(() => {
-      propsOf<{ onPress: () => void }>(actionButton).onPress();
-    });
-
+    await fireEvent.press(screen.getByRole("button", { name: "Voir" }));
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
-  it("calls onDismiss when the dismiss button is pressed", () => {
+  it("calls onDismiss when the dismiss button is pressed", async () => {
     const onDismiss = vi.fn();
-    const tree = renderTree(
+    await render(
       <UpdateAvailableBanner
         version="2.0.0"
         notes=""
@@ -63,18 +42,16 @@ describe("UpdateAvailableBanner", () => {
         onDismiss={onDismiss}
       />,
     );
-    const dismissButton = tree.root.findAllByType(Pressable)[0];
-    if (!dismissButton) throw new Error("expected a dismiss button");
-
-    act(() => {
-      propsOf<{ onPress: () => void }>(dismissButton).onPress();
-    });
-
+    await fireEvent.press(
+      screen.getByRole("button", {
+        name: "Fermer la notification de mise à jour",
+      }),
+    );
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
-  it("accepts custom labels", () => {
-    const tree = renderTree(
+  it("accepts custom labels", async () => {
+    await render(
       <UpdateAvailableBanner
         version="2.0.0"
         notes=""
@@ -87,16 +64,13 @@ describe("UpdateAvailableBanner", () => {
         }}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("New version: 2.0.0");
-    expect(texts).toContain("View");
-    expect(texts).toContain("Close");
+    expect(screen.getByText("New version: 2.0.0")).toBeOnTheScreen();
+    expect(screen.getByText("View")).toBeOnTheScreen();
+    expect(screen.getByText("Close")).toBeOnTheScreen();
   });
 
-  it("renders its built-in labels in the given locale", () => {
-    const tree = renderTree(
+  it("renders its built-in labels in the given locale", async () => {
+    await render(
       <UpdateAvailableBanner
         version="2.0.0"
         notes=""
@@ -106,12 +80,9 @@ describe("UpdateAvailableBanner", () => {
         labels={{ action: "Update" }}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("Version 2.0.0 available");
-    expect(texts).toContain("Close");
+    expect(screen.getByText("Version 2.0.0 available")).toBeOnTheScreen();
+    expect(screen.getByText("Close")).toBeOnTheScreen();
     // `labels` still wins over the locale's defaults.
-    expect(texts).toContain("Update");
+    expect(screen.getByText("Update")).toBeOnTheScreen();
   });
 });
