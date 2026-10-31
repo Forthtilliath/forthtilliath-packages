@@ -2,7 +2,13 @@ import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Modal, Pressable, ScrollView, View } from "react-native";
 
+import type { KitLocale } from "../../i18n/locale.js";
 import { mergeSlotStyles } from "../../utils/helpers/mergeSlotStyles.js";
+
+import {
+  BottomSheetHeader,
+  type BottomSheetHeaderProps,
+} from "./BottomSheetHeader.js";
 
 /** Per-slot style overrides for {@link BottomSheet}, each merged after its default. */
 export interface BottomSheetStyles {
@@ -29,6 +35,22 @@ export interface BottomSheetProps {
   bottomInset?: number;
   /** Per-slot style overrides — see {@link BottomSheetStyles}. */
   styles?: BottomSheetStyles;
+  /** A title above the content, which stays visible while the content scrolls. */
+  title?: string;
+  /** A quieter line under the title. */
+  subtitle?: string;
+  /** A text button right of the title ("Réinitialiser"). */
+  headerAction?: BottomSheetHeaderProps["action"];
+  /** Shows a grab bar at the top. @defaultValue false */
+  showHandle?: boolean;
+  /** Shows a × button calling `onClose`, right of the title. @defaultValue false */
+  showCloseButton?: boolean;
+  /** Spoken name of the × button. @defaultValue "Fermer" ("Close" in English) */
+  closeLabel?: string;
+  /** Language of the built-in labels. */
+  locale?: KitLocale;
+  /** Style overrides of the header — see `BottomSheetHeaderStyles`. */
+  headerStyles?: BottomSheetHeaderProps["styles"];
 }
 
 const defaultStyles = {
@@ -72,6 +94,20 @@ const backdropFill = {
  * <BottomSheet visible={open} onClose={() => setOpen(false)} bottomInset={bottom}>
  *   <DayDetails day={day} />
  * </BottomSheet>
+ *
+ * // With a header that stays put while the content scrolls:
+ * <BottomSheet
+ *   visible={open}
+ *   onClose={close}
+ *   bottomInset={bottom}
+ *   title="Filtres"
+ *   subtitle="12 jeux correspondent"
+ *   headerAction={{ label: "Réinitialiser", onPress: resetFilters }}
+ *   showHandle
+ *   showCloseButton
+ * >
+ *   <Filters />
+ * </BottomSheet>
  * ```
  */
 export function BottomSheet({
@@ -80,8 +116,22 @@ export function BottomSheet({
   children,
   bottomInset = 0,
   styles,
+  title,
+  subtitle,
+  headerAction,
+  showHandle = false,
+  showCloseButton = false,
+  closeLabel,
+  locale,
+  headerStyles,
 }: BottomSheetProps) {
   const merged = mergeSlotStyles(defaultStyles, styles);
+  const hasHeader =
+    showHandle ||
+    showCloseButton ||
+    title !== undefined ||
+    subtitle !== undefined ||
+    headerAction !== undefined;
 
   return (
     <Modal
@@ -95,6 +145,18 @@ export function BottomSheet({
             ScrollView would steal its scroll gesture (on Android especially). */}
         <Pressable style={backdropFill} onPress={onClose} />
         <View style={merged.sheet}>
+          {hasHeader && (
+            <BottomSheetHeader
+              title={title}
+              subtitle={subtitle}
+              action={headerAction}
+              showHandle={showHandle}
+              onClose={showCloseButton ? onClose : undefined}
+              closeLabel={closeLabel}
+              locale={locale}
+              styles={headerStyles}
+            />
+          )}
           <ScrollView style={merged.scroll}>{children}</ScrollView>
           {bottomInset > 0 && <View style={{ height: bottomInset }} />}
         </View>
