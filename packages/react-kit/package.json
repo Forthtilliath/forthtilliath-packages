@@ -37,7 +37,7 @@
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
     "@size-limit/file": "catalog:",
-    "@testing-library/react": "^16.3.2",
+    "@testing-library/react": "^16.3.3",
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "jsdom": "catalog:",
