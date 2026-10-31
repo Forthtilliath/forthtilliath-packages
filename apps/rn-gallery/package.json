@@ -1,0 +1,32 @@
+{
+  "name": "rn-gallery",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "screenshots": "node scripts/capture.mjs",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^15.1.1",
+    "@fontsource/roboto": "^5.3.0",
+    "@forthtilliath/react-native-kit": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-native-web": "^0.21.4"
+  },
+  "devDependencies": {
+    "@forthtilliath/eslint-config": "workspace:*",
+    "@forthtilliath/typescript-config": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "catalog:",
+    "playwright": "^1.64.1",
+    "react-native": "0.86.3",
+    "typescript": "catalog:",
+    "vite": "^7.3.7"
+  }
+}
