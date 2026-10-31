@@ -1,39 +1,28 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Alert, Pressable, Switch, Text } from "react-native";
-import { act, create } from "react-test-renderer";
-import { Ionicons } from "@expo/vector-icons";
+import { Alert } from "react-native";
+import { act, fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
 import type { AlertButton } from "../../__mocks__/react-native.js";
-import { propsOf } from "../../__mocks__/testInstance.js";
+import { screenElements, screenIcons } from "../../__mocks__/screenQueries.js";
 
 import { BackupSettingsScreen } from "./BackupSettingsScreen.js";
 
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
+const exportButton = () => screen.getByRole("button", { name: "⬆️ Exporter" });
+const importButton = () => screen.getByRole("button", { name: "⬇️ Importer" });
 
-async function flushAsync(): Promise<void> {
+function flushAsync(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 describe("BackupSettingsScreen", () => {
   it("calls onExport when the export button is pressed", async () => {
     const onExport = vi.fn().mockResolvedValue(undefined);
-    const tree = renderTree(
+    await render(
       <BackupSettingsScreen onExport={onExport} onImport={vi.fn()} />,
     );
-    const [exportButton] = tree.root.findAllByType(Pressable);
-    if (!exportButton) throw new Error("expected an export button");
 
-    await act(async () => {
-      propsOf<{ onPress: () => void }>(exportButton).onPress();
-      await flushAsync();
-    });
+    await fireEvent.press(exportButton());
+    await act(flushAsync);
 
     expect(onExport).toHaveBeenCalledTimes(1);
   });
@@ -46,12 +35,10 @@ describe("BackupSettingsScreen", () => {
           finish = resolve;
         }),
     );
-    const tree = renderTree(
+    await render(
       <BackupSettingsScreen onExport={onExport} onImport={vi.fn()} />,
     );
-    const [exportButton] = tree.root.findAllByType(Pressable);
-    if (!exportButton) throw new Error("expected an export button");
-    const { onPress } = propsOf<{ onPress: () => void }>(exportButton);
+    const { onPress } = exportButton().props as { onPress: () => void };
 
     await act(async () => {
       // Same render, same handler: both taps see "not exporting" in state.
@@ -74,16 +61,12 @@ describe("BackupSettingsScreen", () => {
       .mockImplementation((_title, _message, buttons?: AlertButton[]) => {
         buttons?.find((b) => b.style === "destructive")?.onPress?.();
       });
-    const tree = renderTree(
+    await render(
       <BackupSettingsScreen onExport={vi.fn()} onImport={onImport} />,
     );
-    const [, importButton] = tree.root.findAllByType(Pressable);
-    if (!importButton) throw new Error("expected an import button");
 
-    await act(async () => {
-      propsOf<{ onPress: () => void }>(importButton).onPress();
-      await flushAsync();
-    });
+    await fireEvent.press(importButton());
+    await act(flushAsync);
 
     expect(alertSpy).toHaveBeenCalledWith(
       "Importer une sauvegarde ?",
@@ -94,40 +77,37 @@ describe("BackupSettingsScreen", () => {
     alertSpy.mockRestore();
   });
 
-  it("doesn't show a reminder row when `reminder` is omitted", () => {
-    const tree = renderTree(
+  it("doesn't show a reminder row when `reminder` is omitted", async () => {
+    await render(
       <BackupSettingsScreen onExport={vi.fn()} onImport={vi.fn()} />,
     );
-    expect(tree.root.findAllByType(Switch)).toHaveLength(0);
+    expect(screen.queryByRole("switch")).not.toBeOnTheScreen();
   });
 
-  it("shows a reminder switch and calls onToggle when pressed", () => {
+  it("shows a reminder switch and calls onToggle when pressed", async () => {
     const onToggle = vi.fn();
-    const tree = renderTree(
+    await render(
       <BackupSettingsScreen
         onExport={vi.fn()}
         onImport={vi.fn()}
         reminder={{ enabled: false, onToggle, intervalDays: 7 }}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain(
-      "Une notification tous les 7 jours pour penser à exporter.",
-    );
+    expect(
+      screen.getByText(
+        "Une notification tous les 7 jours pour penser à exporter.",
+      ),
+    ).toBeOnTheScreen();
 
-    act(() => {
-      propsOf<{ onValueChange: (v: boolean) => void }>(
-        tree.root.findByType(Switch),
-      ).onValueChange(true);
-    });
+    const [nativeSwitch] = screenElements("Switch");
+    if (!nativeSwitch) throw new Error("expected the reminder switch");
+    await fireEvent(nativeSwitch, "valueChange", true);
 
     expect(onToggle).toHaveBeenCalledWith(true);
   });
 
-  it("shows an info box with its label and value when `info` is given", () => {
-    const tree = renderTree(
+  it("shows an info box with its label and value when `info` is given", async () => {
+    await render(
       <BackupSettingsScreen
         onExport={vi.fn()}
         onImport={vi.fn()}
@@ -137,40 +117,31 @@ describe("BackupSettingsScreen", () => {
         }}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("Dernière sauvegarde auto");
-    expect(texts).toContain("Aujourd'hui à 08:00");
+    expect(screen.getByText("Dernière sauvegarde auto")).toBeOnTheScreen();
+    expect(screen.getByText("Aujourd'hui à 08:00")).toBeOnTheScreen();
   });
 
-  it("renders a titled section per action when layout is 'sections'", () => {
-    const tree = renderTree(
+  it("renders a titled section per action when layout is 'sections'", async () => {
+    await render(
       <BackupSettingsScreen
         onExport={vi.fn()}
         onImport={vi.fn()}
         layout="sections"
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: unknown }>(t).children);
-    expect(texts).toContain("Exporter");
-    expect(texts).toContain("Importer");
-    expect(tree.root.findAllByType(Pressable)).toHaveLength(2);
+    expect(screen.getByText("Exporter")).toBeOnTheScreen();
+    expect(screen.getByText("Importer")).toBeOnTheScreen();
+    expect(screen.getAllByRole("button")).toHaveLength(2);
   });
 
-  it("shows a leading icon on a button when `icons` sets one for it", () => {
-    const tree = renderTree(
+  it("shows a leading icon on a button when `icons` sets one for it", async () => {
+    await render(
       <BackupSettingsScreen
         onExport={vi.fn()}
         onImport={vi.fn()}
         icons={{ export: "cloud-upload-outline" }}
       />,
     );
-    const icons = tree.root
-      .findAllByType(Ionicons)
-      .map((el) => propsOf<{ name: unknown }>(el).name);
-    expect(icons).toEqual(["cloud-upload-outline"]);
+    expect(screenIcons()).toEqual(["cloud-upload-outline"]);
   });
 });

@@ -1,70 +1,37 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { Pressable, Text } from "react-native";
-import { act, create } from "react-test-renderer";
-import { Ionicons } from "@expo/vector-icons";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
 
-import { propsOf } from "../../__mocks__/testInstance.js";
+import { screenIcons, screenTexts } from "../../__mocks__/screenQueries.js";
 
 import { ThemeSettingsScreen } from "./ThemeSettingsScreen.js";
 
-function renderTree(element: Parameters<typeof create>[0]) {
-  let tree!: ReturnType<typeof create>;
-  act(() => {
-    tree = create(element);
-  });
-  return tree;
-}
+const radio = (name: string) => screen.getByRole("radio", { name });
 
 describe("ThemeSettingsScreen", () => {
-  it("renders the three default French labels with their emoji", () => {
-    const tree = renderTree(
-      <ThemeSettingsScreen value="system" onChange={vi.fn()} />,
-    );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: string }>(t).children);
-    expect(texts).toEqual(
+  it("renders the three default French labels with their emoji", async () => {
+    await render(<ThemeSettingsScreen value="system" onChange={vi.fn()} />);
+    expect(screenTexts()).toEqual(
       expect.arrayContaining(["☀️", "Clair", "🌙", "Sombre", "⚙️", "Système"]),
     );
   });
 
-  it("marks the current value as selected and shows a checkmark for it", () => {
-    const tree = renderTree(
-      <ThemeSettingsScreen value="dark" onChange={vi.fn()} />,
-    );
-    const selected = tree.root
-      .findAllByType(Pressable)
-      .map(
-        (option) =>
-          propsOf<{ accessibilityState: { checked: boolean } }>(option)
-            .accessibilityState.checked,
-      );
-    expect(selected).toEqual([false, true, false]);
-
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: string }>(t).children);
-    expect(texts).toContain("✓");
+  it("marks the current value as selected and shows a checkmark for it", async () => {
+    await render(<ThemeSettingsScreen value="dark" onChange={vi.fn()} />);
+    expect(radio("Clair")).not.toBeChecked();
+    expect(radio("Sombre")).toBeChecked();
+    expect(radio("Système")).not.toBeChecked();
+    expect(radio("Sombre")).toHaveTextContent("✓", { exact: false });
   });
 
-  it("calls onChange with the pressed option", () => {
+  it("calls onChange with the pressed option", async () => {
     const onChange = vi.fn();
-    const tree = renderTree(
-      <ThemeSettingsScreen value="system" onChange={onChange} />,
-    );
-    const firstOption = tree.root.findAllByType(Pressable)[0];
-    if (!firstOption) throw new Error("expected at least one option");
-
-    act(() => {
-      propsOf<{ onPress: () => void }>(firstOption).onPress();
-    });
-
+    await render(<ThemeSettingsScreen value="system" onChange={onChange} />);
+    await fireEvent.press(radio("Clair"));
     expect(onChange).toHaveBeenCalledWith("light");
   });
 
-  it("accepts custom emojis and labels", () => {
-    const tree = renderTree(
+  it("accepts custom emojis and labels", async () => {
+    await render(
       <ThemeSettingsScreen
         value="light"
         onChange={vi.fn()}
@@ -72,20 +39,14 @@ describe("ThemeSettingsScreen", () => {
         labels={{ light: "Day" }}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: string }>(t).children);
-    expect(texts).toEqual(expect.arrayContaining(["🌞", "Day"]));
+    expect(screenTexts()).toEqual(expect.arrayContaining(["🌞", "Day"]));
   });
 
-  it("renders Ionicons instead of emoji when variant is 'icon'", () => {
-    const tree = renderTree(
+  it("renders Ionicons instead of emoji when variant is 'icon'", async () => {
+    await render(
       <ThemeSettingsScreen value="dark" onChange={vi.fn()} variant="icon" />,
     );
-    const iconNames = tree.root
-      .findAllByType(Ionicons)
-      .map((el) => propsOf<{ name: unknown }>(el).name);
-    expect(iconNames).toEqual(
+    expect(screenIcons()).toEqual(
       expect.arrayContaining([
         "sunny-outline",
         "moon-outline",
@@ -93,26 +54,22 @@ describe("ThemeSettingsScreen", () => {
         "checkmark-circle",
       ]),
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: string }>(t).children);
-    expect(texts).not.toContain("☀️");
-    expect(texts).not.toContain("✓");
+    expect(screen.queryByText("☀️")).not.toBeOnTheScreen();
+    expect(screen.queryByText("✓")).not.toBeOnTheScreen();
   });
 
-  it("hides the hint when showHint is false", () => {
-    const tree = renderTree(
+  it("hides the hint when showHint is false", async () => {
+    await render(
       <ThemeSettingsScreen
         value="system"
         onChange={vi.fn()}
         showHint={false}
       />,
     );
-    const texts = tree.root
-      .findAllByType(Text)
-      .map((t) => propsOf<{ children: string }>(t).children);
-    expect(texts).not.toContain(
-      "« Système » suit automatiquement le réglage clair/sombre de ton téléphone.",
-    );
+    expect(
+      screen.queryByText(
+        "« Système » suit automatiquement le réglage clair/sombre de ton téléphone.",
+      ),
+    ).not.toBeOnTheScreen();
   });
 });
