@@ -1,5 +1,15 @@
 # @forthtilliath/react-native-kit
 
+## 0.22.0
+
+### Minor Changes
+
+- ece3bd5: `QuantityStepper` takes `inputRef`, `onSubmitEditing` and `returnKeyType`, to chain steppers on the keyboard's Enter key: the typed value is sent first, then `onSubmitEditing` runs (e.g. focusing the next stepper through its `inputRef`), with the keyboard kept open and an Enter key reading "next" by default.
+
+### Patch Changes
+
+- 1dde1a5: `useViewShare` declares its result (`UseViewShareResult`): `ref` is typed `RefObject<ComponentRef<typeof View> | null>` in the published types, instead of `RefObject<View | null>` inferred from React Native 0.86's types, where `View` was the instance. Under React Native 0.88 `View` is the component, so `<View ref={ref}>` failed to type-check without a cast.
+
 ## 0.21.0
 
 ### Minor Changes

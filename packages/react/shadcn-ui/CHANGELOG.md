@@ -1,5 +1,11 @@
 # @forthtilliath/shadcn-ui
 
+## 0.4.2
+
+### Patch Changes
+
+- 9926747: Dependencies moved to their latest minor versions: Radix UI primitives, lucide-react, shiki, react-hook-form, @hookform/resolvers, react-resizable-panels, tailwind-merge, input-otp and react-day-picker for the UI packages; globals and typescript-eslint for the ESLint config.
+
 ## 0.4.1
 
 ### Patch Changes

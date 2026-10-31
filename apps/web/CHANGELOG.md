@@ -1,5 +1,14 @@
 # web
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [9926747]
+  - @forthtilliath/forth-ui@0.5.1
+  - @forthtilliath/shadcn-ui@0.4.2
+  - @forthtilliath/react-kit@0.6.0
+
 ## 0.1.10
 
 ### Patch Changes
