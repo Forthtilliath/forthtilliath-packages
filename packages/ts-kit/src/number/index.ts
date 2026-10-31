@@ -4,5 +4,7 @@ export * from "./formatBytes.js";
 export * from "./formatCsvNumber.js";
 export * from "./formatDuration.js";
 export * from "./padNumber.js";
+export * from "./parseIntegerInput.js";
 export * from "./round.js";
+export * from "./sanitizeIntegerInput.js";
 export * from "./sum.js";

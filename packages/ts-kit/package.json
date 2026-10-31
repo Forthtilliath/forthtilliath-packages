@@ -38,6 +38,7 @@
     "eslint": "catalog:",
     "jsdom": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "zod": "^4.6.7"
   }
 }
