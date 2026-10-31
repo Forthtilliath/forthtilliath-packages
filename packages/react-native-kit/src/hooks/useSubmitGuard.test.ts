@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- see PickerModal.test.tsx */
-import { act } from "react-test-renderer";
+import { act, renderHook } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
-
-import { renderHook } from "../__mocks__/renderHook.js";
 
 import { useSubmitGuard } from "./useSubmitGuard.js";
 
@@ -15,42 +12,40 @@ function deferred() {
 }
 
 describe("useSubmitGuard", () => {
-  it("starts with isSaving false", () => {
-    const { result } = renderHook(() => useSubmitGuard());
+  it("starts with isSaving false", async () => {
+    const { result } = await renderHook(() => useSubmitGuard());
     expect(result.current.isSaving).toBe(false);
   });
 
   it("sets isSaving true while the action is pending, false once it resolves", async () => {
-    const { result, rerender } = renderHook(() => useSubmitGuard());
+    const { result } = await renderHook(() => useSubmitGuard());
     const { promise, resolve } = deferred();
     const action = vi.fn(() => promise);
 
     let guardPromise!: Promise<void>;
-    act(() => {
+    await act(() => {
       guardPromise = result.current.guard(action);
     });
-    rerender();
     expect(result.current.isSaving).toBe(true);
 
     await act(async () => {
       resolve();
       await guardPromise;
     });
-    rerender();
     expect(result.current.isSaving).toBe(false);
   });
 
   it("ignores a second call while the first action is still pending", async () => {
-    const { result, rerender } = renderHook(() => useSubmitGuard());
+    const { result } = await renderHook(() => useSubmitGuard());
     const { promise, resolve } = deferred();
     const action = vi.fn(() => promise);
 
     let firstCall!: Promise<void>;
-    act(() => {
+    await act(() => {
       firstCall = result.current.guard(action);
     });
-    rerender();
-    act(() => {
+    // `guard` of the render that followed isSaving's change.
+    await act(() => {
       void result.current.guard(action);
     });
 
@@ -63,12 +58,12 @@ describe("useSubmitGuard", () => {
   });
 
   it("ignores a second call made before any re-render (double tap)", async () => {
-    const { result } = renderHook(() => useSubmitGuard());
+    const { result } = await renderHook(() => useSubmitGuard());
     const { promise, resolve } = deferred();
     const action = vi.fn(() => promise);
 
     let firstCall!: Promise<void>;
-    act(() => {
+    await act(() => {
       // Both taps land on the same render, so they share the same `guard`.
       const { guard } = result.current;
       firstCall = guard(action);
@@ -84,13 +79,12 @@ describe("useSubmitGuard", () => {
   });
 
   it("accepts a new call once the previous action has failed", async () => {
-    const { result, rerender } = renderHook(() => useSubmitGuard());
+    const { result } = await renderHook(() => useSubmitGuard());
     const action = vi.fn(() => Promise.reject(new Error("boom")));
 
     await act(async () => {
       await result.current.guard(action).catch(() => undefined);
     });
-    rerender();
     await act(async () => {
       await result.current.guard(action).catch(() => undefined);
     });
