@@ -55,12 +55,12 @@
   "devDependencies": {
     "@forthtilliath/eslint-config": "workspace:*",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@supabase/supabase-js": "^2.105.1",
+    "@supabase/supabase-js": "^2.118.0",
     "@types/node": "catalog:",
     "@types/pg": "^8.23.1",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
-    "pg": "^8.23.0",
+    "pg": "^8.23.1",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
