@@ -9,11 +9,13 @@ type Updater<T> = T | ((previous: T) => T);
  * Kept structural so the hook does not depend on a validation library.
  */
 export interface PersistentStateSchema<T> {
+  /** Validates an unknown value (a zod schema's `safeParse` fits as is). */
   safeParse: (
     input: unknown,
   ) => { success: true; data: T } | { success: false };
 }
 
+/** Options of {@link usePersistentState}. */
 export interface PersistentStateOptions<T> {
   /** Checks the stored value on every read; must be stable (module-level). */
   schema?: PersistentStateSchema<T>;
@@ -35,7 +37,9 @@ function readRaw(key: string): string | null {
   }
 }
 
-/** Stored value, or `initialValue` when it is missing, corrupted or rejected. */
+/**
+ * Stored value, or `initialValue` when it is missing, corrupted or rejected.
+ */
 function parseStored<T>(
   raw: string | null,
   initialValue: T,

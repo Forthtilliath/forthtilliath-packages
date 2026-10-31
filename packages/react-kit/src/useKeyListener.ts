@@ -2,8 +2,12 @@
 
 import { useEffect, useRef } from "react";
 
+/** The key combination {@link useKeyListener} listens for. */
 export interface KeyConfig {
-  /** `KeyboardEvent.key` to match (e.g. `"s"`, `"Escape"`). Any key when omitted. */
+  /**
+   * `KeyboardEvent.key` to match (e.g. `"s"`, `"Escape"`). Any key when
+   * omitted.
+   */
   key?: string;
   /** Ctrl must be held (`true`) or not (`false`, the default). */
   ctrl?: boolean;

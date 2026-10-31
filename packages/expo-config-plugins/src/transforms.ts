@@ -1,7 +1,10 @@
 // The plugins' actual work, as pure functions over the generated files'
 // contents — testable without running `expo prebuild` — and their options.
 
-/** The `signingConfig signingConfigs.debug` of the `release` build type (not the `debug` one's). */
+/**
+ * The `signingConfig signingConfigs.debug` of the `release` build type (not the
+ * `debug` one's).
+ */
 const RELEASE_USES_DEBUG_KEY =
   /(buildTypes\s*\{[\s\S]*?release\s*\{[^}]*?)signingConfig signingConfigs\.debug/;
 
@@ -52,7 +55,10 @@ export function applyReleaseSigning(
     .replace("signingConfigs {", releaseSigningConfig(prefix));
 }
 
-/** One entry of `gradle.properties`, as Expo's `withGradleProperties` exposes it. */
+/**
+ * One entry of `gradle.properties`, as Expo's `withGradleProperties` exposes
+ * it.
+ */
 export type GradlePropertiesItem =
   | { type: "property"; key: string; value: string }
   | { type: "comment"; value: string }
@@ -150,11 +156,15 @@ subprojects {
 `;
 }
 
+/**
+ * Options of the `withKotlinJvmTarget` plugin ({@link applyKotlinJvmTarget}).
+ */
 export interface KotlinJvmTargetOptions {
   /** JVM version Kotlin compiles for, e.g. `"21"`. @defaultValue `"17"` */
   jvmTarget?: string;
 }
 
+/** Options of the `withReleaseSigning` plugin ({@link applyReleaseSigning}). */
 export interface ReleaseSigningOptions {
   /**
    * Prefix of the Gradle properties holding the upload key, e.g. `MYAPP` for
@@ -164,11 +174,13 @@ export interface ReleaseSigningOptions {
   propertyPrefix?: string;
 }
 
+/** Options of the `withAndroidAbis` plugin ({@link applyAndroidAbis}). */
 export interface AndroidAbisOptions {
   /** @defaultValue `["armeabi-v7a", "arm64-v8a"]` — real phones only */
   abis?: string[];
 }
 
+/** Options of the `withShortCxxPath` plugin ({@link applyShortCxxPath}). */
 export interface ShortCxxPathOptions {
   /**
    * Where CMake stages native builds. Given, it always applies; omitted, the
@@ -177,6 +189,10 @@ export interface ShortCxxPathOptions {
   stagingDir?: string;
 }
 
+/**
+ * Options of the `withReleaseRemovedPermissions` plugin ({@link
+ * buildReleaseRemovedPermissionsManifest}).
+ */
 export interface ReleaseRemovedPermissionsOptions {
   /**
    * Android permissions to strip from the release APK only, short (`INTERNET`)

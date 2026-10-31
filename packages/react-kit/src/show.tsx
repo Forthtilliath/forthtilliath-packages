@@ -1,6 +1,13 @@
+/** Props of {@link Show}. */
 export interface ShowProps<T = unknown> {
+  /** The condition: `children` render when it is truthy. */
   when: T;
+  /** Rendered when `when` is falsy. Defaults to `null`. */
   fallback?: React.ReactNode;
+  /**
+   * What to render when `when` is truthy: a node, or a function receiving
+   * `when` narrowed to non-nullable.
+   */
   children: React.ReactNode | ((whenValue: NonNullable<T>) => React.ReactNode);
 }
 

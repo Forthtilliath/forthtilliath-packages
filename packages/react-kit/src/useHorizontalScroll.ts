@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+/** Options of {@link useHorizontalScroll}. */
 export interface UseHorizontalScrollOptions {
   /** Distance in px scrolled by `scrollByStep`. Defaults to `240`. */
   step?: number;

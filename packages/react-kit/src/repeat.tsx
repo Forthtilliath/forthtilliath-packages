@@ -1,7 +1,13 @@
 import { SlotOrCallback } from "./slot-or-callback.js";
 
+/** Props of {@link Repeat}. */
 export interface RepeatProps {
+  /**
+   * What to render each time: a node (repeated as is), or a function receiving
+   * the 0-based index.
+   */
   children: React.ReactNode | ((index: number) => React.ReactNode);
+  /** How many times to render `children`. Defaults to `1`. */
   count?: number;
 }
 

@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 
+/** Options of {@link useControllableState}. */
 export interface UseControllableStateOptions<T> {
   /** Value from the parent — when set, the state becomes controlled. */
   value?: T;

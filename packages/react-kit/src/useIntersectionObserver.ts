@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+/**
+ * Options of {@link useIntersectionObserver}: the standard
+ * `IntersectionObserver` options (`root`, `rootMargin`, `threshold`), plus
+ * `once`.
+ */
 export interface UseIntersectionObserverOptions extends IntersectionObserverInit {
   /** Stop observing after the first time the element becomes visible. */
   once?: boolean;
