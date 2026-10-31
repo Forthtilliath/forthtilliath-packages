@@ -34,8 +34,8 @@
     "@eslint/js": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^13.0.0",
-    "globals": "^17.9.0",
-    "typescript-eslint": "^8.67.0"
+    "globals": "^17.13.0",
+    "typescript-eslint": "^8.72.1"
   },
   "peerDependencies": {
     "@eslint-react/eslint-plugin": "^5.18.3",
@@ -101,9 +101,9 @@
   },
   "devDependencies": {
     "@angular/core": "^21.2.25",
-    "@eslint-react/eslint-plugin": "^5.18.3",
+    "@eslint-react/eslint-plugin": "^5.28.8",
     "@forthtilliath/typescript-config": "workspace:*",
-    "@next/eslint-plugin-next": "^16.3.0",
+    "@next/eslint-plugin-next": "^16.4.3",
     "angular-eslint": "^21.4.0",
     "eslint": "catalog:",
     "eslint-plugin-expo": "^1.2.1",
@@ -113,11 +113,11 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-native": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.5.4",
-    "eslint-plugin-storybook": "^10.6.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "eslint-plugin-storybook": "^10.6.5",
     "eslint-plugin-testing-library": "^7.16.2",
-    "eslint-plugin-turbo": "^2.10.9",
-    "rxjs": "^7.8.0",
+    "eslint-plugin-turbo": "^2.11.10",
+    "rxjs": "^7.8.2",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
