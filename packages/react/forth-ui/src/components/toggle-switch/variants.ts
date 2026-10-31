@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
+/** Classes of a toggle switch's track, per `size` (`sm`, `default`, `lg`). */
 export const toggleSwitchTrackVariants = cva(
   [
     "relative shrink-0 rounded-full bg-foreground/20 transition-colors",
@@ -22,6 +23,7 @@ export const toggleSwitchTrackVariants = cva(
   },
 );
 
+/** Classes of a toggle switch's thumb, per `size` (`sm`, `default`, `lg`). */
 export const toggleSwitchThumbVariants = cva(
   "absolute size-4 rounded-full bg-white shadow transition-transform",
   {
@@ -39,6 +41,7 @@ export const toggleSwitchThumbVariants = cva(
   },
 );
 
+/** The variant props of {@link toggleSwitchTrackVariants}. */
 export type ToggleSwitchSizeVariants = VariantProps<
   typeof toggleSwitchTrackVariants
 >;

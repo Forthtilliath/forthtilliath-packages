@@ -3,11 +3,20 @@
 import * as React from "react";
 import { Loader2Icon } from "lucide-react";
 
+/** Props of {@link InfiniteScroll}. */
 export interface InfiniteScrollProps {
+  /**
+   * Fetches the next page; called when the sentinel under the list becomes
+   * visible.
+   */
   onLoadMore: () => void;
+  /** Whether there are more pages; `false` stops observing. */
   hasMore: boolean;
+  /** Shows a spinner under the list while the next page loads. */
   loading?: boolean;
+  /** The items loaded so far. */
   children: React.ReactNode;
+  /** Classes of the component's root element. */
   className?: string;
 }
 

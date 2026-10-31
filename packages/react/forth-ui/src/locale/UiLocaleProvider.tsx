@@ -4,8 +4,11 @@ import type { ReactNode } from "react";
 
 import { type UiLocale, UiLocaleContext } from "./locale.js";
 
+/** Props of {@link UiLocaleProvider}. */
 export interface UiLocaleProviderProps {
+  /** Language of the built-in labels of every component below. */
   locale: UiLocale;
+  /** The part of the app it applies to (usually the whole app). */
   children: ReactNode;
 }
 

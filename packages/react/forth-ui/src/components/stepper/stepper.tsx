@@ -3,16 +3,26 @@ import { CheckIcon } from "lucide-react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** One step of a {@link Stepper}. */
 export interface StepperStep {
+  /** Name of the step. */
   label: React.ReactNode;
+  /** Detail under the name. */
   description?: React.ReactNode;
 }
 
+/** Props of {@link Stepper}. */
 export interface StepperProps {
+  /** The steps, in order. */
   steps: StepperStep[];
   /** The current step, 0-indexed. Steps before it are complete. */
   value: number;
+  /**
+   * `horizontal` (a row, the default) or `vertical` (a column, for narrow
+   * screens or long descriptions).
+   */
   orientation?: "horizontal" | "vertical";
+  /** Classes of the list. */
   className?: string;
 }
 
@@ -20,7 +30,8 @@ export interface StepperProps {
  * A numbered sequence of steps for a multi-stage flow (checkout, onboarding,
  * setup wizards), showing completed/current/upcoming state.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://originui.com/stepper
  * @see https://ktui.io/docs/stepper
  *

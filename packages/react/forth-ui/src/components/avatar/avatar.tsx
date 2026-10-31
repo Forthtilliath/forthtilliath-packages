@@ -31,6 +31,11 @@ import {
   tooltipTriggerVariants,
 } from "./variants.js";
 
+/**
+ * Props of `Avatar`: Radix's avatar props, plus the image (`src`, `alt`), the
+ * `fallback` initials and their color, `size` / `shape` / `ring`, the presence
+ * `status` dot, a `badge` and a tooltip.
+ */
 export type AvatarProps = Omit<
   React.ComponentProps<typeof AvatarPrimitive>,
   "className" | "size"
@@ -50,7 +55,8 @@ export type AvatarProps = Omit<
   /**
    * The variant of the fallback box.
    *
-   * You can also use ``className.fallback`` to change the color of the fallback box.
+   * You can also use ``className.fallback`` to change the color of the fallback
+   * box.
    *
    * @example
    * ```tsx
@@ -92,7 +98,8 @@ export type AvatarProps = Omit<
    * @example
    * ```tsx
    * <Avatar fallback="CN" badge={5} />
-   * <Avatar fallback="CN" badge={<Check className="size-3" />} badgeVariant="default" />
+   * <Avatar fallback="CN" badge={<Check className="size-3" />}
+   * badgeVariant="default" />
    * ```
    */
   badge?: React.ReactNode;
@@ -143,7 +150,8 @@ export type AvatarProps = Omit<
 /**
  * An image element with a fallback for representing the user.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/avatar
  * @see https://bundui.io/components/avatar
  * @see https://www.shadcnui-blocks.com/components/avatar

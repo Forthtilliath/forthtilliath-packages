@@ -5,7 +5,8 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 /**
  * A description list, with terms and descriptions.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui-x.junwen-k.dev/docs/components/description-list
  *
  * @version 0.1.0
@@ -25,6 +26,11 @@ export function DescriptionList({
   );
 }
 
+/**
+ * One term / description pair of a {@link DescriptionList}: stacked on mobile,
+ * side by side from `sm`.
+ * @param props - Any `<div>` prop.
+ */
 export function DescriptionGroup({
   className,
   ...props
@@ -41,6 +47,10 @@ export function DescriptionGroup({
   );
 }
 
+/**
+ * The term (label) of a pair, a third of the width from `sm`.
+ * @param props - Any `<dt>` prop.
+ */
 export function DescriptionTerm({
   className,
   ...props
@@ -57,6 +67,10 @@ export function DescriptionTerm({
   );
 }
 
+/**
+ * The description (value) of a pair.
+ * @param props - Any `<dd>` prop.
+ */
 export function DescriptionDetail({
   className,
   ...props

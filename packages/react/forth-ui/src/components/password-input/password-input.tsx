@@ -8,6 +8,10 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
+/**
+ * Props of `PasswordInput`: those of an `<input>` except `type` (switched
+ * between `password` and `text` by the show / hide button), plus `locale`.
+ */
 export type PasswordInputProps = Omit<React.ComponentProps<"input">, "type"> & {
   /**
    * Language of the built-in labels — French by default, or the nearest
@@ -19,7 +23,8 @@ export type PasswordInputProps = Omit<React.ComponentProps<"input">, "type"> & {
 /**
  * A password `Input` with a show/hide visibility toggle.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui-x.junwen-k.dev/docs/components/password-input
  * @see https://ktui.io/docs/toggle-password
  *

@@ -10,17 +10,29 @@ import { ToggleSwitch } from "../toggle-switch/index.js";
 
 import type { ColumnMenuColumn } from "./types.js";
 
+/**
+ * Props of {@link SortableColumnRow}.
+ * @internal
+ */
 export interface SortableColumnRowProps<K extends string> {
+  /** The column of this row. */
   column: ColumnMenuColumn<K>;
+  /** Its position, from 0. */
   index: number;
+  /** Number of columns, for the "n / total" position. */
   total: number;
+  /** Accessible name of the drag handle. */
   dragHandleLabel: string;
+  /** Shows or hides the column. */
   onToggle: (key: K) => void;
   /** Carries `data-dragging` while the row is being dragged. */
   className?: string;
 }
 
-/** One row of `ColumnMenu`: drag handle, visibility switch, position. */
+/**
+ * One row of `ColumnMenu`: drag handle, visibility switch, position.
+ * @internal
+ */
 export function SortableColumnRow<K extends string>({
   column,
   index,

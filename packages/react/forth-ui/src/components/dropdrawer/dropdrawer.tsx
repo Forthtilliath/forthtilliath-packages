@@ -18,18 +18,32 @@ import {
 import { useIsMobile } from "@forthtilliath/shadcn-ui/hooks/use-mobile";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** One entry of a {@link Dropdrawer}, the same on desktop and mobile. */
 export interface DropdrawerItem {
+  /** Text of the entry. */
   label: React.ReactNode;
+  /** Icon shown before the label. */
   icon?: React.ReactNode;
+  /** Called when the entry is chosen. */
   onSelect?: () => void;
+  /**
+   * `destructive` colors the entry for a dangerous action (delete…). Defaults
+   * to `default`.
+   */
   variant?: "default" | "destructive";
 }
 
+/** Props of {@link Dropdrawer}. */
 export interface DropdrawerProps {
+  /** The entries, in display order. */
   items: DropdrawerItem[];
+  /** The element opening the menu (a button), rendered as the trigger. */
   trigger: React.ReactElement;
+  /** Title of the bottom drawer (mobile only; the desktop menu has none). */
   title?: React.ReactNode;
+  /** Controlled open state. */
   open?: boolean;
+  /** Called when the menu opens or closes. */
   onOpenChange?: (open: boolean) => void;
 }
 

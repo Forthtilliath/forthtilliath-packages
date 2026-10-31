@@ -7,6 +7,7 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
+/** Props of `QrCode`. */
 export interface QrCodeProps extends Omit<
   React.SVGProps<SVGSVGElement>,
   "viewBox"
@@ -34,7 +35,8 @@ export interface QrCodeProps extends Omit<
  * Generates a QR code from a string, rendered as SVG (no canvas — works in
  * Server Components too).
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://www.kibo-ui.com/components/qr-code
  *
  * @version 0.1.0

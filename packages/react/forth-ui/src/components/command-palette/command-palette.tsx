@@ -14,24 +14,50 @@ import {
 
 import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
+/** One command of a {@link CommandPalette}. */
 export interface CommandPaletteItem {
+  /** What the row shows. */
   label: React.ReactNode;
+  /**
+   * Unique value, also what the search filters on — include the words users may
+   * type.
+   */
   value: string;
+  /** Icon shown before the label. */
   icon?: React.ReactNode;
+  /**
+   * Keyboard shortcut displayed at the end of the row, e.g. `"⌘P"` (display
+   * only: binding it is up to the app).
+   */
   shortcut?: string;
+  /** Runs the command; the palette then closes. */
   onSelect: () => void;
 }
 
+/** A titled group of commands. */
 export interface CommandPaletteGroup {
+  /** Title of the group. */
   heading?: string;
+  /** Its commands, in display order. */
   items: CommandPaletteItem[];
 }
 
+/** Props of {@link CommandPalette}. */
 export interface CommandPaletteProps {
+  /** The commands, by group. */
   groups: CommandPaletteGroup[];
+  /**
+   * Controlled open state; omit it to let the shortcut and Escape drive the
+   * palette.
+   */
   open?: boolean;
+  /**
+   * Called when the palette opens or closes (shortcut, Escape, command run).
+   */
   onOpenChange?: (open: boolean) => void;
+  /** Placeholder of the search field. Defaults to the locale's. */
   placeholder?: string;
+  /** Shown when no command matches the search. Defaults to the locale's. */
   emptyMessage?: string;
   /** Key that toggles the palette alongside Cmd/Ctrl. @default "k" */
   shortcutKey?: string;
@@ -48,7 +74,8 @@ export interface CommandPaletteProps {
  * that listener plus a flat `groups`/`items` API instead of hand-composing
  * `CommandGroup`/`CommandItem` every time.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/command
  * @see https://www.hextaui.com/docs/ui/components/command-menu
  *

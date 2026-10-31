@@ -14,17 +14,26 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
 import { type UiLocale, useUiMessages } from "../../locale/locale.js";
 
+/** One link of a {@link NavbarMobileMenu}. */
 export interface NavbarMobileMenuItem {
+  /** Text of the link. */
   label: React.ReactNode;
+  /** Its destination. */
   href: string;
 }
 
+/** Props of {@link NavbarMobileMenu}. */
 export interface NavbarMobileMenuProps {
+  /** The links, in display order. */
   items: NavbarMobileMenuItem[];
   /** Extra content rendered below the links (e.g. auth buttons). */
   footer?: React.ReactNode;
+  /** Classes of the component's root element. */
   className?: string;
-  /** Visible only below this breakpoint's prefix (Tailwind's `md` by default). @default "md" */
+  /**
+   * Visible only below this breakpoint's prefix (Tailwind's `md` by default).
+   * @default "md"
+   */
   hideFrom?: "sm" | "md" | "lg";
   /**
    * Language of the built-in labels — French by default, or the nearest

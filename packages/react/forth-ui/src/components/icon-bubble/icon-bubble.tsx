@@ -5,9 +5,12 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import type { IconBubbleVariants } from "./variants.js";
 import { ICON_BUBBLE_ICON_SIZES, iconBubbleVariants } from "./variants.js";
 
+/** Props of `IconBubble`. */
 export type IconBubbleProps = Omit<React.ComponentProps<"span">, "children"> &
   IconBubbleVariants & {
-    /** Icon component, e.g. a `lucide-react` icon. Decorative (`aria-hidden`). */
+    /**
+     * Icon component, e.g. a `lucide-react` icon. Decorative (`aria-hidden`).
+     */
     icon: React.ComponentType<{
       size?: number | string;
       "aria-hidden"?: boolean | "true" | "false";

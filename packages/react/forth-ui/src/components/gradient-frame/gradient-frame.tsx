@@ -2,9 +2,11 @@ import type React from "react";
 
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** Props of {@link GradientFrame}. */
 export interface GradientFrameProps {
   /** Side the gradient frame sticks out on (default: `"right"`). */
   side?: "left" | "right";
+  /** The visual laid on the frame (an image, a video, a card…). */
   children: React.ReactNode;
   /**
    * Custom classes for each part of the component.

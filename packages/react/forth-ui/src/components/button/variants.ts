@@ -5,6 +5,11 @@ import { cva } from "class-variance-authority";
 // forth-ui owns the full size scale itself (applied via className on top
 // of the underlying primitive) rather than trying to extend a cva that
 // isn't ours to extend.
+/**
+ * Size classes of a button: `size` (`xs`, `sm`, `default`, `lg`, and square
+ * `icon`, `icon-xs`, `icon-sm`, `icon-lg` for icon-only buttons) and `shape`
+ * (`default` or `pill`).
+ */
 export const buttonSizeVariants = cva("", {
   variants: {
     size: {
@@ -28,4 +33,5 @@ export const buttonSizeVariants = cva("", {
   },
 });
 
+/** The variant props of {@link buttonSizeVariants}. */
 export type ButtonSizeVariants = VariantProps<typeof buttonSizeVariants>;

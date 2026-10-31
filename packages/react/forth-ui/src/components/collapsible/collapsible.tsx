@@ -11,6 +11,7 @@ import {
 } from "@forthtilliath/shadcn-ui/components/collapsible";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** Props of `Collapsible`: Radix's collapsible root props. */
 export type CollapsibleProps = React.ComponentProps<
   typeof CollapsiblePrimitive
 >;
@@ -20,7 +21,8 @@ export type CollapsibleProps = React.ComponentProps<
  * single-item primitive `Accordion` is built on top of. Reach for
  * `Accordion` instead when you have several mutually-exclusive sections.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/collapsible
  * @see https://ktui.io/docs/collapse
  *
@@ -32,6 +34,7 @@ export function Collapsible(props: CollapsibleProps) {
   return <CollapsiblePrimitive data-slot="collapsible" {...props} />;
 }
 
+/** Props of `CollapsibleTrigger`: Radix's trigger props. */
 export type CollapsibleTriggerProps = React.ComponentProps<
   typeof CollapsibleTriggerPrimitive
 > & {
@@ -83,6 +86,10 @@ export function CollapsibleTrigger({
   );
 }
 
+/**
+ * Props of `CollapsibleContent`: Radix's content props (the height animates on
+ * open and close).
+ */
 export type CollapsibleContentProps = React.ComponentProps<
   typeof CollapsibleContentPrimitive
 >;

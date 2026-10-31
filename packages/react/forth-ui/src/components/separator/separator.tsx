@@ -3,6 +3,7 @@ import type React from "react";
 import { Separator as SeparatorPrimitive } from "@forthtilliath/shadcn-ui/components/separator";
 import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 
+/** Props of `Separator`. */
 export type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive> & {
   /**
    * Centered text between two line segments (e.g. `"OR"`) — only applies
@@ -14,7 +15,8 @@ export type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive> & {
 /**
  * Visually or semantically separates content.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ui.shadcn.com/docs/components/separator
  * @see https://ktui.io/docs/separator
  *

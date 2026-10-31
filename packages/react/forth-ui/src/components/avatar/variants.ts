@@ -9,6 +9,10 @@ import type {
 } from "./constants.js";
 import { DEFAULT_BADGE_POSITION, DEFAULT_SHAPE } from "./constants.js";
 
+/**
+ * Classes of an avatar: `size`, `shape`, and `ring` (a green ring, e.g. for the
+ * current user).
+ */
 export const avatarVariants = cva("size-10", {
   variants: {
     ring: {
@@ -37,6 +41,10 @@ export const avatarVariants = cva("size-10", {
   },
 });
 
+/**
+ * Classes of an avatar's status dot: its color (`status`) and corner
+ * (`position`).
+ */
 export const statusVariants = cva("", {
   variants: {
     status: {
@@ -63,6 +71,7 @@ export const statusVariants = cva("", {
   ],
 });
 
+/** The variant props of {@link statusVariants}. */
 export type StatusVariants = VariantProps<typeof statusVariants>;
 
 /**
@@ -95,8 +104,13 @@ export const badgeVariants = cva(
   },
 );
 
+/** The variant props of {@link badgeVariants}. */
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
+/**
+ * Classes of the initials shown without an image: `fallbackVariant` picks a
+ * background color (`default` keeps the theme's muted one).
+ */
 export const fallbackVariants = cva("", {
   variants: {
     fallbackVariant: {
@@ -155,8 +169,13 @@ export const fallbackVariants = cva("", {
   },
 });
 
+/** The variant props of {@link fallbackVariants}. */
 export type FallbackVariants = VariantProps<typeof fallbackVariants>;
 
+/**
+ * Classes of each avatar of an `AvatarGroup` (the ring separating overlapping
+ * avatars, raised on hover), per `shape`.
+ */
 export const tooltipTriggerVariants = cva("ring-background ring-2 hover:z-10", {
   variants: {
     shape: {

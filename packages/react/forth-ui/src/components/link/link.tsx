@@ -7,6 +7,10 @@ import { cn } from "@forthtilliath/shadcn-ui/lib/utils";
 import type { LinkVariants } from "./variants.js";
 import { linkVariants } from "./variants.js";
 
+/**
+ * Props of {@link Link}: those of an `<a>`, the {@link LinkVariants}, and the
+ * options below.
+ */
 export type LinkProps = React.ComponentProps<"a"> &
   LinkVariants & {
     /**
@@ -19,6 +23,10 @@ export type LinkProps = React.ComponentProps<"a"> &
      * arrow icon. Auto-detected from `href` when omitted.
      */
     isExternal?: boolean;
+    /**
+     * Greys the link out, ignores pointer clicks and sets `aria-disabled` (it
+     * stays focusable: also drop `href` to make it inert for the keyboard).
+     */
     disabled?: boolean;
   };
 
@@ -29,7 +37,8 @@ function isExternalHref(href: string | undefined) {
 /**
  * A styled hyperlink, or a component that looks like one.
  *
- * _Inspired from multiple sources, to make a consistent and reusable component._
+ * _Inspired from multiple sources, to make a consistent and reusable
+ * component._
  * @see https://ktui.io/docs/link
  *
  * @version 0.1.0

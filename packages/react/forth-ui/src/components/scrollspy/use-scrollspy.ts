@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+/** Options of {@link useScrollspy}. */
 export interface UseScrollspyOptions {
   /** Element `id`s to track, in document order. */
   ids: string[];
