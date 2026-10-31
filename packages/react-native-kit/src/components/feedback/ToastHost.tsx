@@ -66,7 +66,7 @@ async function recommendedTimeout(ms: number): Promise<number> {
  * Where the toasts of `showToast()` appear: mount one at the root of the app
  * (it survives navigation, like an undo offered after leaving a screen), and
  * one inside each `Modal` that needs its own — the most recently mounted host
- * receives the toasts. Announced by TalkBack, auto-hidden, one at a time.
+ * receives the toasts. Announced to TalkBack, auto-hidden, one at a time.
  *
  * @example
  * ```tsx
@@ -120,6 +120,9 @@ export function ToastHost({
         current?.onHide?.("replaced");
         current = next;
         setToast(next);
+        // Announced explicitly: TalkBack doesn't always read a view that
+        // just appeared, even in a live region.
+        AccessibilityInfo.announceForAccessibility(next.message);
         const duration =
           next.durationMs ??
           (next.action ? DEFAULT_ACTION_DURATION_MS : DEFAULT_DURATION_MS);

@@ -41,12 +41,14 @@ describe("ToastHost", () => {
 
   it("shows a message announced by TalkBack, hidden after 3.5 s", async () => {
     const onHide = vi.fn();
+    const announce = vi.spyOn(AccessibilityInfo, "announceForAccessibility");
     await render(<ToastHost />);
     expect(await show("Partie enregistrée", { onHide })).toEqual(
       expect.any(Number),
     );
     expect(screen.getByText("Partie enregistrée")).toBeOnTheScreen();
-    expect(screen.root).toHaveProp("accessibilityLiveRegion", "polite");
+    expect(announce).toHaveBeenCalledExactlyOnceWith("Partie enregistrée");
+    announce.mockRestore();
 
     await advance(3400);
     expect(screen.getByText("Partie enregistrée")).toBeOnTheScreen();
