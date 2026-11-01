@@ -50,6 +50,12 @@ import {
 } from "@forthtilliath/react-kit/slot-or-callback";
 import { FocusOnMount } from "@forthtilliath/react-kit/focus-on-mount";
 import { JsonLd } from "@forthtilliath/react-kit/json-ld";
+import {
+  createToastStore,
+  useToasts,
+} from "@forthtilliath/react-kit/createToastStore";
+import { useServiceWorker } from "@forthtilliath/react-kit/useServiceWorker";
+import { ServiceWorkerRegister } from "@forthtilliath/react-kit/service-worker-register";
 ```
 
 ### `useKeyListener(config, onKeyDown)`
@@ -197,6 +203,50 @@ const {
 <div ref={scrollRef} onScroll={updateScrollState} className="overflow-x-auto">
   <table ref={innerRef}>…</table>
 </div>;
+```
+
+### `createToastStore<V>(defaults?)` / `useToasts(store)`
+
+A dependency-free toast queue, declared once at module level and callable
+from anywhere (a `catch` block, outside React). `show(message, variant,
+{ durationMs? })` returns the toast's id; toasts leave after `durationMs`
+(default `5000`, `0` or `Infinity` to keep them); `dismiss(id)`, `clear()`.
+The rendering stays in the app, styled with its own theme: `useToasts(store)`
+returns the current toasts (empty on the server). For a shadcn project,
+`sonner` from `shadcn-ui` does the same with its own look.
+
+```tsx
+// lib/toast.ts
+export const toasts = createToastStore<"error" | "success">();
+export const toast = {
+  error: (message: string) => toasts.show(message, "error"),
+  success: (message: string) => toasts.show(message, "success"),
+};
+
+// Toaster.tsx ("use client")
+const items = useToasts(toasts);
+return items.map((t) => (
+  <div key={t.id} role="alert">
+    {t.message}
+    <button onClick={() => toasts.dismiss(t.id)}>×</button>
+  </div>
+));
+```
+
+### `useServiceWorker(scriptUrl, options?)` / `ServiceWorkerRegister`
+
+Registers a service worker once mounted (a PWA's offline mode), when the
+browser supports it; a failure is ignored unless `onError` is given.
+Options: `scope`, `type`, `updateViaCache`, `enabled` (`false` to skip, e.g.
+in development). `ServiceWorkerRegister` is the same as a component that
+renders nothing, to drop in a server layout:
+
+```tsx
+// app/layout.tsx
+<body>
+  <ServiceWorkerRegister src="/sw.js" />
+  {children}
+</body>
 ```
 
 ### `Show<T>`
