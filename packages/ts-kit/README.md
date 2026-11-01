@@ -234,6 +234,20 @@ Building blocks for writing an iCalendar (`.ics`, RFC 5545) file.
   via the Canvas API: scales down to `maxWidth` (default 2400px, aspect ratio
   kept) and converts to WebP (default quality 0.82). Non-image files are
   returned unchanged.
+- `pngsToIco(images)` — packs square PNGs (`{ size, png }`, 1 to 256 px)
+  into one `.ico` file (a multi-size `favicon.ico`), PNGs stored as is, no
+  image dependency. Works in Node and the browser (`Uint8Array` in and out,
+  a Node `Buffer` fits).
+
+```ts
+const images = await Promise.all(
+  [16, 32, 48].map(async (size) => ({
+    size,
+    png: await sharp(svg).resize(size).png().toBuffer(),
+  })),
+);
+writeFileSync("app/favicon.ico", pngsToIco(images));
+```
 
 ### `markdown`
 
@@ -334,6 +348,35 @@ if (!result.ok) return Alert.alert("Import impossible", result.error);
 addGame(result.data); // typed as z.infer<typeof gameSchema>
 ```
 
+- `verifyBearerToken(authorization, secret, { minSecretLength? })` — checks
+  an `Authorization: Bearer <token>` header against a shared secret (cron
+  job, webhook). **Fails closed**: a missing, empty or too short secret
+  (under 16 characters by default) rejects everything, where the usual
+  `` header !== `Bearer ${process.env.CRON_SECRET}` `` lets in
+  `Bearer undefined` as soon as the variable is missing. Constant-time
+  comparison, scheme case-insensitive.
+- `isAllowedUrl(url, { hosts, protocols? })` — SSRF guard before a server
+  fetches a URL it didn't write (an `og:image`, a webhook…): the host must be
+  in `hosts` or one of their subdomains (`cdn.example.com` for
+  `example.com`, never `evilexample.com`), the protocol in `protocols`
+  (`["https:"]` by default), and no credentials in the URL. Check the final
+  URL after redirects too (`response.url`).
+
+```ts
+export function GET(request: Request) {
+  const auth = request.headers.get("authorization");
+  if (!verifyBearerToken(auth, process.env.CRON_SECRET)) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  // …
+}
+
+const hosts = ["scan-manga.com", "raw.githubusercontent.com"];
+if (!isAllowedUrl(coverUrl, { hosts })) return null;
+const res = await fetch(coverUrl);
+if (!isAllowedUrl(res.url, { hosts })) return null; // redirected elsewhere
+```
+
 ### `string`
 
 - `capitalize(str)` — uppercases the first letter, lowercases the rest.
@@ -341,6 +384,11 @@ addGame(result.data); // typed as z.infer<typeof gameSchema>
   suffix).
 - `slugify(str)` — URL-friendly slug (accents stripped, lower-cased,
   hyphenated).
+- `withUniqueSuffix(base, taken, { separator?, start? })` — `base` if it
+  isn't in `taken`, else the first free `base-2`, `base-3`…: a unique slug
+  or file name (`slugify` the name first).
+- `escapeRegExp(text)` — escapes `. * + ? ^ $ { } ( ) | [ ] \` to embed a
+  value literally in `new RegExp(…)`.
 - `pluralize(count, singular, plural? | { plural?, locale? })` — picks the
   singular or the plural form. Which counts take the singular follows the
   locale's rules (`Intl.PluralRules`, `"en"` by default): only ±1 in
