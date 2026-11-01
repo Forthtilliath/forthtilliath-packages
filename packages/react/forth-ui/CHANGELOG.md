@@ -1,5 +1,14 @@
 # @forthtilliath/forth-ui
 
+## 0.5.2
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+- Updated dependencies [960b127]
+- Updated dependencies [63171a3]
+  - @forthtilliath/react-kit@0.7.0
+
 ## 0.5.1
 
 ### Patch Changes

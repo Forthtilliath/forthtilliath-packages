@@ -1,5 +1,12 @@
 # rn-gallery
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [960b127]
+  - @forthtilliath/react-native-kit@0.22.2
+
 ## 0.0.2
 
 ### Patch Changes

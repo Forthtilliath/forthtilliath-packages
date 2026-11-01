@@ -1,5 +1,13 @@
 # @forthtilliath/expo-release-updates-ui
 
+## 0.5.3
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+- Updated dependencies [960b127]
+  - @forthtilliath/expo-release-updates@0.10.2
+
 ## 0.5.2
 
 ### Patch Changes
