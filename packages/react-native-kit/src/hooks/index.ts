@@ -1,5 +1,6 @@
 export * from "./useDebouncedChange.js";
 export * from "./useEffectiveColorScheme.js";
+export * from "./usePagedList.js";
 export * from "./usePersistHydrated.js";
 export * from "./usePressRepeat.js";
 export * from "./useReducedMotion.js";
