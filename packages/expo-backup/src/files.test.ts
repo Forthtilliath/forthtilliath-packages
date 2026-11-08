@@ -269,6 +269,36 @@ describe("encryption settings", () => {
   });
 });
 
+describe("with expo-file-system 58 (asynchronous File.write)", () => {
+  beforeEach(() => {
+    device.asyncWrites = true;
+  });
+
+  it("shares the export only once it is written", async () => {
+    const { manager } = createTestApp(["a"]);
+    await manager.exportToFile();
+    expect(JSON.parse(lastSharedContent() ?? "")).toEqual({ items: ["a"] });
+  });
+
+  it("writes the safety backup before replacing the data", async () => {
+    const { manager, app } = createTestApp(["before"]);
+    await manager.restore({ items: ["after"] });
+    expect(app.data).toEqual({ items: ["after"] });
+    await expect(manager.undoLastRestore()).resolves.toEqual({
+      items: ["before"],
+    });
+  });
+
+  it("keeps the data when the safety backup can't be written", async () => {
+    const { manager, app } = createTestApp(["before"]);
+    device.failWrites = true;
+    await expect(manager.restore({ items: ["after"] })).rejects.toThrow(
+      "disk full",
+    );
+    expect(app.data).toEqual({ items: ["before"] });
+  });
+});
+
 it("rejects an app id unsafe for file names", () => {
   expect(() => createTestApp([], { appId: "../etc" })).toThrow(
     /Invalid backup appId/,

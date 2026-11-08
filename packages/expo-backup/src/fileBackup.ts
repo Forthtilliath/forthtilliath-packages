@@ -6,6 +6,7 @@ import { readEncryptedBackup } from "@forthtilliath/backup-crypto";
 import type { ManagerContext } from "./context.js";
 import { BackupError, normalizeBackupError } from "./errors.js";
 import type { PickResult } from "./types.js";
+import { writeFileAsync } from "./writeFile.js";
 
 const DEFAULT_MAX_FILE_BYTES = 10 * 1024 * 1024;
 
@@ -95,7 +96,7 @@ export function createFileBackup<T>(ctx: ManagerContext<T>): FileBackup<T> {
       const file = new File(Paths.cache, name);
       if (file.exists) file.delete();
       file.create();
-      file.write(content);
+      await writeFileAsync(file, content);
       await Sharing.shareAsync(file.uri, {
         mimeType: "application/json",
         ...(config.exportDialogTitle
