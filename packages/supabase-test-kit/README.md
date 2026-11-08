@@ -193,15 +193,27 @@ from the database (migration not applied?), only in the database (changed by
 hand?) or different. Exits with 1 on drift. Options: `--snapshot <path>`
 (default `tests/db/__snapshots__/schema-catalog.json`), `--catalog <sql>`.
 
+It needs the **Supabase CLI 3.x or newer**: the query runs as
+`supabase db query --remote=<ref> --read-only` (or `--read-only` alone on the
+local database), inside a read-only transaction. Older CLIs lack these
+options, and 2.x creates a temporary login role connected straight to the
+database, a right a read-only token must not have.
+
 The CLI must be signed in (`supabase login`) or `SUPABASE_ACCESS_TOKEN` set.
+In CI, use a **scoped access token**: limited to the project, with
+**Database: Read** only, and an expiration date. Nothing else is needed (the
+CLI may also ask for `branching_production_read` on the main branch: add it
+only if the error says so). When the CLI fails, the error it prints as JSON
+on stdout is shown after `Could not read the schema`.
+
 `SUPABASE_CLI` overrides the command (default `npx supabase`). In GitHub
 Actions, without installing the whole project:
 
 ```yaml
 - uses: supabase/setup-cli@v1
   with:
-    version: 2.118.0
-- run: npx --yes -p @forthtilliath/supabase-test-kit@^0.1.0 supabase-db-drift --project-ref <ref>
+    version: 3.0.0
+- run: npx --yes -p @forthtilliath/supabase-test-kit@^0.3.0 supabase-db-drift --project-ref <ref>
   env:
     SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
     SUPABASE_CLI: supabase
