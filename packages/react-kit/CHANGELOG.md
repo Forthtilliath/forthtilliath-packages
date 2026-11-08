@@ -1,5 +1,16 @@
 # @forthtilliath/react-kit
 
+## 0.7.0
+
+### Minor Changes
+
+- 270641f: Add `useFocusTrap` / `getTabbableElements` and `useScrollLock` (focus trap and page scroll lock of an accessible modal). `usePersistentState` now keeps a value in memory when `localStorage` refuses the write (blocked storage, quota exceeded), instead of leaving the state unchanged.
+- 63171a3: Add `createToastStore` / `useToasts` (dependency-free toast queue, rendering left to the app) and `useServiceWorker` / `ServiceWorkerRegister` (service worker registration for PWAs).
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+
 ## 0.6.0
 
 ### Minor Changes

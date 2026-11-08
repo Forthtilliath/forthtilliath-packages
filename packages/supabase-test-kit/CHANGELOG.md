@@ -1,5 +1,15 @@
 # @forthtilliath/supabase-test-kit
 
+## 0.3.0
+
+### Minor Changes
+
+- 0cc94de: `supabase-db-drift` now needs the Supabase CLI 3.x: it runs `db query --remote=<ref> --read-only` (`--read-only` alone with `--local`), which a token scoped to the project with Database: Read is enough for, instead of the deprecated `--linked --project-ref` (which created a temporary login role). When the CLI fails, its JSON error (message and suggestion, printed on stdout) is now shown instead of being swallowed. A project ref that is not lowercase letters and digits is refused.
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+
 ## 0.2.0
 
 ### Minor Changes

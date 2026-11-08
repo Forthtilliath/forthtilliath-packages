@@ -1,5 +1,11 @@
 # @forthtilliath/ts-types
 
+## 0.4.0
+
+### Minor Changes
+
+- 27b96f3: Add `FixedLengthArray<T, N>`, a tuple of exactly `N` elements of type `T`.
+
 ## 0.3.0
 
 ### Minor Changes

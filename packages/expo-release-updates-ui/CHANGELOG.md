@@ -1,5 +1,18 @@
 # @forthtilliath/expo-release-updates-ui
 
+## 0.6.0
+
+### Minor Changes
+
+- d8734a9: `parseChangelogNotes` now understands `> ` quotes (new `quote` block: a `switch` over `block.type` must handle it), `* ` items, `*italic*` / `_italic_` and `` `code` `` (segments get `italic: true` / `code: true` when set). `ChangelogNotes` renders them (new `quote`, `quoteText`, `italic`, `code` styles), and `UpdateAvailableBanner` puts the notes in a `ScrollView` capped at 200 px (`styles.notesScroll`), so long notes no longer push the buttons out of the card.
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+- Updated dependencies [bb5709f]
+- Updated dependencies [960b127]
+  - @forthtilliath/expo-release-updates@0.10.2
+
 ## 0.5.2
 
 ### Patch Changes

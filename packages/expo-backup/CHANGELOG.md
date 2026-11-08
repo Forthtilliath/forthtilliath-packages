@@ -1,5 +1,14 @@
 # @forthtilliath/expo-backup
 
+## 0.4.1
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+- 264b18c: Wait for `File.write` on expo-file-system 58, where it returns a promise: the safety backup is on disk before a restore replaces the data (a failed write now stops the restore), and an export is shared only once fully written.
+- Updated dependencies [960b127]
+  - @forthtilliath/backup-crypto@0.1.1
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,22 @@
 # @forthtilliath/react-native-kit
 
+## 0.23.0
+
+### Minor Changes
+
+- fce7262: Add `usePagedList(items, { pageSize, threshold })`: infinite scrolling over a list already in memory, `scrollProps` spread on a `ScrollView`, one slice at a time, and content too short to scroll filled up.
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+- 264b18c: Wait for `File.write` on expo-file-system 58, where it returns a promise: `shareTextFile` shares the file only once written, and `writeBase64File` uses `writeSync` so the file exists when its URI is returned.
+- 7d8db0e: `TextField`'s `inputRef` is typed `Ref<ComponentRef<typeof TextInput>>`, so `useRef<ComponentRef<typeof TextInput>>` works without a cast under React Native 0.88 (where `TextInput` is a function component).
+- Updated dependencies [270641f]
+- Updated dependencies [d8734a9]
+- Updated dependencies [960b127]
+- Updated dependencies [63171a3]
+  - @forthtilliath/ts-kit@0.17.0
+
 ## 0.22.1
 
 ### Patch Changes

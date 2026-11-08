@@ -1,5 +1,17 @@
 # @forthtilliath/expo-release-updates
 
+## 0.10.2
+
+### Patch Changes
+
+- bb5709f: `downloadAndInstallApk`: `expectedMd5` is checked with `File#digest("MD5")` on expo-file-system 58, instead of the deprecated `info({ md5: true })` (still used on older versions).
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+- Updated dependencies [270641f]
+- Updated dependencies [d8734a9]
+- Updated dependencies [960b127]
+- Updated dependencies [63171a3]
+  - @forthtilliath/ts-kit@0.17.0
+
 ## 0.10.1
 
 ### Patch Changes
