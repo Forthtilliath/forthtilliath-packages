@@ -1,4 +1,4 @@
-import type { NonEmptyArray } from "../array/index.js";
+import type { FixedLengthArray, NonEmptyArray } from "../array/index.js";
 import type { Brand } from "../brand/index.js";
 import type { Maybe, Nullable } from "../common/index.js";
 import type { AsyncReturnType } from "../function/index.js";
@@ -10,6 +10,15 @@ import type { Equal, Expect } from "./assert.js";
 export const nonEmpty: NonEmptyArray<number> = [1, 2];
 // @ts-expect-error an empty array is rejected
 export const empty: NonEmptyArray<number> = [];
+
+// FixedLengthArray
+export type FixedLengthArrayCases = [
+  Expect<Equal<FixedLengthArray<string, 3>, [string, string, string]>>,
+  Expect<Equal<FixedLengthArray<string, 0>, []>>,
+  Expect<Equal<FixedLengthArray<string, number>, string[]>>,
+];
+// @ts-expect-error one element short
+export const tooShort: FixedLengthArray<number, 3> = [1, 2];
 
 // Brand
 type UserId = Brand<string, "UserId">;
