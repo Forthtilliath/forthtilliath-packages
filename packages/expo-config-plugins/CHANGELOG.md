@@ -1,5 +1,15 @@
 # @forthtilliath/expo-config-plugins
 
+## 0.4.0
+
+### Minor Changes
+
+- 07044c8: `withShortCxxPath` takes a `cmakeVersion` option (e.g. `"4.1.2"`) that pins a recent CMake for `:app`: on Windows with Gesture Handler 3 / Reanimated 4.7, the default CMake 3.22 still overflows the path limit even in `C:/rncxx`.
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+
 ## 0.3.0
 
 ### Minor Changes

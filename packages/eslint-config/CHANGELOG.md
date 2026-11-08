@@ -1,5 +1,11 @@
 # @forthtilliath/eslint-config
 
+## 0.10.2
+
+### Patch Changes
+
+- 1d3cafe: Accept `angular-eslint` 22 (Angular 22 projects) next to 21, and bound the `typescript` peer to `<6.1.0`, the range `typescript-eslint` supports. The README documents the upgrade from 0.9 or older (`ERESOLVE` on `eslint-plugin-storybook`).
+
 ## 0.10.1
 
 ### Patch Changes

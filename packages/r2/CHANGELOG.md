@@ -1,5 +1,11 @@
 # @forthtilliath/r2
 
+## 0.2.1
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # shadweb
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [960b127]
+  - @forthtilliath/forth-ui@0.5.2
+  - @forthtilliath/shadcn-ui@0.4.2
+
 ## 0.1.6
 
 ### Patch Changes

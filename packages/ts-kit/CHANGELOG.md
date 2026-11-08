@@ -1,5 +1,17 @@
 # @forthtilliath/ts-kit
 
+## 0.17.0
+
+### Minor Changes
+
+- 270641f: Add `secureRandom` (a `crypto.getRandomValues` source in `[0, 1)` for `shuffle` / `pickRandom`) and `pickRandomOrThrow` (throws on an empty array instead of returning `undefined`).
+- d8734a9: `parseChangelogNotes` now understands `> ` quotes (new `quote` block: a `switch` over `block.type` must handle it), `* ` items, `*italic*` / `_italic_` and `` `code` `` (segments get `italic: true` / `code: true` when set). `ChangelogNotes` renders them (new `quote`, `quoteText`, `italic`, `code` styles), and `UpdateAvailableBanner` puts the notes in a `ScrollView` capped at 200 px (`styles.notesScroll`), so long notes no longer push the buttons out of the card.
+- 63171a3: Add `verifyBearerToken` (fail-closed, constant-time check of a cron or webhook secret), `isAllowedUrl` (SSRF guard by allowed hosts), `pngsToIco` (multi-size `.ico` from PNGs), `withUniqueSuffix` (unique slug or file name) and `escapeRegExp`.
+
+### Patch Changes
+
+- 960b127: Complete JSDoc on every public export: props, options, style slots and labels now describe what they do and their defaults, shown on hover in editors. Implementation-only exports are marked `@internal`. READMEs list the previously undocumented exports.
+
 ## 0.16.0
 
 ### Minor Changes
