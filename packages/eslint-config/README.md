@@ -24,7 +24,7 @@ Or, from within this monorepo, as a workspace dependency:
 ```
 
 `eslint` and `typescript` are peer dependencies — install them yourself (any
-recent flat-config-era ESLint 9+/10+, and TypeScript 5+). Only what the base
+recent flat-config-era ESLint 9+/10+, and TypeScript `>=5.0.0 <6.1.0`). Only what the base
 config needs (`typescript-eslint`, `@eslint/js`, `globals`, import sorting,
 Prettier conflict-resolution) ships as a regular dependency: every other
 plugin is an **optional peer dependency**, installed by the project only for
@@ -69,6 +69,32 @@ below for the exceptions), so tell npm to accept it in the app's
     "eslint-plugin-react-native": { "eslint": "$eslint" }
   }
 }
+```
+
+**TypeScript 6.1+ / 7:** the upper bound comes from `typescript-eslint`
+(8.72 supports `>=4.8.4 <6.1.0`). Under a newer TypeScript, the parser and
+the type-aware rules (`strictTypeChecked`) break or warn about an
+unsupported version. Keep the project on TypeScript 6.0 or below until
+`typescript-eslint` supports the newer major; this range will follow it.
+
+**Angular:** `angular-eslint` 21 and 22 are both accepted. Pick the major
+matching the project's Angular version (`@angular-eslint/builder` 21 refuses
+`@angular/cli` 22).
+
+### Upgrading from 0.9 or older
+
+Up to 0.9, every plugin (including `eslint-plugin-storybook`) was a regular
+dependency; since 0.10 they are optional peers. Upgrading in place
+(`npm install -D @forthtilliath/eslint-config@latest`) can fail with
+`ERESOLVE` on `eslint-plugin-storybook`. Without `--force`, remove the package
+first, then reinstall it together with the plugins of the variant in use (see
+the table above):
+
+```bash
+npm uninstall @forthtilliath/eslint-config
+npm install --save-dev @forthtilliath/eslint-config@latest \
+  @eslint-react/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks \
+  eslint-plugin-react-refresh   # e.g. /react; add the others your options need
 ```
 
 ## Usage
