@@ -18,6 +18,10 @@ export function View(props: HostProps) {
   return React.createElement("View", props);
 }
 
+export function ScrollView(props: HostProps) {
+  return React.createElement("RCTScrollView", props);
+}
+
 interface PressState {
   pressed: boolean;
 }

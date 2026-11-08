@@ -67,7 +67,7 @@ if (update.status === "available") {
 
 ### `<ChangelogNotes notes={...} styles={...} />`
 
-Renders GitHub-style release notes — as produced by `@forthtilliath/expo-release-updates`'s `parseChangelogNotes` — as headings, bulleted items, and bold-aware text, instead of showing the raw Markdown syntax in a plain `Text`.
+Renders GitHub-style release notes — as produced by `@forthtilliath/expo-release-updates`'s `parseChangelogNotes` — as headings, bulleted items, quotes and bold / italic / code-aware text, instead of showing the raw Markdown syntax in a plain `Text`.
 
 ```tsx
 <ChangelogNotes notes={release.notes} />
@@ -80,8 +80,10 @@ It understands the small subset of Markdown GitHub release notes actually use:
 | `### Added`                               | a heading `Text` — `"Added"`                                                |
 | `- Export history to CSV.`                | a row (`View`) with a `•` bullet `Text` and an item `Text`                  |
 | `**Auto-backup**: saves every 5 minutes.` | a plain `Text`, with the bold segment split into its own bold-styled `Text` |
+| `> Back up before updating.`              | a quote box (`View`, left border) around an italic `Text`, without the `>`  |
+| `*soon*` / `_soon_`, `` `sync` ``         | italic / monospace segments (`italic`, `code` styles)                       |
 
-A full example, mixing all three:
+A full example:
 
 ```tsx
 <ChangelogNotes
@@ -101,6 +103,8 @@ The component ships with neutral default styles and no opinion on your app's the
     itemText: { color: colors.textMuted },
     text: { color: colors.textMuted },
     bold: { color: colors.text, fontWeight: "700" },
+    quote: { borderLeftColor: colors.border },
+    code: { backgroundColor: colors.surface },
   }}
 />
 ```
@@ -128,6 +132,8 @@ import { UpdateAvailableBanner } from "@forthtilliath/expo-release-updates-ui";
   );
 }
 ```
+
+The notes sit in a `ScrollView` capped at `maxHeight: 200` (`styles.notesScroll` to change it, `nestedScrollEnabled` so it scrolls inside a screen's own `ScrollView`): long notes no longer push the buttons out of the card.
 
 Built-in labels are French by default; pass `locale="en"` for English (e.g. from the app's language on a bilingual app). `labels` still overrides individual strings — `title`, `action`, `dismiss`, `dismissAccessibilityLabel` — whatever the locale.
 
