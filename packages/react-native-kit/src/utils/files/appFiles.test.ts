@@ -6,6 +6,8 @@ const files = new Set<string>();
 const folders = new Set<string>();
 const undeletable = new Set<string>();
 const contents = new Map<string, string>();
+/** expo-file-system 58: `write` stores on a later tick, `writeSync` exists. */
+const sdk = { v58: false };
 
 vi.mock("expo-file-system", () => {
   const join = (parent: string | { uri: string }, name?: string) => {
@@ -36,7 +38,23 @@ vi.mock("expo-file-system", () => {
       files.add(this.uri);
     }
     write(content: string) {
-      contents.set(this.uri, content);
+      if (!sdk.v58) {
+        contents.set(this.uri, content);
+        return;
+      }
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          contents.set(this.uri, content);
+          resolve();
+        }, 0);
+      });
+    }
+    get writeSync() {
+      return sdk.v58
+        ? (content: string) => {
+            contents.set(this.uri, content);
+          }
+        : undefined;
     }
     base64Sync() {
       if (!files.has(this.uri)) throw new Error("Missing file");
@@ -81,6 +99,7 @@ beforeEach(() => {
   folders.clear();
   undeletable.clear();
   contents.clear();
+  sdk.v58 = false;
 });
 
 describe("writeBase64File / readFileBase64", () => {
@@ -90,6 +109,12 @@ describe("writeBase64File / readFileBase64", () => {
       prefix: "avatar",
     });
     expect(uri).toMatch(/^file:\/\/\/documents\/avatars\/avatar-.+\.jpg$/);
+    expect(readFileBase64(uri)).toBe("AAAA");
+  });
+
+  it("has written the file on return with SDK 58's asynchronous write", () => {
+    sdk.v58 = true;
+    const uri = writeBase64File("AAAA", { directory: "avatars", prefix: "a" });
     expect(readFileBase64(uri)).toBe("AAAA");
   });
 

@@ -1,5 +1,7 @@
 import { File, Paths } from "expo-file-system";
 
+import { writeFileAsync } from "../files/writeFile.js";
+
 import { shareFile, type ShareFileOptions } from "./shareFile.js";
 
 /**
@@ -23,6 +25,6 @@ export async function shareTextFile(
   const file = new File(Paths.cache, filename);
   if (file.exists) file.delete();
   file.create({ overwrite: true });
-  file.write(content);
+  await writeFileAsync(file, content);
   await shareFile(file.uri, options);
 }
