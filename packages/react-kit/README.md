@@ -37,6 +37,11 @@ import { useDebounce } from "@forthtilliath/react-kit/useDebounce";
 import { useThrottle } from "@forthtilliath/react-kit/useThrottle";
 import { useMediaQuery } from "@forthtilliath/react-kit/useMediaQuery";
 import { useClickOutside } from "@forthtilliath/react-kit/useClickOutside";
+import {
+  getTabbableElements,
+  useFocusTrap,
+} from "@forthtilliath/react-kit/useFocusTrap";
+import { useScrollLock } from "@forthtilliath/react-kit/useScrollLock";
 import { useOnlineStatus } from "@forthtilliath/react-kit/useOnlineStatus";
 import { useIntersectionObserver } from "@forthtilliath/react-kit/useIntersectionObserver";
 import { useCopyToClipboard } from "@forthtilliath/react-kit/useCopyToClipboard";
@@ -130,6 +135,56 @@ click:
 
 ```ts
 const ref = useClickOutside<HTMLDivElement>(() => setOpen(false));
+```
+
+### `useFocusTrap(ref, active, options?)` / `useScrollLock(active)`
+
+The two behaviours of an accessible modal or drawer, for a project without
+Radix (a shadcn project gets them from `Dialog`):
+
+- `useFocusTrap` keeps Tab / Shift+Tab inside `ref`'s element while
+  `active`, and pulls back focus that escaped it. It focuses the first
+  tabbable element on activation (`autoFocus`, default `true`) and gives
+  focus back to the previous element on release (`restoreFocus`, default
+  `true`). Elements with `tabindex="-1"` (inactive tabs) are skipped; the
+  same list is exported as `getTabbableElements(root)`.
+- `useScrollLock` blocks page scrolling while `active` and replaces the
+  vanished scrollbar by an equal `padding-right`, so the page does not
+  shift.
+
+```tsx
+const dialogRef = useRef<HTMLDivElement>(null);
+useFocusTrap(dialogRef, isOpen);
+useScrollLock(isOpen);
+useKeyListener({ key: SPECIAL_KEYS.ESCAPE }, () => {
+  if (isOpen) onClose();
+});
+
+return isOpen ? (
+  <div ref={dialogRef} role="dialog" aria-modal="true">
+    …
+  </div>
+) : null;
+```
+
+### `usePersistentState(key, initialValue, { schema? })`
+
+State persisted to `localStorage` as JSON, SSR-safe and kept in sync across
+tabs. Returns `{ value, setValue, clear, hydrated }`; `setValue` accepts an
+updater function. `initialValue` and `schema` must be stable (module-level
+constants). A stored value that is corrupted or rejected by `schema` (any
+object with a zod-style `safeParse`, e.g. a zod schema) is replaced by
+`initialValue`, never applied. When `localStorage` refuses a write (blocked
+storage, quota exceeded), the value is kept in memory for the session: the
+state still changes, it is just not persisted.
+
+```ts
+const SETTINGS_DEFAULTS = { reroll: true };
+const settingsSchema = z.object({ reroll: z.boolean() });
+
+const { value, setValue } = usePersistentState("settings", SETTINGS_DEFAULTS, {
+  schema: settingsSchema,
+});
 ```
 
 ### `useOnlineStatus()`

@@ -70,6 +70,8 @@ Importing them is harmless anywhere: the DOM is only touched when called.
   search-as-you-type list.
 - `pickRandom(array, random?)` — one element picked at random, or
   `undefined` for an empty array; same `random` as `shuffle`.
+- `pickRandomOrThrow(array, random?)` — same, but throws a `RangeError` on
+  an empty array, so the result is a plain `T`.
 - `shuffle(array, random?)` — shuffled copy (Fisher–Yates); `random`
   (default `Math.random`) can be swapped for a seeded generator in tests.
 - `sortUpcomingFirst(items, getDates, { now? })` — upcoming items first
@@ -297,6 +299,17 @@ if (value !== null) onChange(value);
   fallback).
 - `deepEqual(a, b)` — recursive structural equality check.
 - `mapValues(obj, fn)` — maps every value of an object through `fn`.
+
+### `random`
+
+- `secureRandom()` — a number in `[0, 1)` from `crypto.getRandomValues`, to
+  pass as the `random` of `shuffle` / `pickRandom` when a draw must not be
+  predictable (a game draw). Works outside a secure context; throws rather
+  than falling back to `Math.random` when the API is missing.
+
+```ts
+const deck = shuffle(cards, secureRandom);
+```
 
 ### `security`
 
