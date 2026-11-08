@@ -2,7 +2,7 @@ pre-commit:
   commands:
     format:
       glob: "*.{js,jsx,ts,tsx,mjs,cjs,json,css,md}"
-      run: corepack pnpm exec prettier --write {staged_files}
+      run: pnpm exec prettier --write {staged_files}
       stage_fixed: true
 
 commit-msg:
@@ -17,4 +17,4 @@ commit-msg:
       run: node scripts/strip-claude-attribution.mjs {1}
     commitlint:
       priority: 2
-      run: corepack pnpm exec commitlint --edit {1}
+      run: pnpm exec commitlint --edit {1}
