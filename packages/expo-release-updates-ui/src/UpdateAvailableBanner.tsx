@@ -1,5 +1,5 @@
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import type { ChangelogNotesStyles } from "./ChangelogNotes.js";
 import { ChangelogNotes } from "./ChangelogNotes.js";
@@ -17,6 +17,11 @@ export interface UpdateAvailableBannerStyles {
   title?: StyleProp<TextStyle>;
   /** Styles of the release notes, forwarded to {@link ChangelogNotes}. */
   notes?: ChangelogNotesStyles;
+  /**
+   * The scroll area holding the notes. Default: `maxHeight: 200`, so long
+   * notes scroll inside the card instead of pushing the buttons off screen.
+   */
+  notesScroll?: StyleProp<ViewStyle>;
   /** The full-width action button. */
   actionButton?: StyleProp<ViewStyle>;
   /** Its label. */
@@ -91,6 +96,7 @@ const defaultStyles: Required<UpdateAvailableBannerStyles> = {
   },
   title: { fontSize: 15, fontWeight: "700", color: "#111827" },
   notes: {},
+  notesScroll: { maxHeight: 200, flexGrow: 0 },
   actionButton: {
     backgroundColor: "#2563eb",
     borderRadius: 10,
@@ -122,7 +128,8 @@ const defaultLabels: Record<
 
 /**
  * Dismissible banner announcing an available update: a title with the
- * version, the release notes (via {@link ChangelogNotes}), an action button and
+ * version, the release notes (via {@link ChangelogNotes}, scrollable past
+ * `notesScroll`'s max height), an action button and
  * a dismiss button. It has no opinion on what the action does (open an update
  * screen, start the download…) nor on whether dismissal is persisted: both
  * are up to the caller. {@link UpdateNotifier} wires it for the usual flow.
@@ -157,6 +164,7 @@ export function UpdateAvailableBanner({
     header: [defaultStyles.header, styles?.header],
     title: [defaultStyles.title, styles?.title],
     notes: styles?.notes ?? defaultStyles.notes,
+    notesScroll: [defaultStyles.notesScroll, styles?.notesScroll],
     actionButton: [defaultStyles.actionButton, styles?.actionButton],
     actionButtonText: [
       defaultStyles.actionButtonText,
@@ -183,7 +191,13 @@ export function UpdateAvailableBanner({
           <Text style={merged.dismissButtonText}>{t.dismiss}</Text>
         </Pressable>
       </View>
-      {notes ? <ChangelogNotes notes={notes} styles={merged.notes} /> : null}
+      {notes ? (
+        // nestedScrollEnabled: the banner is often shown inside a screen's
+        // own ScrollView, where Android would otherwise never scroll the notes.
+        <ScrollView style={merged.notesScroll} nestedScrollEnabled>
+          <ChangelogNotes notes={notes} styles={merged.notes} />
+        </ScrollView>
+      ) : null}
       <Pressable
         style={merged.actionButton}
         onPress={onPress}

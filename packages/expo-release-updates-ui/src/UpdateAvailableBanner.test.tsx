@@ -3,6 +3,28 @@ import { describe, expect, it, vi } from "vitest";
 
 import { UpdateAvailableBanner } from "./UpdateAvailableBanner.js";
 
+interface HostNode {
+  type: string;
+  props: Record<string, unknown>;
+  children: readonly (HostNode | string)[];
+}
+
+/** First host element of the given type in the rendered tree, if any. */
+function findHost(node: HostNode | null, type: string): HostNode | null {
+  if (!node) return null;
+  if (node.type === type) return node;
+  for (const child of node.children) {
+    if (typeof child === "string") continue;
+    const found = findHost(child, type);
+    if (found) return found;
+  }
+  return null;
+}
+
+function scrollArea() {
+  return findHost(screen.root, "RCTScrollView");
+}
+
 describe("UpdateAvailableBanner", () => {
   it("shows the version and release notes", async () => {
     await render(
@@ -16,6 +38,36 @@ describe("UpdateAvailableBanner", () => {
     expect(screen.getByText("Version 2.0.0 disponible")).toBeOnTheScreen();
     expect(screen.getByText("Added")).toBeOnTheScreen();
     expect(screen.getByText("Something new.")).toBeOnTheScreen();
+  });
+
+  it("puts the notes in a height-limited scroll area, nested-scroll enabled", async () => {
+    await render(
+      <UpdateAvailableBanner
+        version="2.0.0"
+        notes={"### Added\n- Something new."}
+        onPress={vi.fn()}
+        onDismiss={vi.fn()}
+        styles={{ notesScroll: { maxHeight: 120 } }}
+      />,
+    );
+    const scroll = scrollArea();
+    expect(scroll?.props).toMatchObject({
+      nestedScrollEnabled: true,
+      style: [{ maxHeight: 200, flexGrow: 0 }, { maxHeight: 120 }],
+    });
+    expect(findHost(scroll, "Text")).not.toBeNull();
+  });
+
+  it("renders no scroll area without notes", async () => {
+    await render(
+      <UpdateAvailableBanner
+        version="2.0.0"
+        notes=""
+        onPress={vi.fn()}
+        onDismiss={vi.fn()}
+      />,
+    );
+    expect(scrollArea()).toBeNull();
   });
 
   it("calls onPress when the action button is pressed", async () => {
