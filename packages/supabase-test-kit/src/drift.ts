@@ -16,7 +16,12 @@ export const DEFAULT_SNAPSHOT = "tests/db/__snapshots__/schema-catalog.json";
 const USAGE = `Usage: supabase-db-drift (--project-ref <ref> | --local) [--snapshot <path>] [--catalog <sql>]
 
 Compares a database schema with the snapshot built from the migrations
-(default snapshot: ${DEFAULT_SNAPSHOT}). Read-only; exits with 1 on drift.`;
+(default snapshot: ${DEFAULT_SNAPSHOT}). Read-only; exits with 1 on drift.
+Needs the Supabase CLI 3.x or newer.`;
+
+// Supabase project refs are lowercase letters and digits; anything else would
+// end up unquoted in the shell command.
+const PROJECT_REF_PATTERN = /^[a-z0-9]+$/;
 
 /**
  * Reads the result of `supabase db query --output-format json`, in either of
@@ -49,6 +54,44 @@ export function parseQueryOutput(
   return Array.isArray(rows) ? { rows: rows as CatalogRow[] } : null;
 }
 
+/**
+ * Reads why the Supabase CLI failed. With `--output-format json`, it prints its
+ * error on stdout as `{ "_tag": "Error", "error": { message, suggestion } }`
+ * (nothing on stderr), which would otherwise never reach the logs.
+ *
+ * @param stdout - The CLI output.
+ * @returns The error message (and its suggestion on a second line), else the
+ *   last lines of the output; `""` if it printed nothing.
+ * @internal
+ */
+export function describeCliError(stdout: string): string {
+  const start = Math.max(
+    ...[...stdout.matchAll(/^\{/gm)].map((match) => match.index),
+  );
+  if (Number.isFinite(start)) {
+    try {
+      const output = JSON.parse(stdout.slice(start)) as {
+        _tag?: unknown;
+        error?: { message?: unknown; suggestion?: unknown };
+      } | null;
+      const message = output?.error?.message;
+      if (output?._tag === "Error" && typeof message === "string") {
+        const suggestion = output.error?.suggestion;
+        return typeof suggestion === "string"
+          ? `${message}\n${suggestion}`
+          : message;
+      }
+    } catch {
+      // Not the JSON envelope: fall back to the raw output below.
+    }
+  }
+  return stdout
+    .split(/\r?\n/)
+    .filter((line) => line.trim().length > 0)
+    .slice(-5)
+    .join("\n");
+}
+
 function printSection(io: CliIo, title: string, lines: string[]): void {
   if (lines.length === 0) return;
   io.log(`\n${title} (${lines.length})`);
@@ -57,7 +100,7 @@ function printSection(io: CliIo, title: string, lines: string[]): void {
 
 /**
  * `supabase-db-drift`: reads the schema fingerprint of production (through
- * the linked Supabase CLI, or `SUPABASE_ACCESS_TOKEN`) or of the local
+ * the Supabase CLI 3+, signed in or with `SUPABASE_ACCESS_TOKEN`) or of the local
  * database, and compares it with the snapshot: migrations not applied,
  * changes made by hand in the dashboard…
  *
@@ -88,16 +131,24 @@ export function runDrift(argv: string[], io: CliIo): number {
     io.error(USAGE);
     return 2;
   }
+  if (projectRef && !PROJECT_REF_PATTERN.test(projectRef)) {
+    io.error(`Invalid project ref "${projectRef}".\n\n${USAGE}`);
+    return 2;
+  }
 
   const target = values.local ? "local" : `project ${projectRef}`;
-  const source = values.local
-    ? "--local"
-    : `--linked --project-ref ${projectRef}`;
+  // CLI 3: the local database is the default target (`--local` is
+  // deprecated), and `--read-only` runs the query in a read-only transaction,
+  // through the Management API for a hosted project: a token scoped to the
+  // project with Database: Read is enough, and no confirmation is asked.
+  const source = values.local ? "" : `--remote=${projectRef} `;
   const result = io.run(
-    `${supabaseCli(io)} db query ${source} -f "${values.catalog}" --output-format json`,
+    `${supabaseCli(io)} db query ${source}--read-only -f "${values.catalog}" --output-format json`,
   );
   if (result.status !== 0) {
     io.error(`Could not read the schema (${target}).`);
+    const detail = describeCliError(result.stdout);
+    if (detail) io.error(detail);
     return failureCode(result);
   }
 
