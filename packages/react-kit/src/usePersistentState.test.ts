@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { act, cleanup, renderHook } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   type PersistentStateSchema,
@@ -88,6 +88,61 @@ describe("usePersistentState", () => {
     });
 
     expect(result.current.value).toBe(1);
+  });
+
+  describe("when localStorage refuses writes", () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it("keeps the new value in memory so the state still changes", () => {
+      vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+        throw new DOMException("quota", "QuotaExceededError");
+      });
+      const { result } = renderHook(() => usePersistentState("key", "default"));
+
+      act(() => {
+        result.current.setValue("next");
+      });
+      expect(result.current.value).toBe("next");
+      expect(window.localStorage.getItem("key")).toBeNull();
+
+      act(() => {
+        result.current.setValue((previous) => `${previous}!`);
+      });
+      expect(result.current.value).toBe("next!");
+
+      act(() => {
+        result.current.clear();
+      });
+      expect(result.current.value).toBe("default");
+    });
+
+    it("reads localStorage again once a write succeeds", () => {
+      const setItem = vi
+        .spyOn(Storage.prototype, "setItem")
+        .mockImplementationOnce(() => {
+          throw new DOMException("quota", "QuotaExceededError");
+        });
+      const { result } = renderHook(() => usePersistentState("key", "default"));
+
+      act(() => {
+        result.current.setValue("in-memory");
+      });
+      setItem.mockRestore();
+      act(() => {
+        result.current.setValue("persisted");
+      });
+      expect(window.localStorage.getItem("key")).toBe(
+        JSON.stringify("persisted"),
+      );
+
+      act(() => {
+        window.localStorage.setItem("key", JSON.stringify("other-tab"));
+        window.dispatchEvent(new StorageEvent("storage", { key: "key" }));
+      });
+      expect(result.current.value).toBe("other-tab");
+    });
   });
 
   describe("with a schema", () => {

@@ -29,12 +29,35 @@ function subscribe(onChange: () => void) {
   };
 }
 
+/**
+ * Values whose last write to `localStorage` failed (storage blocked, quota
+ * exceeded), kept for the session so the state still changes. An entry wins
+ * over `localStorage`, which then holds an older value or nothing.
+ */
+const memoryFallback = new Map<string, string>();
+
 function readRaw(key: string): string | null {
+  const inMemory = memoryFallback.get(key);
+  if (inMemory !== undefined) return inMemory;
   try {
     return window.localStorage.getItem(key);
   } catch {
     return null;
   }
+}
+
+function writeRaw(key: string, raw: string | null): void {
+  try {
+    if (raw === null) window.localStorage.removeItem(key);
+    else window.localStorage.setItem(key, raw);
+    memoryFallback.delete(key);
+  } catch {
+    if (raw === null) memoryFallback.delete(key);
+    else memoryFallback.set(key, raw);
+  }
+  // The `storage` event does not fire in the tab that triggered it, so it is
+  // dispatched manually to keep this hook's own subscribers in sync.
+  window.dispatchEvent(new StorageEvent("storage", { key }));
 }
 
 /**
@@ -69,6 +92,9 @@ function parseStored<T>(
  *   `localStorage`, and older app versions may have stored another shape).
  *   A rejected value is replaced by `initialValue`, never applied. Without a
  *   schema, the stored JSON is trusted as `T`.
+ * - When `localStorage` refuses a write (blocked storage, quota exceeded), the
+ *   value is kept in memory for the session: the state still changes, it is
+ *   just not persisted.
  *
  * @example
  * const { value, setValue, clear, hydrated } = usePersistentState("theme", "system");
@@ -99,30 +125,18 @@ export function usePersistentState<T>(
 
   const setValue = useCallback(
     (updater: Updater<T>) => {
-      try {
-        const previous = parseStored(readRaw(key), initialValue, schema);
-        const next =
-          typeof updater === "function"
-            ? (updater as (p: T) => T)(previous)
-            : updater;
-        window.localStorage.setItem(key, JSON.stringify(next));
-        // The `storage` event does not fire in the tab that triggered it, so
-        // it is dispatched manually to keep this hook's own subscribers in sync.
-        window.dispatchEvent(new StorageEvent("storage", { key }));
-      } catch {
-        // localStorage unavailable (private mode, quota exceeded): fail silently.
-      }
+      const previous = parseStored(readRaw(key), initialValue, schema);
+      const next =
+        typeof updater === "function"
+          ? (updater as (p: T) => T)(previous)
+          : updater;
+      writeRaw(key, JSON.stringify(next));
     },
     [key, initialValue, schema],
   );
 
   const clear = useCallback(() => {
-    try {
-      window.localStorage.removeItem(key);
-      window.dispatchEvent(new StorageEvent("storage", { key }));
-    } catch {
-      // Same as above.
-    }
+    writeRaw(key, null);
   }, [key]);
 
   return { value, setValue, clear, hydrated };
