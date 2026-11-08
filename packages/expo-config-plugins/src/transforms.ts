@@ -92,29 +92,41 @@ export function applyAndroidAbis(
   return properties;
 }
 
+const CMAKE_VERSION = /^\d+\.\d+(\.\d+)?$/;
+
 /**
  * Moves the CMake staging directory (`.cxx`) out of `android/app` to
  * `stagingDir`: nested in the project, release builds overflow Windows'
  * 260-character path limit on react-native-gesture-handler's codegen paths.
- * Already-patched contents are returned as is.
+ * With `cmakeVersion`, also pins the CMake of `:app` (Gradle picks it from
+ * the Android SDK's `cmake/<version>`). Already-patched contents are returned
+ * as is.
  *
- * @throws When the `namespace` line to anchor on isn't found.
+ * @throws When the `namespace` line to anchor on isn't found, or when
+ *   `cmakeVersion` isn't a version such as `4.1.2`.
  */
 export function applyShortCxxPath(
   contents: string,
   stagingDir: string,
+  cmakeVersion?: string,
 ): string {
+  if (cmakeVersion !== undefined && !CMAKE_VERSION.test(cmakeVersion)) {
+    throw new Error(
+      `withShortCxxPath: invalid cmakeVersion "${cmakeVersion}" (expected e.g. "4.1.2")`,
+    );
+  }
   if (contents.includes("buildStagingDirectory")) return contents;
   if (!contents.includes("    namespace")) {
     throw new Error(
       "withShortCxxPath: `namespace` line not found in android/app/build.gradle",
     );
   }
+  const version = cmakeVersion ? `\n            version "${cmakeVersion}"` : "";
   return contents.replace(
     "    namespace",
     `    externalNativeBuild {
         cmake {
-            buildStagingDirectory "${stagingDir.replace(/\\/g, "/")}"
+            buildStagingDirectory "${stagingDir.replace(/\\/g, "/")}"${version}
         }
     }
 
@@ -187,6 +199,13 @@ export interface ShortCxxPathOptions {
    * plugin only acts on Windows, with `C:/rncxx`.
    */
   stagingDir?: string;
+  /**
+   * CMake version for `:app`, e.g. `"4.1.2"` (installed with the SDK Manager):
+   * the default 3.22 still overflows the path limit with Gesture Handler 3 /
+   * Reanimated 4.7, newer ones (ninja 1.12) handle long paths. Applied with
+   * the staging directory, so on Windows only unless `stagingDir` is set.
+   */
+  cmakeVersion?: string;
 }
 
 /**

@@ -128,6 +128,34 @@ describe("applyShortCxxPath", () => {
       "namespace",
     );
   });
+
+  it("pins the CMake version inside the same cmake block", () => {
+    const result = applyShortCxxPath(EXPO_BUILD_GRADLE, "C:/rncxx", "4.1.2");
+    expect(result).toContain(
+      'buildStagingDirectory "C:/rncxx"\n            version "4.1.2"\n        }',
+    );
+  });
+
+  it("leaves the CMake version alone when not given", () => {
+    expect(applyShortCxxPath(EXPO_BUILD_GRADLE, "C:/rncxx")).not.toContain(
+      "version",
+    );
+  });
+
+  it.each(["4.1", "3.22.1"])("accepts the CMake version %s", (version) => {
+    expect(applyShortCxxPath(EXPO_BUILD_GRADLE, "C:/rncxx", version)).toContain(
+      `version "${version}"`,
+    );
+  });
+
+  it.each(["latest", '4.1.2"\n}', "4"])(
+    "rejects the CMake version %j",
+    (version) => {
+      expect(() =>
+        applyShortCxxPath(EXPO_BUILD_GRADLE, "C:/rncxx", version),
+      ).toThrow("invalid cmakeVersion");
+    },
+  );
 });
 
 describe("applyKotlinJvmTarget", () => {
