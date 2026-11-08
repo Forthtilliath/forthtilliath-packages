@@ -6,6 +6,7 @@ export * from "./indexById.js";
 export * from "./moveItem.js";
 export * from "./nextInCycle.js";
 export * from "./pickRandom.js";
+export * from "./pickRandomOrThrow.js";
 export * from "./rankByNameMatch.js";
 export * from "./shuffle.js";
 export * from "./sortUpcomingFirst.js";
