@@ -47,6 +47,9 @@ project (Angular, Node).
 ### `array`
 
 - `NonEmptyArray<T>` — `[T, ...T[]]`, forces at least one element.
+- `FixedLengthArray<T, N>` — a tuple of exactly `N` elements
+  (`FixedLengthArray<string, 3>` → `[string, string, string]`); a plain
+  `number` gives `T[]`.
 
 ### `object`
 
