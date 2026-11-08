@@ -1,4 +1,4 @@
-import { createRef, useState } from "react";
+import { type ComponentRef, createRef, useState } from "react";
 import type { TextInput } from "react-native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { describe, expect, it, vi } from "vitest";
@@ -86,7 +86,7 @@ describe("TextField", () => {
   });
 
   it("forwards inputRef", async () => {
-    const ref = createRef<TextInput>();
+    const ref = createRef<ComponentRef<typeof TextInput>>();
     await render(<TextField label="Nom" inputRef={ref} />);
     expect(ref.current).not.toBeNull();
   });

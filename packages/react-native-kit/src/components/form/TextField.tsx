@@ -1,4 +1,4 @@
-import { type Ref, useState } from "react";
+import { type ComponentRef, type Ref, useState } from "react";
 import type {
   ColorValue,
   StyleProp,
@@ -71,8 +71,12 @@ export interface TextFieldProps extends Omit<TextInputProps, "style"> {
    * name.
    */
   required?: boolean;
-  /** Ref to the `TextInput` (focus, chaining with `onSubmitEditing`). */
-  inputRef?: Ref<TextInput>;
+  /**
+   * Ref to the `TextInput` (focus, chaining with `onSubmitEditing`). Typed by
+   * instance (`ComponentRef<typeof TextInput>`): since RN 0.88, `TextInput` is a
+   * function component and `Ref<TextInput>` no longer names the instance.
+   */
+  inputRef?: Ref<ComponentRef<typeof TextInput>>;
   /** Language of the spoken "required". */
   locale?: KitLocale;
   /** The app's palette (see {@link TextFieldColors}). */

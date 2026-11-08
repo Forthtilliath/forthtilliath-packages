@@ -481,16 +481,16 @@ import { TextField } from "@forthtilliath/react-native-kit/components/form/TextF
 <IntegerField label="Points de merveille" value={points} onChange={setPoints} min={-30} max={99} />
 ```
 
-| Prop (`TextField`) | Type              | Notes                                                                                                              |
-| ------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `label`            | `string`          | Shown above, read as the input's name (the visible label itself is hidden from TalkBack).                          |
-| `hint`             | `string`          | Under the input; its spoken hint.                                                                                  |
-| `error`            | `string \| null`  | Replaces the hint, red border, announced when it appears. Falsy = no error.                                        |
-| `required`         | `boolean`         | " \*" after the label, ", obligatoire" (", required") after the spoken name.                                       |
-| `inputRef`         | `Ref<TextInput>`  | Focus it, or chain fields with `onSubmitEditing`.                                                                  |
-| `locale`           | `"fr" \| "en"`    | Language of the spoken "required".                                                                                 |
-| `colors`           | `TextFieldColors` | `text`, `label`, `placeholder`, `background`, `border` (keep ≥ 3:1 with the background), `borderFocused`, `error`. |
-| `styles`           | `TextFieldStyles` | Slots `container`, `label`, `input`, `inputFocused`, `inputError`, `hint`, `error`.                                |
+| Prop (`TextField`) | Type                                  | Notes                                                                                                              |
+| ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `label`            | `string`                              | Shown above, read as the input's name (the visible label itself is hidden from TalkBack).                          |
+| `hint`             | `string`                              | Under the input; its spoken hint.                                                                                  |
+| `error`            | `string \| null`                      | Replaces the hint, red border, announced when it appears. Falsy = no error.                                        |
+| `required`         | `boolean`                             | " \*" after the label, ", obligatoire" (", required") after the spoken name.                                       |
+| `inputRef`         | `Ref<ComponentRef<typeof TextInput>>` | Focus it, or chain fields with `onSubmitEditing`.                                                                  |
+| `locale`           | `"fr" \| "en"`                        | Language of the spoken "required".                                                                                 |
+| `colors`           | `TextFieldColors`                     | `text`, `label`, `placeholder`, `background`, `border` (keep ≥ 3:1 with the background), `borderFocused`, `error`. |
+| `styles`           | `TextFieldStyles`                     | Slots `container`, `label`, `input`, `inputFocused`, `inputError`, `hint`, `error`.                                |
 
 `IntegerField` takes the same props (except `value`/`onChangeText`/`keyboardType`), plus `value: number`, `onChange(value)`, `min` (`-Infinity`) and `max` (`Infinity`); `maxLength` defaults to 17 (beyond, a number is no longer exact).
 
