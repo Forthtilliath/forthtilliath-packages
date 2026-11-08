@@ -56,9 +56,12 @@ Ships native code for 32- and 64-bit ARM only: x86 / x86_64 only serve emulators
 
 On Windows, release builds can overflow the 260-character path limit inside `android/app/.cxx` (react-native-gesture-handler's codegen paths). This plugin moves CMake's staging directory to a short path. It does nothing on other systems unless `stagingDir` is set.
 
-| Option       | Type     | Default                           |
-| ------------ | -------- | --------------------------------- |
-| `stagingDir` | `string` | `C:/rncxx` on Windows, else unset |
+| Option         | Type     | Default                           |
+| -------------- | -------- | --------------------------------- |
+| `stagingDir`   | `string` | `C:/rncxx` on Windows, else unset |
+| `cmakeVersion` | `string` | unset (Gradle's default CMake)    |
+
+With Gesture Handler 3 / Reanimated 4.7 (Expo SDK 58), the short path alone is not enough: the default CMake 3.22 still overflows it. Install a recent CMake with the SDK Manager (e.g. 4.1.2, which ships ninja 1.12) and pass `cmakeVersion: "4.1.2"`; Gradle then takes it from the SDK's `cmake/4.1.2`, no `local.properties` needed. Turn on Windows long paths too (`LongPathsEnabled`). This only covers `:app`: the `.cxx` of libraries (`node_modules/<module>/android/.cxx`) keep Gradle's defaults.
 
 ## `withKotlinJvmTarget` — one JVM target for Kotlin
 
