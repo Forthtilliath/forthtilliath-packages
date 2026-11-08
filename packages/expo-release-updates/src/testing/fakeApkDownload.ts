@@ -55,6 +55,8 @@ export const fakes: {
   deleteDownloadedFile: Mock<() => void>;
   createDownloadTask: Mock<CreateDownloadTask>;
   digest: Mock<(algorithm: string) => Promise<string>>;
+  /** The deprecated `File#info`, called only without `File#digest`. */
+  info: Mock<() => { md5?: string }>;
   startActivityAsync: Mock<(...args: unknown[]) => Promise<void>>;
 } = {
   /** Whether a file already sits at the download destination. */
@@ -63,6 +65,7 @@ export const fakes: {
   deleteDownloadedFile: vi.fn(),
   createDownloadTask: vi.fn<CreateDownloadTask>(),
   digest: vi.fn<(algorithm: string) => Promise<string>>(),
+  info: vi.fn<() => { md5?: string }>(),
   startActivityAsync: vi.fn<(...args: unknown[]) => Promise<void>>(),
 };
 
@@ -76,6 +79,7 @@ export function resetFakes() {
   fakes.deleteDownloadedFile.mockClear();
   fakes.createDownloadTask.mockReset();
   fakes.digest.mockReset().mockResolvedValue(SHA_A);
+  fakes.info.mockReset();
   fakes.startActivityAsync.mockClear();
 }
 
@@ -85,15 +89,19 @@ export function mockDownloadTask(
   md5: string | undefined = "abc123",
   { withDigest = true } = {},
 ) {
+  fakes.info.mockReturnValue({ md5 });
+  // "MD5" answers the file's md5, any other algorithm the SHA-256 fake.
+  const digest = (algorithm: string) =>
+    algorithm === "MD5" ? Promise.resolve(md5) : fakes.digest(algorithm);
   fakes.createDownloadTask.mockImplementation((_url, _dest, options) => ({
     downloadAsync: () => {
       options.onProgress({ bytesWritten: 50, totalBytes: 100 });
       return Promise.resolve(
         result && {
           ...result,
-          info: () => ({ md5 }),
+          info: fakes.info,
           delete: fakes.deleteDownloadedFile,
-          ...(withDigest ? { digest: fakes.digest } : {}),
+          ...(withDigest ? { digest } : {}),
         },
       );
     },

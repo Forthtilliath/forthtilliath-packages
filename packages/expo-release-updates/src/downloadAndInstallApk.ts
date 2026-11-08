@@ -46,7 +46,7 @@ function normalizeSha256(value: string): string | null {
 
 /** `File#digest`, from expo-file-system 58 on. */
 interface DigestFile {
-  digest?: (algorithm: "SHA-256") => Promise<string>;
+  digest?: (algorithm: "MD5" | "SHA-256") => Promise<string>;
 }
 
 /**
@@ -156,8 +156,14 @@ export async function downloadAndInstallApk({
   const file = await task.downloadAsync();
   if (!file) throw new Error("The download failed.");
 
+  const { digest } = file as DigestFile;
   if (expectedMd5) {
-    const actualMd5 = file.info({ md5: true }).md5;
+    // expo-file-system 58 deprecates info({ md5 }) for File#digest("MD5");
+    // older versions only have the former.
+    const actualMd5 =
+      typeof digest === "function"
+        ? await digest.call(file, "MD5")
+        : file.info({ md5: true }).md5;
     if (actualMd5?.toLowerCase() !== expectedMd5.toLowerCase()) {
       file.delete();
       throw new Error(
@@ -167,7 +173,6 @@ export async function downloadAndInstallApk({
   }
 
   if (sha256) {
-    const { digest } = file as DigestFile;
     if (typeof digest !== "function") {
       file.delete();
       throw new Error(

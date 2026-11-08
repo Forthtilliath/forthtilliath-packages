@@ -90,6 +90,23 @@ describe("downloadAndInstallApk", () => {
 
     expect(fakes.startActivityAsync).toHaveBeenCalled();
     expect(fakes.deleteDownloadedFile).not.toHaveBeenCalled();
+    // File#digest("MD5") on expo-file-system 58, not the deprecated info().
+    expect(fakes.info).not.toHaveBeenCalled();
+  });
+
+  it("falls back to info({ md5 }) without File#digest (expo-file-system < 58)", async () => {
+    mockDownloadTask({ contentUri: "content://downloads/app.apk" }, "abc123", {
+      withDigest: false,
+    });
+
+    await downloadAndInstallApk({
+      apkUrl: GITHUB_APK,
+      fileName: "app-update.apk",
+      expectedMd5: "abc123",
+    });
+
+    expect(fakes.info).toHaveBeenCalledWith({ md5: true });
+    expect(fakes.startActivityAsync).toHaveBeenCalled();
   });
 
   it("deletes the file and throws when the md5 doesn't match", async () => {
