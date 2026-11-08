@@ -254,10 +254,12 @@ writeFileSync("app/favicon.ico", pngsToIco(images));
 ### `markdown`
 
 - `parseChangelogNotes(notes)` — parses a small subset of Markdown
-  (`#` to `###### heading`, `- item`, `**bold**`) commonly found in GitHub release
-  notes into a list of typed blocks (`heading` / `item` / `text`, each with
-  `bold`-aware segments), ready for a UI layer to render without a full
-  Markdown dependency.
+  (`#` to `###### heading`, `- item` / `* item`, `> quote`, `**bold**`,
+  `*italic*` / `_italic_`, `` `code` ``) commonly found in GitHub release
+  notes into a list of typed blocks (`heading` / `item` / `quote` / `text`,
+  each with segments carrying `bold`, and `italic` / `code` when set), ready
+  for a UI layer to render without a full Markdown dependency. A `_` inside a
+  word (`snake_case`) stays plain text.
 
 ### `number`
 
