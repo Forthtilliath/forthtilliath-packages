@@ -9,6 +9,8 @@ vi.mock("expo-sharing", () => sharing);
 const written = vi.hoisted(
   () => [] as { uri: string; content: string; deleted: boolean }[],
 );
+/** `async`: expo-file-system 58, where `write` finishes on a later tick. */
+const fileSystem = vi.hoisted(() => ({ async: false }));
 vi.mock("expo-file-system", () => ({
   Paths: { cache: { uri: "file:///cache" } },
   File: class {
@@ -25,7 +27,17 @@ vi.mock("expo-file-system", () => ({
       // created empty, then written
     }
     write(content: string) {
-      written.push({ uri: this.uri, content, deleted: false });
+      const entry = { uri: this.uri, content, deleted: false };
+      if (!fileSystem.async) {
+        written.push(entry);
+        return;
+      }
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          written.push(entry);
+          resolve();
+        }, 0);
+      });
     }
   },
 }));
@@ -37,6 +49,7 @@ beforeEach(() => {
   sharing.isAvailableAsync.mockReset().mockResolvedValue(true);
   sharing.shareAsync.mockReset().mockResolvedValue(undefined);
   written.length = 0;
+  fileSystem.async = false;
 });
 
 describe("shareFile", () => {
@@ -82,6 +95,19 @@ describe("shareTextFile", () => {
       "file:///cache/planning.ics",
       expect.objectContaining({ mimeType: "text/calendar" }),
     );
+  });
+
+  it("shares only once an asynchronous write has finished (SDK 58)", async () => {
+    fileSystem.async = true;
+    const writtenWhenShared: number[] = [];
+    sharing.shareAsync.mockImplementation(() => {
+      writtenWhenShared.push(written.length);
+      return Promise.resolve();
+    });
+    await shareTextFile("planning.ics", "BEGIN:VCALENDAR", {
+      mimeType: "text/calendar",
+    });
+    expect(writtenWhenShared).toEqual([1]);
   });
 
   it("replaces a previous file of the same name", async () => {

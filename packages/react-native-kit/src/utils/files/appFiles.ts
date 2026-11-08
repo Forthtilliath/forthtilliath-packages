@@ -2,6 +2,8 @@ import { Directory, File, Paths } from "expo-file-system";
 
 import { randomId } from "@forthtilliath/ts-kit/id/randomId";
 
+import { writeFileSync } from "./writeFile.js";
+
 // Files the app keeps for good (photos, avatars...): pickers and exports hand
 // back URIs in a cache folder the OS may empty at any time, so anything worth
 // keeping is copied into a sub-folder of the app's documents.
@@ -99,7 +101,7 @@ export function writeBase64File(
     `${assertSafe(prefix, SAFE_NAME, "prefix")}-${randomId()}.${assertSafe(extension, SAFE_NAME, "extension")}`,
   );
   file.create();
-  file.write(base64, { encoding: "base64" });
+  writeFileSync(file, base64, { encoding: "base64" });
   return file.uri;
 }
 
