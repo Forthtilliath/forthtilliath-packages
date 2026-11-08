@@ -9,6 +9,7 @@ import { BackupError, normalizeBackupError } from "./errors.js";
 import { type CloudAuth, googleDriveAuth } from "./googleAuth.js";
 import { createStateStore, type StateStore } from "./stateStore.js";
 import type { BackupManagerConfig } from "./types.js";
+import { writeFileAsync } from "./writeFile.js";
 
 const APP_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
@@ -105,7 +106,9 @@ export function createManagerContext<T>(
       }
       const content = await writeBackup(await config.collect());
       if (!safetyFile.exists) safetyFile.create();
-      safetyFile.write(content);
+      // Awaited: the restore must not replace the data before the snapshot is
+      // on disk, nor go on when writing it failed.
+      await writeFileAsync(safetyFile, content);
       return true;
     },
     async readSafetyBackup() {

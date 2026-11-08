@@ -1,6 +1,7 @@
 import { File, Paths } from "expo-file-system";
 
 import type { BackupErrorCode } from "./errors.js";
+import { writeFileSync } from "./writeFile.js";
 
 /**
  * Everything the backup screen shows, persisted in a small JSON file of the
@@ -109,7 +110,10 @@ export function createStateStore(appId: string): StateStore {
     delete persisted.hydrated;
     try {
       if (!file.exists) file.create();
-      file.write(JSON.stringify({ version: STATE_VERSION, state: persisted }));
+      writeFileSync(
+        file,
+        JSON.stringify({ version: STATE_VERSION, state: persisted }),
+      );
     } catch {
       // Best effort: losing these flags only means re-checking at next start.
     }

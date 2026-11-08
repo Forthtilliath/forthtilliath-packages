@@ -14,9 +14,18 @@ export const device = {
   /** Size the provider reports for the picked file; null = its real size. */
   pickedSize: null as number | null,
   appStateListeners: new Set<(status: string) => void>(),
+  /**
+   * expo-file-system 58: `File.write` returns a promise and only writes on a
+   * later tick, `writeSync` exists. False = SDK 57 (synchronous `write`).
+   */
+  asyncWrites: false,
+  /** With `asyncWrites`: makes the next writes reject (disk full…). */
+  failWrites: false,
 };
 
 export function resetDevice() {
+  device.asyncWrites = false;
+  device.failWrites = false;
   device.files.clear();
   device.secureStore.clear();
   device.shared = [];
@@ -43,6 +52,30 @@ class FakeFile {
     device.files.set(this.uri, "");
   }
   write(content: string) {
+    if (!device.asyncWrites) {
+      this.store(content);
+      return;
+    }
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        if (device.failWrites) reject(new Error("disk full"));
+        else if (!device.files.has(this.uri))
+          reject(new Error(`write to missing file ${this.uri}`));
+        else {
+          device.files.set(this.uri, content);
+          resolve();
+        }
+      }, 0);
+    });
+  }
+  get writeSync() {
+    return device.asyncWrites
+      ? (content: string) => {
+          this.store(content);
+        }
+      : undefined;
+  }
+  private store(content: string) {
     if (!device.files.has(this.uri))
       throw new Error(`write to missing file ${this.uri}`);
     device.files.set(this.uri, content);
