@@ -40,7 +40,7 @@
   "peerDependencies": {
     "@eslint-react/eslint-plugin": "^5.18.3",
     "@next/eslint-plugin-next": "^16.3.0",
-    "angular-eslint": "^21.4.0",
+    "angular-eslint": "^21.4.0 || ^22.0.0",
     "eslint": "^9.0.0 || ^10.0.0",
     "eslint-plugin-expo": "^1.2.1",
     "eslint-plugin-i18next": "^6.1.5",
@@ -53,7 +53,7 @@
     "eslint-plugin-storybook": "^10.6.1",
     "eslint-plugin-testing-library": "^7.16.2",
     "eslint-plugin-turbo": "^2.10.9",
-    "typescript": ">=5.0.0"
+    "typescript": ">=5.0.0 <6.1.0"
   },
   "peerDependenciesMeta": {
     "@eslint-react/eslint-plugin": {
@@ -100,11 +100,11 @@
     }
   },
   "devDependencies": {
-    "@angular/core": "^21.2.25",
+    "@angular/core": "^22.2.5",
     "@eslint-react/eslint-plugin": "^5.28.8",
     "@forthtilliath/typescript-config": "workspace:*",
     "@next/eslint-plugin-next": "^16.4.3",
-    "angular-eslint": "^21.4.0",
+    "angular-eslint": "^22.6.0",
     "eslint": "catalog:",
     "eslint-plugin-expo": "^1.2.1",
     "eslint-plugin-i18next": "^6.1.5",
