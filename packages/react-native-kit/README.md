@@ -299,6 +299,25 @@ const repeat = usePressRepeat();
 />;
 ```
 
+### `usePagedList(items, options?)`
+
+Infinite scrolling over a list already in memory, without a `FlatList`: `visibleItems` holds the first `pageSize` items (5), then the next slice is added when the user gets within `threshold` px (200) of the bottom of the `ScrollView` the `scrollProps` are spread on. One slice at a time (the next waits until the new content is measured), and content too short to scroll fills itself up. `hasMore` tells whether items are still hidden.
+
+```tsx
+import { usePagedList } from "@forthtilliath/react-native-kit/hooks/usePagedList";
+
+const { visibleItems, hasMore, scrollProps } = usePagedList(games, {
+  pageSize: 10,
+});
+
+<ScrollView {...scrollProps}>
+  {visibleItems.map((game) => (
+    <GameRow key={game.id} game={game} />
+  ))}
+  {hasMore ? <ActivityIndicator /> : null}
+</ScrollView>;
+```
+
 ### `useViewShare(options?)`
 
 Shares as an image a view rendered only for the capture (a scoreboard, a summary card): `share()` sets `capturing` to `true`, waits two frames for the screen to mount and draw the view attached to `ref`, then calls `shareViewAsImage`. A failure shows an alert with the error's message (French or English titles, `errorTitle` / `errorMessage` to override), or goes to `onError(error)`. A second `share()` while one runs is ignored. Takes `shareViewAsImage`'s options (`dialogTitle`…).
