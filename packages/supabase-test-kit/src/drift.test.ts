@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_SNAPSHOT, parseQueryOutput, runDrift } from "./drift.js";
+import {
+  DEFAULT_SNAPSHOT,
+  describeCliError,
+  parseQueryOutput,
+  runDrift,
+} from "./drift.js";
 import { SCHEMA_CATALOG_SQL_PATH } from "./paths.js";
 import { createTestIo } from "./testIo.js";
 
@@ -26,7 +31,7 @@ describe("runDrift", () => {
 
     expect(runDrift(["--project-ref", "abcdef"], io)).toBe(0);
     expect(io.run).toHaveBeenCalledWith(
-      `npx supabase db query --linked --project-ref abcdef -f "${SCHEMA_CATALOG_SQL_PATH}" --output-format json`,
+      `npx supabase db query --remote=abcdef --read-only -f "${SCHEMA_CATALOG_SQL_PATH}" --output-format json`,
     );
     expect(out).toEqual([
       "No drift: the database (project abcdef) matches the migrations (2 elements).",
@@ -61,7 +66,7 @@ describe("runDrift", () => {
 
     expect(runDrift(["--local", "--snapshot", "db/snapshot.json"], io)).toBe(1);
     expect(io.run).toHaveBeenCalledWith(
-      expect.stringContaining("db query --local -f"),
+      expect.stringContaining("db query --read-only -f"),
     );
     expect(out.join("\n")).toBe(
       [
@@ -88,7 +93,7 @@ describe("runDrift", () => {
       0,
     );
     expect(io.run).toHaveBeenCalledWith(
-      'supabase db query --local -f "checks/catalog.sql" --output-format json',
+      'supabase db query --read-only -f "checks/catalog.sql" --output-format json',
     );
   });
 
@@ -107,6 +112,33 @@ describe("runDrift", () => {
     const { io, err } = createTestIo({ status: 3, stdout: "" });
     expect(runDrift(["--project-ref", "abcdef"], io)).toBe(3);
     expect(err).toEqual(["Could not read the schema (project abcdef)."]);
+  });
+
+  it("prints the error the CLI wrote as JSON on stdout", () => {
+    const { io, err } = createTestIo({
+      status: 1,
+      stdout: JSON.stringify({
+        target: { kind: "linked", project_ref: "abcdef" },
+        _tag: "Error",
+        error: {
+          code: "DbQueryUnexpectedStatusError",
+          message: "unexpected status 401: Invalid access token",
+          suggestion: "Check SUPABASE_ACCESS_TOKEN",
+        },
+      }),
+    });
+    expect(runDrift(["--project-ref", "abcdef"], io)).toBe(1);
+    expect(err).toEqual([
+      "Could not read the schema (project abcdef).",
+      "unexpected status 401: Invalid access token\nCheck SUPABASE_ACCESS_TOKEN",
+    ]);
+  });
+
+  it("rejects a project ref that is not letters and digits", () => {
+    const { io, err } = createTestIo(cliOutput([]));
+    expect(runDrift(["--project-ref", "abc; rm -rf ~"], io)).toBe(2);
+    expect(err[0]).toMatch(/^Invalid project ref/);
+    expect(io.run).not.toHaveBeenCalled();
   });
 
   it("fails with 1 when the CLI dies without a status", () => {
@@ -156,5 +188,30 @@ describe("parseQueryOutput", () => {
     ["JSON null", "null"],
   ])("returns null for %s", (_, stdout) => {
     expect(parseQueryOutput(stdout)).toBeNull();
+  });
+});
+
+describe("describeCliError", () => {
+  it("reads the message of the JSON error envelope, after notices", () => {
+    const envelope = JSON.stringify({
+      _tag: "Error",
+      error: { code: "X", message: "denied" },
+    });
+    expect(describeCliError(`Target: project abc\n${envelope}\n`)).toBe(
+      "denied",
+    );
+  });
+
+  it("falls back to the last lines of a non-JSON output", () => {
+    const stdout = ["a", "b", "", "c", "d", "e", "f"].join("\n");
+    expect(describeCliError(stdout)).toBe("b\nc\nd\ne\nf");
+  });
+
+  it("falls back to the raw output for JSON that is not an error", () => {
+    expect(describeCliError('{"rows": []}')).toBe('{"rows": []}');
+  });
+
+  it("returns an empty string for an empty output", () => {
+    expect(describeCliError("")).toBe("");
   });
 });
