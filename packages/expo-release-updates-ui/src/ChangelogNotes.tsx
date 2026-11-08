@@ -16,8 +16,16 @@ export interface ChangelogNotesStyles {
   itemText?: StyleProp<TextStyle>;
   /** A plain paragraph line. */
   text?: StyleProp<TextStyle>;
+  /** The box of a `> ` quote line (left border by default). */
+  quote?: StyleProp<ViewStyle>;
+  /** The text of a quote line. */
+  quoteText?: StyleProp<TextStyle>;
   /** Applied on top of the surrounding text style to `**bold**` runs. */
   bold?: StyleProp<TextStyle>;
+  /** Applied on top of the surrounding text style to `*italic*` runs. */
+  italic?: StyleProp<TextStyle>;
+  /** Applied on top of the surrounding text style to backtick `code` runs. */
+  code?: StyleProp<TextStyle>;
 }
 
 /** Props of {@link ChangelogNotes}. */
@@ -38,24 +46,54 @@ const defaultStyles: Required<ChangelogNotesStyles> = {
   bullet: { fontSize: 13, color: "#6b7280" },
   itemText: { flex: 1, fontSize: 13, color: "#6b7280" },
   text: { fontSize: 13, color: "#6b7280" },
+  quote: {
+    borderLeftWidth: 3,
+    borderLeftColor: "#d1d5db",
+    paddingLeft: 8,
+    marginTop: 4,
+  },
+  quoteText: { fontSize: 13, color: "#6b7280", fontStyle: "italic" },
   bold: { fontWeight: "700", color: "#111827" },
+  italic: { fontStyle: "italic" },
+  code: {
+    fontFamily: "monospace",
+    backgroundColor: "#f3f4f6",
+    color: "#111827",
+  },
 };
 
-function renderSegments(
-  segments: ChangelogSegment[],
-  boldStyle: StyleProp<TextStyle>,
-) {
-  return segments.map((segment) => (
-    <Text key={segment.text} style={segment.bold ? boldStyle : undefined}>
-      {segment.text}
-    </Text>
-  ));
+interface InlineStyles {
+  bold: StyleProp<TextStyle>;
+  italic: StyleProp<TextStyle>;
+  code: StyleProp<TextStyle>;
+}
+
+function renderSegments(segments: ChangelogSegment[], inline: InlineStyles) {
+  // Keyed by where each segment starts in the line: unique and stable (the
+  // text alone is not, the same word can appear twice on a line).
+  let offset = 0;
+  return segments.map((segment) => {
+    const start = offset;
+    offset += segment.text.length;
+    return (
+      <Text
+        key={String(start)}
+        style={[
+          segment.bold ? inline.bold : undefined,
+          segment.italic ? inline.italic : undefined,
+          segment.code ? inline.code : undefined,
+        ]}
+      >
+        {segment.text}
+      </Text>
+    );
+  });
 }
 
 /**
  * Renders GitHub-style release notes (parsed by `parseChangelogNotes`) as
- * headings, bulleted items and bold-aware text, instead of showing the raw
- * Markdown syntax in a plain `<Text>`.
+ * headings, bulleted items, quotes and bold / italic / code-aware text,
+ * instead of showing the raw Markdown syntax in a plain `<Text>`.
  */
 export function ChangelogNotes({ notes, styles }: ChangelogNotesProps) {
   // Each field is merged as a style array (default, then override) rather
@@ -68,7 +106,13 @@ export function ChangelogNotes({ notes, styles }: ChangelogNotesProps) {
     bullet: [defaultStyles.bullet, styles?.bullet],
     itemText: [defaultStyles.itemText, styles?.itemText],
     text: [defaultStyles.text, styles?.text],
+    quote: [defaultStyles.quote, styles?.quote],
+    quoteText: [defaultStyles.quoteText, styles?.quoteText],
+  };
+  const inline: InlineStyles = {
     bold: [defaultStyles.bold, styles?.bold],
+    italic: [defaultStyles.italic, styles?.italic],
+    code: [defaultStyles.code, styles?.code],
   };
   const blocks = parseChangelogNotes(notes);
 
@@ -91,14 +135,23 @@ export function ChangelogNotes({ notes, styles }: ChangelogNotesProps) {
             <View key={key} style={merged.itemRow}>
               <Text style={merged.bullet}>•</Text>
               <Text style={merged.itemText}>
-                {renderSegments(block.segments, merged.bold)}
+                {renderSegments(block.segments, inline)}
+              </Text>
+            </View>
+          );
+        }
+        if (block.type === "quote") {
+          return (
+            <View key={key} style={merged.quote}>
+              <Text style={merged.quoteText}>
+                {renderSegments(block.segments, inline)}
               </Text>
             </View>
           );
         }
         return (
           <Text key={key} style={merged.text}>
-            {renderSegments(block.segments, merged.bold)}
+            {renderSegments(block.segments, inline)}
           </Text>
         );
       })}

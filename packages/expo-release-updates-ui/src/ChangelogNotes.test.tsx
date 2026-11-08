@@ -28,6 +28,19 @@ describe("ChangelogNotes", () => {
     });
   });
 
+  it("renders italic and code segments with their own style", async () => {
+    await render(<ChangelogNotes notes="An *important* fix in `sync`" />);
+    expect(screen.getByText("important")).toHaveStyle({ fontStyle: "italic" });
+    expect(screen.getByText("sync")).toHaveStyle({ fontFamily: "monospace" });
+    expect(screen.getByText("An ")).not.toHaveStyle({ fontStyle: "italic" });
+  });
+
+  it("renders a quote without its > marker", async () => {
+    await render(<ChangelogNotes notes="> Back up before updating" />);
+    expect(screen.getByText("Back up before updating")).toBeOnTheScreen();
+    expect(screen.queryByText(/>/)).not.toBeOnTheScreen();
+  });
+
   it("applies custom styles over the defaults, without dropping the rest of the default style", async () => {
     await render(
       <ChangelogNotes
